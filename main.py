@@ -1,12 +1,17 @@
 import json
 import time
+import warnings
 from pathlib import Path
 
+warnings.filterwarnings("ignore", message="urllib3 v2 only supports OpenSSL.*")
+
 import feedparser
+import trafilatura
 
 from config import DEFAULT_TOPIC, RSS_SOURCES
 
-OUTPUT_FILE = Path("data/raw_articles/articles.json")
+RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
+CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
 
@@ -84,11 +89,57 @@ def filter_articles_by_keywords(articles, keywords):
     return relevant_articles
 
 
-def save_articles(articles):
-    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+def save_articles(articles, output_file):
+    output_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with OUTPUT_FILE.open("w", encoding="utf-8") as file:
+    with output_file.open("w", encoding="utf-8") as file:
         json.dump(articles, file, indent=2)
+
+
+def load_articles(input_file):
+    with input_file.open("r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def extract_content(article):
+    content = ""
+    extraction_status = "failed"
+
+    try:
+        downloaded = trafilatura.fetch_url(article["url"])
+
+        if downloaded:
+            extracted_content = trafilatura.extract(downloaded)
+
+            if extracted_content:
+                content = extracted_content
+                extraction_status = "success"
+    except Exception as error:
+        print(f"Warning: Could not extract content from {article['url']}: {error}")
+
+    clean_article = {
+        "title": article["title"],
+        "url": article["url"],
+        "source": article["source"],
+        "published_date": article["published_date"],
+        "topic": article["topic"],
+        "matched_keywords": article["matched_keywords"],
+        "content": content,
+        "content_length": len(content),
+        "extraction_status": extraction_status
+    }
+
+    return clean_article
+
+
+def extract_articles_content(articles):
+    clean_articles = []
+
+    for article in articles:
+        clean_article = extract_content(article)
+        clean_articles.append(clean_article)
+
+    return clean_articles
 
 
 def main():
@@ -98,11 +149,24 @@ def main():
     keywords = load_keywords()
     articles = fetch_articles_from_rss()
     relevant_articles = filter_articles_by_keywords(articles, keywords)
-    save_articles(relevant_articles)
+    save_articles(relevant_articles, RAW_OUTPUT_FILE)
 
     print(f"Fetched {len(articles)} articles from RSS sources.")
     print(f"Kept {len(relevant_articles)} relevant articles after keyword filtering.")
-    print(f"Saved {len(relevant_articles)} articles to {OUTPUT_FILE}")
+    print(f"Saved {len(relevant_articles)} articles to {RAW_OUTPUT_FILE}")
+
+    raw_articles = load_articles(RAW_OUTPUT_FILE)
+    clean_articles = extract_articles_content(raw_articles)
+    successful_extractions = 0
+
+    for article in clean_articles:
+        if article["extraction_status"] == "success":
+            successful_extractions += 1
+
+    save_articles(clean_articles, CLEAN_OUTPUT_FILE)
+
+    print(f"Extracted content for {successful_extractions}/{len(raw_articles)} articles.")
+    print(f"Saved clean articles to {CLEAN_OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
