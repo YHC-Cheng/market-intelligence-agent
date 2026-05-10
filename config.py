@@ -1,4 +1,4 @@
-DEFAULT_TOPIC = "AI Agent in B2B SaaS"
+DEFAULT_TOPIC = "AI"
 
 SOURCES = [
     {
