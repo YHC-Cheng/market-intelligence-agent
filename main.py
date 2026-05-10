@@ -12,8 +12,10 @@ from config import DEFAULT_TOPIC, RSS_SOURCES
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
+MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
+PREVIEW_SUMMARY_LENGTH = 500
 
 
 def load_keywords():
@@ -142,6 +144,55 @@ def extract_articles_content(articles):
     return clean_articles
 
 
+def get_articles_ready_for_brief(articles):
+    ready_articles = []
+
+    for article in articles:
+        if article["extraction_status"] == "success" and article["content"]:
+            ready_articles.append(article)
+
+    return ready_articles
+
+
+def create_market_brief(articles):
+    lines = [
+        "# Market Brief",
+        "",
+        f"Topic: {DEFAULT_TOPIC}",
+        "",
+        f"Articles included: {len(articles)}",
+        ""
+    ]
+
+    for index, article in enumerate(articles, start=1):
+        preview_summary = article["content"][:PREVIEW_SUMMARY_LENGTH]
+        matched_keywords = ", ".join(article["matched_keywords"])
+
+        lines.extend([
+            f"## {index}. {article['title']}",
+            "",
+            f"- Source: {article['source']}",
+            f"- Published date: {article['published_date']}",
+            f"- URL: {article['url']}",
+            f"- Matched keywords: {matched_keywords}",
+            f"- Content length: {article['content_length']}",
+            "",
+            "### Preview Summary",
+            "",
+            preview_summary,
+            ""
+        ])
+
+    return "\n".join(lines)
+
+
+def save_markdown(content, output_file):
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with output_file.open("w", encoding="utf-8") as file:
+        file.write(content)
+
+
 def main():
     print("Market Intelligence Agent started.")
     print(f"Topic: {DEFAULT_TOPIC}")
@@ -167,6 +218,14 @@ def main():
 
     print(f"Extracted content for {successful_extractions}/{len(raw_articles)} articles.")
     print(f"Saved clean articles to {CLEAN_OUTPUT_FILE}")
+
+    clean_articles = load_articles(CLEAN_OUTPUT_FILE)
+    articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
+    market_brief = create_market_brief(articles_ready_for_brief)
+    save_markdown(market_brief, MARKET_BRIEF_FILE)
+
+    print(f"Generated market brief for {len(articles_ready_for_brief)} articles.")
+    print(f"Saved market brief to {MARKET_BRIEF_FILE}")
 
 
 if __name__ == "__main__":
