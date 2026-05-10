@@ -37,3 +37,14 @@ OUTPUT_FORMATS = [
     "slide_draft.md",
     "sources.json"
 ]
+
+RSS_SOURCES = [
+    {
+        "name": "OpenAI News RSS",
+        "url": "https://openai.com/news/rss.xml"
+    },
+    {
+        "name": "AWS Blog RSS",
+        "url": "https://aws.amazon.com/blogs/aws/feed/"
+    }
+]

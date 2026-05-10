@@ -1,37 +1,72 @@
 [
   {
-    "title": "OpenAI introduces new agent capabilities for enterprise teams",
-    "url": "https://openai.com/news/mock-agent-capabilities",
-    "source": "OpenAI Blog",
-    "published_date": "2026-05-01",
+    "title": "Running Codex safely at OpenAI",
+    "url": "https://openai.com/index/running-codex-safely",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-08",
     "topic": "AI Agent in B2B SaaS"
   },
   {
-    "title": "Anthropic shares guidance on AI agents in business workflows",
-    "url": "https://www.anthropic.com/news/mock-business-workflows",
-    "source": "Anthropic News",
-    "published_date": "2026-05-02",
+    "title": "Scaling Trusted Access for Cyber with GPT-5.5 and GPT-5.5-Cyber",
+    "url": "https://openai.com/index/gpt-5-5-with-trusted-access-for-cyber",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-07",
     "topic": "AI Agent in B2B SaaS"
   },
   {
-    "title": "Google Cloud highlights agent tools for SaaS operations",
-    "url": "https://cloud.google.com/blog/mock-agent-tools-saas",
-    "source": "Google Cloud Blog",
-    "published_date": "2026-05-03",
+    "title": "Parloa builds service agents customers want to talk to",
+    "url": "https://openai.com/index/parloa",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-07",
     "topic": "AI Agent in B2B SaaS"
   },
   {
-    "title": "AWS explains how companies can deploy AI agents at scale",
-    "url": "https://aws.amazon.com/blogs/mock-ai-agents-scale",
-    "source": "AWS Blog",
+    "title": "Advancing voice intelligence with new models in the API",
+    "url": "https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-07",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "Testing ads in ChatGPT",
+    "url": "https://openai.com/index/testing-ads-in-chatgpt",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-07",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "The AWS MCP Server is now generally available",
+    "url": "https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/",
+    "source": "AWS Blog RSS",
+    "published_date": "2026-05-06",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)",
+    "url": "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/",
+    "source": "AWS Blog RSS",
+    "published_date": "2026-05-05",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "AWS Weekly Roundup: What\u2019s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/",
+    "source": "AWS Blog RSS",
     "published_date": "2026-05-04",
     "topic": "AI Agent in B2B SaaS"
   },
   {
-    "title": "Microsoft Azure explores agentic automation for B2B SaaS",
-    "url": "https://azure.microsoft.com/en-us/blog/mock-agentic-automation",
-    "source": "Microsoft Azure Blog",
-    "published_date": "2026-05-05",
+    "title": "Top announcements of the What\u2019s Next with AWS, 2026",
+    "url": "https://aws.amazon.com/blogs/aws/top-announcements-of-the-whats-next-with-aws-2026/",
+    "source": "AWS Blog RSS",
+    "published_date": "2026-04-28",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "AWS Weekly Roundup: Anthropic & Meta partnership, AWS Lambda S3 Files, Amazon Bedrock AgentCore CLI, and more (April 27, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-anthropic-meta-partnership-aws-lambda-s3-files-amazon-bedrock-agentcore-cli-and-more-april-27-2026/",
+    "source": "AWS Blog RSS",
+    "published_date": "2026-04-27",
     "topic": "AI Agent in B2B SaaS"
   }
 ]

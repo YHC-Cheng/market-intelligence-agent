@@ -1,50 +1,47 @@
 import json
+import time
 from pathlib import Path
 
-from config import DEFAULT_TOPIC, SOURCES
+import feedparser
 
+from config import DEFAULT_TOPIC, RSS_SOURCES
 
 OUTPUT_FILE = Path("data/raw_articles/articles.json")
+ARTICLES_PER_SOURCE = 5
 
 
-def create_mock_articles():
-    return [
-        {
-            "title": "OpenAI introduces new agent capabilities for enterprise teams",
-            "url": "https://openai.com/news/mock-agent-capabilities",
-            "source": SOURCES[0]["name"],
-            "published_date": "2026-05-01",
-            "topic": DEFAULT_TOPIC
-        },
-        {
-            "title": "Anthropic shares guidance on AI agents in business workflows",
-            "url": "https://www.anthropic.com/news/mock-business-workflows",
-            "source": SOURCES[1]["name"],
-            "published_date": "2026-05-02",
-            "topic": DEFAULT_TOPIC
-        },
-        {
-            "title": "Google Cloud highlights agent tools for SaaS operations",
-            "url": "https://cloud.google.com/blog/mock-agent-tools-saas",
-            "source": SOURCES[2]["name"],
-            "published_date": "2026-05-03",
-            "topic": DEFAULT_TOPIC
-        },
-        {
-            "title": "AWS explains how companies can deploy AI agents at scale",
-            "url": "https://aws.amazon.com/blogs/mock-ai-agents-scale",
-            "source": SOURCES[3]["name"],
-            "published_date": "2026-05-04",
-            "topic": DEFAULT_TOPIC
-        },
-        {
-            "title": "Microsoft Azure explores agentic automation for B2B SaaS",
-            "url": "https://azure.microsoft.com/en-us/blog/mock-agentic-automation",
-            "source": SOURCES[4]["name"],
-            "published_date": "2026-05-05",
-            "topic": DEFAULT_TOPIC
-        }
-    ]
+def get_published_date(entry):
+    if entry.get("published_parsed"):
+        return time.strftime("%Y-%m-%d", entry.published_parsed)
+
+    if entry.get("updated_parsed"):
+        return time.strftime("%Y-%m-%d", entry.updated_parsed)
+
+    return entry.get("published", entry.get("updated", ""))
+
+
+def fetch_articles_from_rss():
+    articles = []
+
+    for source in RSS_SOURCES:
+        feed = feedparser.parse(source["url"])
+        entries = feed.entries[:ARTICLES_PER_SOURCE]
+
+        if not entries:
+            print(f"Warning: No articles found for {source['name']}.")
+            continue
+
+        for entry in entries:
+            article = {
+                "title": entry.get("title", ""),
+                "url": entry.get("link", ""),
+                "source": source["name"],
+                "published_date": get_published_date(entry),
+                "topic": DEFAULT_TOPIC
+            }
+            articles.append(article)
+
+    return articles
 
 
 def save_articles(articles):
@@ -55,11 +52,13 @@ def save_articles(articles):
 
 
 def main():
-    articles = create_mock_articles()
-    save_articles(articles)
-
     print("Market Intelligence Agent started.")
     print(f"Topic: {DEFAULT_TOPIC}")
+
+    articles = fetch_articles_from_rss()
+    save_articles(articles)
+
+    print(f"Fetched {len(articles)} articles from RSS sources.")
     print(f"Saved {len(articles)} articles to {OUTPUT_FILE}")
 
 
