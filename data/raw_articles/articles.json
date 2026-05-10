@@ -1,0 +1,37 @@
+[
+  {
+    "title": "OpenAI introduces new agent capabilities for enterprise teams",
+    "url": "https://openai.com/news/mock-agent-capabilities",
+    "source": "OpenAI Blog",
+    "published_date": "2026-05-01",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "Anthropic shares guidance on AI agents in business workflows",
+    "url": "https://www.anthropic.com/news/mock-business-workflows",
+    "source": "Anthropic News",
+    "published_date": "2026-05-02",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "Google Cloud highlights agent tools for SaaS operations",
+    "url": "https://cloud.google.com/blog/mock-agent-tools-saas",
+    "source": "Google Cloud Blog",
+    "published_date": "2026-05-03",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "AWS explains how companies can deploy AI agents at scale",
+    "url": "https://aws.amazon.com/blogs/mock-ai-agents-scale",
+    "source": "AWS Blog",
+    "published_date": "2026-05-04",
+    "topic": "AI Agent in B2B SaaS"
+  },
+  {
+    "title": "Microsoft Azure explores agentic automation for B2B SaaS",
+    "url": "https://azure.microsoft.com/en-us/blog/mock-agentic-automation",
+    "source": "Microsoft Azure Blog",
+    "published_date": "2026-05-05",
+    "topic": "AI Agent in B2B SaaS"
+  }
+]
