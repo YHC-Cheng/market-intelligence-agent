@@ -1,5 +1,37 @@
 [
   {
+    "title": "How enterprises are scaling AI",
+    "url": "https://openai.com/business/guides-and-resources/how-enterprises-are-scaling-ai",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-11",
+    "topic": "AI",
+    "matched_keywords": [
+      "AI"
+    ]
+  },
+  {
+    "title": "OpenAI Campus Network: Student club interest form",
+    "url": "https://openai.com/index/openai-campus-network-student-club-interest-form",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-11",
+    "topic": "AI",
+    "matched_keywords": [
+      "AI",
+      "OpenAI"
+    ]
+  },
+  {
+    "title": "OpenAI launches DeployCo to help businesses build around intelligence",
+    "url": "https://openai.com/index/openai-launches-the-deployment-company",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-11",
+    "topic": "AI",
+    "matched_keywords": [
+      "AI",
+      "OpenAI"
+    ]
+  },
+  {
     "title": "Running Codex safely at OpenAI",
     "url": "https://openai.com/index/running-codex-safely",
     "source": "OpenAI News RSS",
@@ -44,16 +76,6 @@
     "matched_keywords": [
       "AI",
       "OpenAI"
-    ]
-  },
-  {
-    "title": "AWS Weekly Roundup: Anthropic & Meta partnership, AWS Lambda S3 Files, Amazon Bedrock AgentCore CLI, and more (April 27, 2026)",
-    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-anthropic-meta-partnership-aws-lambda-s3-files-amazon-bedrock-agentcore-cli-and-more-april-27-2026/",
-    "source": "AWS Blog RSS",
-    "published_date": "2026-04-27",
-    "topic": "AI",
-    "matched_keywords": [
-      "Anthropic"
     ]
   }
 ]

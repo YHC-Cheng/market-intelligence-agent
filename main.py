@@ -4,18 +4,23 @@ import warnings
 from pathlib import Path
 
 warnings.filterwarnings("ignore", message="urllib3 v2 only supports OpenSSL.*")
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 import feedparser
 import trafilatura
+from dotenv import load_dotenv
 
-from config import DEFAULT_TOPIC, RSS_SOURCES
+load_dotenv()
+
+from config import DEFAULT_TOPIC, LLM_PROVIDER, RSS_SOURCES
+from llm.gemini_provider import GeminiProvider
+from llm.openai_provider import OpenAIProvider
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
-PREVIEW_SUMMARY_LENGTH = 500
 
 
 def load_keywords():
@@ -154,6 +159,41 @@ def get_articles_ready_for_brief(articles):
     return ready_articles
 
 
+def get_llm_provider():
+    if LLM_PROVIDER == "gemini":
+        return GeminiProvider()
+
+    if LLM_PROVIDER == "openai":
+        return OpenAIProvider()
+
+    raise ValueError(f"Unsupported LLM provider: {LLM_PROVIDER}")
+
+
+def summarize_articles(articles, provider):
+    summarized_articles = []
+    successful_summaries = 0
+
+    for article in articles:
+        try:
+            ai_summary = provider.summarize_article(article)
+        except Exception as error:
+            ai_summary = {
+                "summary": "",
+                "key_points": [],
+                "why_it_matters": "",
+                "error": str(error)
+            }
+
+        if "error" not in ai_summary:
+            successful_summaries += 1
+
+        article_with_summary = article.copy()
+        article_with_summary["ai_summary"] = ai_summary
+        summarized_articles.append(article_with_summary)
+
+    return summarized_articles, successful_summaries
+
+
 def create_market_brief(articles):
     lines = [
         "# Market Brief",
@@ -165,8 +205,9 @@ def create_market_brief(articles):
     ]
 
     for index, article in enumerate(articles, start=1):
-        preview_summary = article["content"][:PREVIEW_SUMMARY_LENGTH]
         matched_keywords = ", ".join(article["matched_keywords"])
+        ai_summary = article["ai_summary"]
+        key_points = ai_summary.get("key_points", [])
 
         lines.extend([
             f"## {index}. {article['title']}",
@@ -177,11 +218,35 @@ def create_market_brief(articles):
             f"- Matched keywords: {matched_keywords}",
             f"- Content length: {article['content_length']}",
             "",
-            "### Preview Summary",
+            "### AI Summary",
             "",
-            preview_summary,
+            ai_summary.get("summary", ""),
+            "",
+            "### Key Points",
             ""
         ])
+
+        if key_points:
+            for key_point in key_points:
+                lines.append(f"- {key_point}")
+        else:
+            lines.append("- No key points available.")
+
+        lines.extend([
+            "",
+            "### Why It Matters",
+            "",
+            ai_summary.get("why_it_matters", ""),
+            ""
+        ])
+
+        if ai_summary.get("error"):
+            lines.extend([
+                "### Error",
+                "",
+                ai_summary["error"],
+                ""
+            ])
 
     return "\n".join(lines)
 
@@ -221,10 +286,18 @@ def main():
 
     clean_articles = load_articles(CLEAN_OUTPUT_FILE)
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
-    market_brief = create_market_brief(articles_ready_for_brief)
+    provider = get_llm_provider()
+
+    print(f"Using LLM provider: {LLM_PROVIDER}")
+
+    summarized_articles, successful_summaries = summarize_articles(
+        articles_ready_for_brief,
+        provider
+    )
+    market_brief = create_market_brief(summarized_articles)
     save_markdown(market_brief, MARKET_BRIEF_FILE)
 
-    print(f"Generated market brief for {len(articles_ready_for_brief)} articles.")
+    print(f"Generated AI summaries for {successful_summaries} articles.")
     print(f"Saved market brief to {MARKET_BRIEF_FILE}")
 
 

@@ -48,3 +48,6 @@ RSS_SOURCES = [
         "url": "https://aws.amazon.com/blogs/aws/feed/"
     }
 ]
+
+LLM_PROVIDER = "gemini"
+LLM_MODEL = "gemini-2.5-flash"
