@@ -85,3 +85,11 @@ Expected output:
 Market Intelligence Agent started.
 Topic: AI Agent in B2B SaaS
 ```
+
+## Validate Sources
+
+Run:
+
+```bash
+python3 scripts/validate_sources.py
+```
