@@ -17,7 +17,9 @@ from config import DEFAULT_TOPIC, LLM_MODEL, LLM_PROVIDER, RSS_SOURCES
 from llm.gemini_provider import GeminiProvider
 from llm.openai_provider import OpenAIProvider
 from utils.cache import (
+    get_cache_paths,
     get_cached_result,
+    get_current_week_key,
     load_json_cache,
     save_json_cache,
     set_cached_result
@@ -27,8 +29,6 @@ RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
 RANKED_SOURCES_FILE = Path("outputs/reports/ranked_sources.md")
-SUMMARY_CACHE_FILE = Path("data/cache/summary_cache.json")
-RANKING_CACHE_FILE = Path("data/cache/ranking_cache.json")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
@@ -195,7 +195,7 @@ def get_provider_model(provider):
     return getattr(provider, "last_model_used", LLM_MODEL)
 
 
-def build_summary_cache_entry(article, ai_summary, provider):
+def build_summary_cache_entry(article, ai_summary, provider, cache_period):
     return {
         "title": article["title"],
         "url": article["url"],
@@ -206,7 +206,8 @@ def build_summary_cache_entry(article, ai_summary, provider):
         "summary": ai_summary.get("summary", ""),
         "key_points": ai_summary.get("key_points", []),
         "why_it_matters": ai_summary.get("why_it_matters", ""),
-        "cached_at": get_cached_at()
+        "cached_at": get_cached_at(),
+        "cache_period": cache_period
     }
 
 
@@ -218,7 +219,13 @@ def get_summary_from_cache(cached_summary):
     }
 
 
-def summarize_articles(articles, provider, summary_cache):
+def summarize_articles(
+    articles,
+    provider,
+    summary_cache,
+    summary_cache_path,
+    cache_period
+):
     summarized_articles = []
     successful_summaries = 0
 
@@ -250,9 +257,14 @@ def summarize_articles(articles, provider, summary_cache):
             successful_summaries += 1
 
             if not cached_summary:
-                cache_entry = build_summary_cache_entry(article, ai_summary, provider)
+                cache_entry = build_summary_cache_entry(
+                    article,
+                    ai_summary,
+                    provider,
+                    cache_period
+                )
                 set_cached_result(summary_cache, article["url"], cache_entry)
-                save_json_cache(str(SUMMARY_CACHE_FILE), summary_cache)
+                save_json_cache(summary_cache_path, summary_cache)
                 print(f"Saved summary to cache for: {article['title']}")
 
         article_with_summary = article.copy()
@@ -308,7 +320,14 @@ def get_recommendation(score):
     return "Exclude"
 
 
-def build_ranking_cache_entry(article, ranking, score, recommendation, provider):
+def build_ranking_cache_entry(
+    article,
+    ranking,
+    score,
+    recommendation,
+    provider,
+    cache_period
+):
     return {
         "title": article["title"],
         "url": article["url"],
@@ -326,7 +345,8 @@ def build_ranking_cache_entry(article, ranking, score, recommendation, provider)
         "use_case": ranking.get("use_case", ""),
         "problem_solved": ranking.get("problem_solved", ""),
         "reason": ranking.get("reason", ""),
-        "cached_at": get_cached_at()
+        "cached_at": get_cached_at(),
+        "cache_period": cache_period
     }
 
 
@@ -343,7 +363,13 @@ def get_ranking_from_cache(cached_ranking):
     }
 
 
-def rank_articles(articles, provider, ranking_cache):
+def rank_articles(
+    articles,
+    provider,
+    ranking_cache,
+    ranking_cache_path,
+    cache_period
+):
     ranked_articles = []
 
     for article in articles:
@@ -389,10 +415,11 @@ def rank_articles(articles, provider, ranking_cache):
                     ranking,
                     score,
                     recommendation,
-                    provider
+                    provider,
+                    cache_period
                 )
                 set_cached_result(ranking_cache, article["url"], cache_entry)
-                save_json_cache(str(RANKING_CACHE_FILE), ranking_cache)
+                save_json_cache(ranking_cache_path, ranking_cache)
                 print(f"Saved ranking to cache for: {article['title']}")
 
         article_with_ranking = article.copy()
@@ -544,15 +571,21 @@ def main():
     clean_articles = load_articles(CLEAN_OUTPUT_FILE)
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
     provider = get_llm_provider()
-    summary_cache = load_json_cache(str(SUMMARY_CACHE_FILE))
-    ranking_cache = load_json_cache(str(RANKING_CACHE_FILE))
+    week_key = get_current_week_key()
+    cache_paths = get_cache_paths(DEFAULT_TOPIC, week_key)
+    summary_cache = load_json_cache(cache_paths["summary"])
+    ranking_cache = load_json_cache(cache_paths["ranking"])
 
     print(f"Using LLM provider: {LLM_PROVIDER}")
+    print(f"Using summary cache: {cache_paths['summary']}")
+    print(f"Using ranking cache: {cache_paths['ranking']}")
 
     summarized_articles, successful_summaries = summarize_articles(
         articles_ready_for_brief,
         provider,
-        summary_cache
+        summary_cache,
+        cache_paths["summary"],
+        week_key
     )
     market_brief = create_market_brief(summarized_articles)
     save_markdown(market_brief, MARKET_BRIEF_FILE)
@@ -560,7 +593,13 @@ def main():
     print(f"Generated AI summaries for {successful_summaries} articles.")
     print(f"Saved market brief to {MARKET_BRIEF_FILE}")
 
-    ranked_articles = rank_articles(articles_ready_for_brief, provider, ranking_cache)
+    ranked_articles = rank_articles(
+        articles_ready_for_brief,
+        provider,
+        ranking_cache,
+        cache_paths["ranking"],
+        week_key
+    )
     ranked_sources_report = create_ranked_sources_report(ranked_articles)
     save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
 
