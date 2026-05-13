@@ -3,6 +3,7 @@
     "title": "How finance teams use Codex",
     "url": "https://openai.com/academy/how-finance-teams-use-codex",
     "source": "OpenAI News RSS",
+    "source_category": "official_ai",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -16,6 +17,7 @@
     "title": "How NVIDIA engineers and researchers build with Codex",
     "url": "https://openai.com/index/nvidia",
     "source": "OpenAI News RSS",
+    "source_category": "official_ai",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -29,6 +31,7 @@
     "title": "What Parameter Golf taught us about AI-assisted research",
     "url": "https://openai.com/index/what-parameter-golf-taught-us",
     "source": "OpenAI News RSS",
+    "source_category": "official_ai",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -42,6 +45,7 @@
     "title": "AutoScout24 scales engineering with AI-powered workflows",
     "url": "https://openai.com/index/autoscout24",
     "source": "OpenAI News RSS",
+    "source_category": "official_ai",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -56,6 +60,7 @@
     "title": "The AWS MCP Server is now generally available",
     "url": "https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/",
     "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
     "published_date": "2026-05-06",
     "topic": "AI",
     "matched_keywords": [
@@ -70,6 +75,7 @@
     "title": "Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)",
     "url": "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/",
     "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
     "published_date": "2026-05-05",
     "topic": "AI",
     "matched_keywords": [
@@ -86,6 +92,7 @@
     "title": "AWS Weekly Roundup: What\u2019s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)",
     "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/",
     "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
     "published_date": "2026-05-04",
     "topic": "AI",
     "matched_keywords": [

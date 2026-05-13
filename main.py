@@ -18,7 +18,7 @@ from config import (
     LLM_MODEL,
     LLM_PROVIDER,
     REPORT_TEMPLATE,
-    RSS_SOURCES
+    RSS_SOURCES_BY_TOPIC
 )
 from llm.gemini_provider import GeminiProvider
 from llm.openai_provider import OpenAIProvider
@@ -76,15 +76,35 @@ def get_published_date(entry):
     return entry.get("published", entry.get("updated", ""))
 
 
+def get_sources_for_topic(topic):
+    sources = RSS_SOURCES_BY_TOPIC.get(topic)
+
+    if sources is None:
+        print(f"Warning: No RSS sources found for topic: {topic}")
+        sources = []
+
+    print(f"Loaded {len(sources)} sources for topic: {topic}")
+    return sources
+
+
 def fetch_articles_from_rss():
     articles = []
+    sources = get_sources_for_topic(DEFAULT_TOPIC)
 
-    for source in RSS_SOURCES:
-        feed = feedparser.parse(source["url"])
-        entries = feed.entries[:ARTICLES_PER_SOURCE]
+    for source in sources:
+        try:
+            feed = feedparser.parse(source["url"])
+            entries = feed.entries[:ARTICLES_PER_SOURCE]
+        except Exception:
+            print(f"Warning: Could not fetch or parse source: {source['name']}")
+            continue
+
+        if feed.get("bozo") and not entries:
+            print(f"Warning: Could not fetch or parse source: {source['name']}")
+            continue
 
         if not entries:
-            print(f"Warning: No articles found for {source['name']}.")
+            print(f"Warning: Could not fetch or parse source: {source['name']}")
             continue
 
         for entry in entries:
@@ -93,6 +113,7 @@ def fetch_articles_from_rss():
                 "title": title,
                 "url": entry.get("link", ""),
                 "source": source["name"],
+                "source_category": source.get("category", ""),
                 "published_date": get_published_date(entry),
                 "topic": DEFAULT_TOPIC
             }
@@ -146,6 +167,7 @@ def extract_content(article):
         "title": article["title"],
         "url": article["url"],
         "source": article["source"],
+        "source_category": article.get("source_category", ""),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "matched_keywords": article["matched_keywords"],
@@ -207,6 +229,7 @@ def build_summary_cache_entry(article, ai_summary, provider, cache_period):
         "title": article["title"],
         "url": article["url"],
         "source": article["source"],
+        "source_category": article.get("source_category", ""),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "model": get_provider_model(provider),
@@ -339,6 +362,7 @@ def build_ranking_cache_entry(
         "title": article["title"],
         "url": article["url"],
         "source": article["source"],
+        "source_category": article.get("source_category", ""),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "model": get_provider_model(provider),
@@ -457,6 +481,7 @@ def create_market_brief(articles):
             f"## {index}. {article['title']}",
             "",
             f"- Source: {article['source']}",
+            f"- Category: {article.get('source_category', '')}",
             f"- Published date: {article['published_date']}",
             f"- URL: {article['url']}",
             f"- Matched keywords: {matched_keywords}",
@@ -512,6 +537,7 @@ def create_ranked_sources_report(articles):
             f"## {index}. {article['title']}",
             "",
             f"- Source: {article['source']}",
+            f"- Category: {article.get('source_category', '')}",
             f"- Published date: {article['published_date']}",
             f"- URL: {article['url']}",
             f"- Score: {article['score']}",
@@ -613,6 +639,41 @@ def get_urls_from_markdown(markdown_text):
     return urls
 
 
+def get_reference_articles(ranked_articles):
+    primary_articles = []
+    background_articles = []
+
+    for article in ranked_articles:
+        if article["recommendation"] in ["Core", "Useful"]:
+            primary_articles.append(article)
+        elif article["recommendation"] == "Background":
+            background_articles.append(article)
+
+    return primary_articles + background_articles
+
+
+def create_references_text(ranked_articles):
+    reference_articles = get_reference_articles(ranked_articles)
+
+    if not reference_articles:
+        return "No Core, Useful, or Background sources were available."
+
+    lines = []
+
+    for index, article in enumerate(reference_articles, start=1):
+        lines.extend([
+            f"[來源 {index}] {article['title']}  ",
+            f"- Source: {article['source']}",
+            f"- Category: {article.get('source_category', '')}",
+            f"- Published date: {article['published_date']}",
+            f"- Recommendation: {article['recommendation']}",
+            f"- URL: {article['url']}",
+            ""
+        ])
+
+    return "\n".join(lines).strip()
+
+
 def filter_market_brief_for_analysis(market_brief, allowed_urls):
     sections = []
     current_section = []
@@ -647,8 +708,24 @@ def filter_market_brief_for_analysis(market_brief, allowed_urls):
     return "\n\n".join(lines)
 
 
-def create_fallback_market_analysis_report(error):
+def ensure_report_has_references(report, references_text):
+    reference_heading = "## 5. 參考資料"
+
+    if reference_heading in report:
+        report = report.split(reference_heading)[0].rstrip()
+
     return "\n".join([
+        report.rstrip(),
+        "",
+        reference_heading,
+        "",
+        references_text,
+        ""
+    ])
+
+
+def create_fallback_market_analysis_report(error, references_text):
+    lines = [
         f"# Market Analysis Report: {DEFAULT_TOPIC}",
         "",
         "## Fallback Report",
@@ -658,11 +735,21 @@ def create_fallback_market_analysis_report(error):
         f"- Error message: {error}",
         f"- Market brief path: {MARKET_BRIEF_FILE}",
         f"- Ranked sources path: {RANKED_SOURCES_FILE}",
+        "",
+        "## 5. 參考資料",
         ""
-    ])
+    ]
+
+    if references_text:
+        lines.append(references_text)
+    else:
+        lines.append("No references were available.")
+
+    lines.append("")
+    return "\n".join(lines)
 
 
-def generate_market_analysis_report(provider):
+def generate_market_analysis_report(provider, references_text):
     try:
         market_brief = load_markdown(MARKET_BRIEF_FILE)
         ranked_sources = load_markdown(RANKED_SOURCES_FILE)
@@ -678,16 +765,17 @@ def generate_market_analysis_report(provider):
         report = provider.generate_market_analysis_report(
             DEFAULT_TOPIC,
             market_brief_for_analysis,
-            ranked_sources_for_analysis
+            ranked_sources_for_analysis,
+            references_text
         )
 
         if not report.strip():
             raise ValueError("LLM returned an empty market analysis report.")
 
-        return report
+        return ensure_report_has_references(report, references_text)
     except Exception as error:
         print(f"Warning: Could not generate market analysis report: {error}")
-        return create_fallback_market_analysis_report(error)
+        return create_fallback_market_analysis_report(error, references_text)
 
 
 def save_markdown(content, output_file):
@@ -761,10 +849,14 @@ def main():
     print(f"Ranked {len(ranked_articles)} articles by value.")
     print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
 
-    market_analysis_report = generate_market_analysis_report(provider)
+    references_text = create_references_text(ranked_articles)
+    market_analysis_report = generate_market_analysis_report(
+        provider,
+        references_text
+    )
     save_markdown(market_analysis_report, MARKET_ANALYSIS_REPORT_FILE)
 
-    print("Generated market analysis report.")
+    print("Generated market analysis report with references.")
     print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
 
 

@@ -12,6 +12,7 @@ class OpenAIProvider(BaseLLMProvider):
         self,
         topic: str,
         market_brief: str,
-        ranked_sources: str
+        ranked_sources: str,
+        references_text: str
     ) -> str:
         raise NotImplementedError("OpenAI provider is not implemented yet.")

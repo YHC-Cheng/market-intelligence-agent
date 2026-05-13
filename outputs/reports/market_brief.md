@@ -7,6 +7,7 @@ Articles included: 3
 ## 1. The AWS MCP Server is now generally available
 
 - Source: AWS Blog RSS
+- Category: cloud_provider
 - Published date: 2026-05-06
 - URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
 - Matched keywords: AI, MCP
@@ -31,6 +32,7 @@ This release is a significant step in maturing AI-driven DevOps. By providing a 
 ## 2. Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
 
 - Source: AWS Blog RSS
+- Category: cloud_provider
 - Published date: 2026-05-05
 - URL: https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/
 - Matched keywords: AI, AI agent, AI agents, workflow
@@ -55,6 +57,7 @@ This technology bypasses the traditional requirement for expensive and time-cons
 ## 3. AWS Weekly Roundup: What’s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)
 
 - Source: AWS Blog RSS
+- Category: cloud_provider
 - Published date: 2026-05-04
 - URL: https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/
 - Matched keywords: AI, OpenAI

@@ -15,6 +15,7 @@ class BaseLLMProvider(ABC):
         self,
         topic: str,
         market_brief: str,
-        ranked_sources: str
+        ranked_sources: str,
+        references_text: str
     ) -> str:
         pass

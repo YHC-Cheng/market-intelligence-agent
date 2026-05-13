@@ -122,7 +122,8 @@ class GeminiProvider(BaseLLMProvider):
         self,
         topic: str,
         market_brief: str,
-        ranked_sources: str
+        ranked_sources: str,
+        references_text: str
     ) -> str:
         if self.setup_error:
             raise RuntimeError(self.setup_error)
@@ -130,7 +131,8 @@ class GeminiProvider(BaseLLMProvider):
         prompt = self.create_market_analysis_prompt(
             topic,
             market_brief,
-            ranked_sources
+            ranked_sources,
+            references_text
         )
 
         return self.generate_content_text(
@@ -248,7 +250,8 @@ Article content:
         self,
         topic: str,
         market_brief: str,
-        ranked_sources: str
+        ranked_sources: str,
+        references_text: str
     ) -> str:
         return f"""
 You are a senior product manager and market intelligence analyst.
@@ -265,6 +268,9 @@ Important rules:
 - Do not invent facts that are not supported by the provided sources.
 - If the evidence is insufficient, explicitly write: 「目前資料不足以判斷」.
 - Make the product implications concrete for SaaS, FinOps, or Cloud Management products.
+- When a claim is based on a source, cite it inline using [來源 1], [來源 2], etc.
+- The inline citation numbers must match the reference list exactly.
+- Include section 5 and copy the provided references exactly under that section.
 
 Use exactly this structure:
 
@@ -309,11 +315,18 @@ Use exactly this structure:
 - 是否可以轉化成產品功能、使用者體驗、權限治理、自動化流程或產品定位？
 - 後續值得追蹤或驗證什麼？
 
+## 5. 參考資料
+
+Copy the provided references exactly. Do not include Exclude sources.
+
 Market brief:
 {market_brief}
 
 Ranked sources:
 {ranked_sources}
+
+References:
+{references_text}
 """
 
     def parse_response(self, response_text: str) -> dict:
