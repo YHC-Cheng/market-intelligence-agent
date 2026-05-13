@@ -19,8 +19,10 @@ from llm.openai_provider import OpenAIProvider
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
+RANKED_SOURCES_FILE = Path("outputs/reports/ranked_sources.md")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
+MAX_SCORE = 37.5
 
 
 def load_keywords():
@@ -169,6 +171,13 @@ def get_llm_provider():
     raise ValueError(f"Unsupported LLM provider: {LLM_PROVIDER}")
 
 
+def is_successful_summary(ai_summary):
+    if ai_summary.get("error"):
+        return False
+
+    return bool(ai_summary.get("summary"))
+
+
 def summarize_articles(articles, provider):
     summarized_articles = []
     successful_summaries = 0
@@ -184,7 +193,14 @@ def summarize_articles(articles, provider):
                 "error": str(error)
             }
 
-        if "error" not in ai_summary:
+        if ai_summary.get("error"):
+            short_error = str(ai_summary["error"]).splitlines()[0][:160]
+            print(
+                f"Warning: AI summary failed for '{article['title']}': "
+                f"{short_error}"
+            )
+
+        if is_successful_summary(ai_summary):
             successful_summaries += 1
 
         article_with_summary = article.copy()
@@ -192,6 +208,94 @@ def summarize_articles(articles, provider):
         summarized_articles.append(article_with_summary)
 
     return summarized_articles, successful_summaries
+
+
+def clamp_score(value):
+    try:
+        score = int(value)
+    except (TypeError, ValueError):
+        score = 1
+
+    if score < 1:
+        return 1
+
+    if score > 5:
+        return 5
+
+    return score
+
+
+def calculate_article_score(ranking):
+    relevance = clamp_score(ranking.get("relevance"))
+    use_case_clarity = clamp_score(ranking.get("use_case_clarity"))
+    problem_solution_fit = clamp_score(ranking.get("problem_solution_fit"))
+    actionability = clamp_score(ranking.get("actionability"))
+    credibility_novelty = clamp_score(ranking.get("credibility_novelty"))
+
+    weighted_score = (
+        relevance * 1
+        + use_case_clarity * 2
+        + problem_solution_fit * 2
+        + actionability * 1.5
+        + credibility_novelty * 1
+    )
+
+    return round(weighted_score / MAX_SCORE * 100, 1)
+
+
+def get_recommendation(score):
+    if score >= 85:
+        return "Core"
+
+    if score >= 70:
+        return "Useful"
+
+    if score >= 55:
+        return "Background"
+
+    return "Exclude"
+
+
+def rank_articles(articles, provider):
+    ranked_articles = []
+
+    for article in articles:
+        try:
+            ranking = provider.rank_article(article)
+        except Exception as error:
+            ranking = {
+                "relevance": 1,
+                "use_case_clarity": 1,
+                "problem_solution_fit": 1,
+                "actionability": 1,
+                "credibility_novelty": 1,
+                "use_case": "",
+                "problem_solved": "",
+                "reason": str(error),
+                "error": str(error)
+            }
+
+        ranking["relevance"] = clamp_score(ranking.get("relevance"))
+        ranking["use_case_clarity"] = clamp_score(ranking.get("use_case_clarity"))
+        ranking["problem_solution_fit"] = clamp_score(ranking.get("problem_solution_fit"))
+        ranking["actionability"] = clamp_score(ranking.get("actionability"))
+        ranking["credibility_novelty"] = clamp_score(ranking.get("credibility_novelty"))
+
+        if ranking.get("error"):
+            score = 55.0
+            recommendation = "Background"
+            ranking["reason"] = ranking["error"]
+        else:
+            score = calculate_article_score(ranking)
+            recommendation = get_recommendation(score)
+
+        article_with_ranking = article.copy()
+        article_with_ranking["ranking"] = ranking
+        article_with_ranking["score"] = score
+        article_with_ranking["recommendation"] = recommendation
+        ranked_articles.append(article_with_ranking)
+
+    return sorted(ranked_articles, key=lambda item: item["score"], reverse=True)
 
 
 def create_market_brief(articles):
@@ -251,6 +355,53 @@ def create_market_brief(articles):
     return "\n".join(lines)
 
 
+def create_ranked_sources_report(articles):
+    lines = [
+        "# Ranked Sources",
+        "",
+        f"Topic: {DEFAULT_TOPIC}",
+        "",
+        f"Articles evaluated: {len(articles)}",
+        ""
+    ]
+
+    for index, article in enumerate(articles, start=1):
+        ranking = article["ranking"]
+
+        lines.extend([
+            f"## {index}. {article['title']}",
+            "",
+            f"- Source: {article['source']}",
+            f"- Published date: {article['published_date']}",
+            f"- URL: {article['url']}",
+            f"- Score: {article['score']}",
+            f"- Recommendation: {article['recommendation']}",
+            "",
+            "### Dimension Scores",
+            "",
+            f"- Relevance: {ranking['relevance']}/5",
+            f"- Use Case Clarity: {ranking['use_case_clarity']}/5",
+            f"- Problem-Solution Fit: {ranking['problem_solution_fit']}/5",
+            f"- Actionability: {ranking['actionability']}/5",
+            f"- Credibility & Novelty: {ranking['credibility_novelty']}/5",
+            "",
+            "### Use Case",
+            "",
+            ranking.get("use_case", ""),
+            "",
+            "### Problem Solved",
+            "",
+            ranking.get("problem_solved", ""),
+            "",
+            "### Reason",
+            "",
+            ranking.get("reason", ""),
+            ""
+        ])
+
+    return "\n".join(lines)
+
+
 def save_markdown(content, output_file):
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -299,6 +450,13 @@ def main():
 
     print(f"Generated AI summaries for {successful_summaries} articles.")
     print(f"Saved market brief to {MARKET_BRIEF_FILE}")
+
+    ranked_articles = rank_articles(articles_ready_for_brief, provider)
+    ranked_sources_report = create_ranked_sources_report(ranked_articles)
+    save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
+
+    print(f"Ranked {len(ranked_articles)} articles by value.")
+    print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
 
 
 if __name__ == "__main__":

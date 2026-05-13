@@ -50,4 +50,9 @@ RSS_SOURCES = [
 ]
 
 LLM_PROVIDER = "gemini"
-LLM_MODEL = "gemini-2.5-flash"
+LLM_MODEL = "gemini-flash-latest"
+LLM_FALLBACK_MODELS = [
+    "gemini-3-flash-preview",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash"
+]

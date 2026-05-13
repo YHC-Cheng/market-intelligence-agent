@@ -1,0 +1,85 @@
+{
+  "focus": [
+    "Clear use case",
+    "Clear problem-solution explanation",
+    "Ability to become product insight, market analysis, or slide example"
+  ],
+  "score_range": {
+    "min": 1,
+    "max": 5
+  },
+  "dimensions": {
+    "relevance": {
+      "weight": 1.0,
+      "description": "How closely the article matches the current topic.",
+      "scoring_guide": {
+        "1": "Barely related to the topic.",
+        "2": "Some connection to the topic, but mostly peripheral.",
+        "3": "Moderately relevant, with a few useful topic signals.",
+        "4": "Highly relevant and clearly connected to the topic.",
+        "5": "Directly focused on the topic and strongly aligned with the research goal."
+      }
+    },
+    "use_case_clarity": {
+      "weight": 2.0,
+      "description": "Whether the article explains who uses the product or feature, in what situation, and what the workflow looks like.",
+      "scoring_guide": {
+        "1": "No clear use case.",
+        "2": "A possible use case is implied but not clearly explained.",
+        "3": "A general use case is present, but user, scenario, or workflow details are limited.",
+        "4": "Clear use case with identifiable users and scenarios.",
+        "5": "Very clear use case with specific users, scenarios, and an understandable workflow."
+      }
+    },
+    "problem_solution_fit": {
+      "weight": 2.0,
+      "description": "Whether the article clearly explains the pain point and how the product or feature solves it.",
+      "scoring_guide": {
+        "1": "No clear problem or solution.",
+        "2": "Problem or solution is mentioned, but the connection is weak.",
+        "3": "Problem and solution are present, but the value is only partially clear.",
+        "4": "Clear problem-solution fit with an understandable value proposition.",
+        "5": "Very clear pain point, direct solution, and strong explanation of the value created."
+      }
+    },
+    "actionability": {
+      "weight": 1.5,
+      "description": "Whether the article can become product insight, market analysis, competitor analysis, slide material, or a follow-up research question.",
+      "scoring_guide": {
+        "1": "Not useful for analysis or follow-up work.",
+        "2": "Limited usefulness; may only provide minor background context.",
+        "3": "Some useful insight for analysis or follow-up research.",
+        "4": "Useful for product insight, market analysis, or presentation material.",
+        "5": "Highly actionable and easy to turn into product insight, market narrative, competitive analysis, or a slide example."
+      }
+    },
+    "credibility_novelty": {
+      "weight": 1.0,
+      "description": "Whether the source is credible and the article is recent, a new feature, GA, preview, partnership, or important market signal.",
+      "scoring_guide": {
+        "1": "Low credibility or outdated information.",
+        "2": "Some credibility, but limited novelty or market signal.",
+        "3": "Credible source with moderate novelty.",
+        "4": "Credible and recent, with a meaningful product or market signal.",
+        "5": "Highly credible and highly novel, such as GA, preview, major partnership, launch, or important strategic signal."
+      }
+    }
+  },
+  "recommendation_rules": {
+    "core": {
+      "min_score": 85,
+      "max_score": 100
+    },
+    "useful": {
+      "min_score": 70,
+      "max_score": 84
+    },
+    "background": {
+      "min_score": 55,
+      "max_score": 69
+    },
+    "exclude": {
+      "max_score": 54
+    }
+  }
+}

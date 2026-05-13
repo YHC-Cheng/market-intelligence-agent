@@ -1,9 +1,35 @@
 [
   {
-    "title": "How enterprises are scaling AI",
-    "url": "https://openai.com/business/guides-and-resources/how-enterprises-are-scaling-ai",
+    "title": "How finance teams use Codex",
+    "url": "https://openai.com/academy/how-finance-teams-use-codex",
     "source": "OpenAI News RSS",
-    "published_date": "2026-05-11",
+    "published_date": "2026-05-12",
+    "topic": "AI",
+    "matched_keywords": [
+      "Codex"
+    ],
+    "content": "",
+    "content_length": 0,
+    "extraction_status": "failed"
+  },
+  {
+    "title": "How NVIDIA engineers and researchers build with Codex",
+    "url": "https://openai.com/index/nvidia",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-12",
+    "topic": "AI",
+    "matched_keywords": [
+      "Codex"
+    ],
+    "content": "",
+    "content_length": 0,
+    "extraction_status": "failed"
+  },
+  {
+    "title": "What Parameter Golf taught us about AI-assisted research",
+    "url": "https://openai.com/index/what-parameter-golf-taught-us",
+    "source": "OpenAI News RSS",
+    "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
       "AI"
@@ -13,43 +39,14 @@
     "extraction_status": "failed"
   },
   {
-    "title": "OpenAI Campus Network: Student club interest form",
-    "url": "https://openai.com/index/openai-campus-network-student-club-interest-form",
+    "title": "AutoScout24 scales engineering with AI-powered workflows",
+    "url": "https://openai.com/index/autoscout24",
     "source": "OpenAI News RSS",
-    "published_date": "2026-05-11",
+    "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
       "AI",
-      "OpenAI"
-    ],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed"
-  },
-  {
-    "title": "OpenAI launches DeployCo to help businesses build around intelligence",
-    "url": "https://openai.com/index/openai-launches-the-deployment-company",
-    "source": "OpenAI News RSS",
-    "published_date": "2026-05-11",
-    "topic": "AI",
-    "matched_keywords": [
-      "AI",
-      "OpenAI"
-    ],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed"
-  },
-  {
-    "title": "Running Codex safely at OpenAI",
-    "url": "https://openai.com/index/running-codex-safely",
-    "source": "OpenAI News RSS",
-    "published_date": "2026-05-08",
-    "topic": "AI",
-    "matched_keywords": [
-      "AI",
-      "Codex",
-      "OpenAI"
+      "workflow"
     ],
     "content": "",
     "content_length": 0,
