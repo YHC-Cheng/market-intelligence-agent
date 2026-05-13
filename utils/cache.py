@@ -35,7 +35,8 @@ def get_cache_paths(topic: str, week_key=None) -> dict:
 
     return {
         "summary": str(cache_folder / "summary_cache.json"),
-        "ranking": str(cache_folder / "ranking_cache.json")
+        "ranking": str(cache_folder / "ranking_cache.json"),
+        "report": str(cache_folder / "report_cache.json")
     }
 
 

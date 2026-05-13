@@ -4,35 +4,11 @@ Topic: AI
 
 Articles included: 3
 
-## 1. The AWS MCP Server is now generally available
+## 1. Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
 
 - Source: AWS Blog RSS
 - Category: cloud_provider
-- Published date: 2026-05-06
-- URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
-- Matched keywords: AI, MCP
-- Content length: 7455
-
-### AI Summary
-
-AWS has announced the general availability of the AWS MCP Server, a managed implementation of the Model Context Protocol designed to provide AI agents and coding assistants with secure, real-time access to AWS services. The server addresses common limitations of AI models—such as outdated training data and inefficient command usage—by offering tools for live API execution, documentation retrieval, and sandboxed script execution, all while maintaining enterprise-grade security and auditability.
-
-### Key Points
-
-- The AWS MCP Server allows AI agents to execute over 15,000 AWS API operations using existing IAM credentials and SigV4 authentication.
-- A new 'Skills' feature replaces standard operating procedures with curated, service-team-maintained guidance to ensure agents build production-ready infrastructure.
-- The 'run_script' tool enables server-side execution of Python scripts in a sandboxed environment, reducing token consumption and latency by chaining multiple API calls.
-- Enterprise security is prioritized through IAM context keys, Service Control Policies (SCPs), and dedicated CloudWatch metrics to distinguish agent activity from human actions.
-- Real-time documentation access allows AI agents to support newly released services that exist beyond their model's training knowledge cutoff.
-
-### Why It Matters
-
-This release is a significant step in maturing AI-driven DevOps. By providing a secure bridge between LLMs and cloud infrastructure, AWS is enabling businesses to move from experimental AI chatbots to production-capable AI agents that can accurately and safely manage cloud resources, reducing the risk of security misconfigurations and technical debt.
-
-## 2. Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
-
-- Source: AWS Blog RSS
-- Category: cloud_provider
+- Type: rss
 - Published date: 2026-05-05
 - URL: https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/
 - Matched keywords: AI, AI agent, AI agents, workflow
@@ -54,10 +30,11 @@ Amazon WorkSpaces has launched a preview feature that enables AI agents to opera
 
 This technology bypasses the traditional requirement for expensive and time-consuming application modernization. For businesses with legacy or mainframe-dependent processes, it provides a fast-track to AI adoption, allowing them to scale productivity and automate complex workflows without rewriting their existing software infrastructure.
 
-## 3. AWS Weekly Roundup: What’s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)
+## 2. AWS Weekly Roundup: What’s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)
 
 - Source: AWS Blog RSS
 - Category: cloud_provider
+- Type: rss
 - Published date: 2026-05-04
 - URL: https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/
 - Matched keywords: AI, OpenAI
@@ -78,3 +55,29 @@ AWS has announced a major strategic expansion centered on 'agentic AI' and a dee
 ### Why It Matters
 
 This shift indicates that AWS is moving beyond basic cloud infrastructure to provide specialized, industry-specific AI agents. By integrating OpenAI's most advanced frontier models with enterprise-grade security and governance in Bedrock, AWS is positioning itself as the primary hub for production-ready generative AI, while simultaneously challenging SaaS productivity leaders through the expanded capabilities of Amazon Quick.
+
+## 3. The AWS MCP Server is now generally available
+
+- Source: AWS Blog RSS
+- Category: cloud_provider
+- Type: rss
+- Published date: 2026-05-06
+- URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
+- Matched keywords: AI, MCP
+- Content length: 7455
+
+### AI Summary
+
+AWS has announced the general availability of the AWS MCP Server, a managed implementation of the Model Context Protocol designed to provide AI agents and coding assistants with secure, real-time access to AWS services. The server addresses common limitations of AI models—such as outdated training data and inefficient command usage—by offering tools for live API execution, documentation retrieval, and sandboxed script execution, all while maintaining enterprise-grade security and auditability.
+
+### Key Points
+
+- The AWS MCP Server allows AI agents to execute over 15,000 AWS API operations using existing IAM credentials and SigV4 authentication.
+- A new 'Skills' feature replaces standard operating procedures with curated, service-team-maintained guidance to ensure agents build production-ready infrastructure.
+- The 'run_script' tool enables server-side execution of Python scripts in a sandboxed environment, reducing token consumption and latency by chaining multiple API calls.
+- Enterprise security is prioritized through IAM context keys, Service Control Policies (SCPs), and dedicated CloudWatch metrics to distinguish agent activity from human actions.
+- Real-time documentation access allows AI agents to support newly released services that exist beyond their model's training knowledge cutoff.
+
+### Why It Matters
+
+This release is a significant step in maturing AI-driven DevOps. By providing a secure bridge between LLMs and cloud infrastructure, AWS is enabling businesses to move from experimental AI chatbots to production-capable AI agents that can accurately and safely manage cloud resources, reducing the risk of security misconfigurations and technical debt.

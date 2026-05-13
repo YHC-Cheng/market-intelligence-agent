@@ -4,39 +4,11 @@ Topic: AI
 
 Articles evaluated: 3
 
-## 1. The AWS MCP Server is now generally available
+## 1. Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
 
 - Source: AWS Blog RSS
 - Category: cloud_provider
-- Published date: 2026-05-06
-- URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
-- Score: 100.0
-- Recommendation: Core
-
-### Dimension Scores
-
-- Relevance: 5/5
-- Use Case Clarity: 5/5
-- Problem-Solution Fit: 5/5
-- Actionability: 5/5
-- Credibility & Novelty: 5/5
-
-### Use Case
-
-Developers using AI coding agents (like Claude Code, Cursor, or Kiro) to build on AWS can configure a managed MCP server to grant the agent real-time access to AWS documentation and 15,000+ API operations via an authenticated proxy.
-
-### Problem Solved
-
-Addresses the issue of AI models having 'stale' training data (missing new services like S3 Vectors) and the security risk of providing agents with over-privileged IAM credentials or broad CLI access.
-
-### Reason
-
-This is a high-value market signal for AI agent infrastructure. It provides a concrete technical workflow (using uvx and mcp-proxy), identifies specific new features like 'Skills' and 'run_script' for token efficiency, and addresses enterprise-grade requirements like CloudTrail auditing and sandboxed execution.
-
-## 2. Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
-
-- Source: AWS Blog RSS
-- Category: cloud_provider
+- Type: rss
 - Published date: 2026-05-05
 - URL: https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/
 - Score: 100.0
@@ -62,10 +34,41 @@ Solves the barrier to AI adoption caused by legacy software and mainframe system
 
 This article provides an exceptional level of detail for market analysis. It cites specific market data (Gartner) to frame the problem, outlines a clear technical workflow for implementation, and provides a concrete vertical use case. The inclusion of the Model Context Protocol (MCP) support is a major market signal regarding industry standards for AI agent interoperability. It is highly actionable for competitor analysis and product strategy.
 
+## 2. The AWS MCP Server is now generally available
+
+- Source: AWS Blog RSS
+- Category: cloud_provider
+- Type: rss
+- Published date: 2026-05-06
+- URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
+- Score: 100.0
+- Recommendation: Core
+
+### Dimension Scores
+
+- Relevance: 5/5
+- Use Case Clarity: 5/5
+- Problem-Solution Fit: 5/5
+- Actionability: 5/5
+- Credibility & Novelty: 5/5
+
+### Use Case
+
+Developers using AI coding agents (like Claude Code, Cursor, or Kiro) to build on AWS can configure a managed MCP server to grant the agent real-time access to AWS documentation and 15,000+ API operations via an authenticated proxy.
+
+### Problem Solved
+
+Addresses the issue of AI models having 'stale' training data (missing new services like S3 Vectors) and the security risk of providing agents with over-privileged IAM credentials or broad CLI access.
+
+### Reason
+
+This is a high-value market signal for AI agent infrastructure. It provides a concrete technical workflow (using uvx and mcp-proxy), identifies specific new features like 'Skills' and 'run_script' for token efficiency, and addresses enterprise-grade requirements like CloudTrail auditing and sandboxed execution.
+
 ## 3. AWS Weekly Roundup: What’s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)
 
 - Source: AWS Blog RSS
 - Category: cloud_provider
+- Type: rss
 - Published date: 2026-05-04
 - URL: https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/
 - Score: 89.3

@@ -4,6 +4,7 @@
     "url": "https://openai.com/academy/how-finance-teams-use-codex",
     "source": "OpenAI News RSS",
     "source_category": "official_ai",
+    "source_type": "rss",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -15,6 +16,7 @@
     "url": "https://openai.com/index/nvidia",
     "source": "OpenAI News RSS",
     "source_category": "official_ai",
+    "source_type": "rss",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -26,6 +28,7 @@
     "url": "https://openai.com/index/what-parameter-golf-taught-us",
     "source": "OpenAI News RSS",
     "source_category": "official_ai",
+    "source_type": "rss",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -37,6 +40,7 @@
     "url": "https://openai.com/index/autoscout24",
     "source": "OpenAI News RSS",
     "source_category": "official_ai",
+    "source_type": "rss",
     "published_date": "2026-05-12",
     "topic": "AI",
     "matched_keywords": [
@@ -49,6 +53,7 @@
     "url": "https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/",
     "source": "AWS Blog RSS",
     "source_category": "cloud_provider",
+    "source_type": "rss",
     "published_date": "2026-05-06",
     "topic": "AI",
     "matched_keywords": [
@@ -61,6 +66,7 @@
     "url": "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/",
     "source": "AWS Blog RSS",
     "source_category": "cloud_provider",
+    "source_type": "rss",
     "published_date": "2026-05-05",
     "topic": "AI",
     "matched_keywords": [
@@ -75,11 +81,48 @@
     "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/",
     "source": "AWS Blog RSS",
     "source_category": "cloud_provider",
+    "source_type": "rss",
     "published_date": "2026-05-04",
     "topic": "AI",
     "matched_keywords": [
       "AI",
       "OpenAI"
+    ]
+  },
+  {
+    "title": "Red Hat Summit 2026: Platform modernization and AI on Microsoft Azure Red Hat OpenShift",
+    "url": "https://azure.microsoft.com/en-us/blog/red-hat-summit-2026-platform-modernization-and-ai-on-azure-microsoft-red-hat-openshift/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "published_date": "2026-05-11",
+    "topic": "AI",
+    "matched_keywords": [
+      "AI"
+    ]
+  },
+  {
+    "title": "Build AI apps with Azure Cosmos DB: Key trends from Cosmos Conf 2026",
+    "url": "https://azure.microsoft.com/en-us/blog/build-ai-apps-with-azure-cosmos-db-key-trends-from-cosmos-conf-2026/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "published_date": "2026-05-11",
+    "topic": "AI",
+    "matched_keywords": [
+      "AI"
+    ]
+  },
+  {
+    "title": "Scaling cloud and AI: Microsoft Azure\u2019s commitment to Europe\u2019s digital future",
+    "url": "https://azure.microsoft.com/en-us/blog/scaling-cloud-and-ai-microsoft-azures-commitment-to-europes-digital-future/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "published_date": "2026-05-06",
+    "topic": "AI",
+    "matched_keywords": [
+      "AI"
     ]
   }
 ]

@@ -43,76 +43,90 @@ RSS_SOURCES_BY_TOPIC = {
         {
             "name": "OpenAI News RSS",
             "url": "https://openai.com/news/rss.xml",
-            "category": "official_ai"
+            "category": "official_ai",
+            "type": "rss"
         },
         {
-            "name": "Anthropic News RSS",
+            "name": "Anthropic News / Blog",
             "url": "https://www.anthropic.com/news/rss.xml",
-            "category": "official_ai"
+            "category": "official_ai",
+            "type": "web"
         },
         {
-            "name": "Google Cloud Blog RSS",
+            "name": "Google Cloud Blog",
             "url": "https://cloud.google.com/feeds/blog.xml",
-            "category": "cloud_provider"
+            "category": "cloud_provider",
+            "type": "web"
         },
         {
             "name": "AWS Blog RSS",
             "url": "https://aws.amazon.com/blogs/aws/feed/",
-            "category": "cloud_provider"
+            "category": "cloud_provider",
+            "type": "rss"
         },
         {
             "name": "Microsoft Azure Blog RSS",
             "url": "https://azure.microsoft.com/en-us/blog/feed/",
-            "category": "cloud_provider"
+            "category": "cloud_provider",
+            "type": "rss"
         }
     ],
     "FinOps": [
         {
             "name": "FinOps Foundation Blog",
             "url": "https://www.finops.org/feed/",
-            "category": "industry_foundation"
+            "category": "industry_foundation",
+            "type": "rss"
         },
         {
             "name": "Vantage Blog",
             "url": "https://www.vantage.sh/blog/rss.xml",
-            "category": "finops_product"
+            "category": "finops_product",
+            "type": "rss"
         },
         {
             "name": "IBM Cloudability / Apptio",
             "url": "https://www.ibm.com/blog/category/cloudability/",
-            "category": "finops_product"
+            "category": "finops_product",
+            "type": "web"
         },
         {
             "name": "AWS Cloud Financial Management Blog",
             "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/feed/",
-            "category": "cloud_cost"
+            "category": "cloud_cost",
+            "type": "rss"
         },
         {
             "name": "Google Cloud Cost Management",
             "url": "https://cloud.google.com/blog/topics/cost-management",
-            "category": "cloud_cost"
+            "category": "cloud_cost",
+            "type": "web"
         }
     ],
     "ProductObservation": [
         {
             "name": "Vantage Blog",
             "url": "https://www.vantage.sh/blog/rss.xml",
-            "category": "competitor_product"
+            "category": "competitor_product",
+            "type": "rss"
         },
         {
             "name": "CloudZero Blog",
             "url": "https://www.cloudzero.com/blog/",
-            "category": "competitor_product"
+            "category": "competitor_product",
+            "type": "web"
         },
         {
             "name": "IBM Cloudability / Apptio",
             "url": "https://www.ibm.com/blog/category/cloudability/",
-            "category": "competitor_product"
+            "category": "competitor_product",
+            "type": "web"
         },
         {
             "name": "eCloudvalley Atlas",
             "url": "https://www.ecloudvalley.com/",
-            "category": "product_observation"
+            "category": "product_observation",
+            "type": "web"
         }
     ]
 }
@@ -121,7 +135,9 @@ LLM_PROVIDER = "gemini"
 LLM_MODEL = "gemini-flash-latest"
 LLM_FALLBACK_MODELS = [
     "gemini-3-flash-preview",
-    "gemini-2.5-flash",
-    "gemini-2.0-flash"
+    "gemini-2.5-flash"
 ]
+MAX_ARTICLES_PER_RUN = 3
+MAX_LLM_RETRIES = 1
+STOP_ON_RATE_LIMIT = True
 REPORT_TEMPLATE = "standard_market_analysis"

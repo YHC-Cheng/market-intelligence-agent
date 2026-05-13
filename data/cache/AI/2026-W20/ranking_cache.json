@@ -58,5 +58,27 @@
     "reason": "This article is a high-value market signal detailing a strategic shift in the AWS/OpenAI relationship and the launch of vertically-integrated 'agentic' AI solutions. It offers clear insight into how AWS is targeting specific industry pain points (Health, Supply Chain, Talent) and competing directly with other cloud providers on infrastructure-integrated LLMs. While it is a roundup, the descriptions of the 'Connect' family provide specific use cases for targeted business personas.",
     "cached_at": "2026-05-13T23:42:42",
     "cache_period": "2026-W20"
+  },
+  "https://azure.microsoft.com/en-us/blog/red-hat-summit-2026-platform-modernization-and-ai-on-azure-microsoft-red-hat-openshift/": {
+    "title": "Red Hat Summit 2026: Platform modernization and AI on Microsoft Azure Red Hat OpenShift",
+    "url": "https://azure.microsoft.com/en-us/blog/red-hat-summit-2026-platform-modernization-and-ai-on-azure-microsoft-red-hat-openshift/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "published_date": "2026-05-11",
+    "topic": "AI",
+    "model": "gemini-2.5-flash",
+    "score": 100.0,
+    "recommendation": "Core",
+    "relevance": 5,
+    "use_case_clarity": 5,
+    "problem_solution_fit": 5,
+    "actionability": 5,
+    "credibility_novelty": 5,
+    "use_case": "Organizations (e.g., large financial institutions like Banco Bradesco, regional lenders like Topicus) needing to move AI initiatives from pilot projects to production systems, requiring consistent identity, governance, security, and scale across hybrid and multi-cloud environments. This includes modernizing legacy virtualization platforms without disruption, ensuring data sovereignty, and meeting strict regulatory and compliance requirements for sensitive workloads.",
+    "problem_solved": "The challenge of operationalizing AI with consistent identity, governance, and security when moving from pilot to production. It also addresses the need to migrate off legacy virtualization platforms, secure sensitive data in use with Zero Trust principles and confidential computing, and manage credentials at scale, all while meeting strict regulatory and data sovereignty requirements across diverse environments.",
+    "reason": "The article explicitly and clearly defines multiple problems, such as operationalizing AI, modernizing legacy systems, and securing sensitive data, and directly connects them to specific solutions provided by Azure Red Hat OpenShift. It offers concrete, detailed customer examples (Banco Bradesco, Topicus) that perfectly illustrate the user, workflow, and usage scenarios, achieving a perfect score for use case clarity and problem-solution fit. The content is highly relevant to AI, details new GA features and an important partnership from a credible source (Microsoft Azure Blog), making it extremely actionable for market and product insights.",
+    "cached_at": "2026-05-14T00:38:32",
+    "cache_period": "2026-W20"
   }
 }

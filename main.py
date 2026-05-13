@@ -17,6 +17,7 @@ from config import (
     DEFAULT_TOPIC,
     LLM_MODEL,
     LLM_PROVIDER,
+    MAX_ARTICLES_PER_RUN,
     REPORT_TEMPLATE,
     RSS_SOURCES_BY_TOPIC
 )
@@ -92,6 +93,19 @@ def fetch_articles_from_rss():
     sources = get_sources_for_topic(DEFAULT_TOPIC)
 
     for source in sources:
+        source_type = source.get("type")
+
+        if not source_type:
+            print(
+                f"Warning: source type missing for {source['name']}; "
+                "defaulting to rss"
+            )
+            source_type = "rss"
+
+        if source_type == "web":
+            print(f"Skipping web source for now: {source['name']}")
+            continue
+
         try:
             feed = feedparser.parse(source["url"])
             entries = feed.entries[:ARTICLES_PER_SOURCE]
@@ -114,6 +128,7 @@ def fetch_articles_from_rss():
                 "url": entry.get("link", ""),
                 "source": source["name"],
                 "source_category": source.get("category", ""),
+                "source_type": source_type,
                 "published_date": get_published_date(entry),
                 "topic": DEFAULT_TOPIC
             }
@@ -168,6 +183,7 @@ def extract_content(article):
         "url": article["url"],
         "source": article["source"],
         "source_category": article.get("source_category", ""),
+        "source_type": article.get("source_type", "rss"),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "matched_keywords": article["matched_keywords"],
@@ -197,6 +213,22 @@ def get_articles_ready_for_brief(articles):
             ready_articles.append(article)
 
     return ready_articles
+
+
+def limit_articles_for_llm(articles):
+    sorted_articles = sorted(
+        articles,
+        key=lambda article: (
+            len(article.get("matched_keywords", [])),
+            article.get("content_length", 0)
+        ),
+        reverse=True
+    )
+
+    if len(sorted_articles) > MAX_ARTICLES_PER_RUN:
+        print(f"Limiting LLM processing to {MAX_ARTICLES_PER_RUN} articles.")
+
+    return sorted_articles[:MAX_ARTICLES_PER_RUN]
 
 
 def get_llm_provider():
@@ -230,6 +262,7 @@ def build_summary_cache_entry(article, ai_summary, provider, cache_period):
         "url": article["url"],
         "source": article["source"],
         "source_category": article.get("source_category", ""),
+        "source_type": article.get("source_type", "rss"),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "model": get_provider_model(provider),
@@ -304,6 +337,23 @@ def summarize_articles(
     return summarized_articles, successful_summaries
 
 
+def get_articles_ready_for_ranking(summarized_articles):
+    articles_ready_for_ranking = []
+
+    for article in summarized_articles:
+        ai_summary = article.get("ai_summary", {})
+
+        if is_successful_summary(ai_summary):
+            articles_ready_for_ranking.append(article)
+        else:
+            print(
+                "Skipping ranking for article due to summary error: "
+                f"{article['title']}"
+            )
+
+    return articles_ready_for_ranking
+
+
 def clamp_score(value):
     try:
         score = int(value)
@@ -363,6 +413,7 @@ def build_ranking_cache_entry(
         "url": article["url"],
         "source": article["source"],
         "source_category": article.get("source_category", ""),
+        "source_type": article.get("source_type", "rss"),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "model": get_provider_model(provider),
@@ -482,6 +533,7 @@ def create_market_brief(articles):
             "",
             f"- Source: {article['source']}",
             f"- Category: {article.get('source_category', '')}",
+            f"- Type: {article.get('source_type', 'rss')}",
             f"- Published date: {article['published_date']}",
             f"- URL: {article['url']}",
             f"- Matched keywords: {matched_keywords}",
@@ -538,6 +590,7 @@ def create_ranked_sources_report(articles):
             "",
             f"- Source: {article['source']}",
             f"- Category: {article.get('source_category', '')}",
+            f"- Type: {article.get('source_type', 'rss')}",
             f"- Published date: {article['published_date']}",
             f"- URL: {article['url']}",
             f"- Score: {article['score']}",
@@ -665,6 +718,7 @@ def create_references_text(ranked_articles):
             f"[來源 {index}] {article['title']}  ",
             f"- Source: {article['source']}",
             f"- Category: {article.get('source_category', '')}",
+            f"- Type: {article.get('source_type', 'rss')}",
             f"- Published date: {article['published_date']}",
             f"- Recommendation: {article['recommendation']}",
             f"- URL: {article['url']}",
@@ -749,6 +803,25 @@ def create_fallback_market_analysis_report(error, references_text):
     return "\n".join(lines)
 
 
+def build_report_cache_entry(report, provider, cache_period):
+    return {
+        "topic": DEFAULT_TOPIC,
+        "report": report,
+        "model": get_provider_model(provider),
+        "cached_at": get_cached_at(),
+        "cache_period": cache_period
+    }
+
+
+def get_report_from_cache(report_cache):
+    cached_report = get_cached_result(report_cache, REPORT_TEMPLATE)
+
+    if cached_report:
+        return cached_report.get("report", "")
+
+    return ""
+
+
 def generate_market_analysis_report(provider, references_text):
     try:
         market_brief = load_markdown(MARKET_BRIEF_FILE)
@@ -772,10 +845,37 @@ def generate_market_analysis_report(provider, references_text):
         if not report.strip():
             raise ValueError("LLM returned an empty market analysis report.")
 
-        return ensure_report_has_references(report, references_text)
+        return ensure_report_has_references(report, references_text), True
     except Exception as error:
         print(f"Warning: Could not generate market analysis report: {error}")
-        return create_fallback_market_analysis_report(error, references_text)
+        return create_fallback_market_analysis_report(error, references_text), False
+
+
+def get_market_analysis_report(
+    provider,
+    references_text,
+    report_cache,
+    report_cache_path,
+    cache_period
+):
+    cached_report = get_report_from_cache(report_cache)
+
+    if cached_report:
+        print("Loaded market analysis report from cache.")
+        return cached_report
+
+    report, generated_successfully = generate_market_analysis_report(
+        provider,
+        references_text
+    )
+
+    if generated_successfully:
+        cache_entry = build_report_cache_entry(report, provider, cache_period)
+        set_cached_result(report_cache, REPORT_TEMPLATE, cache_entry)
+        save_json_cache(report_cache_path, report_cache)
+        print("Saved market analysis report to cache.")
+
+    return report
 
 
 def save_markdown(content, output_file):
@@ -818,13 +918,17 @@ def main():
     cache_paths = get_cache_paths(DEFAULT_TOPIC, week_key)
     summary_cache = load_json_cache(cache_paths["summary"])
     ranking_cache = load_json_cache(cache_paths["ranking"])
+    report_cache = load_json_cache(cache_paths["report"])
 
     print(f"Using LLM provider: {LLM_PROVIDER}")
     print(f"Using summary cache: {cache_paths['summary']}")
     print(f"Using ranking cache: {cache_paths['ranking']}")
+    print(f"Using report cache: {cache_paths['report']}")
+
+    articles_for_llm = limit_articles_for_llm(articles_ready_for_brief)
 
     summarized_articles, successful_summaries = summarize_articles(
-        articles_ready_for_brief,
+        articles_for_llm,
         provider,
         summary_cache,
         cache_paths["summary"],
@@ -836,8 +940,9 @@ def main():
     print(f"Generated AI summaries for {successful_summaries} articles.")
     print(f"Saved market brief to {MARKET_BRIEF_FILE}")
 
+    articles_ready_for_ranking = get_articles_ready_for_ranking(summarized_articles)
     ranked_articles = rank_articles(
-        articles_ready_for_brief,
+        articles_ready_for_ranking,
         provider,
         ranking_cache,
         cache_paths["ranking"],
@@ -850,9 +955,12 @@ def main():
     print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
 
     references_text = create_references_text(ranked_articles)
-    market_analysis_report = generate_market_analysis_report(
+    market_analysis_report = get_market_analysis_report(
         provider,
-        references_text
+        references_text,
+        report_cache,
+        cache_paths["report"],
+        week_key
     )
     save_markdown(market_analysis_report, MARKET_ANALYSIS_REPORT_FILE)
 

@@ -4,7 +4,12 @@ import time
 
 from google import genai
 
-from config import LLM_FALLBACK_MODELS, LLM_MODEL
+from config import (
+    LLM_FALLBACK_MODELS,
+    LLM_MODEL,
+    MAX_LLM_RETRIES,
+    STOP_ON_RATE_LIMIT
+)
 from llm.base import BaseLLMProvider
 
 
@@ -12,14 +17,27 @@ MAX_CONTENT_LENGTH = 6000
 RETRY_DELAYS = [3, 6, 12]
 
 
+def is_rate_limit_error(error):
+    error_text = str(error).lower()
+    rate_limit_keywords = [
+        "429",
+        "resource_exhausted",
+        "quota",
+        "rate limit"
+    ]
+
+    for keyword in rate_limit_keywords:
+        if keyword in error_text:
+            return True
+
+    return False
+
+
 def is_retryable_error(error):
     error_text = str(error).lower()
     retryable_keywords = [
         "503",
-        "429",
         "unavailable",
-        "rate limit",
-        "resource_exhausted",
         "temporary",
         "temporarily",
         "high demand",
@@ -85,7 +103,7 @@ class GeminiProvider(BaseLLMProvider):
             if model_index > 0:
                 print(f"Falling back to model: {model_name}")
 
-            for attempt in range(len(RETRY_DELAYS) + 1):
+            for attempt in range(MAX_LLM_RETRIES + 1):
                 try:
                     request = {
                         "model": model_name,
@@ -105,16 +123,24 @@ class GeminiProvider(BaseLLMProvider):
                 except Exception as error:
                     last_error = error
 
-                    if attempt == len(RETRY_DELAYS) or not is_retryable_error(error):
+                    if is_rate_limit_error(error) and STOP_ON_RATE_LIMIT:
+                        print(
+                            "Rate limit reached. Skipping further retries for: "
+                            f"{article_title}"
+                        )
+                        raise error
+
+                    if attempt == MAX_LLM_RETRIES or not is_retryable_error(error):
                         break
 
                     retry_number = attempt + 1
+                    retry_delay = RETRY_DELAYS[min(attempt, len(RETRY_DELAYS) - 1)]
 
                     print(
                         f"Retrying Gemini request for article: {article_title} "
-                        f"(attempt {retry_number}/{len(RETRY_DELAYS)})"
+                        f"(attempt {retry_number}/{MAX_LLM_RETRIES})"
                     )
-                    time.sleep(RETRY_DELAYS[retry_number - 1])
+                    time.sleep(retry_delay)
 
         raise last_error
 

@@ -19,12 +19,19 @@ def validate_source(topic, source):
         "topic": topic,
         "name": source.get("name", ""),
         "category": source.get("category", ""),
+        "type": source.get("type", "rss"),
         "url": source.get("url", ""),
         "status": "failed",
         "entries_count": 0,
         "top_entries": [],
-        "error": ""
+        "error": "",
+        "reason": ""
     }
+
+    if result["type"] == "web":
+        result["status"] = "skipped"
+        result["reason"] = "Web source parsing is not supported yet."
+        return result
 
     try:
         feed = feedparser.parse(result["url"])
@@ -56,18 +63,25 @@ def validate_sources():
         for source in sources:
             result = validate_source(topic, source)
             results.append(result)
-            print(
-                f"[{topic}] {result['name']} - {result['status']} - "
-                f"{result['entries_count']} entries"
-            )
+
+            if result["status"] == "skipped":
+                print(f"[{topic}] {result['name']} - skipped - web source")
+            else:
+                print(
+                    f"[{topic}] {result['name']} - {result['status']} - "
+                    f"{result['entries_count']} entries"
+                )
 
     return results
 
 
 def create_markdown_report(results):
     total_sources = len(results)
+    rss_count = sum(1 for result in results if result["type"] == "rss")
+    web_count = sum(1 for result in results if result["type"] == "web")
     success_count = sum(1 for result in results if result["status"] == "success")
-    failed_count = total_sources - success_count
+    failed_count = sum(1 for result in results if result["status"] == "failed")
+    skipped_count = sum(1 for result in results if result["status"] == "skipped")
     generated_at = datetime.now().replace(microsecond=0).isoformat()
 
     lines = [
@@ -78,8 +92,11 @@ def create_markdown_report(results):
         "## Summary",
         "",
         f"- Total sources: {total_sources}",
+        f"- RSS sources: {rss_count}",
+        f"- Web sources: {web_count}",
         f"- Success: {success_count}",
         f"- Failed: {failed_count}",
+        f"- Skipped: {skipped_count}",
         "",
         "## Results by Topic",
         ""
@@ -101,6 +118,7 @@ def create_markdown_report(results):
                 f"#### {result['name']}",
                 "",
                 f"- Status: {result['status']}",
+                f"- Type: {result['type']}",
                 f"- Category: {result['category']}",
                 f"- URL: {result['url']}",
                 f"- Entries count: {result['entries_count']}"
@@ -108,6 +126,9 @@ def create_markdown_report(results):
 
             if result["error"]:
                 lines.append(f"- Error: {result['error']}")
+
+            if result["reason"]:
+                lines.append(f"- Reason: {result['reason']}")
 
             lines.extend([
                 "",
