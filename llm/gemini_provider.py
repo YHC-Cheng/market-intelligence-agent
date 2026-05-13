@@ -380,12 +380,21 @@ References:
         market_analysis_report: str
     ) -> str:
         return f"""
-You are a senior product manager creating an editable Markdown slide draft.
+You are a senior product manager creating an editable Markdown slide draft for a market sharing session.
 
 Write in Traditional Chinese.
 Use only the information in the market analysis report.
 Do not summarize articles one by one.
-Keep bullets concise and presentation-ready.
+Make the deck feel like a product manager's market narrative, not an information dump.
+Use clear, intuitive business language. Avoid abstract analyst jargon.
+Do not make the deck look like a single-vendor briefing.
+Even if most evidence comes from AWS or another single vendor, elevate it into market trends or product implications.
+Keep each slide focused on one clear message.
+Each slide can have at most 4 bullets.
+Each bullet should express one point in one concise line.
+Each core message should be 35 Chinese characters or fewer when possible.
+Each bullet should be 35 Chinese characters or fewer when possible.
+If one bullet becomes too long, split it into two bullets.
 Preserve [來源 1], [來源 2], etc. citation markers when making claims.
 Do not invent facts that are not in the report.
 If evidence is insufficient, explicitly write: 「目前資料不足以判斷」.
@@ -398,16 +407,21 @@ Return exactly this structure:
 
 ### 核心訊息
 
-Use 1 sentence for the most important market change this week.
+用 35 字以內的一句話聚焦本週最重要的一個市場變化。不要同時塞入多個趨勢。
+請使用清楚、直覺的商業語言。
 
 ### 重點內容
 
-- 3 to 5 concise bullets about market direction, vendor moves, technology changes, or representative signals.
-- Do not summarize article by article.
+- 最多 4 個 bullet。
+- 每個 bullet 儘量不超過 35 字。
+- 只支撐同一個主要市場變化。
+- 優先整理市場方向、廠商動作、技術變化或代表性訊號。
+- 不要把這頁寫成單一廠商專題。
+- 不要逐篇摘要文章。
 
 ### 講稿提示
 
-Use 2 to 4 sentences explaining how to present this slide.
+用 2 到 4 句話說明這頁要如何講成一個清楚的市場故事。
 
 ---
 
@@ -415,18 +429,19 @@ Use 2 to 4 sentences explaining how to present this slide.
 
 ### 核心訊息
 
-Use 1 sentence explaining the market pain point and emerging solutions.
+用 35 字以內的一句話說明使用者或產品團隊真正感受到的問題，以及市場正在出現的解法。
 
 ### 重點內容
 
-- 3 to 5 concise bullets.
-- Explain the market problem or pain point.
-- Explain how current tools, platforms, technologies, or products solve it.
-- Prioritize clear use cases or problem-solution fit.
+- 最多 4 個 bullet。
+- 每個 bullet 儘量不超過 35 字。
+- 用產品 / 使用者容易理解的語言描述市場問題，不要過度抽象。
+- 說明現有工具、平台、技術或產品如何解決問題。
+- 優先引用有明確 use case 或 problem-solution fit 的內容。
 
 ### 講稿提示
 
-Use 2 to 4 sentences explaining how to present this slide.
+用 2 到 4 句話說明問題為什麼重要，以及現有解法代表什麼市場訊號。
 
 ---
 
@@ -434,17 +449,21 @@ Use 2 to 4 sentences explaining how to present this slide.
 
 ### 核心訊息
 
-Use 1 sentence explaining the most important representative case.
+用 35 字以內的一句話說明代表性 use case 顯示的市場變化。
+不要只聚焦某一個供應商。
 
 ### 重點內容
 
-- 2 to 4 concise bullets.
-- Each bullet can be a use case or tool example.
-- Explain the usage context, problem solved, and why it matters.
+- 2 到 4 個 bullet。
+- 每個 bullet 儘量不超過 35 字。
+- 每個 bullet 是一個具體 use case 或工具案例。
+- 每個 bullet 都要說清楚：使用情境、解決什麼問題、為什麼值得產品團隊關注。
+- 如果某案例來自單一供應商，請提升成可觀察的市場需求。
+- 不要列出沒有明確使用情境的案例。
 
 ### 講稿提示
 
-Use 2 to 4 sentences explaining how to present this slide.
+用 2 到 4 句話說明這些案例如何連回產品機會或市場驗證方向。
 
 ---
 
@@ -452,18 +471,18 @@ Use 2 to 4 sentences explaining how to present this slide.
 
 ### 核心訊息
 
-Use 1 sentence explaining what these market signals mean for product strategy.
+用 35 字以內的一句話說明這些市場訊號對產品策略的意義。
 
 ### 重點內容
 
-- 3 to 5 concise bullets.
-- Focus on implications for SaaS, FinOps, or Cloud Management products.
-- Include possible product capabilities, UX, governance, automation, or positioning directions.
-- Include follow-up questions worth tracking or validating.
+- 必須收斂成以下 3 個 bullet，且每個 bullet 只講一個方向：
+- Agent Governance：代理權限、稽核、操作邊界。
+- Workflow Integration：降低 legacy / existing workflow 整合門檻。
+- Cost & Reliability：降低 AI agent 執行成本與延遲，避免規模化後成本失控。
 
 ### 講稿提示
 
-Use 2 to 4 sentences explaining how to present this slide.
+用 2 到 4 句話說明這三個方向如何轉化成產品能力、UX、治理、自動化或定位。
 
 ---
 
@@ -474,6 +493,8 @@ Use this format:
 
 [來源 1] title  
 - Source: source
+- Category: category
+- Recommendation: recommendation
 - Published date: published_date
 - URL: url
 
