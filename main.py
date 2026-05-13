@@ -1,3 +1,4 @@
+import argparse
 import json
 import time
 import warnings
@@ -42,19 +43,39 @@ SLIDE_DRAFT_FILE = Path("outputs/slides/slide_draft.md")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
+RUNTIME_TOPIC = DEFAULT_TOPIC
+
+
+def get_current_topic():
+    return RUNTIME_TOPIC
+
+
+def get_resolved_topic():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--topic",
+        help="Topic to run, for example: AI, FinOps, ProductObservation"
+    )
+    args = parser.parse_args()
+
+    if args.topic:
+        return args.topic
+
+    return DEFAULT_TOPIC
 
 
 def load_keywords():
     with KEYWORDS_FILE.open("r", encoding="utf-8") as file:
         keywords_by_topic = json.load(file)
 
-    keywords = keywords_by_topic.get(DEFAULT_TOPIC)
+    topic = get_current_topic()
+    keywords = keywords_by_topic.get(topic)
 
     if keywords is None:
-        print(f"Warning: No keywords found for topic '{DEFAULT_TOPIC}'.")
+        print(f"Warning: No keywords found for topic '{topic}'.")
         return []
 
-    print(f"Loaded {len(keywords)} keywords for topic: {DEFAULT_TOPIC}")
+    print(f"Loaded {len(keywords)} keywords for topic: {topic}")
     return keywords
 
 
@@ -92,7 +113,9 @@ def get_sources_for_topic(topic):
 
 def fetch_articles_from_rss():
     articles = []
-    sources = get_sources_for_topic(DEFAULT_TOPIC)
+    static_web_count = 0
+    topic = get_current_topic()
+    sources = get_sources_for_topic(topic)
 
     for source in sources:
         source_type = source.get("type")
@@ -105,7 +128,31 @@ def fetch_articles_from_rss():
             source_type = "rss"
 
         if source_type == "web":
-            print(f"Skipping web source for now: {source['name']}")
+            web_mode = source.get("web_mode")
+
+            if web_mode == "static":
+                article = {
+                    "title": source["name"],
+                    "url": source["url"],
+                    "source": source["name"],
+                    "source_category": source.get("category", ""),
+                    "source_type": "web",
+                    "web_mode": "static",
+                    "published_date": "",
+                    "topic": topic,
+                    "matched_keywords": []
+                }
+                articles.append(article)
+                static_web_count += 1
+                print(f"Added static web source: {source['name']}")
+            elif web_mode == "listing":
+                print(f"Skipping listing web source for now: {source['name']}")
+            else:
+                print(
+                    "Warning: web_mode missing for web source: "
+                    f"{source['name']}"
+                )
+
             continue
 
         try:
@@ -131,18 +178,23 @@ def fetch_articles_from_rss():
                 "source": source["name"],
                 "source_category": source.get("category", ""),
                 "source_type": source_type,
+                "web_mode": source.get("web_mode"),
                 "published_date": get_published_date(entry),
-                "topic": DEFAULT_TOPIC
+                "topic": topic
             }
             articles.append(article)
 
-    return articles
+    return articles, static_web_count
 
 
 def filter_articles_by_keywords(articles, keywords):
     relevant_articles = []
 
     for article in articles:
+        if article.get("source_type") == "web" and article.get("web_mode") == "static":
+            relevant_articles.append(article)
+            continue
+
         matched_keywords = find_matched_keywords(article["title"], keywords)
 
         if matched_keywords:
@@ -186,6 +238,7 @@ def extract_content(article):
         "source": article["source"],
         "source_category": article.get("source_category", ""),
         "source_type": article.get("source_type", "rss"),
+        "web_mode": article.get("web_mode"),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "matched_keywords": article["matched_keywords"],
@@ -265,6 +318,7 @@ def build_summary_cache_entry(article, ai_summary, provider, cache_period):
         "source": article["source"],
         "source_category": article.get("source_category", ""),
         "source_type": article.get("source_type", "rss"),
+        "web_mode": article.get("web_mode"),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "model": get_provider_model(provider),
@@ -416,6 +470,7 @@ def build_ranking_cache_entry(
         "source": article["source"],
         "source_category": article.get("source_category", ""),
         "source_type": article.get("source_type", "rss"),
+        "web_mode": article.get("web_mode"),
         "published_date": article["published_date"],
         "topic": article["topic"],
         "model": get_provider_model(provider),
@@ -519,7 +574,7 @@ def create_market_brief(articles):
     lines = [
         "# Market Brief",
         "",
-        f"Topic: {DEFAULT_TOPIC}",
+        f"Topic: {get_current_topic()}",
         "",
         f"Articles included: {len(articles)}",
         ""
@@ -536,6 +591,7 @@ def create_market_brief(articles):
             f"- Source: {article['source']}",
             f"- Category: {article.get('source_category', '')}",
             f"- Type: {article.get('source_type', 'rss')}",
+            f"- Web mode: {article.get('web_mode', '')}",
             f"- Published date: {article['published_date']}",
             f"- URL: {article['url']}",
             f"- Matched keywords: {matched_keywords}",
@@ -578,7 +634,7 @@ def create_ranked_sources_report(articles):
     lines = [
         "# Ranked Sources",
         "",
-        f"Topic: {DEFAULT_TOPIC}",
+        f"Topic: {get_current_topic()}",
         "",
         f"Articles evaluated: {len(articles)}",
         ""
@@ -593,6 +649,7 @@ def create_ranked_sources_report(articles):
             f"- Source: {article['source']}",
             f"- Category: {article.get('source_category', '')}",
             f"- Type: {article.get('source_type', 'rss')}",
+            f"- Web mode: {article.get('web_mode', '')}",
             f"- Published date: {article['published_date']}",
             f"- URL: {article['url']}",
             f"- Score: {article['score']}",
@@ -721,6 +778,7 @@ def create_references_text(ranked_articles):
             f"- Source: {article['source']}",
             f"- Category: {article.get('source_category', '')}",
             f"- Type: {article.get('source_type', 'rss')}",
+            f"- Web mode: {article.get('web_mode', '')}",
             f"- Published date: {article['published_date']}",
             f"- Recommendation: {article['recommendation']}",
             f"- URL: {article['url']}",
@@ -748,7 +806,7 @@ def filter_market_brief_for_analysis(market_brief, allowed_urls):
     lines = [
         f"# Market Brief for Analysis",
         "",
-        f"Topic: {DEFAULT_TOPIC}",
+        f"Topic: {get_current_topic()}",
         ""
     ]
 
@@ -782,11 +840,11 @@ def ensure_report_has_references(report, references_text):
 
 def create_fallback_market_analysis_report(error, references_text):
     lines = [
-        f"# Market Analysis Report: {DEFAULT_TOPIC}",
+        f"# Market Analysis Report: {get_current_topic()}",
         "",
         "## Fallback Report",
         "",
-        f"- Topic: {DEFAULT_TOPIC}",
+        f"- Topic: {get_current_topic()}",
         f"- Template: {REPORT_TEMPLATE}",
         f"- Error message: {error}",
         f"- Market brief path: {MARKET_BRIEF_FILE}",
@@ -807,7 +865,7 @@ def create_fallback_market_analysis_report(error, references_text):
 
 def build_report_cache_entry(report, provider, cache_period):
     return {
-        "topic": DEFAULT_TOPIC,
+        "topic": get_current_topic(),
         "report": report,
         "model": get_provider_model(provider),
         "cached_at": get_cached_at(),
@@ -838,7 +896,7 @@ def generate_market_analysis_report(provider, references_text):
         )
 
         report = provider.generate_market_analysis_report(
-            DEFAULT_TOPIC,
+            get_current_topic(),
             market_brief_for_analysis,
             ranked_sources_for_analysis,
             references_text
@@ -882,11 +940,11 @@ def get_market_analysis_report(
 
 def create_fallback_slide_draft(error):
     return "\n".join([
-        f"# Slide Draft: {DEFAULT_TOPIC}",
+        f"# Slide Draft: {get_current_topic()}",
         "",
         "## Fallback Slide Draft",
         "",
-        f"- Topic: {DEFAULT_TOPIC}",
+        f"- Topic: {get_current_topic()}",
         f"- Error message: {error}",
         f"- Market analysis report path: {MARKET_ANALYSIS_REPORT_FILE}",
         "- Please review the market analysis report first, then regenerate the slide draft.",
@@ -903,7 +961,7 @@ def generate_slide_draft(provider):
 
         market_analysis_report = load_markdown(MARKET_ANALYSIS_REPORT_FILE)
         slide_draft = provider.generate_slide_draft(
-            DEFAULT_TOPIC,
+            get_current_topic(),
             market_analysis_report
         )
 
@@ -924,15 +982,22 @@ def save_markdown(content, output_file):
 
 
 def main():
+    global RUNTIME_TOPIC
+
+    RUNTIME_TOPIC = get_resolved_topic()
+
     print("Market Intelligence Agent started.")
-    print(f"Topic: {DEFAULT_TOPIC}")
+    print(f"Topic: {get_current_topic()}")
 
     keywords = load_keywords()
-    articles = fetch_articles_from_rss()
+    articles, static_web_count = fetch_articles_from_rss()
     relevant_articles = filter_articles_by_keywords(articles, keywords)
     save_articles(relevant_articles, RAW_OUTPUT_FILE)
 
-    print(f"Fetched {len(articles)} articles from RSS sources.")
+    rss_article_count = len(articles) - static_web_count
+
+    print(f"Fetched {rss_article_count} articles from RSS sources.")
+    print(f"Added {static_web_count} static web sources.")
     print(f"Kept {len(relevant_articles)} relevant articles after keyword filtering.")
     print(f"Saved {len(relevant_articles)} articles to {RAW_OUTPUT_FILE}")
 
@@ -953,7 +1018,7 @@ def main():
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
     provider = get_llm_provider()
     week_key = get_current_week_key()
-    cache_paths = get_cache_paths(DEFAULT_TOPIC, week_key)
+    cache_paths = get_cache_paths(get_current_topic(), week_key)
     summary_cache = load_json_cache(cache_paths["summary"])
     ranking_cache = load_json_cache(cache_paths["ranking"])
     report_cache = load_json_cache(cache_paths["report"])

@@ -1,6 +1,6 @@
 # Source Validation Report
 
-Generated at: 2026-05-14T00:34:19
+Generated at: 2026-05-14T01:37:11
 
 ## Summary
 
@@ -9,7 +9,8 @@ Generated at: 2026-05-14T00:34:19
 - Web sources: 7
 - Success: 7
 - Failed: 0
-- Skipped: 7
+- Static: 4
+- Skipped: 3
 
 ## Results by Topic
 
@@ -19,6 +20,7 @@ Generated at: 2026-05-14T00:34:19
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: official_ai
 - URL: https://openai.com/news/rss.xml
 - Entries count: 955
@@ -32,10 +34,11 @@ Top entries:
 
 - Status: skipped
 - Type: web
+- Web mode: listing
 - Category: official_ai
 - URL: https://www.anthropic.com/news/rss.xml
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Listing web source parsing is not supported yet.
 
 Top entries:
 No entries available.
@@ -44,10 +47,11 @@ No entries available.
 
 - Status: skipped
 - Type: web
+- Web mode: listing
 - Category: cloud_provider
 - URL: https://cloud.google.com/feeds/blog.xml
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Listing web source parsing is not supported yet.
 
 Top entries:
 No entries available.
@@ -56,6 +60,7 @@ No entries available.
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: cloud_provider
 - URL: https://aws.amazon.com/blogs/aws/feed/
 - Entries count: 20
@@ -69,6 +74,7 @@ Top entries:
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: cloud_provider
 - URL: https://azure.microsoft.com/en-us/blog/feed/
 - Entries count: 10
@@ -84,6 +90,7 @@ Top entries:
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: industry_foundation
 - URL: https://www.finops.org/feed/
 - Entries count: 10
@@ -97,6 +104,7 @@ Top entries:
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: finops_product
 - URL: https://www.vantage.sh/blog/rss.xml
 - Entries count: 366
@@ -108,12 +116,13 @@ Top entries:
 
 #### IBM Cloudability / Apptio
 
-- Status: skipped
+- Status: static
 - Type: web
+- Web mode: static
 - Category: finops_product
 - URL: https://www.ibm.com/blog/category/cloudability/
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Static web source will be parsed during content extraction.
 
 Top entries:
 No entries available.
@@ -122,6 +131,7 @@ No entries available.
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: cloud_cost
 - URL: https://aws.amazon.com/blogs/aws-cloud-financial-management/feed/
 - Entries count: 20
@@ -133,12 +143,13 @@ Top entries:
 
 #### Google Cloud Cost Management
 
-- Status: skipped
+- Status: static
 - Type: web
+- Web mode: static
 - Category: cloud_cost
 - URL: https://cloud.google.com/blog/topics/cost-management
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Static web source will be parsed during content extraction.
 
 Top entries:
 No entries available.
@@ -149,6 +160,7 @@ No entries available.
 
 - Status: success
 - Type: rss
+- Web mode: 
 - Category: competitor_product
 - URL: https://www.vantage.sh/blog/rss.xml
 - Entries count: 366
@@ -162,34 +174,37 @@ Top entries:
 
 - Status: skipped
 - Type: web
+- Web mode: listing
 - Category: competitor_product
 - URL: https://www.cloudzero.com/blog/
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Listing web source parsing is not supported yet.
 
 Top entries:
 No entries available.
 
 #### IBM Cloudability / Apptio
 
-- Status: skipped
+- Status: static
 - Type: web
+- Web mode: static
 - Category: competitor_product
 - URL: https://www.ibm.com/blog/category/cloudability/
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Static web source will be parsed during content extraction.
 
 Top entries:
 No entries available.
 
 #### eCloudvalley Atlas
 
-- Status: skipped
+- Status: static
 - Type: web
+- Web mode: static
 - Category: product_observation
 - URL: https://www.ecloudvalley.com/
 - Entries count: 0
-- Reason: Web source parsing is not supported yet.
+- Reason: Static web source will be parsed during content extraction.
 
 Top entries:
 No entries available.

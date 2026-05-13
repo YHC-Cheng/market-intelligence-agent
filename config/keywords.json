@@ -48,5 +48,25 @@
     "cloud billing",
     "cost visibility",
     "cost governance"
+  ],
+  "ProductObservation": [
+    "Vantage",
+    "CloudZero",
+    "Cloudability",
+    "Apptio",
+    "Atlas",
+    "FinOps",
+    "cloud cost",
+    "cost management",
+    "cost optimization",
+    "AI cost",
+    "governance",
+    "automation",
+    "workflow",
+    "reporting",
+    "forecasting",
+    "budget",
+    "anomaly",
+    "Kubernetes cost"
   ]
 }

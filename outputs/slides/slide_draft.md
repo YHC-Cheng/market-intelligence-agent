@@ -1,21 +1,21 @@
-# Slide Draft: AI
+# Slide Draft: ProductObservation
 
 ## Slide 1：本週市場趨勢 / 新趨勢
 
 ### 核心訊息
 
-AI 正從對話轉向主動代理，並邁向垂直產業落地與通訊標準化。
+雲端治理正由單純支出監控轉向 AI 單位經濟效益分析 [來源 2]。
 
 ### 重點內容
 
-- 雲端巨頭推動 AI 代理垂直化，鎖定供應鏈與醫療等特定流程 [來源 3]。
-- 市場確立 MCP 標準，讓代理能安全存取萬項雲端資源 [來源 1, 2]。
-- 雲端平台與頂尖模型深度綁定，提供企業級安全控管與效能 [來源 3]。
-- AI 代理開始具備操作虛擬桌面的能力，打破老舊系統的 API 限制 [來源 1]。
+- 企業 AI 投入進入重大支出，管理重點轉向精細化成本分配 [來源 2]。
+- 雲端資源管理從基礎監測轉向高精準度的資產治理 [來源 1]。
+- 市場將混亂的標籤元數據轉化為可直接操作的結構化見解 [來源 1]。
+- 預算管理由僵化限制轉向衡量研發效率的「單位成本」模型 [來源 2]。
 
 ### 講稿提示
 
-這週的市場訊號非常明確：AI 不再只是聊天機器人，而是進化為能執行任務的「代理人」。我們看到產業正透過 MCP 協議建立標準化通訊，並將 AI 應用從通用型工具轉向深度的產業垂直整合。
+說明市場不再只看總支出，而是開始像管理投資組合一樣看待 AI 成本。我們觀察到工具正透過結構化元數據，讓企業能精準衡量每一分錢的產出價值。
 
 ---
 
@@ -23,18 +23,18 @@ AI 正從對話轉向主動代理，並邁向垂直產業落地與通訊標準�
 
 ### 核心訊息
 
-企業面臨老舊系統無 API 與 AI 權限管控風險，市場正推出安全代理方案。
+標籤格式混亂與 AI 產出黑洞，是目前企業治理的主要痛點 [來源 1][來源 2]。
 
 ### 重點內容
 
-- 七成以上遺留系統缺乏 API，導致 AI 自動化難以介入核心流程 [來源 1]。
-- AI 代理直接操作雲端資源存在安全風險，且模型知識更新緩慢 [來源 2]。
-- 透過「虛擬桌面代理」技術，讓 AI 能像人一樣操作老舊軟體介面 [來源 1]。
-- MCP Server 提供受管橋樑，確保 AI 執行 API 符合安全規範 [來源 2]。
+- JSON 格式的標籤數據過於繁瑣，導致稽核成本歸屬困難 [來源 1]。
+- 企業難以分辨 AI 支出是有效研發還是低效的實驗耗損 [來源 2]。
+- 多雲環境缺乏統一的虛擬標籤機制，影響成本分配準確性 [來源 1]。
+- 現有方案透過結構化欄位與 API 閘道器實現自動化治理 [來源 1][來源 2]。
 
 ### 講稿提示
 
-企業導入 AI 的最大痛點在於「老舊資產無法串接」以及「代理行為不可控」。目前的解法是透過虛擬桌面讓 AI 直接操作 UI，並利用像 MCP 這樣的安全協議來規範 AI 的權限，解決技術斷層。
+現狀是數據雖然存在但「難以使用」且「缺乏商業意義」。目前的解決方案致力於把非結構化數據轉成可決策的指標，解決 AI 投資報酬率不明的問題。
 
 ---
 
@@ -42,18 +42,18 @@ AI 正從對話轉向主動代理，並邁向垂直產業落地與通訊標準�
 
 ### 核心訊息
 
-AI 代理已具備跨系統操作與專業決策能力，實現端到端的流程自動化。
+透過結構化分析與元數據追蹤，實現資源與 AI 的精準管控 [來源 1][來源 2]。
 
 ### 重點內容
 
-- 醫療人員可利用 AI 代理自動產出臨床文件，減少行政作業負擔 [來源 3]。
-- AI 透過虛擬桌面跨軟體操作病患紀錄，無需重新開發系統介接 [來源 1]。
-- 供應鏈主管可運用專屬 AI 進行決策分析，優化資源調度與效率 [來源 3]。
-- 開發者透過 MCP 沙盒執行腳本，降低 Token 消耗並加速 API 調用 [來源 2]。
+- 將標籤轉為獨立欄位，加速 EBS 或 RDS 的資源稽核效率 [來源 1]。
+- 整合 Terraform 配置，實現基礎設施即代碼的自動化治理 [來源 1]。
+- 結合 Jira 任務數據，計算完成單一功能的 AI 單位成本 [來源 2]。
+- 透過 API 閘道器追蹤特定 Agent 或服務的使用詳情 [來源 2]。
 
 ### 講稿提示
 
-這些案例證明了 AI 代理已能進入專業領域。無論是醫療文件的自動產出，還是免 API 整合的操作舊軟體，都顯示出市場對「能直接解決複雜流程」的產品需求極高，這正是我們產品可以驗證的方向。
+這些案例顯示治理已深入開發工作流。無論是基礎設施的自動化稽核，還是軟體開發中的 AI 效率追蹤，核心都在於建立明確的「可追蹤性」。
 
 ---
 
@@ -61,39 +61,32 @@ AI 代理已具備跨系統操作與專業決策能力，實現端到端的流�
 
 ### 核心訊息
 
-產品開發應聚焦代理行為治理、遺留系統兼容性與規模化成本控管。
+產品應將 AI 成本轉化為業務價值，並強化自動化治理能力 [來源 1][來源 2]。
 
 ### 重點內容
 
-- Agent Governance：整合稽核機制，區分代理與人類行為並控管權限邊界 [來源 2]。
-- Workflow Integration：透過桌面代理技術，降低與客戶老舊系統整合的難度 [來源 1]。
-- Cost & Reliability：利用沙盒腳本與新一代硬體，降低運行成本與模型延遲 [來源 2, 3]。
+- Agent Governance：透過自定義標籤欄位強化權限與稽核邊界 [來源 1]。
+- Workflow Integration：支援 IaC 整合並降低現有工作流操作門檻 [來源 1]。
+- Cost & Reliability：建立 ROI 儀表板與動態配額以避免成本失控 [來源 2]。
 
 ### 講稿提示
 
-針對這三點啟示，我們的產品必須建立明確的 AI 行為審計，並思考如何利用桌面代理技術快速切入遺留系統市場。同時，透過優化腳本執行邏輯來控制營運成本，才能確保 AI 功能在規模化後的商業可行性。
+產品策略應著重於如何讓客戶「無痛治理」。這包含提供直覺的 UI 稽核工具、深度整合現有開發工作流，並透過指標最終證明 AI 的商業回報。
 
 ---
 
 ## References
 
-[來源 1] Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
-- Source: AWS Blog RSS
-- Category: cloud_provider
+[來源 1] Vantage Launches Tag Key Columns in Active Resource Reports  
+- Source: Vantage Blog
+- Category: competitor_product
 - Recommendation: Core
-- Published date: 2026-05-05
-- URL: https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/
+- Published date: 2026-05-12
+- URL: https://www.vantage.sh/blog/tag-column-resource-reports
 
-[來源 2] The AWS MCP Server is now generally available
-- Source: AWS Blog RSS
-- Category: cloud_provider
+[來源 2] Token Budgeting: How To Think About AI Cost Control  
+- Source: Vantage Blog
+- Category: competitor_product
 - Recommendation: Core
-- Published date: 2026-05-06
-- URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
-
-[來源 3] AWS Weekly Roundup: What’s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)
-- Source: AWS Blog RSS
-- Category: cloud_provider
-- Recommendation: Core
-- Published date: 2026-05-04
-- URL: https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/
+- Published date: 2026-05-11
+- URL: https://www.vantage.sh/blog/ai-token-budgeting

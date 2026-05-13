@@ -20,6 +20,7 @@ def validate_source(topic, source):
         "name": source.get("name", ""),
         "category": source.get("category", ""),
         "type": source.get("type", "rss"),
+        "web_mode": source.get("web_mode", ""),
         "url": source.get("url", ""),
         "status": "failed",
         "entries_count": 0,
@@ -29,8 +30,16 @@ def validate_source(topic, source):
     }
 
     if result["type"] == "web":
-        result["status"] = "skipped"
-        result["reason"] = "Web source parsing is not supported yet."
+        if result["web_mode"] == "static":
+            result["status"] = "static"
+            result["reason"] = "Static web source will be parsed during content extraction."
+        elif result["web_mode"] == "listing":
+            result["status"] = "skipped"
+            result["reason"] = "Listing web source parsing is not supported yet."
+        else:
+            result["status"] = "skipped"
+            result["reason"] = "web_mode is missing for this web source."
+
         return result
 
     try:
@@ -64,8 +73,10 @@ def validate_sources():
             result = validate_source(topic, source)
             results.append(result)
 
-            if result["status"] == "skipped":
-                print(f"[{topic}] {result['name']} - skipped - web source")
+            if result["status"] == "static":
+                print(f"[{topic}] {result['name']} - static - web source")
+            elif result["status"] == "skipped":
+                print(f"[{topic}] {result['name']} - skipped - listing web source")
             else:
                 print(
                     f"[{topic}] {result['name']} - {result['status']} - "
@@ -82,6 +93,7 @@ def create_markdown_report(results):
     success_count = sum(1 for result in results if result["status"] == "success")
     failed_count = sum(1 for result in results if result["status"] == "failed")
     skipped_count = sum(1 for result in results if result["status"] == "skipped")
+    static_count = sum(1 for result in results if result["status"] == "static")
     generated_at = datetime.now().replace(microsecond=0).isoformat()
 
     lines = [
@@ -96,6 +108,7 @@ def create_markdown_report(results):
         f"- Web sources: {web_count}",
         f"- Success: {success_count}",
         f"- Failed: {failed_count}",
+        f"- Static: {static_count}",
         f"- Skipped: {skipped_count}",
         "",
         "## Results by Topic",
@@ -119,6 +132,7 @@ def create_markdown_report(results):
                 "",
                 f"- Status: {result['status']}",
                 f"- Type: {result['type']}",
+                f"- Web mode: {result['web_mode']}",
                 f"- Category: {result['category']}",
                 f"- URL: {result['url']}",
                 f"- Entries count: {result['entries_count']}"

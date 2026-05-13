@@ -2,7 +2,9 @@
 
 ## 1. Web Source Support
 
-目前 web sources 只會被分類並 skipped，尚未支援解析。
+目前 `web_mode = "static"` 的 web source 可以進入 content extraction 流程。
+
+`web_mode = "listing"` 的 web source 仍會被 skipped，尚未支援從列表頁抓取文章連結。
 
 ## 2. Gemini Quota
 

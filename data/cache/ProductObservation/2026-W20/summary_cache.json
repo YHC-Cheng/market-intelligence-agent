@@ -1,0 +1,66 @@
+{
+  "https://www.vantage.sh/blog/ai-token-budgeting": {
+    "title": "Token Budgeting: How To Think About AI Cost Control",
+    "url": "https://www.vantage.sh/blog/ai-token-budgeting",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-11",
+    "topic": "ProductObservation",
+    "model": "gemini-flash-latest",
+    "summary": "This article outlines a framework for managing escalating AI token expenses by shifting from raw spend monitoring to sophisticated cost allocation and efficiency metrics. It argues that businesses must distinguish between AI costs related to COGS (production) and R&D (development), using unit costs—such as cost per pull request or feature—to determine the true ROI of AI investments.",
+    "key_points": [
+      "Differentiate AI spend between COGS (production serving) and R&D (engineering experimentation) to apply appropriate financial controls.",
+      "Utilize API gateways and request metadata to track granular usage data, enabling cost mapping to specific services, teams, or agents.",
+      "Adopt 'Unit Cost' metrics—linking token spend to tangible outputs like Jira issues closed or code merges—to identify high-performing developers.",
+      "Avoid arbitrary flat-fee budgets; instead, treat AI allocation like a portfolio manager, directing more budget to developers with the highest efficiency metrics.",
+      "Recognize that high token spend is often a signal of high productivity rather than waste, provided the efficiency metric remains favorable."
+    ],
+    "why_it_matters": "As AI costs transition from experimental to a major line item, companies risk stifling innovation with rigid budget caps or eroding margins through unmonitored usage. Business leaders must implement data-driven budgeting that rewards engineering velocity while maintaining visibility into the total cost of ownership.",
+    "cached_at": "2026-05-14T01:45:23",
+    "cache_period": "2026-W20"
+  },
+  "https://www.vantage.sh/blog/tag-column-resource-reports": {
+    "title": "Vantage Launches Tag Key Columns in Active Resource Reports",
+    "url": "https://www.vantage.sh/blog/tag-column-resource-reports",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-12",
+    "topic": "ProductObservation",
+    "model": "gemini-flash-latest",
+    "summary": "Vantage has introduced 'Tag Key Columns' for its Active Resource Reports, allowing users to display specific cloud provider tags and Vantage Virtual Tags as individual, sortable columns. This replaces the previous format where tags were bundled in a single JSON blob, significantly improving the ability to analyze and audit resource-level metadata directly within the platform.",
+    "key_points": [
+      "Users can now transform raw tag data into dedicated columns for better visibility and sorting across large infrastructure datasets.",
+      "The feature supports both native cloud provider tags and Vantage Virtual Tags, enabling standardized reporting across disparate environments.",
+      "Custom tag columns are fully integrated into CSV exports, API endpoints, and Terraform configurations for automated reporting workflows.",
+      "Enhanced filtering capabilities allow teams to quickly identify untagged resources or audit specific cost centers like 'owners' or 'environments' across multiple cloud services."
+    ],
+    "why_it_matters": "For FinOps and engineering leaders, this update reduces the manual overhead of parsing complex tag data to achieve cost attribution. By making metadata actionable and exportable, organizations can more effectively enforce tagging compliance, accurately allocate spend to specific teams, and streamline the identification of waste in non-production environments.",
+    "cached_at": "2026-05-14T01:45:30",
+    "cache_period": "2026-W20"
+  },
+  "https://www.ibm.com/blog/category/cloudability/": {
+    "title": "IBM Cloudability / Apptio",
+    "url": "https://www.ibm.com/blog/category/cloudability/",
+    "source": "IBM Cloudability / Apptio",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "static",
+    "published_date": "",
+    "topic": "ProductObservation",
+    "model": "gemini-flash-latest",
+    "summary": "IBM's latest strategic updates from the 'Think' conference focus on a new AI operating model and the scaling of AI through future-proofed architectures. The content highlights the integration of automated workflows, synthetic monitoring for DevOps reliability, and a comprehensive framework for AI governance and security.",
+    "key_points": [
+      "Introduction of IBM's new AI operating model designed to facilitate enterprise-wide AI scaling.",
+      "Emphasis on boosting productivity through workflow automation and advanced DevOps tools like synthetic monitoring.",
+      "Strategic focus on AI governance, security, and the role of high-quality data in AI model development.",
+      "Ongoing investment in emerging technologies, specifically quantum computing and AI agents."
+    ],
+    "why_it_matters": "For business leaders and IT decision-makers, IBM's roadmap underscores the necessity of moving beyond experimental AI toward a structured operating model. The focus on automation and governance indicates a market shift toward operationalizing AI to drive measurable productivity gains while mitigating security risks.",
+    "cached_at": "2026-05-14T01:45:37",
+    "cache_period": "2026-W20"
+  }
+}

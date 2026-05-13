@@ -1,83 +1,84 @@
 # Market Brief
 
-Topic: AI
+Topic: ProductObservation
 
 Articles included: 3
 
-## 1. Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)
+## 1. Token Budgeting: How To Think About AI Cost Control
 
-- Source: AWS Blog RSS
-- Category: cloud_provider
+- Source: Vantage Blog
+- Category: competitor_product
 - Type: rss
-- Published date: 2026-05-05
-- URL: https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/
-- Matched keywords: AI, AI agent, AI agents, workflow
-- Content length: 4959
+- Web mode: None
+- Published date: 2026-05-11
+- URL: https://www.vantage.sh/blog/ai-token-budgeting
+- Matched keywords: AI cost, budget
+- Content length: 8867
 
 ### AI Summary
 
-Amazon WorkSpaces has launched a preview feature that enables AI agents to operate desktop and legacy applications directly within managed virtual desktops. This innovation allows enterprises to automate workflows within systems that lack modern APIs by giving AI agents their own secure desktop environment where they can interact with software via computer vision and simulated inputs.
+This article outlines a framework for managing escalating AI token expenses by shifting from raw spend monitoring to sophisticated cost allocation and efficiency metrics. It argues that businesses must distinguish between AI costs related to COGS (production) and R&D (development), using unit costs—such as cost per pull request or feature—to determine the true ROI of AI investments.
 
 ### Key Points
 
-- Addresses the 'API gap' for the 75% of organizations running legacy applications that currently lack programmatic access.
-- Utilizes 'Computer vision' for screen capture and 'Computer input' for clicking and typing, allowing agents to use software exactly like human employees.
-- Built-in enterprise governance through AWS IAM for authentication and AWS CloudTrail for comprehensive audit trails of agent activities.
-- Supports the industry-standard Model Context Protocol (MCP), making it compatible with frameworks like LangChain, CrewAI, and Strands Agents.
-- Currently available in public preview across major AWS regions, including US East, US West, Europe, and Asia.
+- Differentiate AI spend between COGS (production serving) and R&D (engineering experimentation) to apply appropriate financial controls.
+- Utilize API gateways and request metadata to track granular usage data, enabling cost mapping to specific services, teams, or agents.
+- Adopt 'Unit Cost' metrics—linking token spend to tangible outputs like Jira issues closed or code merges—to identify high-performing developers.
+- Avoid arbitrary flat-fee budgets; instead, treat AI allocation like a portfolio manager, directing more budget to developers with the highest efficiency metrics.
+- Recognize that high token spend is often a signal of high productivity rather than waste, provided the efficiency metric remains favorable.
 
 ### Why It Matters
 
-This technology bypasses the traditional requirement for expensive and time-consuming application modernization. For businesses with legacy or mainframe-dependent processes, it provides a fast-track to AI adoption, allowing them to scale productivity and automate complex workflows without rewriting their existing software infrastructure.
+As AI costs transition from experimental to a major line item, companies risk stifling innovation with rigid budget caps or eroding margins through unmonitored usage. Business leaders must implement data-driven budgeting that rewards engineering velocity while maintaining visibility into the total cost of ownership.
 
-## 2. AWS Weekly Roundup: What’s Next with AWS 2026, Amazon Quick, OpenAI partnership, and more (May 4, 2026)
+## 2. Vantage Launches Tag Key Columns in Active Resource Reports
 
-- Source: AWS Blog RSS
-- Category: cloud_provider
+- Source: Vantage Blog
+- Category: competitor_product
 - Type: rss
-- Published date: 2026-05-04
-- URL: https://aws.amazon.com/blogs/aws/aws-weekly-roundup-whats-next-with-aws-2026-amazon-quick-openai-partnership-and-more-may-4-2026/
-- Matched keywords: AI, OpenAI
-- Content length: 9627
+- Web mode: None
+- Published date: 2026-05-12
+- URL: https://www.vantage.sh/blog/tag-column-resource-reports
+- Matched keywords: Vantage
+- Content length: 4374
 
 ### AI Summary
 
-AWS has announced a major strategic expansion centered on 'agentic AI' and a deepened partnership with OpenAI. Key highlights include the integration of GPT-5 series models into Amazon Bedrock, the transformation of Amazon Quick into a comprehensive AI workplace assistant, and the verticalization of Amazon Connect into four specialized agentic solutions for supply chain, healthcare, recruitment, and customer service.
+Vantage has introduced 'Tag Key Columns' for its Active Resource Reports, allowing users to display specific cloud provider tags and Vantage Virtual Tags as individual, sortable columns. This replaces the previous format where tags were bundled in a single JSON blob, significantly improving the ability to analyze and audit resource-level metadata directly within the platform.
 
 ### Key Points
 
-- AWS and OpenAI expanded their partnership to bring GPT-5.5, GPT-5.4, and the Codex coding agent to Amazon Bedrock in limited preview.
-- Amazon Quick evolved into a cross-platform AI assistant with a new desktop app, visual asset generation, and natural-language app building capabilities.
-- Amazon Connect is now a suite of four agentic solutions: Decisions (supply chain), Talent (AI-led hiring), Customer (CX), and Health (clinical documentation).
-- Amazon Bedrock Managed Agents now leverage OpenAI frontier models for enhanced reasoning and reliable steering of complex business tasks.
-- New 8th-generation EC2 instances (M8, R8, and C8) powered by 6th-gen Intel Xeon processors and Nitro cards offer up to 43% higher performance.
+- Users can now transform raw tag data into dedicated columns for better visibility and sorting across large infrastructure datasets.
+- The feature supports both native cloud provider tags and Vantage Virtual Tags, enabling standardized reporting across disparate environments.
+- Custom tag columns are fully integrated into CSV exports, API endpoints, and Terraform configurations for automated reporting workflows.
+- Enhanced filtering capabilities allow teams to quickly identify untagged resources or audit specific cost centers like 'owners' or 'environments' across multiple cloud services.
 
 ### Why It Matters
 
-This shift indicates that AWS is moving beyond basic cloud infrastructure to provide specialized, industry-specific AI agents. By integrating OpenAI's most advanced frontier models with enterprise-grade security and governance in Bedrock, AWS is positioning itself as the primary hub for production-ready generative AI, while simultaneously challenging SaaS productivity leaders through the expanded capabilities of Amazon Quick.
+For FinOps and engineering leaders, this update reduces the manual overhead of parsing complex tag data to achieve cost attribution. By making metadata actionable and exportable, organizations can more effectively enforce tagging compliance, accurately allocate spend to specific teams, and streamline the identification of waste in non-production environments.
 
-## 3. The AWS MCP Server is now generally available
+## 3. IBM Cloudability / Apptio
 
-- Source: AWS Blog RSS
-- Category: cloud_provider
-- Type: rss
-- Published date: 2026-05-06
-- URL: https://aws.amazon.com/blogs/aws/the-aws-mcp-server-is-now-generally-available/
-- Matched keywords: AI, MCP
-- Content length: 7455
+- Source: IBM Cloudability / Apptio
+- Category: competitor_product
+- Type: web
+- Web mode: static
+- Published date: 
+- URL: https://www.ibm.com/blog/category/cloudability/
+- Matched keywords: 
+- Content length: 814
 
 ### AI Summary
 
-AWS has announced the general availability of the AWS MCP Server, a managed implementation of the Model Context Protocol designed to provide AI agents and coding assistants with secure, real-time access to AWS services. The server addresses common limitations of AI models—such as outdated training data and inefficient command usage—by offering tools for live API execution, documentation retrieval, and sandboxed script execution, all while maintaining enterprise-grade security and auditability.
+IBM's latest strategic updates from the 'Think' conference focus on a new AI operating model and the scaling of AI through future-proofed architectures. The content highlights the integration of automated workflows, synthetic monitoring for DevOps reliability, and a comprehensive framework for AI governance and security.
 
 ### Key Points
 
-- The AWS MCP Server allows AI agents to execute over 15,000 AWS API operations using existing IAM credentials and SigV4 authentication.
-- A new 'Skills' feature replaces standard operating procedures with curated, service-team-maintained guidance to ensure agents build production-ready infrastructure.
-- The 'run_script' tool enables server-side execution of Python scripts in a sandboxed environment, reducing token consumption and latency by chaining multiple API calls.
-- Enterprise security is prioritized through IAM context keys, Service Control Policies (SCPs), and dedicated CloudWatch metrics to distinguish agent activity from human actions.
-- Real-time documentation access allows AI agents to support newly released services that exist beyond their model's training knowledge cutoff.
+- Introduction of IBM's new AI operating model designed to facilitate enterprise-wide AI scaling.
+- Emphasis on boosting productivity through workflow automation and advanced DevOps tools like synthetic monitoring.
+- Strategic focus on AI governance, security, and the role of high-quality data in AI model development.
+- Ongoing investment in emerging technologies, specifically quantum computing and AI agents.
 
 ### Why It Matters
 
-This release is a significant step in maturing AI-driven DevOps. By providing a secure bridge between LLMs and cloud infrastructure, AWS is enabling businesses to move from experimental AI chatbots to production-capable AI agents that can accurately and safely manage cloud resources, reducing the risk of security misconfigurations and technical debt.
+For business leaders and IT decision-makers, IBM's roadmap underscores the necessity of moving beyond experimental AI toward a structured operating model. The focus on automation and governance indicates a market shift toward operationalizing AI to drive measurable productivity gains while mitigating security risks.

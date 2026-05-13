@@ -50,13 +50,15 @@ RSS_SOURCES_BY_TOPIC = {
             "name": "Anthropic News / Blog",
             "url": "https://www.anthropic.com/news/rss.xml",
             "category": "official_ai",
-            "type": "web"
+            "type": "web",
+            "web_mode": "listing"
         },
         {
             "name": "Google Cloud Blog",
             "url": "https://cloud.google.com/feeds/blog.xml",
             "category": "cloud_provider",
-            "type": "web"
+            "type": "web",
+            "web_mode": "listing"
         },
         {
             "name": "AWS Blog RSS",
@@ -88,7 +90,8 @@ RSS_SOURCES_BY_TOPIC = {
             "name": "IBM Cloudability / Apptio",
             "url": "https://www.ibm.com/blog/category/cloudability/",
             "category": "finops_product",
-            "type": "web"
+            "type": "web",
+            "web_mode": "static"
         },
         {
             "name": "AWS Cloud Financial Management Blog",
@@ -100,7 +103,8 @@ RSS_SOURCES_BY_TOPIC = {
             "name": "Google Cloud Cost Management",
             "url": "https://cloud.google.com/blog/topics/cost-management",
             "category": "cloud_cost",
-            "type": "web"
+            "type": "web",
+            "web_mode": "static"
         }
     ],
     "ProductObservation": [
@@ -114,19 +118,22 @@ RSS_SOURCES_BY_TOPIC = {
             "name": "CloudZero Blog",
             "url": "https://www.cloudzero.com/blog/",
             "category": "competitor_product",
-            "type": "web"
+            "type": "web",
+            "web_mode": "listing"
         },
         {
             "name": "IBM Cloudability / Apptio",
             "url": "https://www.ibm.com/blog/category/cloudability/",
             "category": "competitor_product",
-            "type": "web"
+            "type": "web",
+            "web_mode": "static"
         },
         {
             "name": "eCloudvalley Atlas",
             "url": "https://www.ecloudvalley.com/",
             "category": "product_observation",
-            "type": "web"
+            "type": "web",
+            "web_mode": "static"
         }
     ]
 }
