@@ -1,6 +1,7 @@
 import json
 import time
 import warnings
+from datetime import datetime
 from pathlib import Path
 
 warnings.filterwarnings("ignore", message="urllib3 v2 only supports OpenSSL.*")
@@ -12,14 +13,22 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from config import DEFAULT_TOPIC, LLM_PROVIDER, RSS_SOURCES
+from config import DEFAULT_TOPIC, LLM_MODEL, LLM_PROVIDER, RSS_SOURCES
 from llm.gemini_provider import GeminiProvider
 from llm.openai_provider import OpenAIProvider
+from utils.cache import (
+    get_cached_result,
+    load_json_cache,
+    save_json_cache,
+    set_cached_result
+)
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
 RANKED_SOURCES_FILE = Path("outputs/reports/ranked_sources.md")
+SUMMARY_CACHE_FILE = Path("data/cache/summary_cache.json")
+RANKING_CACHE_FILE = Path("data/cache/ranking_cache.json")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
@@ -178,20 +187,57 @@ def is_successful_summary(ai_summary):
     return bool(ai_summary.get("summary"))
 
 
-def summarize_articles(articles, provider):
+def get_cached_at():
+    return datetime.now().replace(microsecond=0).isoformat()
+
+
+def get_provider_model(provider):
+    return getattr(provider, "last_model_used", LLM_MODEL)
+
+
+def build_summary_cache_entry(article, ai_summary, provider):
+    return {
+        "title": article["title"],
+        "url": article["url"],
+        "source": article["source"],
+        "published_date": article["published_date"],
+        "topic": article["topic"],
+        "model": get_provider_model(provider),
+        "summary": ai_summary.get("summary", ""),
+        "key_points": ai_summary.get("key_points", []),
+        "why_it_matters": ai_summary.get("why_it_matters", ""),
+        "cached_at": get_cached_at()
+    }
+
+
+def get_summary_from_cache(cached_summary):
+    return {
+        "summary": cached_summary.get("summary", ""),
+        "key_points": cached_summary.get("key_points", []),
+        "why_it_matters": cached_summary.get("why_it_matters", "")
+    }
+
+
+def summarize_articles(articles, provider, summary_cache):
     summarized_articles = []
     successful_summaries = 0
 
     for article in articles:
-        try:
-            ai_summary = provider.summarize_article(article)
-        except Exception as error:
-            ai_summary = {
-                "summary": "",
-                "key_points": [],
-                "why_it_matters": "",
-                "error": str(error)
-            }
+        cached_summary = get_cached_result(summary_cache, article["url"])
+
+        if cached_summary:
+            ai_summary = get_summary_from_cache(cached_summary)
+            print(f"Loaded summary from cache for: {article['title']}")
+        else:
+            try:
+                ai_summary = provider.summarize_article(article)
+            except Exception as error:
+                ai_summary = {
+                    "summary": "",
+                    "key_points": [],
+                    "why_it_matters": "",
+                    "error": str(error)
+                }
 
         if ai_summary.get("error"):
             short_error = str(ai_summary["error"]).splitlines()[0][:160]
@@ -202,6 +248,12 @@ def summarize_articles(articles, provider):
 
         if is_successful_summary(ai_summary):
             successful_summaries += 1
+
+            if not cached_summary:
+                cache_entry = build_summary_cache_entry(article, ai_summary, provider)
+                set_cached_result(summary_cache, article["url"], cache_entry)
+                save_json_cache(str(SUMMARY_CACHE_FILE), summary_cache)
+                print(f"Saved summary to cache for: {article['title']}")
 
         article_with_summary = article.copy()
         article_with_summary["ai_summary"] = ai_summary
@@ -256,38 +308,92 @@ def get_recommendation(score):
     return "Exclude"
 
 
-def rank_articles(articles, provider):
+def build_ranking_cache_entry(article, ranking, score, recommendation, provider):
+    return {
+        "title": article["title"],
+        "url": article["url"],
+        "source": article["source"],
+        "published_date": article["published_date"],
+        "topic": article["topic"],
+        "model": get_provider_model(provider),
+        "score": score,
+        "recommendation": recommendation,
+        "relevance": ranking.get("relevance", 1),
+        "use_case_clarity": ranking.get("use_case_clarity", 1),
+        "problem_solution_fit": ranking.get("problem_solution_fit", 1),
+        "actionability": ranking.get("actionability", 1),
+        "credibility_novelty": ranking.get("credibility_novelty", 1),
+        "use_case": ranking.get("use_case", ""),
+        "problem_solved": ranking.get("problem_solved", ""),
+        "reason": ranking.get("reason", ""),
+        "cached_at": get_cached_at()
+    }
+
+
+def get_ranking_from_cache(cached_ranking):
+    return {
+        "relevance": cached_ranking.get("relevance", 1),
+        "use_case_clarity": cached_ranking.get("use_case_clarity", 1),
+        "problem_solution_fit": cached_ranking.get("problem_solution_fit", 1),
+        "actionability": cached_ranking.get("actionability", 1),
+        "credibility_novelty": cached_ranking.get("credibility_novelty", 1),
+        "use_case": cached_ranking.get("use_case", ""),
+        "problem_solved": cached_ranking.get("problem_solved", ""),
+        "reason": cached_ranking.get("reason", "")
+    }
+
+
+def rank_articles(articles, provider, ranking_cache):
     ranked_articles = []
 
     for article in articles:
-        try:
-            ranking = provider.rank_article(article)
-        except Exception as error:
-            ranking = {
-                "relevance": 1,
-                "use_case_clarity": 1,
-                "problem_solution_fit": 1,
-                "actionability": 1,
-                "credibility_novelty": 1,
-                "use_case": "",
-                "problem_solved": "",
-                "reason": str(error),
-                "error": str(error)
-            }
+        cached_ranking = get_cached_result(ranking_cache, article["url"])
 
-        ranking["relevance"] = clamp_score(ranking.get("relevance"))
-        ranking["use_case_clarity"] = clamp_score(ranking.get("use_case_clarity"))
-        ranking["problem_solution_fit"] = clamp_score(ranking.get("problem_solution_fit"))
-        ranking["actionability"] = clamp_score(ranking.get("actionability"))
-        ranking["credibility_novelty"] = clamp_score(ranking.get("credibility_novelty"))
-
-        if ranking.get("error"):
-            score = 55.0
-            recommendation = "Background"
-            ranking["reason"] = ranking["error"]
+        if cached_ranking:
+            ranking = get_ranking_from_cache(cached_ranking)
+            score = cached_ranking.get("score", 55.0)
+            recommendation = cached_ranking.get("recommendation", "Background")
+            print(f"Loaded ranking from cache for: {article['title']}")
         else:
-            score = calculate_article_score(ranking)
-            recommendation = get_recommendation(score)
+            try:
+                ranking = provider.rank_article(article)
+            except Exception as error:
+                ranking = {
+                    "relevance": 1,
+                    "use_case_clarity": 1,
+                    "problem_solution_fit": 1,
+                    "actionability": 1,
+                    "credibility_novelty": 1,
+                    "use_case": "",
+                    "problem_solved": "",
+                    "reason": str(error),
+                    "error": str(error)
+                }
+
+            ranking["relevance"] = clamp_score(ranking.get("relevance"))
+            ranking["use_case_clarity"] = clamp_score(ranking.get("use_case_clarity"))
+            ranking["problem_solution_fit"] = clamp_score(ranking.get("problem_solution_fit"))
+            ranking["actionability"] = clamp_score(ranking.get("actionability"))
+            ranking["credibility_novelty"] = clamp_score(ranking.get("credibility_novelty"))
+
+            if ranking.get("error"):
+                score = 55.0
+                recommendation = "Background"
+                ranking["reason"] = ranking["error"]
+            else:
+                score = calculate_article_score(ranking)
+                recommendation = get_recommendation(score)
+
+                cache_entry = build_ranking_cache_entry(
+                    article,
+                    ranking,
+                    score,
+                    recommendation,
+                    provider
+                )
+                set_cached_result(ranking_cache, article["url"], cache_entry)
+                save_json_cache(str(RANKING_CACHE_FILE), ranking_cache)
+                print(f"Saved ranking to cache for: {article['title']}")
 
         article_with_ranking = article.copy()
         article_with_ranking["ranking"] = ranking
@@ -438,12 +544,15 @@ def main():
     clean_articles = load_articles(CLEAN_OUTPUT_FILE)
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
     provider = get_llm_provider()
+    summary_cache = load_json_cache(str(SUMMARY_CACHE_FILE))
+    ranking_cache = load_json_cache(str(RANKING_CACHE_FILE))
 
     print(f"Using LLM provider: {LLM_PROVIDER}")
 
     summarized_articles, successful_summaries = summarize_articles(
         articles_ready_for_brief,
-        provider
+        provider,
+        summary_cache
     )
     market_brief = create_market_brief(summarized_articles)
     save_markdown(market_brief, MARKET_BRIEF_FILE)
@@ -451,7 +560,7 @@ def main():
     print(f"Generated AI summaries for {successful_summaries} articles.")
     print(f"Saved market brief to {MARKET_BRIEF_FILE}")
 
-    ranked_articles = rank_articles(articles_ready_for_brief, provider)
+    ranked_articles = rank_articles(articles_ready_for_brief, provider, ranking_cache)
     ranked_sources_report = create_ranked_sources_report(ranked_articles)
     save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
 

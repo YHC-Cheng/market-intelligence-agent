@@ -39,6 +39,7 @@ class GeminiProvider(BaseLLMProvider):
         api_key = os.getenv("GEMINI_API_KEY")
         self.client = None
         self.setup_error = ""
+        self.last_model_used = LLM_MODEL
 
         if not api_key:
             self.setup_error = "GEMINI_API_KEY is not set."
@@ -86,6 +87,7 @@ class GeminiProvider(BaseLLMProvider):
                         contents=prompt,
                         config={"response_mime_type": "application/json"}
                     )
+                    self.last_model_used = model_name
                     return response.text
                 except Exception as error:
                     last_error = error
