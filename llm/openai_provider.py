@@ -16,3 +16,10 @@ class OpenAIProvider(BaseLLMProvider):
         references_text: str
     ) -> str:
         raise NotImplementedError("OpenAI provider is not implemented yet.")
+
+    def generate_slide_draft(
+        self,
+        topic: str,
+        market_analysis_report: str
+    ) -> str:
+        raise NotImplementedError("OpenAI provider is not implemented yet.")

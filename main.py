@@ -19,6 +19,7 @@ from config import (
     LLM_PROVIDER,
     MAX_ARTICLES_PER_RUN,
     REPORT_TEMPLATE,
+    SLIDE_DRAFT_ENABLED,
     RSS_SOURCES_BY_TOPIC
 )
 from llm.gemini_provider import GeminiProvider
@@ -37,6 +38,7 @@ CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
 RANKED_SOURCES_FILE = Path("outputs/reports/ranked_sources.md")
 MARKET_ANALYSIS_REPORT_FILE = Path("outputs/reports/market_analysis_report.md")
+SLIDE_DRAFT_FILE = Path("outputs/slides/slide_draft.md")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
@@ -878,6 +880,42 @@ def get_market_analysis_report(
     return report
 
 
+def create_fallback_slide_draft(error):
+    return "\n".join([
+        f"# Slide Draft: {DEFAULT_TOPIC}",
+        "",
+        "## Fallback Slide Draft",
+        "",
+        f"- Topic: {DEFAULT_TOPIC}",
+        f"- Error message: {error}",
+        f"- Market analysis report path: {MARKET_ANALYSIS_REPORT_FILE}",
+        "- Please review the market analysis report first, then regenerate the slide draft.",
+        ""
+    ])
+
+
+def generate_slide_draft(provider):
+    try:
+        if not MARKET_ANALYSIS_REPORT_FILE.exists():
+            raise FileNotFoundError(
+                f"Market analysis report not found: {MARKET_ANALYSIS_REPORT_FILE}"
+            )
+
+        market_analysis_report = load_markdown(MARKET_ANALYSIS_REPORT_FILE)
+        slide_draft = provider.generate_slide_draft(
+            DEFAULT_TOPIC,
+            market_analysis_report
+        )
+
+        if not slide_draft.strip():
+            raise ValueError("LLM returned an empty slide draft.")
+
+        return slide_draft
+    except Exception as error:
+        print(f"Warning: Could not generate slide draft: {error}")
+        return create_fallback_slide_draft(error)
+
+
 def save_markdown(content, output_file):
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -966,6 +1004,13 @@ def main():
 
     print("Generated market analysis report with references.")
     print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
+
+    if SLIDE_DRAFT_ENABLED:
+        slide_draft = generate_slide_draft(provider)
+        save_markdown(slide_draft, SLIDE_DRAFT_FILE)
+
+        print("Generated slide draft.")
+        print(f"Saved slide draft to {SLIDE_DRAFT_FILE}")
 
 
 if __name__ == "__main__":

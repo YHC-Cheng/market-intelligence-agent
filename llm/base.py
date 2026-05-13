@@ -19,3 +19,11 @@ class BaseLLMProvider(ABC):
         references_text: str
     ) -> str:
         pass
+
+    @abstractmethod
+    def generate_slide_draft(
+        self,
+        topic: str,
+        market_analysis_report: str
+    ) -> str:
+        pass

@@ -167,6 +167,25 @@ class GeminiProvider(BaseLLMProvider):
             response_mime_type=None
         )
 
+    def generate_slide_draft(
+        self,
+        topic: str,
+        market_analysis_report: str
+    ) -> str:
+        if self.setup_error:
+            raise RuntimeError(self.setup_error)
+
+        prompt = self.create_slide_draft_prompt(
+            topic,
+            market_analysis_report
+        )
+
+        return self.generate_content_text(
+            prompt,
+            "slide draft",
+            response_mime_type=None
+        )
+
     def rank_article(self, article: dict) -> dict:
         if self.setup_error:
             return {
@@ -353,6 +372,113 @@ Ranked sources:
 
 References:
 {references_text}
+"""
+
+    def create_slide_draft_prompt(
+        self,
+        topic: str,
+        market_analysis_report: str
+    ) -> str:
+        return f"""
+You are a senior product manager creating an editable Markdown slide draft.
+
+Write in Traditional Chinese.
+Use only the information in the market analysis report.
+Do not summarize articles one by one.
+Keep bullets concise and presentation-ready.
+Preserve [來源 1], [來源 2], etc. citation markers when making claims.
+Do not invent facts that are not in the report.
+If evidence is insufficient, explicitly write: 「目前資料不足以判斷」.
+
+Return exactly this structure:
+
+# Slide Draft: {topic}
+
+## Slide 1：本週市場趨勢 / 新趨勢
+
+### 核心訊息
+
+Use 1 sentence for the most important market change this week.
+
+### 重點內容
+
+- 3 to 5 concise bullets about market direction, vendor moves, technology changes, or representative signals.
+- Do not summarize article by article.
+
+### 講稿提示
+
+Use 2 to 4 sentences explaining how to present this slide.
+
+---
+
+## Slide 2：市場問題與現有解法
+
+### 核心訊息
+
+Use 1 sentence explaining the market pain point and emerging solutions.
+
+### 重點內容
+
+- 3 to 5 concise bullets.
+- Explain the market problem or pain point.
+- Explain how current tools, platforms, technologies, or products solve it.
+- Prioritize clear use cases or problem-solution fit.
+
+### 講稿提示
+
+Use 2 to 4 sentences explaining how to present this slide.
+
+---
+
+## Slide 3：代表性 Use Case / 工具案例
+
+### 核心訊息
+
+Use 1 sentence explaining the most important representative case.
+
+### 重點內容
+
+- 2 to 4 concise bullets.
+- Each bullet can be a use case or tool example.
+- Explain the usage context, problem solved, and why it matters.
+
+### 講稿提示
+
+Use 2 to 4 sentences explaining how to present this slide.
+
+---
+
+## Slide 4：給產品的啟示與後續觀察
+
+### 核心訊息
+
+Use 1 sentence explaining what these market signals mean for product strategy.
+
+### 重點內容
+
+- 3 to 5 concise bullets.
+- Focus on implications for SaaS, FinOps, or Cloud Management products.
+- Include possible product capabilities, UX, governance, automation, or positioning directions.
+- Include follow-up questions worth tracking or validating.
+
+### 講稿提示
+
+Use 2 to 4 sentences explaining how to present this slide.
+
+---
+
+## References
+
+Extract and preserve the references from the report.
+Use this format:
+
+[來源 1] title  
+- Source: source
+- Published date: published_date
+- URL: url
+
+Market analysis report:
+{market_analysis_report}
 """
 
     def parse_response(self, response_text: str) -> dict:
