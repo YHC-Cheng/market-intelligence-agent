@@ -72,7 +72,12 @@ class GeminiProvider(BaseLLMProvider):
                 "error": str(error)
             }
 
-    def generate_content_text(self, prompt, article_title):
+    def generate_content_text(
+        self,
+        prompt,
+        article_title,
+        response_mime_type="application/json"
+    ):
         model_names = [LLM_MODEL] + LLM_FALLBACK_MODELS
         last_error = None
 
@@ -82,10 +87,18 @@ class GeminiProvider(BaseLLMProvider):
 
             for attempt in range(len(RETRY_DELAYS) + 1):
                 try:
+                    request = {
+                        "model": model_name,
+                        "contents": prompt
+                    }
+
+                    if response_mime_type:
+                        request["config"] = {
+                            "response_mime_type": response_mime_type
+                        }
+
                     response = self.client.models.generate_content(
-                        model=model_name,
-                        contents=prompt,
-                        config={"response_mime_type": "application/json"}
+                        **request
                     )
                     self.last_model_used = model_name
                     return response.text
@@ -104,6 +117,27 @@ class GeminiProvider(BaseLLMProvider):
                     time.sleep(RETRY_DELAYS[retry_number - 1])
 
         raise last_error
+
+    def generate_market_analysis_report(
+        self,
+        topic: str,
+        market_brief: str,
+        ranked_sources: str
+    ) -> str:
+        if self.setup_error:
+            raise RuntimeError(self.setup_error)
+
+        prompt = self.create_market_analysis_prompt(
+            topic,
+            market_brief,
+            ranked_sources
+        )
+
+        return self.generate_content_text(
+            prompt,
+            "market analysis report",
+            response_mime_type=None
+        )
 
     def rank_article(self, article: dict) -> dict:
         if self.setup_error:
@@ -208,6 +242,78 @@ Matched keywords: {matched_keywords}
 
 Article content:
 {content}
+"""
+
+    def create_market_analysis_prompt(
+        self,
+        topic: str,
+        market_brief: str,
+        ranked_sources: str
+    ) -> str:
+        return f"""
+You are a senior product manager and market intelligence analyst.
+
+Write a Traditional Chinese market analysis report.
+
+Important rules:
+- Do not summarize articles one by one.
+- Synthesize the sources into market-level product insights.
+- Prioritize articles whose recommendation is Core or Useful.
+- Use Background articles only as supporting context.
+- Do not use Exclude articles.
+- Emphasize sources with clear use cases or strong problem-solution fit.
+- Do not invent facts that are not supported by the provided sources.
+- If the evidence is insufficient, explicitly write: 「目前資料不足以判斷」.
+- Make the product implications concrete for SaaS, FinOps, or Cloud Management products.
+
+Use exactly this structure:
+
+# Market Analysis Report: {topic}
+
+## 1. 市場趨勢 / 新趨勢
+
+整理本週觀察到的主要市場變化。
+
+請回答：
+- 這週出現了什麼值得注意的新趨勢？
+- 哪些產品、技術、廠商動作或 use case 值得關注？
+- 這些訊號是否代表市場方向正在改變？
+
+## 2. 市場問題或痛點
+
+整理這些趨勢背後反映的問題。
+
+請回答：
+- 企業、使用者或產品團隊正在遇到什麼問題？
+- 現有流程或工具為什麼不足？
+- 為什麼這個問題現在變得重要？
+
+如果資料不足以判斷，請明確寫：
+「目前資料不足以完整判斷市場痛點，但可觀察到……」
+
+## 3. 現有工具或解法
+
+整理文章中提到的產品、工具、平台、技術或做法。
+
+請回答：
+- 目前市場上出現了哪些解法？
+- 它們分別解決什麼問題？
+- 是否有明確 use case 或實際應用場景？
+
+## 4. 給產品的啟示
+
+從產品經理角度整理可以借鏡的方向。
+
+請回答：
+- 這對 SaaS / FinOps / Cloud Management 產品有什麼啟發？
+- 是否可以轉化成產品功能、使用者體驗、權限治理、自動化流程或產品定位？
+- 後續值得追蹤或驗證什麼？
+
+Market brief:
+{market_brief}
+
+Ranked sources:
+{ranked_sources}
 """
 
     def parse_response(self, response_text: str) -> dict:

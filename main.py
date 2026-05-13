@@ -13,7 +13,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from config import DEFAULT_TOPIC, LLM_MODEL, LLM_PROVIDER, RSS_SOURCES
+from config import (
+    DEFAULT_TOPIC,
+    LLM_MODEL,
+    LLM_PROVIDER,
+    REPORT_TEMPLATE,
+    RSS_SOURCES
+)
 from llm.gemini_provider import GeminiProvider
 from llm.openai_provider import OpenAIProvider
 from utils.cache import (
@@ -29,6 +35,7 @@ RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
 MARKET_BRIEF_FILE = Path("outputs/reports/market_brief.md")
 RANKED_SOURCES_FILE = Path("outputs/reports/ranked_sources.md")
+MARKET_ANALYSIS_REPORT_FILE = Path("outputs/reports/market_analysis_report.md")
 KEYWORDS_FILE = Path("config/keywords.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
@@ -535,6 +542,154 @@ def create_ranked_sources_report(articles):
     return "\n".join(lines)
 
 
+def load_markdown(input_file):
+    with input_file.open("r", encoding="utf-8") as file:
+        return file.read()
+
+
+def get_recommendation_from_section(section):
+    for line in section.splitlines():
+        if line.startswith("- Recommendation:"):
+            return line.replace("- Recommendation:", "").strip()
+
+    return ""
+
+
+def filter_ranked_sources_for_analysis(ranked_sources):
+    sections = []
+    current_section = []
+
+    for line in ranked_sources.splitlines():
+        if line.startswith("## "):
+            if current_section:
+                sections.append("\n".join(current_section))
+            current_section = [line]
+        elif current_section:
+            current_section.append(line)
+
+    if current_section:
+        sections.append("\n".join(current_section))
+
+    primary_sections = []
+    background_sections = []
+
+    for section in sections:
+        recommendation = get_recommendation_from_section(section)
+
+        if recommendation in ["Core", "Useful"]:
+            primary_sections.append(section)
+        elif recommendation == "Background":
+            background_sections.append(section)
+
+    lines = [
+        "# Ranked Sources for Market Analysis",
+        "",
+        "Use Core and Useful sources as primary evidence.",
+        "Use Background sources only as supporting context.",
+        ""
+    ]
+
+    if primary_sections:
+        lines.extend(primary_sections)
+
+    if background_sections:
+        lines.extend([
+            "",
+            "# Background Sources",
+            ""
+        ])
+        lines.extend(background_sections)
+
+    return "\n\n".join(lines)
+
+
+def get_urls_from_markdown(markdown_text):
+    urls = []
+
+    for line in markdown_text.splitlines():
+        if line.startswith("- URL:"):
+            urls.append(line.replace("- URL:", "").strip())
+
+    return urls
+
+
+def filter_market_brief_for_analysis(market_brief, allowed_urls):
+    sections = []
+    current_section = []
+
+    for line in market_brief.splitlines():
+        if line.startswith("## "):
+            if current_section:
+                sections.append("\n".join(current_section))
+            current_section = [line]
+        elif current_section:
+            current_section.append(line)
+
+    if current_section:
+        sections.append("\n".join(current_section))
+
+    lines = [
+        f"# Market Brief for Analysis",
+        "",
+        f"Topic: {DEFAULT_TOPIC}",
+        ""
+    ]
+
+    for section in sections:
+        section_urls = get_urls_from_markdown(section)
+
+        if section_urls and section_urls[0] in allowed_urls:
+            lines.append(section)
+
+    if len(lines) == 4:
+        lines.append("No Core, Useful, or Background articles were available.")
+
+    return "\n\n".join(lines)
+
+
+def create_fallback_market_analysis_report(error):
+    return "\n".join([
+        f"# Market Analysis Report: {DEFAULT_TOPIC}",
+        "",
+        "## Fallback Report",
+        "",
+        f"- Topic: {DEFAULT_TOPIC}",
+        f"- Template: {REPORT_TEMPLATE}",
+        f"- Error message: {error}",
+        f"- Market brief path: {MARKET_BRIEF_FILE}",
+        f"- Ranked sources path: {RANKED_SOURCES_FILE}",
+        ""
+    ])
+
+
+def generate_market_analysis_report(provider):
+    try:
+        market_brief = load_markdown(MARKET_BRIEF_FILE)
+        ranked_sources = load_markdown(RANKED_SOURCES_FILE)
+        ranked_sources_for_analysis = filter_ranked_sources_for_analysis(
+            ranked_sources
+        )
+        allowed_urls = get_urls_from_markdown(ranked_sources_for_analysis)
+        market_brief_for_analysis = filter_market_brief_for_analysis(
+            market_brief,
+            allowed_urls
+        )
+
+        report = provider.generate_market_analysis_report(
+            DEFAULT_TOPIC,
+            market_brief_for_analysis,
+            ranked_sources_for_analysis
+        )
+
+        if not report.strip():
+            raise ValueError("LLM returned an empty market analysis report.")
+
+        return report
+    except Exception as error:
+        print(f"Warning: Could not generate market analysis report: {error}")
+        return create_fallback_market_analysis_report(error)
+
+
 def save_markdown(content, output_file):
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -605,6 +760,12 @@ def main():
 
     print(f"Ranked {len(ranked_articles)} articles by value.")
     print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
+
+    market_analysis_report = generate_market_analysis_report(provider)
+    save_markdown(market_analysis_report, MARKET_ANALYSIS_REPORT_FILE)
+
+    print("Generated market analysis report.")
+    print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
 
 
 if __name__ == "__main__":

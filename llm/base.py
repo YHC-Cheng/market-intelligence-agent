@@ -9,3 +9,12 @@ class BaseLLMProvider(ABC):
     @abstractmethod
     def rank_article(self, article: dict) -> dict:
         pass
+
+    @abstractmethod
+    def generate_market_analysis_report(
+        self,
+        topic: str,
+        market_brief: str,
+        ranked_sources: str
+    ) -> str:
+        pass
