@@ -135,6 +135,20 @@ Output:
 outputs/reports/source_validation_report.md
 ```
 
+### Review Output Quality
+
+Run:
+
+```bash
+python3 scripts/review_outputs.py
+```
+
+Output:
+
+```text
+outputs/reports/output_quality_review.md
+```
+
 ### Run Full Workflow
 
 Run with default topic:
