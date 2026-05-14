@@ -71,18 +71,16 @@ def determine_freshness_status(
 
     previous_hash = previous_article.get("content_hash", "")
 
-    if content_hash and previous_hash:
-        if content_hash != previous_hash:
-            return "updated"
-        return "repeated"
+    if not content_hash:
+        return "unknown"
 
-    if article.get("source_type") == "web" and article.get("web_mode") == "static":
-        if content_hash and content_hash != previous_hash:
-            return "updated"
-        if content_hash and content_hash == previous_hash:
-            return "repeated"
+    if not previous_hash:
+        return "updated"
 
-    return "unknown"
+    if content_hash != previous_hash:
+        return "updated"
+
+    return "repeated"
 
 
 def update_processed_history(
@@ -100,6 +98,10 @@ def update_processed_history(
 
     first_seen = previous_article.get("first_seen", today)
     seen_count = previous_article.get("seen_count", 0) + 1
+    content_hash = article.get("content_hash", "")
+
+    if not content_hash:
+        content_hash = previous_article.get("content_hash", "")
 
     history[url] = {
         "title": article.get("title", ""),
@@ -112,7 +114,7 @@ def update_processed_history(
         "published_date": article.get("published_date", ""),
         "first_seen": first_seen,
         "last_seen": today,
-        "content_hash": article.get("content_hash", ""),
+        "content_hash": content_hash,
         "seen_count": seen_count,
         "last_freshness_status": freshness_status
     }

@@ -1,8 +1,9 @@
-# Slide Draft: ProductObservation
+# Slide Draft
 
-## Fallback Slide Draft
+## Slide 1：本週市場狀態
 
-- Topic: ProductObservation
-- Error message: [Errno 8] nodename nor servname provided, or not known
-- Market analysis report path: outputs/reports/market_analysis_report.md
-- Please review the market analysis report first, then regenerate the slide draft.
+核心訊息：本週未觀察到足夠的新市場訊號。
+
+## Slide 2：觀察建議
+
+建議持續追蹤來源，不做新的趨勢判斷。

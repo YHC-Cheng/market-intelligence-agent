@@ -2,6 +2,7 @@ import argparse
 import json
 import time
 import warnings
+from html.parser import HTMLParser
 from datetime import datetime
 from pathlib import Path
 
@@ -43,7 +44,7 @@ from utils.history import (
     save_processed_history,
     update_processed_history
 )
-from utils.web import fetch_listing_links
+from utils.web import fetch_html, fetch_listing_links
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
@@ -56,6 +57,30 @@ PROCESSED_HISTORY_FILE = Path("data/history/processed_articles.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
 RUNTIME_TOPIC = DEFAULT_TOPIC
+
+
+class VisibleTextParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.text_parts = []
+        self.ignored_tags = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag in {"script", "style", "noscript", "svg"}:
+            self.ignored_tags.append(tag)
+
+    def handle_endtag(self, tag):
+        if self.ignored_tags and self.ignored_tags[-1] == tag:
+            self.ignored_tags.pop()
+
+    def handle_data(self, data):
+        if self.ignored_tags:
+            return
+
+        text = " ".join(data.split())
+
+        if text:
+            self.text_parts.append(text)
 
 
 def get_current_topic():
@@ -250,32 +275,55 @@ def load_articles(input_file):
         return json.load(file)
 
 
+def extract_visible_text_from_html(html):
+    parser = VisibleTextParser()
+    parser.feed(html)
+    return "\n".join(parser.text_parts)
+
+
 def extract_content(article):
     content = ""
     extraction_status = "failed"
 
     try:
-        downloaded = trafilatura.fetch_url(article["url"])
+        url = article.get("url", "")
+        downloaded = trafilatura.fetch_url(url) if url else ""
 
         if downloaded:
-            extracted_content = trafilatura.extract(downloaded)
+            extracted_content = trafilatura.extract(downloaded, url=url)
 
             if extracted_content:
                 content = extracted_content
                 extraction_status = "success"
+
+        if not content and url:
+            html = fetch_html(url)
+
+            if html:
+                extracted_content = trafilatura.extract(html, url=url)
+
+                if not extracted_content:
+                    extracted_content = extract_visible_text_from_html(html)
+
+                if extracted_content:
+                    content = extracted_content
+                    extraction_status = "success"
     except Exception as error:
-        print(f"Warning: Could not extract content from {article['url']}: {error}")
+        print(
+            "Warning: Could not extract content from "
+            f"{article.get('url', '')}: {error}"
+        )
 
     clean_article = {
-        "title": article["title"],
-        "url": article["url"],
-        "source": article["source"],
+        "title": article.get("title", ""),
+        "url": article.get("url", ""),
+        "source": article.get("source", ""),
         "source_category": article.get("source_category", ""),
         "source_type": article.get("source_type", "rss"),
         "web_mode": article.get("web_mode"),
-        "published_date": article["published_date"],
-        "topic": article["topic"],
-        "matched_keywords": article["matched_keywords"],
+        "published_date": article.get("published_date", ""),
+        "topic": article.get("topic", get_current_topic()),
+        "matched_keywords": article.get("matched_keywords", []),
         "content": content,
         "content_length": len(content),
         "extraction_status": extraction_status
@@ -352,14 +400,22 @@ def print_freshness_summary(articles):
         if article.get("freshness_status") in FRESHNESS_EXCLUDED_STATUSES
     )
 
-    if excluded_count:
-        print(
-            f"Excluded {excluded_count} repeated/old articles from "
-            "this week's report."
-        )
+    print(
+        f"Excluded {excluded_count} repeated/old articles from "
+        "this week's report."
+    )
 
-    if counts.get("new", 0) + counts.get("updated", 0) == 0:
-        print("No new or updated articles found for this run.")
+    return counts
+
+
+def format_freshness_summary_lines(freshness_counts):
+    return [
+        f"- New: {freshness_counts.get('new', 0)}",
+        f"- Updated: {freshness_counts.get('updated', 0)}",
+        f"- Unknown: {freshness_counts.get('unknown', 0)}",
+        f"- Repeated: {freshness_counts.get('repeated', 0)}",
+        f"- Old: {freshness_counts.get('old', 0)}"
+    ]
 
 
 def get_articles_ready_for_brief(articles):
@@ -767,6 +823,22 @@ def create_market_brief(articles):
     return "\n".join(lines)
 
 
+def create_no_eligible_market_brief(freshness_counts):
+    lines = [
+        "# Market Brief",
+        "",
+        f"Topic: {get_current_topic()}",
+        "",
+        "本週沒有新的 eligible articles。",
+        "",
+        "## Freshness Summary",
+        ""
+    ]
+    lines.extend(format_freshness_summary_lines(freshness_counts))
+    lines.append("")
+    return "\n".join(lines)
+
+
 def create_ranked_sources_report(articles):
     lines = [
         "# Ranked Sources",
@@ -820,6 +892,22 @@ def create_ranked_sources_report(articles):
             ""
         ])
 
+    return "\n".join(lines)
+
+
+def create_no_eligible_ranked_sources_report(freshness_counts):
+    lines = [
+        "# Ranked Sources",
+        "",
+        f"Topic: {get_current_topic()}",
+        "",
+        "本週沒有可評分的新文章。",
+        "",
+        "## Freshness Summary",
+        ""
+    ]
+    lines.extend(format_freshness_summary_lines(freshness_counts))
+    lines.append("")
     return "\n".join(lines)
 
 
@@ -1036,6 +1124,20 @@ def create_no_new_market_analysis_report(references_text):
     return "\n".join(lines)
 
 
+def create_no_eligible_market_analysis_report(freshness_counts):
+    lines = [
+        f"# Market Analysis Report: {get_current_topic()}",
+        "",
+        "本週未觀察到足夠的新市場訊號，主要來源可能與過去重複，建議維持追蹤。",
+        "",
+        "## Freshness Summary",
+        ""
+    ]
+    lines.extend(format_freshness_summary_lines(freshness_counts))
+    lines.append("")
+    return "\n".join(lines)
+
+
 def build_report_cache_entry(report, provider, cache_period):
     return {
         "topic": get_current_topic(),
@@ -1125,6 +1227,21 @@ def create_fallback_slide_draft(error):
     ])
 
 
+def create_no_eligible_slide_draft():
+    return "\n".join([
+        "# Slide Draft",
+        "",
+        "## Slide 1：本週市場狀態",
+        "",
+        "核心訊息：本週未觀察到足夠的新市場訊號。",
+        "",
+        "## Slide 2：觀察建議",
+        "",
+        "建議持續追蹤來源，不做新的趨勢判斷。",
+        ""
+    ])
+
+
 def generate_slide_draft(provider):
     try:
         if not MARKET_ANALYSIS_REPORT_FILE.exists():
@@ -1184,14 +1301,42 @@ def main():
         if article["extraction_status"] == "success":
             successful_extractions += 1
 
-    save_articles(clean_articles, CLEAN_OUTPUT_FILE)
-    print_freshness_summary(clean_articles)
-
     print(f"Extracted content for {successful_extractions}/{len(raw_articles)} articles.")
+    freshness_counts = print_freshness_summary(clean_articles)
+    save_articles(clean_articles, CLEAN_OUTPUT_FILE)
     print(f"Saved clean articles to {CLEAN_OUTPUT_FILE}")
+
+    if freshness_counts.get("new", 0) + freshness_counts.get("updated", 0) == 0:
+        print("No new or updated articles found for this run.")
 
     clean_articles = load_articles(CLEAN_OUTPUT_FILE)
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
+
+    if not articles_ready_for_brief:
+        market_brief = create_no_eligible_market_brief(freshness_counts)
+        ranked_sources_report = create_no_eligible_ranked_sources_report(
+            freshness_counts
+        )
+        market_analysis_report = create_no_eligible_market_analysis_report(
+            freshness_counts
+        )
+        slide_draft = create_no_eligible_slide_draft()
+
+        save_markdown(market_brief, MARKET_BRIEF_FILE)
+        save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
+        save_markdown(market_analysis_report, MARKET_ANALYSIS_REPORT_FILE)
+        save_markdown(slide_draft, SLIDE_DRAFT_FILE)
+
+        print(
+            "No eligible articles found. Generated fallback reports without "
+            "calling LLM."
+        )
+        print(f"Saved market brief to {MARKET_BRIEF_FILE}")
+        print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
+        print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
+        print(f"Saved slide draft to {SLIDE_DRAFT_FILE}")
+        return
+
     provider = get_llm_provider()
     week_key = get_current_week_key()
     cache_paths = get_cache_paths(get_current_topic(), week_key)

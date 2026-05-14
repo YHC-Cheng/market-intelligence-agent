@@ -1,5 +1,26 @@
 [
   {
+    "title": "FinOps In Full Bloom",
+    "url": "https://www.cloudzero.com/blog/tag/finops-in-full-bloom/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "published_date": "",
+    "topic": "ProductObservation",
+    "matched_keywords": [
+      "FinOps"
+    ],
+    "content": "To provide the best experiences, we use technologies like cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behavior or unique IDs on this site. Not consenting or withdrawing consent, may adversely affect certain features and functions.\nThe technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network.\nThe technical storage or access is necessary for the legitimate purpose of storing preferences that are not requested by the subscriber or user.\nThe technical storage or access that is used exclusively for statistical purposes.\nThe technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this purpose alone cannot usually be used to identify you.\nThe technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes.",
+    "content_length": 1335,
+    "extraction_status": "success",
+    "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
+    "freshness_status": "repeated",
+    "first_seen": "2026-05-14",
+    "last_seen": "2026-05-14",
+    "seen_count": 3
+  },
+  {
     "title": "IBM Cloudability / Apptio",
     "url": "https://www.ibm.com/blog/category/cloudability/",
     "source": "IBM Cloudability / Apptio",
@@ -9,14 +30,14 @@
     "published_date": "",
     "topic": "ProductObservation",
     "matched_keywords": [],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed",
-    "content_hash": "",
-    "freshness_status": "unknown",
+    "content": "Explore the themes of this year\u2019s Think keynotes and panels\nIn a special podcast episode, the panel analyzes IBM\u2019s new AI operating model and reacts to releases from the conference floor.\nBoost productivity and automate workflows\nScale AI with a future-proofed architecture\nOngoing tech and business trends\nBecome an expert on fundamental and emerging tech topics with our comprehensive guides\nCatch up on AI and quantum knowledge\nListen to engaging discussions with tech leaders. Watch the latest episodes.\nExplainers |\nSynthetic monitoring explained: a guide to reliable DevOps workflowsLearn how synthetic monitoring helps DevOps teams catch issues early, validate APIs, and strengthen reliability.\nExplore expert-led sessions on AI agents, data for AI, AI models, AI automation, and AI governance and security.",
+    "content_length": 814,
+    "extraction_status": "success",
+    "content_hash": "6414764c50da702abedc464a2e57041f5cd0c222dac0d7a7878685a5fe209a2f",
+    "freshness_status": "repeated",
     "first_seen": "2026-05-14",
     "last_seen": "2026-05-14",
-    "seen_count": 2
+    "seen_count": 4
   },
   {
     "title": "eCloudvalley Atlas",
@@ -28,13 +49,13 @@
     "published_date": "",
     "topic": "ProductObservation",
     "matched_keywords": [],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed",
-    "content_hash": "",
-    "freshness_status": "unknown",
+    "content": "We're sorry but eCloudvalley Digital Technology doesn't work properly without JavaScript enabled. Please enable it to continue.",
+    "content_length": 127,
+    "extraction_status": "success",
+    "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
+    "freshness_status": "repeated",
     "first_seen": "2026-05-14",
     "last_seen": "2026-05-14",
-    "seen_count": 2
+    "seen_count": 4
   }
 ]
