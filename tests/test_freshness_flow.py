@@ -86,6 +86,7 @@ class NoEligibleReportsTest(unittest.TestCase):
             "RANKED_SOURCES_FILE": main.RANKED_SOURCES_FILE,
             "MARKET_ANALYSIS_REPORT_FILE": main.MARKET_ANALYSIS_REPORT_FILE,
             "SLIDE_DRAFT_FILE": main.SLIDE_DRAFT_FILE,
+            "PROCESSED_HISTORY_FILE": main.PROCESSED_HISTORY_FILE,
         }
 
         main.RAW_OUTPUT_FILE = self.temp_path / "raw_articles.json"
@@ -96,6 +97,7 @@ class NoEligibleReportsTest(unittest.TestCase):
             self.temp_path / "market_analysis_report.md"
         )
         main.SLIDE_DRAFT_FILE = self.temp_path / "slide_draft.md"
+        main.PROCESSED_HISTORY_FILE = self.temp_path / "processed_articles.json"
 
     def tearDown(self):
         for name, value in self.original_paths.items():
@@ -131,7 +133,7 @@ class NoEligibleReportsTest(unittest.TestCase):
             with patch("main.load_keywords", return_value=[]):
                 with patch(
                     "main.fetch_articles_from_rss",
-                    return_value=([raw_article], 1, 0)
+                    return_value=([raw_article], 1, 0, [])
                 ):
                     with patch(
                         "main.extract_articles_content",
@@ -141,14 +143,31 @@ class NoEligibleReportsTest(unittest.TestCase):
                             "main.enrich_articles_with_freshness",
                             return_value=[repeated_article]
                         ):
-                            with patch("main.get_llm_provider") as get_provider:
-                                get_provider.side_effect = AssertionError(
-                                    "LLM provider should not be initialized"
-                                )
-                                output = StringIO()
+                            with patch(
+                                "main.ensure_knowledge_files",
+                                return_value={
+                                    "articles": str(
+                                        self.temp_path
+                                        / "articles_knowledge.json"
+                                    ),
+                                    "insights": str(
+                                        self.temp_path
+                                        / "market_insights.json"
+                                    ),
+                                    "sources": str(
+                                        self.temp_path
+                                        / "source_index.json"
+                                    )
+                                }
+                            ):
+                                with patch("main.get_llm_provider") as get_provider:
+                                    get_provider.side_effect = AssertionError(
+                                        "LLM provider should not be initialized"
+                                    )
+                                    output = StringIO()
 
-                                with redirect_stdout(output):
-                                    main.main()
+                                    with redirect_stdout(output):
+                                        main.main()
 
         self.assertIn(
             "No eligible articles found. Generated fallback reports without "

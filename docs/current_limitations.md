@@ -16,6 +16,8 @@
 
 `data/history/processed_articles.json` 也使用 JSON 儲存 URL history 與 content hash。若來源或文章量增加，建議一併遷移到 SQLite。
 
+`data/knowledge/` 目前也使用 JSON 儲存長期 knowledge base，包含 article knowledge、market insights 與 source index。若資料量變大，未來建議遷移到 SQLite；若需要語意搜尋或 RAG，再評估向量資料庫。
+
 ## 4. Markdown Output
 
 目前報告與簡報草稿皆為 Markdown，尚未自動產出 PPTX。

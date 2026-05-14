@@ -18,7 +18,7 @@
     "freshness_status": "repeated",
     "first_seen": "2026-05-14",
     "last_seen": "2026-05-14",
-    "seen_count": 3
+    "seen_count": 4
   },
   {
     "title": "IBM Cloudability / Apptio",
@@ -37,7 +37,7 @@
     "freshness_status": "repeated",
     "first_seen": "2026-05-14",
     "last_seen": "2026-05-14",
-    "seen_count": 4
+    "seen_count": 5
   },
   {
     "title": "eCloudvalley Atlas",
@@ -56,6 +56,6 @@
     "freshness_status": "repeated",
     "first_seen": "2026-05-14",
     "last_seen": "2026-05-14",
-    "seen_count": 4
+    "seen_count": 5
   }
 ]

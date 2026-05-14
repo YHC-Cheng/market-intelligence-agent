@@ -1,0 +1,54 @@
+{
+  "Vantage Blog": {
+    "name": "Vantage Blog",
+    "url": "https://www.vantage.sh/blog/rss.xml",
+    "category": "competitor_product",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "ProductObservation"
+    ],
+    "last_checked": "2026-05-14T23:52:26",
+    "status": "failed",
+    "last_entries_count": 0
+  },
+  "CloudZero Blog": {
+    "name": "CloudZero Blog",
+    "url": "https://www.cloudzero.com/blog/",
+    "category": "competitor_product",
+    "type": "web",
+    "web_mode": "listing",
+    "topics": [
+      "ProductObservation"
+    ],
+    "last_checked": "2026-05-14T23:52:26",
+    "status": "listing",
+    "last_entries_count": 5
+  },
+  "IBM Cloudability / Apptio": {
+    "name": "IBM Cloudability / Apptio",
+    "url": "https://www.ibm.com/blog/category/cloudability/",
+    "category": "competitor_product",
+    "type": "web",
+    "web_mode": "static",
+    "topics": [
+      "ProductObservation"
+    ],
+    "last_checked": "2026-05-14T23:52:26",
+    "status": "static",
+    "last_entries_count": 1
+  },
+  "eCloudvalley Atlas": {
+    "name": "eCloudvalley Atlas",
+    "url": "https://www.ecloudvalley.com/",
+    "category": "product_observation",
+    "type": "web",
+    "web_mode": "static",
+    "topics": [
+      "ProductObservation"
+    ],
+    "last_checked": "2026-05-14T23:52:26",
+    "status": "static",
+    "last_entries_count": 1
+  }
+}

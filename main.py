@@ -44,6 +44,14 @@ from utils.history import (
     save_processed_history,
     update_processed_history
 )
+from utils.knowledge import (
+    ensure_knowledge_files,
+    load_json as load_knowledge_json,
+    save_json as save_knowledge_json,
+    update_market_insights,
+    update_source_index,
+    upsert_article_knowledge
+)
 from utils.web import fetch_html, fetch_listing_links
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
@@ -182,11 +190,15 @@ def fetch_articles_from_rss():
                 }
                 articles.append(article)
                 static_web_count += 1
+                source["last_entries_count"] = 1
+                source["last_status"] = "static"
                 print(f"Added static web source: {source['name']}")
             elif web_mode == "listing":
                 try:
                     listing_articles = fetch_listing_links(source, topic)
                 except Exception:
+                    source["last_entries_count"] = 0
+                    source["last_status"] = "failed"
                     print(
                         "Warning: Could not parse listing web source: "
                         f"{source['name']}"
@@ -194,6 +206,8 @@ def fetch_articles_from_rss():
                     continue
 
                 if not listing_articles:
+                    source["last_entries_count"] = 0
+                    source["last_status"] = "failed"
                     print(
                         "Warning: No article links found for listing web source: "
                         f"{source['name']}"
@@ -202,11 +216,15 @@ def fetch_articles_from_rss():
 
                 articles.extend(listing_articles)
                 listing_web_count += len(listing_articles)
+                source["last_entries_count"] = len(listing_articles)
+                source["last_status"] = "listing"
                 print(
                     f"Parsed {len(listing_articles)} links from listing web source: "
                     f"{source['name']}"
                 )
             else:
+                source["last_entries_count"] = 0
+                source["last_status"] = "skipped"
                 print(
                     "Warning: web_mode missing for web source: "
                     f"{source['name']}"
@@ -217,16 +235,22 @@ def fetch_articles_from_rss():
         try:
             feed = feedparser.parse(source["url"])
             entries = feed.entries[:ARTICLES_PER_SOURCE]
+            source["last_entries_count"] = len(entries)
+            source["last_status"] = "active"
         except Exception:
             print(f"Warning: Could not fetch or parse source: {source['name']}")
+            source["last_entries_count"] = 0
+            source["last_status"] = "failed"
             continue
 
         if feed.get("bozo") and not entries:
             print(f"Warning: Could not fetch or parse source: {source['name']}")
+            source["last_status"] = "failed"
             continue
 
         if not entries:
             print(f"Warning: Could not fetch or parse source: {source['name']}")
+            source["last_status"] = "failed"
             continue
 
         for entry in entries:
@@ -243,7 +267,7 @@ def fetch_articles_from_rss():
             }
             articles.append(article)
 
-    return articles, static_web_count, listing_web_count
+    return articles, static_web_count, listing_web_count, sources
 
 
 def filter_articles_by_keywords(articles, keywords):
@@ -1242,6 +1266,111 @@ def create_no_eligible_slide_draft():
     ])
 
 
+def update_source_index_knowledge(topic, sources, knowledge_paths):
+    try:
+        source_index = load_knowledge_json(knowledge_paths["sources"])
+        source_index = update_source_index(topic, sources, source_index)
+        save_knowledge_json(knowledge_paths["sources"], source_index)
+        print("Updated source index knowledge base.")
+    except Exception as error:
+        print(f"Warning: Could not update source index knowledge base: {error}")
+
+
+def update_repeated_article_knowledge_metadata(articles, knowledge_paths):
+    try:
+        knowledge = load_knowledge_json(knowledge_paths["articles"])
+    except Exception as error:
+        print(f"Warning: Could not read article knowledge base: {error}")
+        return 0
+
+    updated_count = 0
+
+    for article in articles:
+        try:
+            url = article.get("url", "")
+
+            if not url or url not in knowledge:
+                continue
+
+            if article.get("freshness_status") not in FRESHNESS_EXCLUDED_STATUSES:
+                continue
+
+            knowledge = upsert_article_knowledge(article, {}, {}, knowledge)
+            updated_count += 1
+        except Exception as error:
+            print(
+                "Warning: Could not update article knowledge metadata for "
+                f"{article.get('url', '')}: {error}"
+            )
+
+    if updated_count:
+        try:
+            save_knowledge_json(knowledge_paths["articles"], knowledge)
+        except Exception as error:
+            print(f"Warning: Could not save article knowledge base: {error}")
+            return 0
+
+    return updated_count
+
+
+def update_articles_knowledge_base(articles, knowledge_paths):
+    try:
+        knowledge = load_knowledge_json(knowledge_paths["articles"])
+    except Exception as error:
+        print(f"Warning: Could not read article knowledge base: {error}")
+        return 0
+
+    updated_count = 0
+
+    for article in articles:
+        try:
+            summary_result = article.get("ai_summary", {})
+            ranking_result = article.get("ranking", {})
+            knowledge = upsert_article_knowledge(
+                article,
+                summary_result,
+                ranking_result,
+                knowledge
+            )
+            updated_count += 1
+        except Exception as error:
+            print(
+                "Warning: Could not update article knowledge for "
+                f"{article.get('url', '')}: {error}"
+            )
+
+    if updated_count:
+        try:
+            save_knowledge_json(knowledge_paths["articles"], knowledge)
+        except Exception as error:
+            print(f"Warning: Could not save article knowledge base: {error}")
+            return 0
+
+    return updated_count
+
+
+def update_market_insights_knowledge(
+    topic,
+    week_key,
+    ranked_articles,
+    knowledge_paths
+):
+    try:
+        insights = load_knowledge_json(knowledge_paths["insights"])
+        insights = update_market_insights(
+            topic,
+            week_key,
+            ranked_articles,
+            str(MARKET_ANALYSIS_REPORT_FILE),
+            str(SLIDE_DRAFT_FILE),
+            insights
+        )
+        save_knowledge_json(knowledge_paths["insights"], insights)
+        print("Updated market insights knowledge base.")
+    except Exception as error:
+        print(f"Warning: Could not update market insights knowledge base: {error}")
+
+
 def generate_slide_draft(provider):
     try:
         if not MARKET_ANALYSIS_REPORT_FILE.exists():
@@ -1280,9 +1409,11 @@ def main():
     print(f"Topic: {get_current_topic()}")
 
     keywords = load_keywords()
-    articles, static_web_count, listing_web_count = fetch_articles_from_rss()
+    articles, static_web_count, listing_web_count, sources = fetch_articles_from_rss()
     relevant_articles = filter_articles_by_keywords(articles, keywords)
     save_articles(relevant_articles, RAW_OUTPUT_FILE)
+    knowledge_paths = ensure_knowledge_files()
+    update_source_index_knowledge(get_current_topic(), sources, knowledge_paths)
 
     rss_article_count = len(articles) - static_web_count - listing_web_count
 
@@ -1311,6 +1442,11 @@ def main():
 
     clean_articles = load_articles(CLEAN_OUTPUT_FILE)
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
+    repeated_metadata_updates = update_repeated_article_knowledge_metadata(
+        clean_articles,
+        knowledge_paths
+    )
+    week_key = get_current_week_key()
 
     if not articles_ready_for_brief:
         market_brief = create_no_eligible_market_brief(freshness_counts)
@@ -1326,11 +1462,20 @@ def main():
         save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
         save_markdown(market_analysis_report, MARKET_ANALYSIS_REPORT_FILE)
         save_markdown(slide_draft, SLIDE_DRAFT_FILE)
+        update_market_insights_knowledge(
+            get_current_topic(),
+            week_key,
+            [],
+            knowledge_paths
+        )
 
         print(
             "No eligible articles found. Generated fallback reports without "
             "calling LLM."
         )
+        print("Updated article knowledge base: 0 articles.")
+        if repeated_metadata_updates:
+            print("Updated knowledge base metadata for repeated articles.")
         print(f"Saved market brief to {MARKET_BRIEF_FILE}")
         print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
         print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
@@ -1338,7 +1483,6 @@ def main():
         return
 
     provider = get_llm_provider()
-    week_key = get_current_week_key()
     cache_paths = get_cache_paths(get_current_topic(), week_key)
     summary_cache = load_json_cache(cache_paths["summary"])
     ranking_cache = load_json_cache(cache_paths["ranking"])
@@ -1372,9 +1516,16 @@ def main():
         cache_paths["ranking"],
         week_key
     )
+    updated_article_count = update_articles_knowledge_base(
+        ranked_articles,
+        knowledge_paths
+    )
     ranked_sources_report = create_ranked_sources_report(ranked_articles)
     save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
 
+    print(f"Updated article knowledge base: {updated_article_count} articles.")
+    if repeated_metadata_updates:
+        print("Updated knowledge base metadata for repeated articles.")
     print(f"Ranked {len(ranked_articles)} articles by value.")
     print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
 
@@ -1404,6 +1555,13 @@ def main():
 
         print("Generated slide draft.")
         print(f"Saved slide draft to {SLIDE_DRAFT_FILE}")
+
+    update_market_insights_knowledge(
+        get_current_topic(),
+        week_key,
+        ranked_articles,
+        knowledge_paths
+    )
 
 
 if __name__ == "__main__":
