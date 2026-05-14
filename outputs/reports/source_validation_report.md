@@ -1,6 +1,6 @@
 # Source Validation Report
 
-Generated at: 2026-05-14T01:37:11
+Generated at: 2026-05-14T22:19:11
 
 ## Summary
 
@@ -10,7 +10,8 @@ Generated at: 2026-05-14T01:37:11
 - Success: 7
 - Failed: 0
 - Static: 4
-- Skipped: 3
+- Listing: 3
+- Skipped: 0
 
 ## Results by Topic
 
@@ -23,38 +24,40 @@ Generated at: 2026-05-14T01:37:11
 - Web mode: 
 - Category: official_ai
 - URL: https://openai.com/news/rss.xml
-- Entries count: 955
+- Entries count: 957
 
 Top entries:
-1. How finance teams use Codex
-2. How NVIDIA engineers and researchers build with Codex
-3. What Parameter Golf taught us about AI-assisted research
+1. Building a safe, effective sandbox to enable Codex on Windows
+2. Our response to the TanStack npm supply chain attack
+3. How finance teams use Codex
 
 #### Anthropic News / Blog
 
-- Status: skipped
+- Status: listing
 - Type: web
 - Web mode: listing
 - Category: official_ai
-- URL: https://www.anthropic.com/news/rss.xml
-- Entries count: 0
-- Reason: Listing web source parsing is not supported yet.
+- URL: https://www.anthropic.com/news
+- Entries count: 5
 
 Top entries:
-No entries available.
+1. Introducing Claude Opus 4.7ProductApr 16, 2026Our latest Opus model brings stronger performance across coding, agents, vision, and multi-step tasks, with greater thoroughness and consistency on the work that matters most.
+2. ProductApr 17, 2026Introducing Claude Design by Anthropic LabsToday, we’re launching Claude Design, a new Anthropic Labs product that lets you collaborate with Claude to create polished visual work like designs, prototypes, slides, one-pagers, and more.
+3. AnnouncementsFeb 4, 2026Claude is a space to thinkWe’ve made a choice: Claude will remain ad-free. We explain why advertising incentives are incompatible with a genuinely helpful AI assistant, and how we plan to expand access without compromising user trust.
 
 #### Google Cloud Blog
 
-- Status: skipped
+- Status: listing
 - Type: web
 - Web mode: listing
 - Category: cloud_provider
-- URL: https://cloud.google.com/feeds/blog.xml
-- Entries count: 0
-- Reason: Listing web source parsing is not supported yet.
+- URL: https://cloud.google.com/blog
+- Entries count: 5
 
 Top entries:
-No entries available.
+1. Gemini 3.1 Flash-Lite is now generally available on Gemini Enterprise Agent Platform
+2. AI & Machine LearningGoogle Named a Leader in the Gartner® Magic Quadrant™ for AI Application Development Platforms: Mid-cycle updateBy Mike Clark • 5-minute read
+3. Media & EntertainmentHow Glance turns hours of video into mobile-ready clips with AIBy Sharmila Devi • 8-minute read
 
 #### AWS Blog RSS
 
@@ -107,12 +110,12 @@ Top entries:
 - Web mode: 
 - Category: finops_product
 - URL: https://www.vantage.sh/blog/rss.xml
-- Entries count: 366
+- Entries count: 367
 
 Top entries:
-1. Vantage Launches Tag Key Columns in Active Resource Reports
-2. Token Budgeting: How To Think About AI Cost Control
-3. Vantage Launches the FinOps Agent in Console
+1. Vantage Launches Simplified Provider Filtering
+2. Vantage Launches Tag Key Columns in Active Resource Reports
+3. Token Budgeting: How To Think About AI Cost Control
 
 #### IBM Cloudability / Apptio
 
@@ -163,25 +166,26 @@ No entries available.
 - Web mode: 
 - Category: competitor_product
 - URL: https://www.vantage.sh/blog/rss.xml
-- Entries count: 366
+- Entries count: 367
 
 Top entries:
-1. Vantage Launches Tag Key Columns in Active Resource Reports
-2. Token Budgeting: How To Think About AI Cost Control
-3. Vantage Launches the FinOps Agent in Console
+1. Vantage Launches Simplified Provider Filtering
+2. Vantage Launches Tag Key Columns in Active Resource Reports
+3. Token Budgeting: How To Think About AI Cost Control
 
 #### CloudZero Blog
 
-- Status: skipped
+- Status: listing
 - Type: web
 - Web mode: listing
 - Category: competitor_product
 - URL: https://www.cloudzero.com/blog/
-- Entries count: 0
-- Reason: Listing web source parsing is not supported yet.
+- Entries count: 5
 
 Top entries:
-No entries available.
+1. FinOps In Full Bloom
+2. Your Cloud Economics Pulse For May 2026
+3. Claude On AWS: Bedrock Vs. Claude Platform Costs Compared (2026)
 
 #### IBM Cloudability / Apptio
 

@@ -48,17 +48,19 @@ RSS_SOURCES_BY_TOPIC = {
         },
         {
             "name": "Anthropic News / Blog",
-            "url": "https://www.anthropic.com/news/rss.xml",
+            "url": "https://www.anthropic.com/news",
             "category": "official_ai",
             "type": "web",
-            "web_mode": "listing"
+            "web_mode": "listing",
+            "max_links": 5
         },
         {
             "name": "Google Cloud Blog",
-            "url": "https://cloud.google.com/feeds/blog.xml",
+            "url": "https://cloud.google.com/blog",
             "category": "cloud_provider",
             "type": "web",
-            "web_mode": "listing"
+            "web_mode": "listing",
+            "max_links": 5
         },
         {
             "name": "AWS Blog RSS",
@@ -119,7 +121,8 @@ RSS_SOURCES_BY_TOPIC = {
             "url": "https://www.cloudzero.com/blog/",
             "category": "competitor_product",
             "type": "web",
-            "web_mode": "listing"
+            "web_mode": "listing",
+            "max_links": 5
         },
         {
             "name": "IBM Cloudability / Apptio",

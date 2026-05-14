@@ -8,6 +8,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from config import RSS_SOURCES_BY_TOPIC
+from utils.web import fetch_listing_links
 
 
 REPORT_FILE = REPO_ROOT / "outputs/reports/source_validation_report.md"
@@ -34,8 +35,24 @@ def validate_source(topic, source):
             result["status"] = "static"
             result["reason"] = "Static web source will be parsed during content extraction."
         elif result["web_mode"] == "listing":
-            result["status"] = "skipped"
-            result["reason"] = "Listing web source parsing is not supported yet."
+            try:
+                links = fetch_listing_links(source, topic)
+            except Exception as error:
+                result["status"] = "failed"
+                result["reason"] = str(error)
+                return result
+
+            result["entries_count"] = len(links)
+            result["top_entries"] = [
+                link["title"]
+                for link in links[:TOP_ENTRIES_LIMIT]
+            ]
+
+            if links:
+                result["status"] = "listing"
+            else:
+                result["status"] = "failed"
+                result["reason"] = "No article links found."
         else:
             result["status"] = "skipped"
             result["reason"] = "web_mode is missing for this web source."
@@ -75,6 +92,11 @@ def validate_sources():
 
             if result["status"] == "static":
                 print(f"[{topic}] {result['name']} - static - web source")
+            elif result["status"] == "listing":
+                print(
+                    f"[{topic}] {result['name']} - listing - "
+                    f"{result['entries_count']} links"
+                )
             elif result["status"] == "skipped":
                 print(f"[{topic}] {result['name']} - skipped - listing web source")
             else:
@@ -94,6 +116,7 @@ def create_markdown_report(results):
     failed_count = sum(1 for result in results if result["status"] == "failed")
     skipped_count = sum(1 for result in results if result["status"] == "skipped")
     static_count = sum(1 for result in results if result["status"] == "static")
+    listing_count = sum(1 for result in results if result["status"] == "listing")
     generated_at = datetime.now().replace(microsecond=0).isoformat()
 
     lines = [
@@ -109,6 +132,7 @@ def create_markdown_report(results):
         f"- Success: {success_count}",
         f"- Failed: {failed_count}",
         f"- Static: {static_count}",
+        f"- Listing: {listing_count}",
         f"- Skipped: {skipped_count}",
         "",
         "## Results by Topic",

@@ -35,14 +35,14 @@ Previously, Vantage displayed cloud tags as a single JSON blob, which prevented 
 
 This article provides an exceptionally clear product-market signal. It defines the exact user personas (FinOps, Platform teams), specific workflows (column picker to CSV export), and identifies concrete business pain points (JSON blob limitations). The inclusion of API and Terraform support details makes it highly actionable for competitor benchmarking.
 
-## 2. Token Budgeting: How To Think About AI Cost Control
+## 2. Vantage Launches Simplified Provider Filtering
 
 - Source: Vantage Blog
 - Category: competitor_product
 - Type: rss
 - Web mode: None
-- Published date: 2026-05-11
-- URL: https://www.vantage.sh/blog/ai-token-budgeting
+- Published date: 2026-05-13
+- URL: https://www.vantage.sh/blog/simplified-provider-filtering
 - Score: 93.3
 - Recommendation: Core
 
@@ -56,43 +56,43 @@ This article provides an exceptionally clear product-market signal. It defines t
 
 ### Use Case
 
-Engineering and Finance leaders at organizations with large AI budgets use cost-allocation metadata from API gateways (OpenRouter, LiteLLM) combined with productivity tools (Linear, Jira) to monitor developer-level efficiency. The workflow involves calculating 'unit costs' per feature or issue closed to determine which developers should receive higher token budget allocations.
+FinOps teams and platform engineers managing multi-cloud environments use the 'All Providers' filter to create unified Cost Reports and Virtual Tags (e.g., aggregating costs for a 'Data Engineering' team across AWS and Azure) without duplicating filter logic for each cloud.
 
 ### Problem Solved
 
-Solves the opacity of AI R&D spend where leaders cannot distinguish between high-performing developers who use many tokens to ship faster and low-performing developers who are simply inefficient with prompts or models.
+Previously, Vantage required users to specify a provider before selecting filter attributes, forcing redundant work to recreate identical filters for every cloud account to see an aggregated view of multi-cloud spend.
 
 ### Reason
 
-The article provides a highly concrete framework for AI cost management. It identifies specific personas (CTO/Finance), specific tools (Cursor, Anthropic, Linear), and a clear methodology (unit cost metrics) to solve a explicit business pain point. It avoids generic advice in favor of a detailed 'portfolio manager' strategy for AI budgeting.
+The article is highly specific, outlining the exact user persona (FinOps), the specific technical friction (provider-specific filter requirements), and the solution (UI 'All Providers' option and VQL updates). It provides concrete examples of how this simplifies the workflow for multi-cloud cost aggregation.
 
-## 3. IBM Cloudability / Apptio
+## 3. FinOps In Full Bloom
 
-- Source: IBM Cloudability / Apptio
+- Source: CloudZero Blog
 - Category: competitor_product
 - Type: web
-- Web mode: static
+- Web mode: listing
 - Published date: 
-- URL: https://www.ibm.com/blog/category/cloudability/
-- Score: 38.7
+- URL: https://www.cloudzero.com/blog/tag/finops-in-full-bloom/
+- Score: 20.0
 - Recommendation: Exclude
 
 ### Dimension Scores
 
-- Relevance: 2/5
-- Use Case Clarity: 2/5
-- Problem-Solution Fit: 2/5
+- Relevance: 1/5
+- Use Case Clarity: 1/5
+- Problem-Solution Fit: 1/5
 - Actionability: 1/5
-- Credibility & Novelty: 3/5
+- Credibility & Novelty: 1/5
 
 ### Use Case
 
-DevOps teams utilizing synthetic monitoring to catch issues early and validate APIs as part of a reliability workflow.
+None provided.
 
 ### Problem Solved
 
-System downtime and late detection of API failures that compromise service reliability.
+None provided.
 
 ### Reason
 
-The provided text is a collection of high-level marketing headlines and session summaries from a conference. It lacks specific technical details, user workflows, or concrete product features that would make it actionable for deep market research or competitive analysis.
+The provided text contains only a cookie consent notice and privacy policy boilerplate. It does not include the actual article content or any information related to FinOps, product observations, or market signals.

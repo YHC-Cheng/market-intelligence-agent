@@ -6,7 +6,7 @@ Market Intelligence Agent is an AI-powered market intelligence workflow that aut
 
 The goal is to reduce the time required for recurring market analysis work. Instead of manually checking many sources, reading every article, and rebuilding reports from scratch, this workflow helps collect, filter, summarize, rank, and synthesize market signals.
 
-The current MVP focuses on RSS sources first. Sources are managed by topic, including `AI`, `FinOps`, and `ProductObservation`. Static web sources can also enter the content extraction flow, while listing-style web sources are still skipped for now.
+The current MVP focuses on RSS sources first. Sources are managed by topic, including `AI`, `FinOps`, and `ProductObservation`. Static web sources can enter the content extraction flow, and simple listing web sources can be parsed into article links.
 
 The long-term goal is to evolve this project into a more complete AI Agent that can plan research tasks, identify useful sources, detect information gaps, and perform follow-up research.
 
@@ -14,7 +14,7 @@ The long-term goal is to evolve this project into a more complete AI Agent that 
 
 1. Validate configured sources
 2. Load topic-based RSS sources
-3. Add static web sources and skip unsupported listing web sources
+3. Parse static and listing web sources
 4. Fetch RSS article metadata
 5. Filter articles by topic keywords
 6. Extract article content with `trafilatura`
@@ -27,6 +27,7 @@ The long-term goal is to evolve this project into a more complete AI Agent that 
 13. Generate slide draft
 14. Use weekly topic-based cache
 15. Control LLM cost with `MAX_ARTICLES_PER_RUN`
+16. Run a specific topic with `--topic`
 
 ## Workflow
 
@@ -177,8 +178,8 @@ config/ranking_criteria.json
 ## Current Limitations
 
 1. Static web sources can be parsed during content extraction
-2. Listing web pages are skipped for now
-3. Listing web source parsing is not implemented yet
+2. Listing web source parsing uses simple link rules, not site-specific crawlers
+3. Listing parser only reads the first configured page and does not crawl recursively
 4. Current workflow mainly relies on RSS feeds
 5. Gemini API free tier may hit quota or rate limits
 6. `MAX_ARTICLES_PER_RUN` is set to `3` to control cost
@@ -206,16 +207,16 @@ config/ranking_criteria.json
 - Phase 5.4: LLM call budget and report cache
 - Phase 6: Slide draft generator
 - Phase 7.1: Static web source parsing
+- Phase 7.2: Listing web source parsing
 
 ### Next
 
-- Phase 7.2: Listing web source parsing
 - Phase 8: Weekly automation with GitHub Actions
 - Phase 9: Agentic research planning
 
 ## Next Development Focus
 
-The next major improvement is Phase 7.2: Listing Web Source Parsing.
+The next major improvement is Phase 8: Weekly Automation with GitHub Actions.
 
 Why it matters:
 

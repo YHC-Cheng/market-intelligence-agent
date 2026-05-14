@@ -18,7 +18,7 @@
 | Phase 5.4 | LLM call budget and report cache | Limit articles per run and cache market analysis reports | Completed |
 | Phase 6 | Slide draft generator | Convert market analysis reports into editable Markdown slide drafts | Completed |
 | Phase 7.1 | Static web source parsing | Treat configured static web pages as articles during content extraction | Completed |
-| Phase 7.2 | Listing web source parsing | Parse listing pages and collect article links from web sources | Next |
+| Phase 7.2 | Listing web source parsing | Parse listing pages and collect article links from web sources | Completed |
 | Phase 8 | Weekly automation with GitHub Actions | Run the workflow on a weekly schedule | Planned |
 | Phase 9 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
@@ -48,7 +48,7 @@ Phase 7 extends the workflow to support market intelligence sources that do not 
 
 支援 `type = "web"` 且 `web_mode = "listing"` 的來源，從列表頁抓取文章連結。
 
-狀態：Next
+狀態：Completed
 
 適合來源：
 

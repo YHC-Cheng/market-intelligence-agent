@@ -62,5 +62,47 @@
     "why_it_matters": "For business leaders and IT decision-makers, IBM's roadmap underscores the necessity of moving beyond experimental AI toward a structured operating model. The focus on automation and governance indicates a market shift toward operationalizing AI to drive measurable productivity gains while mitigating security risks.",
     "cached_at": "2026-05-14T01:45:37",
     "cache_period": "2026-W20"
+  },
+  "https://www.vantage.sh/blog/simplified-provider-filtering": {
+    "title": "Vantage Launches Simplified Provider Filtering",
+    "url": "https://www.vantage.sh/blog/simplified-provider-filtering",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-13",
+    "topic": "ProductObservation",
+    "model": "gemini-flash-latest",
+    "summary": "Vantage has introduced a simplified provider filtering feature that allows users to analyze multi-cloud cost data in a single view. By selecting 'All Providers' in the UI or omitting the provider in Vantage Query Language (VQL), customers can now query costs across all cloud platforms simultaneously without the need to create redundant, provider-specific filter sets.",
+    "key_points": [
+      "New functionality enables universal filtering across account names, regions, services, and tags regardless of the cloud provider.",
+      "The update streamlines the creation of Virtual Tags and Cost Reports, reducing manual overhead for teams tracking spend across multiple cloud environments.",
+      "Developers can now omit the 'costs.provider' attribute in VQL to create unified queries via API or Terraform.",
+      "The feature is additive and available at no extra cost to all Vantage customers, maintaining backward compatibility with existing filters."
+    ],
+    "why_it_matters": "For enterprises operating in multi-cloud environments, this update removes a significant friction point in financial reporting. By providing a holistic view of spend through a single query, FinOps and platform teams can more efficiently aggregate costs by team, project, or environment across their entire cloud footprint.",
+    "cached_at": "2026-05-14T22:19:31",
+    "cache_period": "2026-W20"
+  },
+  "https://www.cloudzero.com/blog/tag/finops-in-full-bloom/": {
+    "title": "FinOps In Full Bloom",
+    "url": "https://www.cloudzero.com/blog/tag/finops-in-full-bloom/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "published_date": "",
+    "topic": "ProductObservation",
+    "model": "gemini-flash-latest",
+    "summary": "The article 'FinOps In Full Bloom' discusses the maturation of Cloud Financial Management (FinOps) from a reactive cost-cutting exercise into a strategic business discipline focused on unit economics and value realization.",
+    "key_points": [
+      "Transition from basic cloud visibility to advanced, automated cost optimization.",
+      "The critical shift toward unit economics to measure cloud spend against specific business outcomes.",
+      "Increased integration of AI and machine learning to manage complex, multi-cloud environments.",
+      "The importance of building a collaborative culture between engineering, finance, and product teams."
+    ],
+    "why_it_matters": "As cloud infrastructure becomes a primary business expense, organizations must evolve beyond simple savings to a model where cloud investment is treated as a driver for growth and competitive advantage.",
+    "cached_at": "2026-05-14T22:19:45",
+    "cache_period": "2026-W20"
   }
 }

@@ -4,7 +4,7 @@
 
 目前 `web_mode = "static"` 的 web source 可以進入 content extraction 流程。
 
-`web_mode = "listing"` 的 web source 仍會被 skipped，尚未支援從列表頁抓取文章連結。
+目前 `web_mode = "listing"` 的 web source 會用簡單規則從列表頁抓取文章連結，但不會做全站爬蟲、分頁爬取或網站客製化解析。
 
 ## 2. Gemini Quota
 

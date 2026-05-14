@@ -33,6 +33,7 @@ from utils.cache import (
     save_json_cache,
     set_cached_result
 )
+from utils.web import fetch_listing_links
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
 CLEAN_OUTPUT_FILE = Path("data/clean_articles/clean_articles.json")
@@ -114,6 +115,7 @@ def get_sources_for_topic(topic):
 def fetch_articles_from_rss():
     articles = []
     static_web_count = 0
+    listing_web_count = 0
     topic = get_current_topic()
     sources = get_sources_for_topic(topic)
 
@@ -146,7 +148,28 @@ def fetch_articles_from_rss():
                 static_web_count += 1
                 print(f"Added static web source: {source['name']}")
             elif web_mode == "listing":
-                print(f"Skipping listing web source for now: {source['name']}")
+                try:
+                    listing_articles = fetch_listing_links(source, topic)
+                except Exception:
+                    print(
+                        "Warning: Could not parse listing web source: "
+                        f"{source['name']}"
+                    )
+                    continue
+
+                if not listing_articles:
+                    print(
+                        "Warning: No article links found for listing web source: "
+                        f"{source['name']}"
+                    )
+                    continue
+
+                articles.extend(listing_articles)
+                listing_web_count += len(listing_articles)
+                print(
+                    f"Parsed {len(listing_articles)} links from listing web source: "
+                    f"{source['name']}"
+                )
             else:
                 print(
                     "Warning: web_mode missing for web source: "
@@ -184,7 +207,7 @@ def fetch_articles_from_rss():
             }
             articles.append(article)
 
-    return articles, static_web_count
+    return articles, static_web_count, listing_web_count
 
 
 def filter_articles_by_keywords(articles, keywords):
@@ -990,13 +1013,14 @@ def main():
     print(f"Topic: {get_current_topic()}")
 
     keywords = load_keywords()
-    articles, static_web_count = fetch_articles_from_rss()
+    articles, static_web_count, listing_web_count = fetch_articles_from_rss()
     relevant_articles = filter_articles_by_keywords(articles, keywords)
     save_articles(relevant_articles, RAW_OUTPUT_FILE)
 
-    rss_article_count = len(articles) - static_web_count
+    rss_article_count = len(articles) - static_web_count - listing_web_count
 
     print(f"Fetched {rss_article_count} articles from RSS sources.")
+    print(f"Parsed {listing_web_count} listing web articles.")
     print(f"Added {static_web_count} static web sources.")
     print(f"Kept {len(relevant_articles)} relevant articles after keyword filtering.")
     print(f"Saved {len(relevant_articles)} articles to {RAW_OUTPUT_FILE}")
