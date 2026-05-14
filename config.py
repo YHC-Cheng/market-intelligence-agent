@@ -150,5 +150,15 @@ LLM_FALLBACK_MODELS = [
 MAX_ARTICLES_PER_RUN = 3
 MAX_LLM_RETRIES = 1
 STOP_ON_RATE_LIMIT = True
+REPORT_LOOKBACK_DAYS = 14
+FRESHNESS_ALLOWED_STATUSES = [
+    "new",
+    "updated",
+    "unknown"
+]
+FRESHNESS_EXCLUDED_STATUSES = [
+    "repeated",
+    "old"
+]
 REPORT_TEMPLATE = "standard_market_analysis"
 SLIDE_DRAFT_ENABLED = True

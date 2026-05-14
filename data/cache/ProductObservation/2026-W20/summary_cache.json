@@ -104,5 +104,27 @@
     "why_it_matters": "As cloud infrastructure becomes a primary business expense, organizations must evolve beyond simple savings to a model where cloud investment is treated as a driver for growth and competitive advantage.",
     "cached_at": "2026-05-14T22:19:45",
     "cache_period": "2026-W20"
+  },
+  "https://www.ecloudvalley.com/": {
+    "title": "eCloudvalley Atlas",
+    "url": "https://www.ecloudvalley.com/",
+    "source": "eCloudvalley Atlas",
+    "source_category": "product_observation",
+    "source_type": "web",
+    "web_mode": "static",
+    "published_date": "",
+    "topic": "ProductObservation",
+    "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
+    "freshness_status": "new",
+    "model": "gemini-flash-latest",
+    "summary": "The provided content could not be analyzed as it consists solely of a technical error message stating that the eCloudvalley Digital Technology website requires JavaScript to function.",
+    "key_points": [
+      "The source material failed to load properly during data retrieval.",
+      "eCloudvalley Atlas platform relies on JavaScript for content delivery.",
+      "No business-specific article content was available in the provided text."
+    ],
+    "why_it_matters": "Technical barriers in web scraping or data extraction can lead to gaps in market intelligence reporting if platforms use client-side rendering that prevents automated access.",
+    "cached_at": "2026-05-14T22:42:57",
+    "cache_period": "2026-W20"
   }
 }

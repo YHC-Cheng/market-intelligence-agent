@@ -309,6 +309,11 @@ Important rules:
 - Prioritize articles whose recommendation is Core or Useful.
 - Use Background articles only as supporting context.
 - Do not use Exclude articles.
+- Prioritize articles whose freshness_status / Freshness status is new or updated.
+- Sources with freshness_status / Freshness status unknown can be used only as supplemental background.
+- Unknown freshness sources should not be used as primary evidence for a weekly trend.
+- Do not treat repeated or old sources as this week's market signal.
+- If there are not enough new or updated sources, explicitly write: 「本週未觀察到足夠的新市場訊號」.
 - Emphasize sources with clear use cases or strong problem-solution fit.
 - Do not invent facts that are not supported by the provided sources.
 - If the evidence is insufficient, explicitly write: 「目前資料不足以判斷」.

@@ -28,6 +28,7 @@ The long-term goal is to evolve this project into a more complete AI Agent that 
 14. Use weekly topic-based cache
 15. Control LLM cost with `MAX_ARTICLES_PER_RUN`
 16. Run a specific topic with `--topic`
+17. Track article freshness with URL history and content hashes
 
 ## Workflow
 
@@ -186,6 +187,7 @@ config/ranking_criteria.json
 7. Slide draft is Markdown only, not PPTX yet
 8. OpenAI provider is currently a placeholder
 9. Cache uses JSON files; if data volume grows, future migration to SQLite is recommended
+10. Processed article history also uses JSON and may need SQLite later
 
 ## Roadmap
 
@@ -208,6 +210,7 @@ config/ranking_criteria.json
 - Phase 6: Slide draft generator
 - Phase 7.1: Static web source parsing
 - Phase 7.2: Listing web source parsing
+- Phase 7.3: Weekly deduplication and freshness control
 
 ### Next
 

@@ -1,103 +1,5 @@
 [
   {
-    "title": "Vantage Launches Simplified Provider Filtering",
-    "url": "https://www.vantage.sh/blog/simplified-provider-filtering",
-    "source": "Vantage Blog",
-    "source_category": "competitor_product",
-    "source_type": "rss",
-    "web_mode": null,
-    "published_date": "2026-05-13",
-    "topic": "ProductObservation",
-    "matched_keywords": [
-      "Vantage"
-    ],
-    "content": "Vantage Launches Simplified Provider Filtering\nCreate filter sets using \"All Providers\" in the UI, or omit the provider entirely in VQL, to analyze multi-cloud cost data in a single view.\nToday, Vantage is simplifying the user experience around cost provider filtering with a small but helpful update. Customers can now create filter sets using \u201cAll Providers\u201d in the UI, or omit the provider entirely when using Vantage Query Language (VQL), making it easier to analyze and act on multi-cloud cost data in a single view.\nPreviously, filtering in Vantage required selecting a specific provider first to access provider-specific filter attributes. In multi-cloud environments, this meant creating separate filter sets for each provider, adding unnecessary complexity. For example, teams who use Virtual Tags to unify cost data across multiple cloud providers had to re-create the same filter logic for each provider to capture all tag values. This made it difficult to answer questions like \u201cWhat are my costs across all providers for my Mobile App team?\u201d or \u201cWhat are my total costs across all production accounts?\u201d\nNow, customers can filter across all providers simultaneously with a single query in Cost Reports and Virtual Tags. When creating a filter in the Vantage console, users now have the option to select \u201cAll Providers\u201d rather than a single provider. This allows them to query against account name, region, service, tag, or resource ID, regardless of where the cost originated, and return multi-provider results. This feature is even more powerful when using VQL with the API or Terraform. The provider\nattribute can be omitted entirely, reducing query complexity. For example, in situations like Virtual Tag creation, users can now define a single tag configuration for Team = Data Engineering\n, and create a unifying Virtual Tag across all their providers for their Data Engineering team.\nThis feature is available today anywhere filters are used in Vantage, such as in Cost Reports and Virtual Tags. For more details, see the Cost Reports and VQL documentation.\nFrequently Asked Questions\n1. What is being launched today?\nVantage now supports filtering across all providers simultaneously. Customers can apply filters universally across their multi-cloud cost data using \u201cAll Providers\u201d in the UI or by omitting the provider in VQL.\n2. Who is the customer?\nThis feature is designed for FinOps teams, engineers, and platform teams operating in multi-cloud environments, especially those using Virtual Tags to standardize and aggregate cost data across providers.\n3. How much does this cost?\nThere is no additional cost for using this filtering improvement. This functionality is available to all Vantage customers.\n4. How do I filter across All Providers?\nIn the Vantage UI, when creating or editing a filter set, select Provider = All Providers. You can then access any VQL attribute, such as Service, Category, Subcategory, and Account, and select any of the attributes for these from all of your providers.\nIn VQL, simply omit the costs.provider\nfield. For example:\nThis query will automatically apply across all providers, allowing you to use any attribute available in the VQL schema, regardless of provider.\n5. Where is this functionality available?\nFiltering across all providers is available in Cost Reports and Virtual Tags.\n6. Can I still filter by a specific provider if needed?\nYes. You can still explicitly filter by provider using the UI or by including the costs.provider\nstatement in VQL. This feature simply removes the requirement to do so.\n7. Will this impact my existing filters?\nNo. Existing filters that specify a provider will continue to work as-is. This feature is additive and optional.\n8. Will filtering by all providers increase my Virtual Tag build hours?\nFiltering by All Providers will act the same as if you were to add all providers to your Virtual Tag configuration. If your Virtual Tag does not apply across all of your providers, you can reduce build hours of a tag by specifying providers.\nSign up for a free trial.\nGet started with tracking your cloud costs.",
-    "content_length": 4109,
-    "extraction_status": "success"
-  },
-  {
-    "title": "Vantage Launches Tag Key Columns in Active Resource Reports",
-    "url": "https://www.vantage.sh/blog/tag-column-resource-reports",
-    "source": "Vantage Blog",
-    "source_category": "competitor_product",
-    "source_type": "rss",
-    "web_mode": null,
-    "published_date": "2026-05-12",
-    "topic": "ProductObservation",
-    "matched_keywords": [
-      "Vantage"
-    ],
-    "content": "Vantage Launches Tag Key Columns in Active Resource Reports\nSelect specific tag keys and display them as custom columns within Active Resource Reports.\nToday, Vantage is introducing Tag Key Columns for Active Resource Reports, enabling customers to select specific tag keys and display them as custom columns within Resource Reports. Customers can now easily analyze tag values across the resources in their deployed infrastructure.\nPreviously, Active Resource Reports exposed tags as a single JSON blob sourced directly from cloud providers. While comprehensive, this format made it difficult to work with individual tag keys, analyze a specific tag key or value, or build workflows around consistent tagging. Additionally, this view excluded Virtual Tags, limiting customers\u2019 ability to analyze standardized or derived tagging strategies within resource-level reporting.\nNow, customers can select any provider or Virtual Tag key and add it as a dedicated column in their Active Resource Reports. When a tag key is added as a column, each resource will display the corresponding tag value inline, making it significantly easier to analyze resources by tag across large volumes. This allows teams to incorporate metadata within tags directly in resource reports, such as identifying owners of unattached EBS volumes from Vantage Cost Recommendations, auditing team attribution for highest cost RDS instances, or identifying resources in non-prod environments. Tag Key Columns will also be included in CSV and API exports of Resource Reports for external analysis outside of Vantage.\nTag Key Columns for Active Resource Reports are now available to all Vantage customers. To get started, navigate to an Active Resource Report and select a tag key from the column picker. For more information, see the documentation.\nFrequently Asked Questions\n1. What is being launched today?\nVantage is launching the ability to select tag keys, both provider tags and Virtual Tags, as columns in Active Resource Reports. Each selected tag key will appear as its own column with corresponding values per resource.\n2. Who is the customer?\nThis feature is designed for FinOps practitioners, engineers, and platform teams who rely on resource-level visibility to manage infrastructure, enforce tagging standards, and allocate costs.\n3. How much does this cost?\nThere is no additional cost to use Tag Columns for Active Resource Reports.\n4. How does it work or how do I use it?\nWithin an Active Resource Report, users can open the column selector and choose a tag key. Once selected, the tag key is added as a column in the table, and each resource row will display the corresponding value for that tag.\n5. What happens if a resource does not have a value for the selected tag?\nIf a resource does not have a value for the selected tag key, the column will display an empty or null value for that row. This makes it easy to identify untagged or inconsistently tagged resources.\n6. What types of tags are supported as columns?\nCustomers can select both provider-native tag keys and Virtual Tag keys created within Vantage.\n7. Can I sort by tag columns?\nYes, tag columns can be sorted so you can view your data ordered based on the columns you have added. This sort is over the entire group of resources you are viewing, not just the page you are currently viewing. Note that a report must be saved in order to sort on cost.\n8. Can Tag Key Columns be included in CSV exports?\nYes, Tag Key Columns are also included in CSV exports of Active Resource Reports.\n9. Can I use Tag Columns for Resource Reports that contain multiple services?\nYes, Tag Key Columns can be added to Resource Reports that contain multiple services.\n10. Are there limits to how many tag columns I can add?\nThere are no limitations to the number of columns you can add.\n11. Can I save views with tag columns configured?\nYes. Any selected tag columns can be saved as part of a report for consistent reuse across teams.\n12. Can I set my desired columns for a Resource Report via API?\nYes, tag columns can be configured when performing a POST\nor PUT\non the /resource_reports\nAPI. See the below example:\n13. Can I set my desired columns for a Resource Report via Terraform?\nYes, tag keys can be set on the vantage_resource_report\nresource. See the below example:\nSign up for a free trial.\nGet started with tracking your cloud costs.",
-    "content_length": 4374,
-    "extraction_status": "success"
-  },
-  {
-    "title": "Token Budgeting: How To Think About AI Cost Control",
-    "url": "https://www.vantage.sh/blog/ai-token-budgeting",
-    "source": "Vantage Blog",
-    "source_category": "competitor_product",
-    "source_type": "rss",
-    "web_mode": null,
-    "published_date": "2026-05-11",
-    "topic": "ProductObservation",
-    "matched_keywords": [
-      "AI cost",
-      "budget"
-    ],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed"
-  },
-  {
-    "title": "Vantage Launches the FinOps Agent in Console",
-    "url": "https://www.vantage.sh/blog/finops-agent-console",
-    "source": "Vantage Blog",
-    "source_category": "competitor_product",
-    "source_type": "rss",
-    "web_mode": null,
-    "published_date": "2026-05-05",
-    "topic": "ProductObservation",
-    "matched_keywords": [
-      "Vantage",
-      "FinOps"
-    ],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed"
-  },
-  {
-    "title": "Introducing Vantage in Cursor",
-    "url": "https://www.vantage.sh/blog/cursor-plugin",
-    "source": "Vantage Blog",
-    "source_category": "competitor_product",
-    "source_type": "rss",
-    "web_mode": null,
-    "published_date": "2026-04-30",
-    "topic": "ProductObservation",
-    "matched_keywords": [
-      "Vantage"
-    ],
-    "content": "",
-    "content_length": 0,
-    "extraction_status": "failed"
-  },
-  {
-    "title": "FinOps In Full Bloom",
-    "url": "https://www.cloudzero.com/blog/tag/finops-in-full-bloom/",
-    "source": "CloudZero Blog",
-    "source_category": "competitor_product",
-    "source_type": "web",
-    "web_mode": "listing",
-    "published_date": "",
-    "topic": "ProductObservation",
-    "matched_keywords": [
-      "FinOps"
-    ],
-    "content": "To provide the best experiences, we use technologies like cookies to store and/or access device information. Consenting to these technologies will allow us to process data such as browsing behavior or unique IDs on this site. Not consenting or withdrawing consent, may adversely affect certain features and functions.\nThe technical storage or access is strictly necessary for the legitimate purpose of enabling the use of a specific service explicitly requested by the subscriber or user, or for the sole purpose of carrying out the transmission of a communication over an electronic communications network.\nThe technical storage or access is necessary for the legitimate purpose of storing preferences that are not requested by the subscriber or user.\nThe technical storage or access that is used exclusively for statistical purposes.\nThe technical storage or access that is used exclusively for anonymous statistical purposes. Without a subpoena, voluntary compliance on the part of your Internet Service Provider, or additional records from a third party, information stored or retrieved for this purpose alone cannot usually be used to identify you.\nThe technical storage or access is required to create user profiles to send advertising, or to track the user on a website or across several websites for similar marketing purposes.",
-    "content_length": 1335,
-    "extraction_status": "success"
-  },
-  {
     "title": "IBM Cloudability / Apptio",
     "url": "https://www.ibm.com/blog/category/cloudability/",
     "source": "IBM Cloudability / Apptio",
@@ -107,9 +9,14 @@
     "published_date": "",
     "topic": "ProductObservation",
     "matched_keywords": [],
-    "content": "Explore the themes of this year\u2019s Think keynotes and panels\nIn a special podcast episode, the panel analyzes IBM\u2019s new AI operating model and reacts to releases from the conference floor.\nBoost productivity and automate workflows\nScale AI with a future-proofed architecture\nOngoing tech and business trends\nBecome an expert on fundamental and emerging tech topics with our comprehensive guides\nCatch up on AI and quantum knowledge\nListen to engaging discussions with tech leaders. Watch the latest episodes.\nExplainers |\nSynthetic monitoring explained: a guide to reliable DevOps workflowsLearn how synthetic monitoring helps DevOps teams catch issues early, validate APIs, and strengthen reliability.\nExplore expert-led sessions on AI agents, data for AI, AI models, AI automation, and AI governance and security.",
-    "content_length": 814,
-    "extraction_status": "success"
+    "content": "",
+    "content_length": 0,
+    "extraction_status": "failed",
+    "content_hash": "",
+    "freshness_status": "unknown",
+    "first_seen": "2026-05-14",
+    "last_seen": "2026-05-14",
+    "seen_count": 2
   },
   {
     "title": "eCloudvalley Atlas",
@@ -121,8 +28,13 @@
     "published_date": "",
     "topic": "ProductObservation",
     "matched_keywords": [],
-    "content": "We're sorry but eCloudvalley Digital Technology doesn't work properly without JavaScript enabled. Please enable it to continue.",
-    "content_length": 127,
-    "extraction_status": "success"
+    "content": "",
+    "content_length": 0,
+    "extraction_status": "failed",
+    "content_hash": "",
+    "freshness_status": "unknown",
+    "first_seen": "2026-05-14",
+    "last_seen": "2026-05-14",
+    "seen_count": 2
   }
 ]

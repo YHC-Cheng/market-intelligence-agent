@@ -19,6 +19,7 @@
 | Phase 6 | Slide draft generator | Convert market analysis reports into editable Markdown slide drafts | Completed |
 | Phase 7.1 | Static web source parsing | Treat configured static web pages as articles during content extraction | Completed |
 | Phase 7.2 | Listing web source parsing | Parse listing pages and collect article links from web sources | Completed |
+| Phase 7.3 | Weekly deduplication and freshness control | Track seen URLs, content hashes, and exclude repeated or old articles from weekly reports | Completed |
 | Phase 8 | Weekly automation with GitHub Actions | Run the workflow on a weekly schedule | Planned |
 | Phase 9 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
@@ -56,3 +57,17 @@ Phase 7 extends the workflow to support market intelligence sources that do not 
 - Anthropic News / Blog
 - Google Cloud Blog topic pages
 - IBM Blog category pages
+
+### Phase 7.3｜Weekly Deduplication & Freshness Control
+
+目標：
+
+使用 `data/history/processed_articles.json` 記錄已看過的 URL、content hash、first seen、last seen 與 seen count，並標記每篇文章的 freshness status。
+
+狀態：Completed
+
+處理規則：
+
+- `new` / `updated` 優先進入 summary、ranking、report
+- `unknown` 可以進 ranking，但不能作為本週新趨勢主證據
+- `repeated` / `old` 預設排除在本週報告之外

@@ -16,9 +16,12 @@ load_dotenv()
 
 from config import (
     DEFAULT_TOPIC,
+    FRESHNESS_ALLOWED_STATUSES,
+    FRESHNESS_EXCLUDED_STATUSES,
     LLM_MODEL,
     LLM_PROVIDER,
     MAX_ARTICLES_PER_RUN,
+    REPORT_LOOKBACK_DAYS,
     REPORT_TEMPLATE,
     SLIDE_DRAFT_ENABLED,
     RSS_SOURCES_BY_TOPIC
@@ -33,6 +36,13 @@ from utils.cache import (
     save_json_cache,
     set_cached_result
 )
+from utils.history import (
+    determine_freshness_status,
+    generate_content_hash,
+    load_processed_history,
+    save_processed_history,
+    update_processed_history
+)
 from utils.web import fetch_listing_links
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
@@ -42,6 +52,7 @@ RANKED_SOURCES_FILE = Path("outputs/reports/ranked_sources.md")
 MARKET_ANALYSIS_REPORT_FILE = Path("outputs/reports/market_analysis_report.md")
 SLIDE_DRAFT_FILE = Path("outputs/slides/slide_draft.md")
 KEYWORDS_FILE = Path("config/keywords.json")
+PROCESSED_HISTORY_FILE = Path("data/history/processed_articles.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
 RUNTIME_TOPIC = DEFAULT_TOPIC
@@ -283,10 +294,81 @@ def extract_articles_content(articles):
     return clean_articles
 
 
+def enrich_articles_with_freshness(articles):
+    history = load_processed_history(str(PROCESSED_HISTORY_FILE))
+    enriched_articles = []
+
+    for article in articles:
+        article_with_freshness = article.copy()
+        content_hash = generate_content_hash(article_with_freshness.get("content", ""))
+        article_with_freshness["content_hash"] = content_hash
+
+        freshness_status = determine_freshness_status(
+            article_with_freshness,
+            history,
+            REPORT_LOOKBACK_DAYS
+        )
+        article_with_freshness["freshness_status"] = freshness_status
+
+        history = update_processed_history(
+            article_with_freshness,
+            history,
+            freshness_status
+        )
+
+        history_entry = history.get(article_with_freshness.get("url", ""), {})
+        article_with_freshness["first_seen"] = history_entry.get("first_seen", "")
+        article_with_freshness["last_seen"] = history_entry.get("last_seen", "")
+        article_with_freshness["seen_count"] = history_entry.get("seen_count", 0)
+
+        enriched_articles.append(article_with_freshness)
+
+    save_processed_history(str(PROCESSED_HISTORY_FILE), history)
+    return enriched_articles
+
+
+def print_freshness_summary(articles):
+    counts = {
+        "new": 0,
+        "updated": 0,
+        "unknown": 0,
+        "repeated": 0,
+        "old": 0
+    }
+
+    for article in articles:
+        status = article.get("freshness_status", "unknown")
+        counts[status] = counts.get(status, 0) + 1
+
+    print("Freshness summary:")
+    print(f"- New: {counts.get('new', 0)}")
+    print(f"- Updated: {counts.get('updated', 0)}")
+    print(f"- Unknown: {counts.get('unknown', 0)}")
+    print(f"- Repeated: {counts.get('repeated', 0)}")
+    print(f"- Old: {counts.get('old', 0)}")
+
+    excluded_count = sum(
+        1 for article in articles
+        if article.get("freshness_status") in FRESHNESS_EXCLUDED_STATUSES
+    )
+
+    if excluded_count:
+        print(
+            f"Excluded {excluded_count} repeated/old articles from "
+            "this week's report."
+        )
+
+    if counts.get("new", 0) + counts.get("updated", 0) == 0:
+        print("No new or updated articles found for this run.")
+
+
 def get_articles_ready_for_brief(articles):
     ready_articles = []
 
     for article in articles:
+        if article.get("freshness_status") not in FRESHNESS_ALLOWED_STATUSES:
+            continue
+
         if article["extraction_status"] == "success" and article["content"]:
             ready_articles.append(article)
 
@@ -294,9 +376,15 @@ def get_articles_ready_for_brief(articles):
 
 
 def limit_articles_for_llm(articles):
+    freshness_priority = {
+        "new": 3,
+        "updated": 2,
+        "unknown": 1
+    }
     sorted_articles = sorted(
         articles,
         key=lambda article: (
+            freshness_priority.get(article.get("freshness_status"), 0),
             len(article.get("matched_keywords", [])),
             article.get("content_length", 0)
         ),
@@ -344,6 +432,8 @@ def build_summary_cache_entry(article, ai_summary, provider, cache_period):
         "web_mode": article.get("web_mode"),
         "published_date": article["published_date"],
         "topic": article["topic"],
+        "content_hash": article.get("content_hash", ""),
+        "freshness_status": article.get("freshness_status", "unknown"),
         "model": get_provider_model(provider),
         "summary": ai_summary.get("summary", ""),
         "key_points": ai_summary.get("key_points", []),
@@ -351,6 +441,22 @@ def build_summary_cache_entry(article, ai_summary, provider, cache_period):
         "cached_at": get_cached_at(),
         "cache_period": cache_period
     }
+
+
+def can_use_cached_llm_result(cached_result, article):
+    if not cached_result:
+        return False
+
+    cached_hash = cached_result.get("content_hash", "")
+    current_hash = article.get("content_hash", "")
+
+    if cached_hash and current_hash and cached_hash != current_hash:
+        return False
+
+    if article.get("freshness_status") == "updated" and cached_hash != current_hash:
+        return False
+
+    return True
 
 
 def get_summary_from_cache(cached_summary):
@@ -374,10 +480,11 @@ def summarize_articles(
     for article in articles:
         cached_summary = get_cached_result(summary_cache, article["url"])
 
-        if cached_summary:
+        if can_use_cached_llm_result(cached_summary, article):
             ai_summary = get_summary_from_cache(cached_summary)
             print(f"Loaded summary from cache for: {article['title']}")
         else:
+            cached_summary = None
             try:
                 ai_summary = provider.summarize_article(article)
             except Exception as error:
@@ -496,6 +603,8 @@ def build_ranking_cache_entry(
         "web_mode": article.get("web_mode"),
         "published_date": article["published_date"],
         "topic": article["topic"],
+        "content_hash": article.get("content_hash", ""),
+        "freshness_status": article.get("freshness_status", "unknown"),
         "model": get_provider_model(provider),
         "score": score,
         "recommendation": recommendation,
@@ -537,12 +646,13 @@ def rank_articles(
     for article in articles:
         cached_ranking = get_cached_result(ranking_cache, article["url"])
 
-        if cached_ranking:
+        if can_use_cached_llm_result(cached_ranking, article):
             ranking = get_ranking_from_cache(cached_ranking)
             score = cached_ranking.get("score", 55.0)
             recommendation = cached_ranking.get("recommendation", "Background")
             print(f"Loaded ranking from cache for: {article['title']}")
         else:
+            cached_ranking = None
             try:
                 ranking = provider.rank_article(article)
             except Exception as error:
@@ -616,6 +726,10 @@ def create_market_brief(articles):
             f"- Type: {article.get('source_type', 'rss')}",
             f"- Web mode: {article.get('web_mode', '')}",
             f"- Published date: {article['published_date']}",
+            f"- Freshness status: {article.get('freshness_status', 'unknown')}",
+            f"- First seen: {article.get('first_seen', '')}",
+            f"- Last seen: {article.get('last_seen', '')}",
+            f"- Seen count: {article.get('seen_count', 0)}",
             f"- URL: {article['url']}",
             f"- Matched keywords: {matched_keywords}",
             f"- Content length: {article['content_length']}",
@@ -665,6 +779,7 @@ def create_ranked_sources_report(articles):
 
     for index, article in enumerate(articles, start=1):
         ranking = article["ranking"]
+        content_hash = article.get("content_hash", "")
 
         lines.extend([
             f"## {index}. {article['title']}",
@@ -674,6 +789,11 @@ def create_ranked_sources_report(articles):
             f"- Type: {article.get('source_type', 'rss')}",
             f"- Web mode: {article.get('web_mode', '')}",
             f"- Published date: {article['published_date']}",
+            f"- Freshness status: {article.get('freshness_status', 'unknown')}",
+            f"- Content hash: {content_hash[:8]}",
+            f"- First seen: {article.get('first_seen', '')}",
+            f"- Last seen: {article.get('last_seen', '')}",
+            f"- Seen count: {article.get('seen_count', 0)}",
             f"- URL: {article['url']}",
             f"- Score: {article['score']}",
             f"- Recommendation: {article['recommendation']}",
@@ -747,6 +867,9 @@ def filter_ranked_sources_for_analysis(ranked_sources):
         "",
         "Use Core and Useful sources as primary evidence.",
         "Use Background sources only as supporting context.",
+        "Prioritize sources whose Freshness status is new or updated.",
+        "Use unknown freshness sources only as background, not as primary evidence for weekly trends.",
+        "Do not use repeated or old sources as this week's market signal.",
         ""
     ]
 
@@ -803,6 +926,7 @@ def create_references_text(ranked_articles):
             f"- Type: {article.get('source_type', 'rss')}",
             f"- Web mode: {article.get('web_mode', '')}",
             f"- Published date: {article['published_date']}",
+            f"- Freshness status: {article.get('freshness_status', 'unknown')}",
             f"- Recommendation: {article['recommendation']}",
             f"- URL: {article['url']}",
             ""
@@ -870,6 +994,32 @@ def create_fallback_market_analysis_report(error, references_text):
         f"- Topic: {get_current_topic()}",
         f"- Template: {REPORT_TEMPLATE}",
         f"- Error message: {error}",
+        f"- Market brief path: {MARKET_BRIEF_FILE}",
+        f"- Ranked sources path: {RANKED_SOURCES_FILE}",
+        "",
+        "## 5. 參考資料",
+        ""
+    ]
+
+    if references_text:
+        lines.append(references_text)
+    else:
+        lines.append("No references were available.")
+
+    lines.append("")
+    return "\n".join(lines)
+
+
+def create_no_new_market_analysis_report(references_text):
+    lines = [
+        f"# Market Analysis Report: {get_current_topic()}",
+        "",
+        "## Fallback Report",
+        "",
+        "本週未觀察到足夠的新市場訊號，主要來源可能與過去重複，建議維持追蹤。",
+        "",
+        f"- Topic: {get_current_topic()}",
+        f"- Template: {REPORT_TEMPLATE}",
         f"- Market brief path: {MARKET_BRIEF_FILE}",
         f"- Ranked sources path: {RANKED_SOURCES_FILE}",
         "",
@@ -1027,6 +1177,7 @@ def main():
 
     raw_articles = load_articles(RAW_OUTPUT_FILE)
     clean_articles = extract_articles_content(raw_articles)
+    clean_articles = enrich_articles_with_freshness(clean_articles)
     successful_extractions = 0
 
     for article in clean_articles:
@@ -1034,6 +1185,7 @@ def main():
             successful_extractions += 1
 
     save_articles(clean_articles, CLEAN_OUTPUT_FILE)
+    print_freshness_summary(clean_articles)
 
     print(f"Extracted content for {successful_extractions}/{len(raw_articles)} articles.")
     print(f"Saved clean articles to {CLEAN_OUTPUT_FILE}")
@@ -1082,13 +1234,20 @@ def main():
     print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
 
     references_text = create_references_text(ranked_articles)
-    market_analysis_report = get_market_analysis_report(
-        provider,
-        references_text,
-        report_cache,
-        cache_paths["report"],
-        week_key
-    )
+
+    if articles_ready_for_brief:
+        market_analysis_report = get_market_analysis_report(
+            provider,
+            references_text,
+            report_cache,
+            cache_paths["report"],
+            week_key
+        )
+    else:
+        market_analysis_report = create_no_new_market_analysis_report(
+            references_text
+        )
+
     save_markdown(market_analysis_report, MARKET_ANALYSIS_REPORT_FILE)
 
     print("Generated market analysis report with references.")

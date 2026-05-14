@@ -14,6 +14,8 @@
 
 目前 cache 使用 JSON 檔案，適合 MVP。若文章數超過數百或一千筆，未來建議改成 SQLite。
 
+`data/history/processed_articles.json` 也使用 JSON 儲存 URL history 與 content hash。若來源或文章量增加，建議一併遷移到 SQLite。
+
 ## 4. Markdown Output
 
 目前報告與簡報草稿皆為 Markdown，尚未自動產出 PPTX。

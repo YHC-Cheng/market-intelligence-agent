@@ -113,5 +113,30 @@
     "reason": "The provided text contains only a cookie consent notice and privacy policy boilerplate. It does not include the actual article content or any information related to FinOps, product observations, or market signals.",
     "cached_at": "2026-05-14T22:19:55",
     "cache_period": "2026-W20"
+  },
+  "https://www.ecloudvalley.com/": {
+    "title": "eCloudvalley Atlas",
+    "url": "https://www.ecloudvalley.com/",
+    "source": "eCloudvalley Atlas",
+    "source_category": "product_observation",
+    "source_type": "web",
+    "web_mode": "static",
+    "published_date": "",
+    "topic": "ProductObservation",
+    "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
+    "freshness_status": "new",
+    "model": "gemini-flash-latest",
+    "score": 20.0,
+    "recommendation": "Exclude",
+    "relevance": 1,
+    "use_case_clarity": 1,
+    "problem_solution_fit": 1,
+    "actionability": 1,
+    "credibility_novelty": 1,
+    "use_case": "None identified.",
+    "problem_solved": "None identified.",
+    "reason": "The provided text contains no substantive content, as it is a technical error message stating that JavaScript is required to view the page. No product information, use cases, or problems were described.",
+    "cached_at": "2026-05-14T22:43:00",
+    "cache_period": "2026-W20"
   }
 }

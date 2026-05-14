@@ -1,0 +1,47 @@
+{
+  "https://www.cloudzero.com/blog/tag/finops-in-full-bloom/": {
+    "title": "FinOps In Full Bloom",
+    "url": "https://www.cloudzero.com/blog/tag/finops-in-full-bloom/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-05-14",
+    "last_seen": "2026-05-14",
+    "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.ibm.com/blog/category/cloudability/": {
+    "title": "IBM Cloudability / Apptio",
+    "url": "https://www.ibm.com/blog/category/cloudability/",
+    "source": "IBM Cloudability / Apptio",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "static",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-05-14",
+    "last_seen": "2026-05-14",
+    "content_hash": "",
+    "seen_count": 2,
+    "last_freshness_status": "unknown"
+  },
+  "https://www.ecloudvalley.com/": {
+    "title": "eCloudvalley Atlas",
+    "url": "https://www.ecloudvalley.com/",
+    "source": "eCloudvalley Atlas",
+    "source_category": "product_observation",
+    "source_type": "web",
+    "web_mode": "static",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-05-14",
+    "last_seen": "2026-05-14",
+    "content_hash": "",
+    "seen_count": 2,
+    "last_freshness_status": "unknown"
+  }
+}
