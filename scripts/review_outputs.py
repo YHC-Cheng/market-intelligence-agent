@@ -31,6 +31,11 @@ QUALITY_WEIGHTS = {
     "Product Insight Quality": 10,
 }
 
+FALLBACK_QUALITY_WEIGHTS = {
+    "Fallback Output Quality": 55,
+    "Freshness Quality": 30,
+}
+
 
 def load_text(path):
     if not path.exists():
@@ -63,15 +68,37 @@ def has_url(text):
     return bool(re.search(r"https?://\S+", text))
 
 
-def is_fallback_report(report_text, ranked_sources_text):
+def is_fallback_output(report_text, slide_text, ranked_sources_text):
     fallback_keywords = [
         "本週未觀察到足夠的新市場訊號",
+        "No eligible articles found",
+        "fallback",
+        "沒有新的 eligible articles",
         "本週沒有可評分的新文章",
         "no eligible",
-        "fallback report",
     ]
-    combined_text = f"{report_text}\n{ranked_sources_text}".lower()
+    combined_text = f"{report_text}\n{slide_text}\n{ranked_sources_text}".lower()
     return any(keyword.lower() in combined_text for keyword in fallback_keywords)
+
+
+def get_standard_overall_status(score):
+    if score >= 80:
+        return "pass"
+
+    if score >= 60:
+        return "warning"
+
+    return "fail"
+
+
+def get_fallback_overall_status(score):
+    if score >= 70:
+        return "pass"
+
+    if score >= 50:
+        return "warning"
+
+    return "fail"
 
 
 def status_for_keyword(text, pass_keywords, warning_keywords=None):
@@ -98,16 +125,6 @@ def calculate_section_score(checks, weight):
             score += points_per_check * 0.5
 
     return score
-
-
-def get_overall_status(score):
-    if score >= 80:
-        return "pass"
-
-    if score >= 60:
-        return "warning"
-
-    return "fail"
 
 
 def get_freshness_counts(clean_articles):
@@ -348,6 +365,81 @@ def review_freshness_quality(clean_articles, ranked_sources_text, report_text, f
     return checks, freshness_counts
 
 
+def review_fallback_output_quality(report_text, slide_text):
+    combined_text = f"{report_text}\n{slide_text}"
+    no_new_signal_keywords = [
+        "本週未觀察到足夠的新市場訊號",
+        "沒有新的 eligible articles",
+        "No eligible articles found",
+        "no eligible",
+    ]
+    tracking_keywords = [
+        "持續追蹤",
+        "維持追蹤",
+        "tracking recommendation",
+        "continue monitoring",
+        "monitoring",
+    ]
+    trend_claim_keywords = [
+        "明確成長趨勢",
+        "重大新趨勢",
+        "新興趨勢正在形成",
+        "emerging trend",
+        "major trend",
+        "growth trend",
+    ]
+
+    explains_no_new_signal = status_for_keyword(
+        report_text,
+        ["本週未觀察到足夠的新市場訊號"],
+        no_new_signal_keywords,
+    )
+    slide_tracking_status = status_for_keyword(
+        slide_text,
+        ["持續追蹤", "維持追蹤"],
+        tracking_keywords,
+    )
+
+    return [
+        {
+            "label": "Fallback report exists",
+            "status": "pass" if report_text.strip() else "fail",
+        },
+        {
+            "label": "Fallback report explains no new market signals",
+            "status": explains_no_new_signal,
+        },
+        {
+            "label": "Fallback slide exists",
+            "status": "pass" if slide_text.strip() else "fail",
+        },
+        {
+            "label": "Fallback slide explains tracking recommendation",
+            "status": slide_tracking_status,
+        },
+        {
+            "label": "No unnecessary LLM-generated trend claim",
+            "status": "fail" if has_any(combined_text, trend_claim_keywords) else "pass",
+        },
+    ]
+
+
+def review_fallback_freshness_quality(clean_articles, ranked_sources_text):
+    freshness_counts = get_freshness_counts(clean_articles)
+    referenced_statuses = get_referenced_freshness_statuses(ranked_sources_text)
+    excluded_statuses_in_ranked_sources = [
+        status for status in referenced_statuses
+        if status in EXCLUDED_FRESHNESS_STATUSES
+    ]
+
+    return [
+        {
+            "label": "Repeated / old articles are excluded",
+            "status": "pass" if not excluded_statuses_in_ranked_sources else "fail",
+        },
+    ], freshness_counts
+
+
 def review_slide_quality(slide_text):
     slide_sections = get_slide_sections(slide_text)
     slide_count = count_slide_headings(slide_text)
@@ -477,7 +569,7 @@ def add_recommendations(recommendations, checks, mapping):
             recommendations.append(recommendation)
 
 
-def build_recommendations(section_results, fallback, warnings):
+def build_standard_recommendations(section_results, warnings):
     recommendations = []
 
     if warnings:
@@ -528,13 +620,23 @@ def build_recommendations(section_results, fallback, warnings):
         },
     )
 
-    if fallback:
-        recommendations.append(
-            "Review fallback report because no new articles were found."
-        )
-
     if not recommendations:
         recommendations.append("No major issues found. Continue monitoring output quality.")
+
+    return recommendations
+
+
+def build_fallback_recommendations(warnings):
+    recommendations = []
+
+    if warnings:
+        recommendations.append("Check whether required output files are missing.")
+
+    recommendations.extend([
+        "Continue monitoring sources next week.",
+        "Add more sources if repeated data happens too often.",
+        "Consider expanding web sources or adjusting keywords.",
+    ])
 
     return recommendations
 
@@ -570,58 +672,89 @@ def build_review():
         ]
         if warning
     ]
-    fallback = is_fallback_report(report_text, ranked_sources_text)
+    fallback = is_fallback_output(report_text, slide_text, ranked_sources_text)
 
-    report_structure = review_report_structure(report_text, fallback)
-    source_coverage = review_source_coverage(
-        report_text,
-        ranked_sources_text,
-        fallback,
-    )
-    use_case_quality = review_use_case_quality(
-        ranked_sources_text,
-        knowledge_articles,
-        fallback,
-    )
-    freshness_quality, freshness_counts = review_freshness_quality(
-        clean_articles,
-        ranked_sources_text,
-        report_text,
-        fallback,
-    )
-    slide_quality = review_slide_quality(slide_text)
-    product_insight_quality = review_product_insight_quality(
-        report_text,
-        slide_text,
-    )
+    if fallback:
+        fallback_output_quality = review_fallback_output_quality(
+            report_text,
+            slide_text,
+        )
+        fallback_freshness_quality, freshness_counts = (
+            review_fallback_freshness_quality(
+                clean_articles,
+                ranked_sources_text,
+            )
+        )
+        section_results = {
+            "Fallback Output Quality": fallback_output_quality,
+            "Freshness Quality": fallback_freshness_quality,
+        }
+        section_weights = FALLBACK_QUALITY_WEIGHTS
+        output_type = "fallback report"
+        recommendations = build_fallback_recommendations(warnings)
+    else:
+        report_structure = review_report_structure(report_text, fallback)
+        source_coverage = review_source_coverage(
+            report_text,
+            ranked_sources_text,
+            fallback,
+        )
+        use_case_quality = review_use_case_quality(
+            ranked_sources_text,
+            knowledge_articles,
+            fallback,
+        )
+        freshness_quality, freshness_counts = review_freshness_quality(
+            clean_articles,
+            ranked_sources_text,
+            report_text,
+            fallback,
+        )
+        slide_quality = review_slide_quality(slide_text)
+        product_insight_quality = review_product_insight_quality(
+            report_text,
+            slide_text,
+        )
 
-    section_results = {
-        "Report Structure": report_structure,
-        "Source Coverage": source_coverage,
-        "Use Case Quality": use_case_quality,
-        "Freshness Quality": freshness_quality,
-        "Slide Quality": slide_quality,
-        "Product Insight Quality": product_insight_quality,
-    }
+        section_results = {
+            "Report Structure": report_structure,
+            "Source Coverage": source_coverage,
+            "Use Case Quality": use_case_quality,
+            "Freshness Quality": freshness_quality,
+            "Slide Quality": slide_quality,
+            "Product Insight Quality": product_insight_quality,
+        }
+        section_weights = QUALITY_WEIGHTS
+        output_type = "standard report"
+        recommendations = build_standard_recommendations(
+            section_results,
+            warnings,
+        )
+
     section_scores = {}
 
     for section, checks in section_results.items():
         section_scores[section] = calculate_section_score(
             checks,
-            QUALITY_WEIGHTS[section],
+            section_weights[section],
         )
 
     total_score = round(sum(section_scores.values()))
-    overall_status = get_overall_status(total_score)
-    recommendations = build_recommendations(section_results, fallback, warnings)
+    if fallback:
+        overall_status = get_fallback_overall_status(total_score)
+    else:
+        overall_status = get_standard_overall_status(total_score)
+
     generated_at = datetime.now().replace(microsecond=0).isoformat()
 
     return {
         "generated_at": generated_at,
+        "output_type": output_type,
         "total_score": total_score,
         "overall_status": overall_status,
         "section_results": section_results,
         "section_scores": section_scores,
+        "section_weights": section_weights,
         "freshness_counts": freshness_counts,
         "warnings": warnings,
         "recommendations": recommendations,
@@ -637,6 +770,7 @@ def create_markdown_review(review):
         "## Summary",
         "",
         f"- Total Score: {review['total_score']}/100",
+        f"- Output Type: {review['output_type']}",
         f"- Overall Status: {review['overall_status']}",
         "",
     ]
@@ -656,7 +790,7 @@ def create_markdown_review(review):
 
     for section, checks in review["section_results"].items():
         section_score = round(review["section_scores"][section], 1)
-        section_weight = QUALITY_WEIGHTS[section]
+        section_weight = review["section_weights"][section]
         lines.extend([
             f"## {section_number}. {section}",
             "",
