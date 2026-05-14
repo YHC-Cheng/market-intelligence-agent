@@ -1276,7 +1276,7 @@ def update_source_index_knowledge(topic, sources, knowledge_paths):
         print(f"Warning: Could not update source index knowledge base: {error}")
 
 
-def update_repeated_article_knowledge_metadata(articles, knowledge_paths):
+def update_repeated_old_article_knowledge_metadata(articles, knowledge_paths):
     try:
         knowledge = load_knowledge_json(knowledge_paths["articles"])
     except Exception as error:
@@ -1289,7 +1289,7 @@ def update_repeated_article_knowledge_metadata(articles, knowledge_paths):
         try:
             url = article.get("url", "")
 
-            if not url or url not in knowledge:
+            if not url:
                 continue
 
             if article.get("freshness_status") not in FRESHNESS_EXCLUDED_STATUSES:
@@ -1442,7 +1442,7 @@ def main():
 
     clean_articles = load_articles(CLEAN_OUTPUT_FILE)
     articles_ready_for_brief = get_articles_ready_for_brief(clean_articles)
-    repeated_metadata_updates = update_repeated_article_knowledge_metadata(
+    repeated_old_metadata_updates = update_repeated_old_article_knowledge_metadata(
         clean_articles,
         knowledge_paths
     )
@@ -1474,8 +1474,10 @@ def main():
             "calling LLM."
         )
         print("Updated article knowledge base: 0 articles.")
-        if repeated_metadata_updates:
-            print("Updated knowledge base metadata for repeated articles.")
+        print(
+            "Updated knowledge base metadata for repeated/old articles: "
+            f"{repeated_old_metadata_updates} articles."
+        )
         print(f"Saved market brief to {MARKET_BRIEF_FILE}")
         print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
         print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
@@ -1524,8 +1526,10 @@ def main():
     save_markdown(ranked_sources_report, RANKED_SOURCES_FILE)
 
     print(f"Updated article knowledge base: {updated_article_count} articles.")
-    if repeated_metadata_updates:
-        print("Updated knowledge base metadata for repeated articles.")
+    print(
+        "Updated knowledge base metadata for repeated/old articles: "
+        f"{repeated_old_metadata_updates} articles."
+    )
     print(f"Ranked {len(ranked_articles)} articles by value.")
     print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
 

@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -174,7 +175,27 @@ class NoEligibleReportsTest(unittest.TestCase):
             "calling LLM.",
             output.getvalue()
         )
+        self.assertIn(
+            "Updated article knowledge base: 0 articles.",
+            output.getvalue()
+        )
+        self.assertIn(
+            "Updated knowledge base metadata for repeated/old articles: "
+            "1 articles.",
+            output.getvalue()
+        )
         get_provider.assert_not_called()
+
+        article_knowledge = json.loads(
+            (self.temp_path / "articles_knowledge.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        knowledge_entry = article_knowledge["https://example.com/static"]
+        self.assertEqual(knowledge_entry["freshness_status"], "repeated")
+        self.assertEqual(knowledge_entry["seen_count"], 2)
+        self.assertEqual(knowledge_entry["summary"], "")
+        self.assertEqual(knowledge_entry["recommendation"], "Exclude")
 
         self.assertIn(
             "本週沒有新的 eligible articles。",

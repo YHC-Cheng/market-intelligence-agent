@@ -9,9 +9,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-14",
+    "last_seen": "2026-05-15",
     "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
-    "seen_count": 4,
+    "seen_count": 5,
     "last_freshness_status": "repeated"
   },
   "https://www.ibm.com/blog/category/cloudability/": {
@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-14",
+    "last_seen": "2026-05-15",
     "content_hash": "6414764c50da702abedc464a2e57041f5cd0c222dac0d7a7878685a5fe209a2f",
-    "seen_count": 5,
+    "seen_count": 6,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-14",
+    "last_seen": "2026-05-15",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 5,
+    "seen_count": 6,
     "last_freshness_status": "repeated"
   }
 }

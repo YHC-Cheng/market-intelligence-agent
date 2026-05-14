@@ -17,8 +17,8 @@
     "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
     "freshness_status": "repeated",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-14",
-    "seen_count": 4
+    "last_seen": "2026-05-15",
+    "seen_count": 5
   },
   {
     "title": "IBM Cloudability / Apptio",
@@ -36,8 +36,8 @@
     "content_hash": "6414764c50da702abedc464a2e57041f5cd0c222dac0d7a7878685a5fe209a2f",
     "freshness_status": "repeated",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-14",
-    "seen_count": 5
+    "last_seen": "2026-05-15",
+    "seen_count": 6
   },
   {
     "title": "eCloudvalley Atlas",
@@ -55,7 +55,7 @@
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
     "freshness_status": "repeated",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-14",
-    "seen_count": 5
+    "last_seen": "2026-05-15",
+    "seen_count": 6
   }
 ]

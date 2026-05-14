@@ -8,7 +8,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-05-14T23:52:26",
+    "last_checked": "2026-05-15T00:02:12",
     "status": "failed",
     "last_entries_count": 0
   },
@@ -21,7 +21,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-05-14T23:52:26",
+    "last_checked": "2026-05-15T00:02:12",
     "status": "listing",
     "last_entries_count": 5
   },
@@ -34,7 +34,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-05-14T23:52:26",
+    "last_checked": "2026-05-15T00:02:12",
     "status": "static",
     "last_entries_count": 1
   },
@@ -47,7 +47,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-05-14T23:52:26",
+    "last_checked": "2026-05-15T00:02:12",
     "status": "static",
     "last_entries_count": 1
   }
