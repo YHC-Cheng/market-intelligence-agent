@@ -18,6 +18,8 @@
 
 `data/knowledge/` 目前也使用 JSON 儲存長期 knowledge base，包含 article knowledge、market insights 與 source index。若資料量變大，未來建議遷移到 SQLite；若需要語意搜尋或 RAG，再評估向量資料庫。
 
+`outputs/index/report_index.json` 目前也使用 JSON 儲存 report index。若未來排程頻率提高、topic 數量增加，建議改成 SQLite、外部 job tracker，或 CI artifact metadata。
+
 ## 4. Markdown Output
 
 目前報告與簡報草稿皆為 Markdown，尚未自動產出 PPTX。

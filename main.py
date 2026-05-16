@@ -52,6 +52,12 @@ from utils.knowledge import (
     update_source_index,
     upsert_article_knowledge
 )
+from utils.run_manager import (
+    generate_run_id,
+    get_now_string as get_run_now_string,
+    mark_run_failed,
+    mark_run_success
+)
 from utils.web import fetch_html, fetch_listing_links
 
 RAW_OUTPUT_FILE = Path("data/raw_articles/articles.json")
@@ -65,6 +71,7 @@ PROCESSED_HISTORY_FILE = Path("data/history/processed_articles.json")
 ARTICLES_PER_SOURCE = 5
 MAX_SCORE = 37.5
 RUNTIME_TOPIC = DEFAULT_TOPIC
+RUNTIME_ARGS = None
 
 
 class VisibleTextParser(HTMLParser):
@@ -95,18 +102,68 @@ def get_current_topic():
     return RUNTIME_TOPIC
 
 
-def get_resolved_topic():
+def get_runtime_args():
+    global RUNTIME_ARGS
+
+    if RUNTIME_ARGS is not None:
+        return RUNTIME_ARGS
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--topic",
         help="Topic to run, for example: AI, FinOps, ProductObservation"
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--run-id",
+        help="Optional run id for automation tracking"
+    )
+    parser.add_argument(
+        "--run-mode",
+        choices=["manual", "weekly", "test"],
+        default="manual",
+        help="Run mode for automation tracking"
+    )
+    parser.add_argument(
+        "--max-articles",
+        type=int,
+        help="Override MAX_ARTICLES_PER_RUN for this run"
+    )
+    parser.add_argument(
+        "--force-refresh",
+        action="store_true",
+        help="TODO: refresh caches even when cached results exist"
+    )
+    parser.add_argument(
+        "--skip-slides",
+        action="store_true",
+        help="TODO: skip slide draft generation"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="TODO: print runtime settings without executing the workflow"
+    )
+    RUNTIME_ARGS, _ = parser.parse_known_args()
+    return RUNTIME_ARGS
+
+
+def get_resolved_topic():
+    args = get_runtime_args()
 
     if args.topic:
         return args.topic
 
     return DEFAULT_TOPIC
+
+
+def get_resolved_run_id():
+    args = get_runtime_args()
+    return args.run_id or ""
+
+
+def get_resolved_run_mode():
+    args = get_runtime_args()
+    return args.run_mode
 
 
 def load_keywords():
@@ -456,6 +513,12 @@ def get_articles_ready_for_brief(articles):
 
 
 def limit_articles_for_llm(articles):
+    max_articles = MAX_ARTICLES_PER_RUN
+    args = get_runtime_args()
+
+    if args.max_articles is not None:
+        max_articles = args.max_articles
+
     freshness_priority = {
         "new": 3,
         "updated": 2,
@@ -471,10 +534,10 @@ def limit_articles_for_llm(articles):
         reverse=True
     )
 
-    if len(sorted_articles) > MAX_ARTICLES_PER_RUN:
-        print(f"Limiting LLM processing to {MAX_ARTICLES_PER_RUN} articles.")
+    if len(sorted_articles) > max_articles:
+        print(f"Limiting LLM processing to {max_articles} articles.")
 
-    return sorted_articles[:MAX_ARTICLES_PER_RUN]
+    return sorted_articles[:max_articles]
 
 
 def get_llm_provider():
@@ -1371,7 +1434,32 @@ def update_market_insights_knowledge(
         print(f"Warning: Could not update market insights knowledge base: {error}")
 
 
-def generate_slide_draft(provider):
+def get_slide_draft_warning(error):
+    error_text = str(error)
+    rate_limit_markers = [
+        "429",
+        "RESOURCE_EXHAUSTED",
+        "quota",
+        "rate limit"
+    ]
+
+    if any(marker.lower() in error_text.lower() for marker in rate_limit_markers):
+        return (
+            "Slide draft generation failed due to LLM rate limit; "
+            "fallback or existing slide draft was used."
+        )
+
+    short_error = error_text.splitlines()[0][:160]
+    return (
+        "Slide draft generation failed; fallback slide draft was used. "
+        f"Error: {short_error}"
+    )
+
+
+def generate_slide_draft(provider, workflow_warnings=None):
+    if workflow_warnings is None:
+        workflow_warnings = []
+
     try:
         if not MARKET_ANALYSIS_REPORT_FILE.exists():
             raise FileNotFoundError(
@@ -1390,6 +1478,7 @@ def generate_slide_draft(provider):
         return slide_draft
     except Exception as error:
         print(f"Warning: Could not generate slide draft: {error}")
+        workflow_warnings.append(get_slide_draft_warning(error))
         return create_fallback_slide_draft(error)
 
 
@@ -1400,10 +1489,58 @@ def save_markdown(content, output_file):
         file.write(content)
 
 
-def main():
-    global RUNTIME_TOPIC
+def get_standard_output_paths():
+    return {
+        "raw_articles": str(RAW_OUTPUT_FILE),
+        "clean_articles": str(CLEAN_OUTPUT_FILE),
+        "market_brief": str(MARKET_BRIEF_FILE),
+        "ranked_sources": str(RANKED_SOURCES_FILE),
+        "market_analysis_report": str(MARKET_ANALYSIS_REPORT_FILE),
+        "slide_draft": str(SLIDE_DRAFT_FILE),
+        "output_quality_review": "outputs/reports/output_quality_review.md"
+    }
 
-    RUNTIME_TOPIC = get_resolved_topic()
+
+def build_workflow_metrics(
+    articles,
+    relevant_articles,
+    clean_articles,
+    articles_ready_for_brief,
+    ranked_articles,
+    freshness_counts,
+    rss_article_count,
+    static_web_count,
+    listing_web_count,
+    successful_extractions,
+    successful_summaries,
+    updated_article_count,
+    repeated_old_metadata_updates,
+    output_type
+):
+    return {
+        "output_type": output_type,
+        "sources_total_articles": len(articles),
+        "rss_articles": rss_article_count,
+        "listing_web_articles": listing_web_count,
+        "static_web_sources": static_web_count,
+        "relevant_articles": len(relevant_articles),
+        "clean_articles": len(clean_articles),
+        "successful_extractions": successful_extractions,
+        "eligible_articles": len(articles_ready_for_brief),
+        "ranked_articles": len(ranked_articles),
+        "successful_summaries": successful_summaries,
+        "knowledge_articles_updated": updated_article_count,
+        "repeated_old_metadata_updated": repeated_old_metadata_updates,
+        "freshness_new": freshness_counts.get("new", 0),
+        "freshness_updated": freshness_counts.get("updated", 0),
+        "freshness_unknown": freshness_counts.get("unknown", 0),
+        "freshness_repeated": freshness_counts.get("repeated", 0),
+        "freshness_old": freshness_counts.get("old", 0)
+    }
+
+
+def run_workflow(week_key):
+    workflow_warnings = []
 
     print("Market Intelligence Agent started.")
     print(f"Topic: {get_current_topic()}")
@@ -1446,7 +1583,6 @@ def main():
         clean_articles,
         knowledge_paths
     )
-    week_key = get_current_week_key()
 
     if not articles_ready_for_brief:
         market_brief = create_no_eligible_market_brief(freshness_counts)
@@ -1482,7 +1618,28 @@ def main():
         print(f"Saved ranked sources to {RANKED_SOURCES_FILE}")
         print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
         print(f"Saved slide draft to {SLIDE_DRAFT_FILE}")
-        return
+        return {
+            "metrics": build_workflow_metrics(
+                articles,
+                relevant_articles,
+                clean_articles,
+                articles_ready_for_brief,
+                [],
+                freshness_counts,
+                rss_article_count,
+                static_web_count,
+                listing_web_count,
+                successful_extractions,
+                0,
+                0,
+                repeated_old_metadata_updates,
+                "fallback"
+            ),
+            "outputs": get_standard_output_paths(),
+            "cache_paths": {},
+            "knowledge_paths": knowledge_paths,
+            "warnings": workflow_warnings
+        }
 
     provider = get_llm_provider()
     cache_paths = get_cache_paths(get_current_topic(), week_key)
@@ -1554,7 +1711,7 @@ def main():
     print(f"Saved market analysis report to {MARKET_ANALYSIS_REPORT_FILE}")
 
     if SLIDE_DRAFT_ENABLED:
-        slide_draft = generate_slide_draft(provider)
+        slide_draft = generate_slide_draft(provider, workflow_warnings)
         save_markdown(slide_draft, SLIDE_DRAFT_FILE)
 
         print("Generated slide draft.")
@@ -1566,6 +1723,88 @@ def main():
         ranked_articles,
         knowledge_paths
     )
+
+    return {
+        "metrics": build_workflow_metrics(
+            articles,
+            relevant_articles,
+            clean_articles,
+            articles_ready_for_brief,
+            ranked_articles,
+            freshness_counts,
+            rss_article_count,
+            static_web_count,
+            listing_web_count,
+            successful_extractions,
+            successful_summaries,
+            updated_article_count,
+            repeated_old_metadata_updates,
+            "standard"
+        ),
+        "outputs": get_standard_output_paths(),
+        "cache_paths": cache_paths,
+        "knowledge_paths": knowledge_paths,
+        "warnings": workflow_warnings
+    }
+
+
+def main():
+    global RUNTIME_TOPIC
+
+    RUNTIME_TOPIC = get_resolved_topic()
+    week_key = get_current_week_key()
+    run_mode = get_resolved_run_mode()
+    run_id = get_resolved_run_id()
+    args = get_runtime_args()
+
+    if not run_id:
+        run_id = generate_run_id(get_current_topic(), run_mode)
+
+    print(f"Run ID: {run_id}")
+    print(f"Run mode: {run_mode}")
+
+    if args.force_refresh:
+        print("TODO: --force-refresh is accepted but not wired to cache invalidation yet.")
+
+    if args.skip_slides:
+        print("TODO: --skip-slides is accepted but not wired to slide generation yet.")
+
+    if args.dry_run:
+        print("TODO: --dry-run currently validates CLI settings only.")
+        print(f"Topic: {get_current_topic()}")
+        print(f"Week: {week_key}")
+        return
+
+    started_at = get_run_now_string()
+
+    try:
+        workflow_result = run_workflow(week_key)
+        run_summary = mark_run_success(
+            run_id,
+            get_current_topic(),
+            run_mode,
+            started_at,
+            workflow_result.get("metrics", {}),
+            workflow_result.get("outputs", {}),
+            workflow_result.get("cache_paths", {}),
+            workflow_result.get("knowledge_paths", {}),
+            workflow_result.get("warnings", [])
+        )
+        print(f"Saved run summary to {run_summary['run_summary_path']}")
+        print(f"Saved run outputs to outputs/runs/{run_id}")
+        print(f"Updated latest outputs: outputs/latest/{get_current_topic()}")
+        print("Updated report index: outputs/index/report_index.json")
+    except Exception as error:
+        run_summary = mark_run_failed(
+            run_id,
+            get_current_topic(),
+            run_mode,
+            started_at,
+            get_standard_output_paths(),
+            [str(error)]
+        )
+        print(f"Saved failed run summary to {run_summary['run_summary_path']}")
+        raise
 
 
 if __name__ == "__main__":

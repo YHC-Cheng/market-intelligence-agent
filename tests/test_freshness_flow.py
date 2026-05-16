@@ -167,8 +167,9 @@ class NoEligibleReportsTest(unittest.TestCase):
                                     )
                                     output = StringIO()
 
-                                    with redirect_stdout(output):
-                                        main.main()
+                                    with patch("main.mark_run_success"):
+                                        with redirect_stdout(output):
+                                            main.main()
 
         self.assertIn(
             "No eligible articles found. Generated fallback reports without "
@@ -211,6 +212,37 @@ class NoEligibleReportsTest(unittest.TestCase):
         self.assertIn(
             "核心訊息：本週未觀察到足夠的新市場訊號。",
             main.SLIDE_DRAFT_FILE.read_text(encoding="utf-8")
+        )
+
+
+class SlideWarningTest(unittest.TestCase):
+    def test_slide_generation_rate_limit_adds_workflow_warning(self):
+        class RateLimitedProvider:
+            def generate_slide_draft(self, topic, market_analysis_report):
+                raise Exception("429 RESOURCE_EXHAUSTED quota exceeded")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            report_file = Path(temp_dir) / "market_analysis_report.md"
+            original_report_file = main.MARKET_ANALYSIS_REPORT_FILE
+            main.MARKET_ANALYSIS_REPORT_FILE = report_file
+            report_file.write_text("# Report", encoding="utf-8")
+            workflow_warnings = []
+
+            try:
+                slide_draft = main.generate_slide_draft(
+                    RateLimitedProvider(),
+                    workflow_warnings
+                )
+            finally:
+                main.MARKET_ANALYSIS_REPORT_FILE = original_report_file
+
+        self.assertIn("Fallback Slide Draft", slide_draft)
+        self.assertEqual(
+            workflow_warnings,
+            [
+                "Slide draft generation failed due to LLM rate limit; "
+                "fallback or existing slide draft was used."
+            ]
         )
 
 
