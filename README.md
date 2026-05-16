@@ -226,13 +226,13 @@ config/ranking_criteria.json
 
 - Phase 0: Project setup
 - Phase 1: RSS metadata collection
-- Phase 1.5: Keyword filtering
+- Phase 1.1: Keyword filtering
 - Phase 2: Article content extraction
 - Phase 3: Market brief MVP
-- Phase 3.5: Gemini AI summary integration
+- Phase 3.1: Gemini AI summary integration
 - Phase 4: Article value ranking
-- Phase 4.5: LLM reliability and cost control
-- Phase 4.6: Weekly topic cache
+- Phase 4.1: LLM reliability and cost control
+- Phase 4.2: Weekly topic cache
 - Phase 5: Market analysis report generator
 - Phase 5.1: Source strategy and references
 - Phase 5.2: Source validation
