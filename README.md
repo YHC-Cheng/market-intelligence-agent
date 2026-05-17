@@ -250,6 +250,7 @@ Manual runs support:
 
 GitHub Actions weekly runner defaults `max_articles` to `1` to reduce Gemini free tier rate-limit risk. If you increase `max_articles` for a manual run, the workflow may hit a Gemini 429 quota error.
 Scheduled weekly runs skip slide draft generation by default. Set `skip_slides` to `false` in manual runs if a slide draft is needed. Enabling slide draft generation may increase Gemini 429 quota risk.
+Weekly runner already uses `max_articles = 1` and `skip_slides = true` by default to reduce Gemini quota risk. Request delay can be configured through `LLM_REQUEST_DELAY_SECONDS` if needed in future automation environments.
 
 The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 
@@ -278,7 +279,10 @@ Main settings are in [config.py](config.py):
 - `LLM_MODEL`
 - `LLM_FALLBACK_MODELS`
 - `MAX_ARTICLES_PER_RUN`
+- `LLM_REQUEST_DELAY_SECONDS`
 - `SLIDE_DRAFT_ENABLED`
+
+`LLM_REQUEST_DELAY_SECONDS` controls optional delay between LLM requests. The default is `0` for local speed. Increase this value for scheduled or quota-sensitive runs to reduce Gemini 429 risk.
 
 Topic keywords are configured in:
 
@@ -354,6 +358,6 @@ Why it matters:
 Planned improvements:
 
 - Add a `skip_slides` option to the weekly runner. Completed in this PR.
-- Add LLM request delay to reduce rate-limit risk.
+- Add LLM request delay to reduce rate-limit risk. Completed in this PR.
 - Add 429 retry / backoff handling.
 - Improve warning records in `run_summary.json`.

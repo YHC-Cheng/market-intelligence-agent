@@ -150,6 +150,10 @@ LLM_FALLBACK_MODELS = [
 MAX_ARTICLES_PER_RUN = 3
 MAX_LLM_RETRIES = 1
 STOP_ON_RATE_LIMIT = True
+# This controls the delay between LLM requests.
+# It is useful for reducing Gemini free tier 429 rate-limit errors.
+# GitHub Actions or production runs may override this value in the future if needed.
+LLM_REQUEST_DELAY_SECONDS = 0
 REPORT_LOOKBACK_DAYS = 14
 FRESHNESS_ALLOWED_STATUSES = [
     "new",

@@ -7,6 +7,7 @@ from google import genai
 from config import (
     LLM_FALLBACK_MODELS,
     LLM_MODEL,
+    LLM_REQUEST_DELAY_SECONDS,
     MAX_LLM_RETRIES,
     STOP_ON_RATE_LIMIT
 )
@@ -65,6 +66,18 @@ class GeminiProvider(BaseLLMProvider):
 
         self.client = genai.Client(api_key=api_key)
 
+    def _apply_request_delay(self):
+        try:
+            delay_seconds = float(LLM_REQUEST_DELAY_SECONDS)
+        except (TypeError, ValueError):
+            return
+
+        if delay_seconds <= 0:
+            return
+
+        print(f"Waiting {delay_seconds:g}s before next LLM request...")
+        time.sleep(delay_seconds)
+
     def summarize_article(self, article: dict) -> dict:
         if self.setup_error:
             return {
@@ -91,6 +104,21 @@ class GeminiProvider(BaseLLMProvider):
             }
 
     def generate_content_text(
+        self,
+        prompt,
+        article_title,
+        response_mime_type="application/json"
+    ):
+        try:
+            return self._generate_content_text(
+                prompt,
+                article_title,
+                response_mime_type=response_mime_type
+            )
+        finally:
+            self._apply_request_delay()
+
+    def _generate_content_text(
         self,
         prompt,
         article_title,
