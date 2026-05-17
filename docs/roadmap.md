@@ -24,7 +24,7 @@
 | Phase 8.1 | Automation-ready workflow refactor | Add run id, run summary, latest outputs, report index, and report query support before scheduled automation | Completed |
 | Phase 8.2 | GitHub Actions weekly runner | Add PR tests and scheduled/manual weekly market intelligence runner | Completed |
 | Phase 8.3 | Gemini quota risk reduction | Reduce default weekly LLM volume to lower Gemini free tier rate-limit risk | Completed |
-| Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | Planned |
+| Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | In progress |
 | Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Planned |
 | Phase 8.6 | Knowledge / history persistence | Improve persistence strategy for scheduled automation state | Planned |
 | Phase 9 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
@@ -174,17 +174,18 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 
 讓 weekly automation 更有意識地控制 LLM request 數量、request pacing 與 429 quota handling。
 
-狀態：Planned
+狀態：In progress
 
 已完成：
 
 - 新增 weekly runner `skip_slides` option。
 - scheduled weekly run 預設略過 slide draft generation。
 - manual run 可將 `skip_slides` 設為 `false` 以產生 slide draft。
+- 新增 `LLM_REQUEST_DELAY_SECONDS`，可設定 LLM requests 之間的固定 delay。
+- Gemini provider 會在一次 LLM request 完成後套用 request delay；預設為 `0`，本地開發不會等待。
 
 後續改進：
 
-- Add LLM request delay to reduce rate-limit risk.
 - Add 429 retry / backoff handling.
 - Improve warning records in `run_summary.json`.
 
