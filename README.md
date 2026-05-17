@@ -260,7 +260,9 @@ The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 python main.py --topic {topic} --run-mode weekly --max-articles {max_articles} [--skip-slides]
 ```
 
-Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow also writes a GitHub Actions run summary with the latest run status, quality status, warnings, artifact name, and key files, so users can judge the run without downloading the artifact. The workflow does not automatically commit `outputs/`, `data/history/`, or `data/knowledge/` back to the repository.
+Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow also writes a GitHub Actions run summary with the latest run status, quality status, warnings, artifact name, key files, and knowledge/history persistence result, so users can judge the run without downloading the artifact.
+
+The weekly workflow commits long-term state from `data/history/` and `data/knowledge/` back to the repository when those files change. Generated reports remain artifacts and are not committed. The workflow does not commit `outputs/`, `data/cache/`, `data/raw_articles/`, or `data/clean_articles/`. If there are no knowledge/history changes, the workflow does not create an empty commit.
 
 ## Output Quality Checks
 
@@ -277,6 +279,9 @@ Generated weekly outputs are uploaded as the GitHub Actions artifact `market-int
 - `data/cache/` saves weekly topic-based LLM results to reduce repeated API calls within the same week.
 - `data/history/processed_articles.json` supports cross-week deduplication and freshness checks with URL, content hash, first seen, last seen, and seen count.
 - `data/knowledge/` stores long-term article knowledge, including summaries, ranking scores, recommendations, use cases, problems solved, source metadata, and market insight records linked to generated reports and slide drafts.
+- GitHub Actions persists long-term state by committing `data/history/` and `data/knowledge/` after successful weekly runs when those files change.
+- Generated reports stay in the `market-intelligence-outputs` artifact and are not committed.
+- Intermediate files in `data/cache/`, `data/raw_articles/`, and `data/clean_articles/` are not committed by automation.
 - `outputs/runs/{run_id}/` stores per-run summaries, generated output snapshots, quality review, review summary, and copy-ready report so each run can be audited later.
 - `outputs/latest/{topic}/` stores the latest copied outputs for each topic, including `review_summary.md` and `copy_ready_report.md`.
 - `outputs/index/report_index.json` stores a queryable list of generated reports with quality status and review-ready output paths.
@@ -351,6 +356,7 @@ config/ranking_criteria.json
 - Phase 8.3: Gemini quota risk reduction
 - Phase 8.4: LLM reliability improvements
 - Phase 8.5: Output quality checks
+- Phase 8.6: Knowledge / history persistence
 
 ### Next
 
