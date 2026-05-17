@@ -23,6 +23,10 @@
 | Phase 7.4 | Knowledge Base Builder | Persist long-term article knowledge, market insight records, and source index metadata | Completed |
 | Phase 8.1 | Automation-ready workflow refactor | Add run id, run summary, latest outputs, report index, and report query support before scheduled automation | Completed |
 | Phase 8.2 | GitHub Actions weekly runner | Add PR tests and scheduled/manual weekly market intelligence runner | Completed |
+| Phase 8.3 | Gemini quota risk reduction | Reduce default weekly LLM volume to lower Gemini free tier rate-limit risk | Completed |
+| Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | Planned |
+| Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Planned |
+| Phase 8.6 | Knowledge / history persistence | Improve persistence strategy for scheduled automation state | Planned |
 | Phase 9 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
 ## Phase 7｜Web Source Parsing
@@ -138,6 +142,9 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - 手動執行 weekly workflow 時可選 `AI`、`FinOps` 或 `ProductObservation`。
 - 手動執行 weekly workflow 時可設定 `max_articles`，預設為 `1`。
 - GitHub Actions weekly runner 預設 `max_articles = 1`，以降低 Gemini free tier rate limit 風險；若手動執行時提高 `max_articles`，可能遇到 Gemini 429 quota error。
+- 手動執行 weekly workflow 時可設定 `skip_slides`，預設為 `true`。
+- scheduled weekly run 預設略過 slide draft generation，以降低 Gemini API request 數量與 429 quota risk。
+- 若手動執行時將 `skip_slides` 設為 `false`，會產生 slide draft，但可能增加 Gemini 429 quota risk。
 - workflow 使用 GitHub repository secret `GEMINI_API_KEY`。
 - weekly outputs 會以 GitHub Actions artifact `market-intelligence-outputs` 保存 30 天。
 
@@ -146,3 +153,53 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - workflow 不會自動 commit `outputs/` 回 repo。
 - workflow 不會自動 commit `data/history/` 或 `data/knowledge/` 回 repo。
 - 目前未新增 Slack、Email、GitHub Pages 或其他通知/發布流程。
+
+### Phase 8.3｜Gemini Quota Risk Reduction
+
+目標：
+
+降低 GitHub Actions weekly runner 在 Gemini free tier 上遇到 429 quota error 的機率。
+
+狀態：Completed
+
+新增能力：
+
+- workflow_dispatch 的 `max_articles` 預設值從 `3` 調整為 `1`。
+- scheduled run 的 fallback `MAX_ARTICLES` 預設值從 `3` 調整為 `1`。
+- README 與 roadmap 補充手動提高 `max_articles` 可能增加 Gemini 429 quota error 風險。
+
+### Phase 8.4｜LLM Reliability Improvements
+
+目標：
+
+讓 weekly automation 更有意識地控制 LLM request 數量、request pacing 與 429 quota handling。
+
+狀態：Planned
+
+已完成：
+
+- 新增 weekly runner `skip_slides` option。
+- scheduled weekly run 預設略過 slide draft generation。
+- manual run 可將 `skip_slides` 設為 `false` 以產生 slide draft。
+
+後續改進：
+
+- Add LLM request delay to reduce rate-limit risk.
+- Add 429 retry / backoff handling.
+- Improve warning records in `run_summary.json`.
+
+### Phase 8.5｜Output Quality Checks
+
+狀態：Planned
+
+目標：
+
+改善 generated reports、slide drafts 與 run summaries 的品質檢查。
+
+### Phase 8.6｜Knowledge / History Persistence
+
+狀態：Planned
+
+目標：
+
+改善 scheduled automation 下 `data/history/` 與 `data/knowledge/` 的保存策略。
