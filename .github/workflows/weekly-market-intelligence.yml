@@ -73,6 +73,90 @@ jobs:
             python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
           fi
 
+      - name: Write workflow summary
+        if: always()
+        env:
+          WORKFLOW_TOPIC: ${{ github.event.inputs.topic }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          artifact_name = "market-intelligence-outputs"
+          topic = os.environ.get("WORKFLOW_TOPIC") or "AI"
+          summary_path = None
+          index_path = Path("outputs/index/report_index.json")
+
+          if index_path.exists():
+              try:
+                  index = json.loads(index_path.read_text(encoding="utf-8"))
+              except json.JSONDecodeError:
+                  index = []
+
+              if isinstance(index, list) and index:
+                  candidate = index[0].get("run_summary_path")
+                  if candidate and Path(candidate).exists():
+                      summary_path = Path(candidate)
+
+          if summary_path is None:
+              candidate = Path("outputs/latest") / topic / "run_summary.json"
+              if candidate.exists():
+                  summary_path = candidate
+
+          lines = [
+              "# Weekly Market Intelligence",
+              "",
+              f"- Artifact name: {artifact_name}",
+          ]
+
+          if summary_path is None:
+              lines.extend([
+                  "- Workflow may have failed before report generation.",
+                  "",
+                  "## Key files",
+                  "",
+                  "- market_analysis_report.md",
+                  "- review_summary.md",
+                  "- copy_ready_report.md",
+                  "- output_quality_review.md",
+                  "",
+              ])
+          else:
+              summary = json.loads(summary_path.read_text(encoding="utf-8"))
+              metrics = summary.get("metrics", {})
+              warnings = summary.get("warnings", [])
+              lines.extend([
+                  f"- Topic: {summary.get('topic', '')}",
+                  f"- Run ID: {summary.get('run_id', '')}",
+                  f"- Workflow status: {summary.get('status', '')}",
+                  f"- Quality status: {summary.get('quality_status', '')}",
+                  f"- Output type: {metrics.get('output_type', '')}",
+                  "",
+                  "## Warnings",
+                  "",
+              ])
+
+              if warnings:
+                  lines.extend(f"- {warning}" for warning in warnings)
+              else:
+                  lines.append("- None")
+
+              lines.extend([
+                  "",
+                  "## Key files",
+                  "",
+                  "- market_analysis_report.md",
+                  "- review_summary.md",
+                  "- copy_ready_report.md",
+                  "- output_quality_review.md",
+                  "",
+              ])
+
+          with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as file:
+              file.write("\n".join(lines))
+          PY
+
       - name: Upload generated outputs
         if: always()
         uses: actions/upload-artifact@v4

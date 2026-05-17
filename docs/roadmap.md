@@ -24,10 +24,10 @@
 | Phase 8.1 | Automation-ready workflow refactor | Add run id, run summary, latest outputs, report index, and report query support before scheduled automation | Completed |
 | Phase 8.2 | GitHub Actions weekly runner | Add PR tests and scheduled/manual weekly market intelligence runner | Completed |
 | Phase 8.3 | Gemini quota risk reduction | Reduce default weekly LLM volume to lower Gemini free tier rate-limit risk | Completed |
-| Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | In progress |
-| Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Planned |
-| Phase 8.6 | Knowledge / history persistence | Improve persistence strategy for scheduled automation state | Planned |
-| Phase 9 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
+| Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | Completed |
+| Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Completed |
+| Phase 9 | Notification and review workflow | Add proactive weekly report notification and review records | Planned |
+| Phase 10 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
 ## Phase 7｜Web Source Parsing
 
@@ -174,7 +174,7 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 
 讓 weekly automation 更有意識地控制 LLM request 數量、request pacing 與 429 quota handling。
 
-狀態：In progress
+狀態：Completed
 
 已完成：
 
@@ -184,23 +184,43 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - 新增 `LLM_REQUEST_DELAY_SECONDS`，可設定 LLM requests 之間的固定 delay。
 - Gemini provider 會在一次 LLM request 完成後套用 request delay；預設為 `0`，本地開發不會等待。
 
-後續改進：
-
-- Add 429 retry / backoff handling.
-- Improve warning records in `run_summary.json`.
-
 ### Phase 8.5｜Output Quality Checks
 
-狀態：Planned
+狀態：Completed
 
 目標：
 
-改善 generated reports、slide drafts 與 run summaries 的品質檢查。
+改善 generated reports 與 run summaries 的品質檢查，並讓 GitHub Actions run summary 能快速呈現本次報告是否值得下載 artifact。
 
-### Phase 8.6｜Knowledge / History Persistence
+新增能力：
 
-狀態：Planned
+- 區分 workflow `status` 與 report `quality_status`。
+- `run_summary.json` 記錄 `quality_status`、warnings、errors、`review_summary` 與 `copy_ready_report` 路徑。
+- 產生 `output_quality_review.md`，包含 run id、topic、workflow status、quality status、output type、key metrics、warnings、errors 與 recommendation。
+- 產生 `review_summary.md`，提供短版、適合截圖的本次報告結果摘要。
+- 產生 `copy_ready_report.md`，提供可貼到 Notion、Slack、Google Docs 或簡報備註的乾淨版本。
+- `outputs/index/report_index.json` 保存 quality status 與 review-ready output paths。
+- weekly workflow 會寫入 GitHub Actions Step Summary，顯示 topic、run id、workflow status、quality status、warnings、artifact name 與 key files。
+
+### Phase 9｜Notification and Review Workflow
 
 目標：
 
-改善 scheduled automation 下 `data/history/` 與 `data/knowledge/` 的保存策略。
+在 weekly report 產生後，提供主動通知與可追蹤的 review workflow。
+
+狀態：Planned
+
+規劃方向：
+
+- Add a notification or review workflow after weekly report generation.
+- Consider GitHub issue-based weekly report records.
+- Include report status, quality status, warnings, and artifact links in the review workflow.
+- Keep generated reports as downloadable artifacts.
+
+### Phase 10｜Agentic Research Planning
+
+目標：
+
+讓 agent plan research tasks、identify information gaps，並提出 follow-up questions。
+
+狀態：Planned

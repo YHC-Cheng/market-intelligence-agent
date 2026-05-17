@@ -49,6 +49,8 @@ def format_entry(entry):
         f"Report: {entry.get('report_path', '')}",
         f"Slide: {entry.get('slide_path', '')}",
         f"Run summary: {entry.get('run_summary_path', '')}",
+        f"Review summary: {entry.get('review_summary_path', '')}",
+        f"Copy-ready report: {entry.get('copy_ready_report_path', '')}",
     ])
 
 
@@ -59,7 +61,8 @@ def print_entry_summary(entry):
         f"{entry.get('topic', '')} | "
         f"{entry.get('run_mode', '')} | "
         f"{entry.get('status', '')} | "
-        f"quality={entry.get('quality_score')}"
+        f"quality={entry.get('quality_score')} | "
+        f"quality_status={entry.get('quality_status')}"
     )
 
 
