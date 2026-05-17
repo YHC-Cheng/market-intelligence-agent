@@ -26,6 +26,7 @@
 | Phase 8.3 | Gemini quota risk reduction | Reduce default weekly LLM volume to lower Gemini free tier rate-limit risk | Completed |
 | Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | Completed |
 | Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Completed |
+| Phase 8.6 | Knowledge / history persistence | Define persistence strategy for data/history and data/knowledge across GitHub Actions runs | Planned |
 | Phase 9 | Notification and review workflow | Add proactive weekly report notification and review records | Planned |
 | Phase 10 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
@@ -201,6 +202,35 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - 產生 `copy_ready_report.md`，提供可貼到 Notion、Slack、Google Docs 或簡報備註的乾淨版本。
 - `outputs/index/report_index.json` 保存 quality status 與 review-ready output paths。
 - weekly workflow 會寫入 GitHub Actions Step Summary，顯示 topic、run id、workflow status、quality status、warnings、artifact name 與 key files。
+
+### Phase 8.6｜Knowledge / History Persistence
+
+狀態：Planned
+
+目標：
+
+定義清晰的 persistence strategy，讓 GitHub Actions scheduled runs 能保留長期 knowledge / history，避免每週 run 都像全新環境。
+
+規劃方向：
+
+Should be persisted:
+- `data/history/processed_articles.json` — Supports cross-week deduplication and freshness tracking.
+- `data/knowledge/articles_knowledge.json` — Long-term article knowledge, including summaries, ranking scores, recommendations, and use cases.
+- `data/knowledge/market_insights.json` — Accumulated market insight records and linked report references.
+- `data/knowledge/source_index.json` — Source metadata and quality tracking.
+
+Should NOT be persisted automatically:
+- `outputs/` — Generated reports and should remain downloadable artifacts.
+- `data/cache/` — Intermediate or run-specific files and should not be committed automatically.
+- `data/raw_articles/` — Intermediate processing files.
+- `data/clean_articles/` — Intermediate processing files.
+- `.env` — Local API keys and secrets.
+
+實作步驟：
+
+- 更新 .gitignore 排除 intermediate files，但保留 `data/history/` 和 `data/knowledge/`。
+- 更新 README.md 文件化 persistence policy。
+- 更新 roadmap 文件。
 
 ### Phase 9｜Notification and Review Workflow
 

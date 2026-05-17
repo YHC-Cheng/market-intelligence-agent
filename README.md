@@ -323,6 +323,36 @@ config/ranking_criteria.json
 11. Knowledge base uses JSON files; if data volume grows, future migration to SQLite or a vector database is recommended
 12. Report index uses JSON and may need SQLite or an external job tracker for larger automation deployments
 
+## Persistence Policy
+
+Phase 8.6 establishes a clear persistence strategy for GitHub Actions scheduled runs to maintain long-term knowledge and history without bloating the repository with intermediate files.
+
+### Should be Persisted
+
+The following files are committed and preserved across GitHub Actions runs:
+
+- `data/history/processed_articles.json` — Supports cross-week deduplication and freshness tracking.
+- `data/knowledge/articles_knowledge.json` — Long-term article knowledge, including summaries, ranking scores, recommendations, and use cases.
+- `data/knowledge/market_insights.json` — Accumulated market insight records and linked report references.
+- `data/knowledge/source_index.json` — Source metadata and quality tracking.
+
+### Should NOT be Persisted Automatically
+
+The following files are generated during runs and should not be automatically committed:
+
+- `outputs/` — Generated reports, artifacts, and review summaries. These are downloadable GitHub Actions artifacts for 30 days.
+- `data/cache/` — Weekly topic-based LLM result cache. Intermediate, run-specific, and cleared between weeks.
+- `data/raw_articles/` — Raw RSS metadata after filtering. Intermediate output, regenerated each run.
+- `data/clean_articles/` — Extracted article content. Intermediate output, regenerated each run.
+- `.env` — Local API keys and secrets. Never committed.
+
+### Rationale
+
+- `data/history/` enables consistent freshness tracking across weeks, deduplicating articles and identifying truly new trends.
+- `data/knowledge/` accumulates valuable insights and article metadata over time, supporting future trend analysis and cross-topic intelligence.
+- `outputs/` are generated products meant for human review and should remain downloadable artifacts rather than committed to version control.
+- `cache/`, `raw_articles/`, and `clean_articles/` are intermediate processing files that can be safely regenerated. Excluding them keeps the repository focused on long-term knowledge.
+
 ## Roadmap
 
 ### Completed
@@ -354,22 +384,23 @@ config/ranking_criteria.json
 
 ### Next
 
+- Phase 8.6: Knowledge / history persistence
 - Phase 9: Notification and review workflow
 - Phase 10: Agentic research planning
 
 ## Next Development Focus
 
-The next major improvement is Phase 9: Notification and review workflow.
+The next major improvement is Phase 8.6: Knowledge / history persistence.
 
 Why it matters:
 
-- GitHub Actions can now generate reports and show run summaries, but users still need a proactive way to know when a weekly report is ready.
-- A notification and review workflow can reduce the need to manually check GitHub Actions every week.
-- Review records can make weekly market intelligence easier to track over time.
+- GitHub Actions can now generate reports, artifacts, and review summaries, but long-term knowledge and history persistence still needs a clear strategy.
+- The workflow needs a reliable way to preserve `data/history/` and `data/knowledge/` across scheduled runs to maintain cross-week deduplication, freshness tracking, and long-term market insight accumulation.
+- A clear persistence policy ensures that temporary intermediate files do not bloat the repository while valuable knowledge is preserved for future analysis.
 
 Planned improvements:
 
-- Add a notification or review workflow after weekly report generation.
-- Consider GitHub issue-based weekly report records.
-- Include report status, quality status, warnings, and artifact links in the review workflow.
+- Define which files should persist across GitHub Actions runs.
+- Preserve `data/history/` and `data/knowledge/` across weekly runs.
 - Keep generated reports as downloadable artifacts.
+- Avoid committing large generated outputs, cache files, or intermediate processing results unnecessarily.
