@@ -136,7 +136,8 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - `.github/workflows/test.yml` 在 pull request 與 push 到 `main` 時執行 `python -m pytest`。
 - `.github/workflows/weekly-market-intelligence.yml` 支援 weekly schedule 與 `workflow_dispatch`。
 - 手動執行 weekly workflow 時可選 `AI`、`FinOps` 或 `ProductObservation`。
-- 手動執行 weekly workflow 時可設定 `max_articles`，預設為 `3`。
+- 手動執行 weekly workflow 時可設定 `max_articles`，預設為 `1`。
+- GitHub Actions weekly runner 預設 `max_articles = 1`，以降低 Gemini free tier rate limit 風險；若手動執行時提高 `max_articles`，可能遇到 Gemini 429 quota error。
 - workflow 使用 GitHub repository secret `GEMINI_API_KEY`。
 - weekly outputs 會以 GitHub Actions artifact `market-intelligence-outputs` 保存 30 天。
 

@@ -245,7 +245,9 @@ python -m pytest
 Manual runs support:
 
 - `topic`: `AI`, `FinOps`, or `ProductObservation`
-- `max_articles`: default `3`
+- `max_articles`: default `1`
+
+GitHub Actions weekly runner defaults `max_articles` to `1` to reduce Gemini free tier rate-limit risk. If you increase `max_articles` for a manual run, the workflow may hit a Gemini 429 quota error.
 
 The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 
@@ -295,7 +297,7 @@ config/ranking_criteria.json
 3. Listing parser only reads the first configured page and does not crawl recursively
 4. Current workflow mainly relies on RSS feeds
 5. Gemini API free tier may hit quota or rate limits
-6. `MAX_ARTICLES_PER_RUN` is set to `3` to control cost
+6. `MAX_ARTICLES_PER_RUN` is set to `3` for local/default runs; GitHub Actions weekly runner defaults `max_articles` to `1` to reduce Gemini free tier rate-limit risk
 7. Slide draft is Markdown only, not PPTX yet
 8. OpenAI provider is currently a placeholder
 9. Cache uses JSON files; if data volume grows, future migration to SQLite is recommended

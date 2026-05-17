@@ -17,7 +17,7 @@ on:
       max_articles:
         description: "Maximum articles to process with LLM"
         required: true
-        default: "3"
+        default: "1"
         type: string
 
 jobs:
@@ -51,7 +51,7 @@ jobs:
           fi
 
           if [ -z "$MAX_ARTICLES" ]; then
-            MAX_ARTICLES="3"
+            MAX_ARTICLES="1"
           fi
 
           python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
