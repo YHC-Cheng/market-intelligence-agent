@@ -140,12 +140,18 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 
 - `.github/workflows/test.yml` 在 pull request 與 push 到 `main` 時執行 `python -m pytest`。
 - `.github/workflows/weekly-market-intelligence.yml` 支援 weekly schedule 與 `workflow_dispatch`。
-- 手動執行 weekly workflow 時可選 `AI`、`FinOps` 或 `ProductObservation`。
+- weekly schedule 為每週一台灣時間 02:00 執行，對應 GitHub Actions cron 的 Sunday 18:00 UTC。
+- scheduled run 預設等同 `topic = all`，依序執行 `AI`、`FinOps`、`ProductObservation`。
+- 手動執行 weekly workflow 時可選 `AI`、`FinOps`、`ProductObservation` 或 `all`。
+- 手動執行 `topic = all` 時，會依序執行 `AI`、`FinOps`、`ProductObservation`。
 - 手動執行 weekly workflow 時可設定 `max_articles`，預設為 `1`。
 - GitHub Actions weekly runner 預設 `max_articles = 1`，以降低 Gemini free tier rate limit 風險；若手動執行時提高 `max_articles`，可能遇到 Gemini 429 quota error。
+- 當 `topic = all` 時，`max_articles = 1` 代表每個 topic 最多使用 Gemini 分析 1 篇文章；source collection、keyword filtering 與 freshness tracking 仍會照常收集與篩選多篇文章。
 - 手動執行 weekly workflow 時可設定 `skip_slides`，預設為 `true`。
 - scheduled weekly run 預設略過 slide draft generation，以降低 Gemini API request 數量與 429 quota risk。
 - 若手動執行時將 `skip_slides` 設為 `false`，會產生 slide draft，但可能增加 Gemini 429 quota risk。
+- scheduled all-topic run 會在 topic 之間等待 300 秒，以降低 Gemini rate-limit 風險；最後一個 topic 完成後不會再等待。
+- weekly workflow 預期可在每週一台灣時間 08:00 前完成。
 - workflow 使用 GitHub repository secret `GEMINI_API_KEY`。
 - weekly outputs 會以 GitHub Actions artifact `market-intelligence-outputs` 保存 30 天。
 

@@ -2,7 +2,7 @@ name: Weekly Market Intelligence
 
 on:
   schedule:
-    - cron: "0 1 * * 1"
+    - cron: "0 18 * * 0"
   workflow_dispatch:
     inputs:
       topic:
@@ -14,8 +14,9 @@ on:
           - AI
           - FinOps
           - ProductObservation
+          - all
       max_articles:
-        description: "Maximum articles to process with LLM"
+        description: "Maximum articles to process with LLM per topic"
         required: true
         default: "1"
         type: string
@@ -59,7 +60,7 @@ jobs:
           SKIP_SLIDES="${{ github.event.inputs.skip_slides }}"
 
           if [ -z "$TOPIC" ]; then
-            TOPIC="AI"
+            TOPIC="all"
           fi
 
           if [ -z "$MAX_ARTICLES" ]; then
@@ -70,11 +71,27 @@ jobs:
             SKIP_SLIDES="true"
           fi
 
-          if [ "$SKIP_SLIDES" = "true" ]; then
-            python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES" --skip-slides
+          if [ "$TOPIC" = "all" ]; then
+            TOPICS=("AI" "FinOps" "ProductObservation")
           else
-            python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
+            TOPICS=("$TOPIC")
           fi
+
+          for index in "${!TOPICS[@]}"; do
+            CURRENT_TOPIC="${TOPICS[$index]}"
+            echo "Running weekly market intelligence for topic: $CURRENT_TOPIC"
+
+            if [ "$SKIP_SLIDES" = "true" ]; then
+              python main.py --topic "$CURRENT_TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES" --skip-slides
+            else
+              python main.py --topic "$CURRENT_TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
+            fi
+
+            if [ "$TOPIC" = "all" ] && [ "$index" -lt "$((${#TOPICS[@]} - 1))" ]; then
+              echo "Waiting 300 seconds before the next topic to reduce Gemini rate-limit risk."
+              sleep 300
+            fi
+          done
 
       - name: Commit knowledge and history updates
         run: |

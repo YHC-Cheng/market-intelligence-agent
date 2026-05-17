@@ -244,15 +244,27 @@ python -m pytest
 
 `.github/workflows/weekly-market-intelligence.yml` runs weekly on a schedule and can also be started manually with `workflow_dispatch`.
 
+Weekly workflow runs every Monday at 02:00 Taiwan time. This corresponds to Sunday 18:00 UTC. The workflow is designed to finish before Monday 08:00 Taiwan time.
+
 Manual runs support:
 
-- `topic`: `AI`, `FinOps`, or `ProductObservation`
+- `topic`: `AI`, `FinOps`, `ProductObservation`, or `all`
 - `max_articles`: default `1`
 - `skip_slides`: default `true`
 
-GitHub Actions weekly runner defaults `max_articles` to `1` to reduce Gemini free tier rate-limit risk. If you increase `max_articles` for a manual run, the workflow may hit a Gemini 429 quota error.
-Scheduled weekly runs skip slide draft generation by default. Set `skip_slides` to `false` in manual runs if a slide draft is needed. Enabling slide draft generation may increase Gemini 429 quota risk.
-Weekly runner already uses `max_articles = 1` and `skip_slides = true` by default to reduce Gemini quota risk. Request delay can be configured through `LLM_REQUEST_DELAY_SECONDS` if needed in future automation environments.
+Scheduled weekly runs process all production topics in order:
+
+1. `AI`
+2. `FinOps`
+3. `ProductObservation`
+
+Manual runs can process one topic or use `topic = all` to run the same `AI` / `FinOps` / `ProductObservation` sequence.
+
+Weekly scheduled runs use `max_articles = 1` by default for quota safety. With `topic = all`, this means each topic analyzes up to one article with Gemini. Source collection, keyword filtering, and freshness tracking still collect and filter multiple articles before the per-topic LLM limit is applied. Manual runs can increase `max_articles`, but this may increase Gemini 429 risk.
+
+Scheduled weekly runs skip slide draft generation by default. Manual runs can set `skip_slides=false` to generate slide drafts. Enabling slide generation may increase Gemini 429 risk because slide draft generation creates extra Gemini requests.
+
+Scheduled all-topic runs include a 300-second pause between topics to reduce Gemini rate-limit risk. The workflow is expected to complete well before Monday 08:00 Taiwan time.
 
 The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 
