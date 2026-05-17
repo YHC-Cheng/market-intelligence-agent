@@ -26,6 +26,7 @@
 | Phase 8.3 | Gemini quota risk reduction | Reduce default weekly LLM volume to lower Gemini free tier rate-limit risk | Completed |
 | Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | Completed |
 | Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Completed |
+| Phase 8.6 | Knowledge / history persistence | Commit long-term history and knowledge state from weekly automation | Completed |
 | Phase 9 | Notification and review workflow | Add proactive weekly report notification and review records | Planned |
 | Phase 10 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
@@ -151,7 +152,8 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 注意事項：
 
 - workflow 不會自動 commit `outputs/` 回 repo。
-- workflow 不會自動 commit `data/history/` 或 `data/knowledge/` 回 repo。
+- Phase 8.6 之後，weekly workflow 只會自動 commit `data/history/` 與 `data/knowledge/` 回 repo。
+- workflow 不會自動 commit `data/cache/`、`data/raw_articles/`、`data/clean_articles/` 或 generated `outputs/`。
 - 目前未新增 Slack、Email、GitHub Pages 或其他通知/發布流程。
 
 ### Phase 8.3｜Gemini Quota Risk Reduction
@@ -201,6 +203,25 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - 產生 `copy_ready_report.md`，提供可貼到 Notion、Slack、Google Docs 或簡報備註的乾淨版本。
 - `outputs/index/report_index.json` 保存 quality status 與 review-ready output paths。
 - weekly workflow 會寫入 GitHub Actions Step Summary，顯示 topic、run id、workflow status、quality status、warnings、artifact name 與 key files。
+
+### Phase 8.6｜Knowledge / History Persistence
+
+狀態：Completed
+
+目標：
+
+讓 GitHub Actions weekly automation 在產生報告後，保留跨週需要延續的長期狀態，同時避免把報告與中間檔 commit 回 repo。
+
+新增能力：
+
+- weekly workflow 具備 `contents: write` permission，可將指定狀態檔推回目前 branch。
+- `Run market intelligence workflow` 完成後會執行 `Commit knowledge and history updates`。
+- auto-commit step 只會 `git add data/history data/knowledge`。
+- 若 `data/history/` 與 `data/knowledge/` 沒有變更，workflow 不會建立 empty commit。
+- commit message 使用 `chore: update market intelligence knowledge base`。
+- generated reports 仍以 GitHub Actions artifact `market-intelligence-outputs` 保存，不會 commit `outputs/`。
+- automation 不會 commit `data/cache/`、`data/raw_articles/` 或 `data/clean_articles/`。
+- GitHub Actions Step Summary 會顯示 `Knowledge/history persistence: updated` 或 `Knowledge/history persistence: no changes`。
 
 ### Phase 9｜Notification and Review Workflow
 
