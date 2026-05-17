@@ -6,5 +6,20 @@
     "slide_path": "outputs/slides/slide_draft.md",
     "related_sources": [],
     "created_at": "2026-05-15T00:02:15"
+  },
+  "FinOps_2026-W20": {
+    "topic": "FinOps",
+    "week": "2026-W20",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Token Budgeting: How To Think About AI Cost Control",
+        "url": "https://www.vantage.sh/blog/ai-token-budgeting",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-05-17T08:17:20"
   }
 }

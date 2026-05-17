@@ -32,15 +32,15 @@
   "https://www.ibm.com/blog/category/cloudability/": {
     "url": "https://www.ibm.com/blog/category/cloudability/",
     "title": "IBM Cloudability / Apptio",
-    "topic": "ProductObservation",
+    "topic": "FinOps",
     "source": "IBM Cloudability / Apptio",
-    "source_category": "competitor_product",
+    "source_category": "finops_product",
     "source_type": "web",
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-15",
-    "seen_count": 6,
+    "last_seen": "2026-05-17",
+    "seen_count": 7,
     "content_hash": "6414764c50da702abedc464a2e57041f5cd0c222dac0d7a7878685a5fe209a2f",
     "freshness_status": "repeated",
     "summary": "",
@@ -57,7 +57,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-15T00:02:15"
+    "updated_at": "2026-05-17T08:16:30"
   },
   "https://www.ecloudvalley.com/": {
     "url": "https://www.ecloudvalley.com/",
@@ -88,5 +88,41 @@
     "reason": "",
     "tags": [],
     "updated_at": "2026-05-15T00:02:15"
+  },
+  "https://www.vantage.sh/blog/ai-token-budgeting": {
+    "url": "https://www.vantage.sh/blog/ai-token-budgeting",
+    "title": "Token Budgeting: How To Think About AI Cost Control",
+    "topic": "FinOps",
+    "source": "Vantage Blog",
+    "source_category": "finops_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-11",
+    "first_seen": "2026-05-17",
+    "last_seen": "2026-05-17",
+    "seen_count": 1,
+    "content_hash": "5d8466a22f81dde9ca39113840583bf1bdf0f73957bec2d9f4480b73f2852af9",
+    "freshness_status": "new",
+    "summary": "This article outlines a framework for managing escalating AI token costs by shifting the focus from raw expenditure to cost allocation and efficiency metrics. It argues that businesses must distinguish between COGS and R&D spend and implement unit-cost analysis to determine whether high token usage reflects waste or high productivity.",
+    "key_points": [
+      "Differentiate spend between R&D (developer tools) and COGS (customer-facing production) using API keys and metadata tagging.",
+      "Raw cost data is insufficient; companies must define efficiency metrics such as tokens per pull request merged or Jira issues closed.",
+      "High token spend can be a sign of a top-performing developer rather than an inefficiency, necessitating a shift from rigid caps to ROI-based allocation.",
+      "Utilize API gateways like OpenRouter or LiteLLM to record the granular metadata required for sophisticated cost modeling.",
+      "Budgeting for AI should be viewed as portfolio management, where capital is allocated to the 'strategies' or developers yielding the highest output."
+    ],
+    "why_it_matters": "As AI spend becomes a significant line item, traditional flat-fee budgeting fails. Business leaders need unit-cost visibility to ensure AI investments are driving measurable productivity gains rather than just increasing overhead, preventing the risk of stifling their most efficient engineers with arbitrary cost controls.",
+    "score": 88.0,
+    "recommendation": "Core",
+    "relevance": 5,
+    "use_case_clarity": 4,
+    "problem_solution_fit": 5,
+    "actionability": 4,
+    "credibility_novelty": 4,
+    "use_case": "Engineering leaders and FinOps teams managing AI spend (OpenAI, Anthropic, Cursor) across large development organizations. The workflow involves segmenting spend into R&D vs. COGS, tagging usage with metadata, and benchmarking developer performance using efficiency metrics like token spend per pull request or JIRA issue.",
+    "problem_solved": "Solves the 'opaque spend' problem where high token usage cannot be distinguished from productive output. It prevents arbitrary flat budgeting that might stifle high-performing developers by shifting the focus to unit costs and ROI per engineer.",
+    "reason": "The article is highly relevant to the evolving AI FinOps landscape. It provides an explicit problem-solution framework and concrete examples of efficiency metrics. While it doesn't provide a step-by-step technical tutorial for a specific tool, it offers a clear strategic workflow for resource allocation and cost optimization in the AI era.",
+    "tags": [],
+    "updated_at": "2026-05-17T08:16:46"
   }
 }

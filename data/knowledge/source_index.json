@@ -2,15 +2,16 @@
   "Vantage Blog": {
     "name": "Vantage Blog",
     "url": "https://www.vantage.sh/blog/rss.xml",
-    "category": "competitor_product",
+    "category": "finops_product",
     "type": "rss",
     "web_mode": null,
     "topics": [
-      "ProductObservation"
+      "ProductObservation",
+      "FinOps"
     ],
-    "last_checked": "2026-05-15T00:02:12",
-    "status": "failed",
-    "last_entries_count": 0
+    "last_checked": "2026-05-17T08:16:25",
+    "status": "active",
+    "last_entries_count": 5
   },
   "CloudZero Blog": {
     "name": "CloudZero Blog",
@@ -28,13 +29,14 @@
   "IBM Cloudability / Apptio": {
     "name": "IBM Cloudability / Apptio",
     "url": "https://www.ibm.com/blog/category/cloudability/",
-    "category": "competitor_product",
+    "category": "finops_product",
     "type": "web",
     "web_mode": "static",
     "topics": [
-      "ProductObservation"
+      "ProductObservation",
+      "FinOps"
     ],
-    "last_checked": "2026-05-15T00:02:12",
+    "last_checked": "2026-05-17T08:16:25",
     "status": "static",
     "last_entries_count": 1
   },
@@ -48,6 +50,45 @@
       "ProductObservation"
     ],
     "last_checked": "2026-05-15T00:02:12",
+    "status": "static",
+    "last_entries_count": 1
+  },
+  "FinOps Foundation Blog": {
+    "name": "FinOps Foundation Blog",
+    "url": "https://www.finops.org/feed/",
+    "category": "industry_foundation",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "FinOps"
+    ],
+    "last_checked": "2026-05-17T08:16:25",
+    "status": "active",
+    "last_entries_count": 5
+  },
+  "AWS Cloud Financial Management Blog": {
+    "name": "AWS Cloud Financial Management Blog",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/feed/",
+    "category": "cloud_cost",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "FinOps"
+    ],
+    "last_checked": "2026-05-17T08:16:25",
+    "status": "active",
+    "last_entries_count": 5
+  },
+  "Google Cloud Cost Management": {
+    "name": "Google Cloud Cost Management",
+    "url": "https://cloud.google.com/blog/topics/cost-management",
+    "category": "cloud_cost",
+    "type": "web",
+    "web_mode": "static",
+    "topics": [
+      "FinOps"
+    ],
+    "last_checked": "2026-05-17T08:16:25",
     "status": "static",
     "last_entries_count": 1
   }
