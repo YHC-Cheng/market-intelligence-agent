@@ -1,0 +1,68 @@
+name: Weekly Market Intelligence
+
+on:
+  schedule:
+    - cron: "0 1 * * 1"
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Topic to run"
+        required: true
+        default: "AI"
+        type: choice
+        options:
+          - AI
+          - FinOps
+          - ProductObservation
+      max_articles:
+        description: "Maximum articles to process with LLM"
+        required: true
+        default: "3"
+        type: string
+
+jobs:
+  run-market-intelligence:
+    runs-on: ubuntu-latest
+
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run market intelligence workflow
+        run: |
+          TOPIC="${{ github.event.inputs.topic }}"
+          MAX_ARTICLES="${{ github.event.inputs.max_articles }}"
+
+          if [ -z "$TOPIC" ]; then
+            TOPIC="AI"
+          fi
+
+          if [ -z "$MAX_ARTICLES" ]; then
+            MAX_ARTICLES="3"
+          fi
+
+          python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
+
+      - name: Upload generated outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-intelligence-outputs
+          path: |
+            outputs/runs/
+            outputs/latest/
+            outputs/index/
+          retention-days: 30

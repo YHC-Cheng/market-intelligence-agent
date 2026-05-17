@@ -132,6 +132,8 @@ GEMINI_API_KEY=your_api_key_here
 
 Do not commit `.env` to GitHub.
 
+For GitHub Actions, set `GEMINI_API_KEY` in repository secrets.
+
 ## How to Run
 
 ### Validate Sources
@@ -225,6 +227,34 @@ Output:
 2026-05-16T09:00:00 | 2026-05-16_0900_weekly_FinOps | FinOps | weekly | pass | quality=85
 ```
 
+## GitHub Actions
+
+### PR Tests
+
+`.github/workflows/test.yml` runs on pull requests and pushes to `main`.
+It installs dependencies, installs `pytest`, and runs:
+
+```bash
+python -m pytest
+```
+
+### Weekly Market Intelligence
+
+`.github/workflows/weekly-market-intelligence.yml` runs weekly on a schedule and can also be started manually with `workflow_dispatch`.
+
+Manual runs support:
+
+- `topic`: `AI`, `FinOps`, or `ProductObservation`
+- `max_articles`: default `3`
+
+The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
+
+```bash
+python main.py --topic {topic} --run-mode weekly --max-articles {max_articles}
+```
+
+Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow does not automatically commit `outputs/`, `data/history/`, or `data/knowledge/` back to the repository.
+
 ## Cache, History, and Knowledge Base
 
 - `data/cache/` saves weekly topic-based LLM results to reduce repeated API calls within the same week.
@@ -297,10 +327,10 @@ config/ranking_criteria.json
 - Phase 7.3: Weekly deduplication and freshness control
 - Phase 7.4: Knowledge Base Builder
 - Phase 8.1: Automation-ready workflow refactor
+- Phase 8.2: GitHub Actions weekly runner
 
 ### Next
 
-- Phase 8: Weekly automation with GitHub Actions
 - Phase 9: Agentic research planning
 
 ## Next Development Focus

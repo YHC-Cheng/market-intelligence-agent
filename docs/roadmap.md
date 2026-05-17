@@ -22,7 +22,7 @@
 | Phase 7.3 | Weekly deduplication and freshness control | Track seen URLs, content hashes, and exclude repeated or old articles from weekly reports | Completed |
 | Phase 7.4 | Knowledge Base Builder | Persist long-term article knowledge, market insight records, and source index metadata | Completed |
 | Phase 8.1 | Automation-ready workflow refactor | Add run id, run summary, latest outputs, report index, and report query support before scheduled automation | Completed |
-| Phase 8 | Weekly automation with GitHub Actions | Run the workflow on a weekly schedule | Planned |
+| Phase 8.2 | GitHub Actions weekly runner | Add PR tests and scheduled/manual weekly market intelligence runner | Completed |
 | Phase 9 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
 ## Phase 7｜Web Source Parsing
@@ -122,3 +122,26 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 - 不改變 RSS/web parsing、freshness history、weekly cache、knowledge base 與 LLM provider 架構。
 - 成功與失敗執行都應留下 `run_summary.json`。
 - 保留既有 `python3 main.py` 與 `python3 main.py --topic FinOps` 用法。
+
+### Phase 8.2｜GitHub Actions Weekly Runner
+
+目標：
+
+新增 GitHub Actions workflow，讓 PR 具備 automated checks，並讓 market intelligence workflow 可以每週排程或手動執行。
+
+狀態：Completed
+
+新增能力：
+
+- `.github/workflows/test.yml` 在 pull request 與 push 到 `main` 時執行 `python -m pytest`。
+- `.github/workflows/weekly-market-intelligence.yml` 支援 weekly schedule 與 `workflow_dispatch`。
+- 手動執行 weekly workflow 時可選 `AI`、`FinOps` 或 `ProductObservation`。
+- 手動執行 weekly workflow 時可設定 `max_articles`，預設為 `3`。
+- workflow 使用 GitHub repository secret `GEMINI_API_KEY`。
+- weekly outputs 會以 GitHub Actions artifact `market-intelligence-outputs` 保存 30 天。
+
+注意事項：
+
+- workflow 不會自動 commit `outputs/` 回 repo。
+- workflow 不會自動 commit `data/history/` 或 `data/knowledge/` 回 repo。
+- 目前未新增 Slack、Email、GitHub Pages 或其他通知/發布流程。
