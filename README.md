@@ -246,13 +246,15 @@ Manual runs support:
 
 - `topic`: `AI`, `FinOps`, or `ProductObservation`
 - `max_articles`: default `1`
+- `skip_slides`: default `true`
 
 GitHub Actions weekly runner defaults `max_articles` to `1` to reduce Gemini free tier rate-limit risk. If you increase `max_articles` for a manual run, the workflow may hit a Gemini 429 quota error.
+Scheduled weekly runs skip slide draft generation by default. Set `skip_slides` to `false` in manual runs if a slide draft is needed. Enabling slide draft generation may increase Gemini 429 quota risk.
 
 The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 
 ```bash
-python main.py --topic {topic} --run-mode weekly --max-articles {max_articles}
+python main.py --topic {topic} --run-mode weekly --max-articles {max_articles} [--skip-slides]
 ```
 
 Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow does not automatically commit `outputs/`, `data/history/`, or `data/knowledge/` back to the repository.
@@ -330,17 +332,28 @@ config/ranking_criteria.json
 - Phase 7.4: Knowledge Base Builder
 - Phase 8.1: Automation-ready workflow refactor
 - Phase 8.2: GitHub Actions weekly runner
+- Phase 8.3: Gemini quota risk reduction
 
 ### Next
 
+- Phase 8.4: LLM reliability improvements
+- Phase 8.5: Output quality checks
+- Phase 8.6: Knowledge / history persistence
 - Phase 9: Agentic research planning
 
 ## Next Development Focus
 
-The next major improvement is Phase 8: Weekly Automation with GitHub Actions.
+The next major improvement is Phase 8.4: LLM reliability improvements.
 
 Why it matters:
 
-- Important market intelligence often comes from product pages, competitor pages, solution pages, and case studies
-- These sources are not always available through RSS
-- Supporting web sources will improve the quality of product and competitor analysis
+- GitHub Actions weekly runs are now working, but Gemini free tier quota and rate limits can still affect output quality.
+- Weekly automation should reduce unnecessary LLM calls while preserving useful market analysis output.
+- Slide draft generation, retry/backoff, and request pacing should be handled more deliberately.
+
+Planned improvements:
+
+- Add a `skip_slides` option to the weekly runner. Completed in this PR.
+- Add LLM request delay to reduce rate-limit risk.
+- Add 429 retry / backoff handling.
+- Improve warning records in `run_summary.json`.

@@ -19,6 +19,14 @@ on:
         required: true
         default: "1"
         type: string
+      skip_slides:
+        description: "Skip slide draft generation"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
 
 jobs:
   run-market-intelligence:
@@ -45,6 +53,7 @@ jobs:
         run: |
           TOPIC="${{ github.event.inputs.topic }}"
           MAX_ARTICLES="${{ github.event.inputs.max_articles }}"
+          SKIP_SLIDES="${{ github.event.inputs.skip_slides }}"
 
           if [ -z "$TOPIC" ]; then
             TOPIC="AI"
@@ -54,7 +63,15 @@ jobs:
             MAX_ARTICLES="1"
           fi
 
-          python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
+          if [ -z "$SKIP_SLIDES" ]; then
+            SKIP_SLIDES="true"
+          fi
+
+          if [ "$SKIP_SLIDES" = "true" ]; then
+            python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES" --skip-slides
+          else
+            python main.py --topic "$TOPIC" --run-mode weekly --max-articles "$MAX_ARTICLES"
+          fi
 
       - name: Upload generated outputs
         if: always()
