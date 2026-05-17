@@ -209,6 +209,8 @@ outputs/runs/{run_id}/ranked_sources.md
 outputs/runs/{run_id}/market_analysis_report.md
 outputs/runs/{run_id}/slide_draft.md
 outputs/runs/{run_id}/output_quality_review.md
+outputs/runs/{run_id}/review_summary.md
+outputs/runs/{run_id}/copy_ready_report.md
 outputs/latest/{topic}/
 outputs/index/report_index.json
 ```
@@ -224,7 +226,7 @@ python3 scripts/query_reports.py show --run-id 2026-05-16_0900_weekly_FinOps
 Output:
 
 ```text
-2026-05-16T09:00:00 | 2026-05-16_0900_weekly_FinOps | FinOps | weekly | pass | quality=85
+2026-05-16T09:00:00 | 2026-05-16_0900_weekly_FinOps | FinOps | weekly | pass | quality=85 | quality_status=pass
 ```
 
 ## GitHub Actions
@@ -258,16 +260,26 @@ The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 python main.py --topic {topic} --run-mode weekly --max-articles {max_articles} [--skip-slides]
 ```
 
-Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow does not automatically commit `outputs/`, `data/history/`, or `data/knowledge/` back to the repository.
+Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow also writes a GitHub Actions run summary with the latest run status, quality status, warnings, artifact name, and key files, so users can judge the run without downloading the artifact. The workflow does not automatically commit `outputs/`, `data/history/`, or `data/knowledge/` back to the repository.
+
+## Output Quality Checks
+
+- `run_summary.json` includes workflow `status`, report `quality_status`, `quality_score` when available, warnings, errors, and generated output paths.
+- `output_quality_review.md` summarizes run id, topic, workflow status, quality status, output type, key metrics, warnings, errors, and recommendation.
+- `review_summary.md` provides a short screenshot-friendly review surface for each run.
+- `copy_ready_report.md` provides a clean copy-ready version for Notion, Slack, Google Docs, or slide notes.
+- GitHub Actions run summary shows the latest run status and report quality without downloading the artifact.
+- `quality_status = warning` means the workflow succeeded but the report may have limited source coverage.
+- Weekly `max_articles = 1` may intentionally produce limited-source reports for quota safety.
 
 ## Cache, History, and Knowledge Base
 
 - `data/cache/` saves weekly topic-based LLM results to reduce repeated API calls within the same week.
 - `data/history/processed_articles.json` supports cross-week deduplication and freshness checks with URL, content hash, first seen, last seen, and seen count.
 - `data/knowledge/` stores long-term article knowledge, including summaries, ranking scores, recommendations, use cases, problems solved, source metadata, and market insight records linked to generated reports and slide drafts.
-- `outputs/runs/{run_id}/` stores per-run summaries and generated output snapshots so each run can be audited later.
-- `outputs/latest/{topic}/` stores the latest copied outputs for each topic.
-- `outputs/index/report_index.json` stores a queryable list of generated reports.
+- `outputs/runs/{run_id}/` stores per-run summaries, generated output snapshots, quality review, review summary, and copy-ready report so each run can be audited later.
+- `outputs/latest/{topic}/` stores the latest copied outputs for each topic, including `review_summary.md` and `copy_ready_report.md`.
+- `outputs/index/report_index.json` stores a queryable list of generated reports with quality status and review-ready output paths.
 
 ## Configuration
 
@@ -337,27 +349,27 @@ config/ranking_criteria.json
 - Phase 8.1: Automation-ready workflow refactor
 - Phase 8.2: GitHub Actions weekly runner
 - Phase 8.3: Gemini quota risk reduction
+- Phase 8.4: LLM reliability improvements
+- Phase 8.5: Output quality checks
 
 ### Next
 
-- Phase 8.4: LLM reliability improvements
-- Phase 8.5: Output quality checks
-- Phase 8.6: Knowledge / history persistence
-- Phase 9: Agentic research planning
+- Phase 9: Notification and review workflow
+- Phase 10: Agentic research planning
 
 ## Next Development Focus
 
-The next major improvement is Phase 8.4: LLM reliability improvements.
+The next major improvement is Phase 9: Notification and review workflow.
 
 Why it matters:
 
-- GitHub Actions weekly runs are now working, but Gemini free tier quota and rate limits can still affect output quality.
-- Weekly automation should reduce unnecessary LLM calls while preserving useful market analysis output.
-- Slide draft generation, retry/backoff, and request pacing should be handled more deliberately.
+- GitHub Actions can now generate reports and show run summaries, but users still need a proactive way to know when a weekly report is ready.
+- A notification and review workflow can reduce the need to manually check GitHub Actions every week.
+- Review records can make weekly market intelligence easier to track over time.
 
 Planned improvements:
 
-- Add a `skip_slides` option to the weekly runner. Completed in this PR.
-- Add LLM request delay to reduce rate-limit risk. Completed in this PR.
-- Add 429 retry / backoff handling.
-- Improve warning records in `run_summary.json`.
+- Add a notification or review workflow after weekly report generation.
+- Consider GitHub issue-based weekly report records.
+- Include report status, quality status, warnings, and artifact links in the review workflow.
+- Keep generated reports as downloadable artifacts.
