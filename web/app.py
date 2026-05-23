@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 from urllib.parse import quote, urlencode
@@ -11,6 +12,8 @@ from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
 
 
 BASE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASE_DIR.parent
+NEWSLETTER_OUTPUT_DIR = REPO_ROOT / "outputs" / "newsletter"
 
 app = FastAPI(title="Market Intelligence Agent 2.0")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
@@ -23,10 +26,6 @@ NAVIGATION_ITEMS = [
     {"label": "Review Queue", "href": "/review"},
     {"label": "Newsletter Draft", "href": "/newsletter"},
 ]
-
-PLACEHOLDER_PAGES = {
-    "/newsletter": "Newsletter Draft",
-}
 
 INTAKE_TOPIC_OPTIONS = [
     "AI",
@@ -53,6 +52,8 @@ REVIEW_ACTION_STATUS_UPDATES = {
     "reject": "rejected",
     "mark_duplicate": "duplicate",
 }
+
+NEWSLETTER_TOPIC_OPTIONS = INTAKE_TOPIC_OPTIONS
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -162,6 +163,79 @@ def review_queue_articles(topic=None):
     return with_detail_hrefs(queue_articles)
 
 
+def normalize_newsletter_topic(topic=None):
+    selected_topic = clean_filter(topic)
+    if selected_topic in NEWSLETTER_TOPIC_OPTIONS:
+        return selected_topic
+
+    return None
+
+
+def newsletter_articles(topic=None):
+    repository = get_knowledge_repository()
+    articles = repository.list_articles(
+        topic=topic,
+        review_status="approved",
+        newsletter_eligible=True,
+    )
+    return with_detail_hrefs(articles)
+
+
+def newsletter_filename_topic(topic=None):
+    if not topic:
+        return "all"
+
+    return "".join(
+        character.lower()
+        for character in topic
+        if character.isalnum() or character in {"-", "_"}
+    ) or "all"
+
+
+def markdown_value(value):
+    return str(value).strip() if value not in (None, "") else "-"
+
+
+def newsletter_markdown(articles, topic=None, generated_at=None):
+    generated_timestamp = generated_at or datetime.now().replace(
+        microsecond=0,
+    ).isoformat()
+    topic_label = topic or "Any"
+    lines = [
+        "# Market Intelligence Newsletter Draft",
+        "",
+        f"- topic: {topic_label}",
+        f"- generated_at: {generated_timestamp}",
+        f"- article_count: {len(articles)}",
+        "",
+    ]
+
+    for index, article in enumerate(articles, start=1):
+        lines.extend(
+            [
+                f"## {index}. {markdown_value(article.get('title'))}",
+                "",
+                f"- source: {markdown_value(article.get('source'))}",
+                f"- url: {markdown_value(article.get('url'))}",
+                "",
+                f"**Summary:** {markdown_value(article.get('summary'))}",
+                "",
+                f"**Use case:** {markdown_value(article.get('use_case'))}",
+                "",
+                "**Problem solved:** "
+                f"{markdown_value(article.get('problem_solved'))}",
+                "",
+            ]
+        )
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def newsletter_output_path(topic=None):
+    filename_topic = newsletter_filename_topic(topic)
+    return NEWSLETTER_OUTPUT_DIR / f"newsletter_draft_{filename_topic}.md"
+
+
 @app.get("/articles", response_class=HTMLResponse)
 async def articles(
     request: Request,
@@ -192,6 +266,59 @@ async def articles(
             "navigation_items": NAVIGATION_ITEMS,
             "articles": with_detail_hrefs(article_list),
             "filters": filters,
+        },
+    )
+
+
+@app.get("/newsletter", response_class=HTMLResponse)
+async def newsletter(
+    request: Request,
+    topic: Optional[str] = None,
+):
+    selected_topic = normalize_newsletter_topic(topic)
+    articles = newsletter_articles(topic=selected_topic)
+    markdown_preview = newsletter_markdown(articles, topic=selected_topic)
+
+    return templates.TemplateResponse(
+        request,
+        "newsletter.html",
+        {
+            "title": "Newsletter Draft",
+            "navigation_items": NAVIGATION_ITEMS,
+            "topic_options": NEWSLETTER_TOPIC_OPTIONS,
+            "topic": selected_topic,
+            "articles": articles,
+            "markdown_preview": markdown_preview,
+            "output_path": None,
+            "message": None,
+        },
+    )
+
+
+@app.post("/newsletter/export", response_class=HTMLResponse)
+async def export_newsletter(
+    request: Request,
+    topic: str = Form(default=""),
+):
+    selected_topic = normalize_newsletter_topic(topic)
+    articles = newsletter_articles(topic=selected_topic)
+    markdown_preview = newsletter_markdown(articles, topic=selected_topic)
+    output_path = newsletter_output_path(selected_topic)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(markdown_preview, encoding="utf-8")
+
+    return templates.TemplateResponse(
+        request,
+        "newsletter.html",
+        {
+            "title": "Newsletter Draft",
+            "navigation_items": NAVIGATION_ITEMS,
+            "topic_options": NEWSLETTER_TOPIC_OPTIONS,
+            "topic": selected_topic,
+            "articles": articles,
+            "markdown_preview": markdown_preview,
+            "output_path": output_path,
+            "message": "Newsletter draft exported.",
         },
     )
 
@@ -413,28 +540,4 @@ async def update_article_review(
     return RedirectResponse(
         url=f"{article_detail_href(article)}?saved=1",
         status_code=303,
-    )
-
-
-def create_placeholder_route(page_name: str):
-    async def placeholder(request: Request):
-        return templates.TemplateResponse(
-            "index.html",
-            {
-                "request": request,
-                "title": page_name,
-                "navigation_items": NAVIGATION_ITEMS,
-                "page_name": page_name,
-            },
-        )
-
-    return placeholder
-
-
-for path, page_name in PLACEHOLDER_PAGES.items():
-    app.add_api_route(
-        path,
-        create_placeholder_route(page_name),
-        methods=["GET"],
-        response_class=HTMLResponse,
     )

@@ -101,6 +101,10 @@ h1 {
   grid-template-columns: minmax(180px, 320px) auto;
 }
 
+.newsletter-filter {
+  grid-template-columns: minmax(180px, 320px) auto;
+}
+
 .table-wrap {
   overflow-x: auto;
   border: 1px solid #d8dde3;
@@ -141,6 +145,14 @@ h1 {
 
 .review-table {
   min-width: 1180px;
+}
+
+.newsletter-table {
+  min-width: 1320px;
+}
+
+.newsletter-table td {
+  max-width: 280px;
 }
 
 .quick-actions {
@@ -203,6 +215,15 @@ h1 {
   color: #14532d;
   background: #ecfdf3;
   font-weight: 700;
+}
+
+.output-path {
+  display: block;
+  margin-top: 6px;
+  color: #166534;
+  font-family: monospace;
+  font-weight: 400;
+  overflow-wrap: anywhere;
 }
 
 .error-message,
@@ -281,6 +302,57 @@ h1 {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+}
+
+.newsletter-preview {
+  margin-top: 24px;
+  border: 1px solid #d8dde3;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.preview-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #e5e9ef;
+  padding: 16px 18px;
+}
+
+.preview-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.preview-header form {
+  margin: 0;
+}
+
+.preview-header button {
+  min-height: 40px;
+  border: 1px solid #113f67;
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: #ffffff;
+  background: #113f67;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.newsletter-preview pre {
+  max-height: 520px;
+  margin: 0;
+  overflow: auto;
+  padding: 18px;
+  color: #1e293b;
+  background: #f8fafc;
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
 }
 
 .detail-grid {
@@ -404,6 +476,10 @@ h1 {
   }
 
   .review-filter {
+    grid-template-columns: 1fr;
+  }
+
+  .newsletter-filter {
     grid-template-columns: 1fr;
   }
 }

@@ -101,7 +101,7 @@ market-intelligence-agent/
 - `config.py`: Main runtime settings, source configuration, LLM settings, and workflow limits.
 - `main.py`: Full market intelligence workflow entry point.
 - `scripts/`: Utility scripts, including source validation.
-- `web/`: Minimal FastAPI and Jinja2 UI skeleton for Phase 2.
+- `web/`: Market Intelligence Agent 2.0 UI Preview for Phase 1: Knowledge Review UI MVP.
 - `llm/`: LLM provider interface and provider implementations.
 - `utils/`: Shared helpers such as JSON cache utilities.
 - `config/`: Topic keywords and ranking criteria.
@@ -155,6 +155,14 @@ Open:
 ```text
 http://127.0.0.1:8000
 ```
+
+#### Market Intelligence Agent 2.0 UI Preview
+
+Phase 1: Knowledge Review UI MVP adds a local FastAPI/Jinja2 review interface alongside the existing Market Intelligence Agent 1.0 pipeline.
+
+- Completed: Knowledge Explorer, Article Detail, Manual Intake, Review Queue
+- Current: Phase 1.7 Newsletter Draft
+- Newsletter drafts are exported as Markdown files under `outputs/newsletter/`
 
 ### Validate Sources
 
