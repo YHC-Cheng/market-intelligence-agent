@@ -14,6 +14,10 @@
     <div class="success-message" role="status">Review saved.</div>
   {% endif %}
 
+  {% if created %}
+    <div class="success-message" role="status">Manual article created.</div>
+  {% endif %}
+
   {% set score = article.get("score") %}
   {% if score is none %}
     {% set score = article.get("ranking_score") %}
