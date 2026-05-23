@@ -167,6 +167,84 @@ h1 {
   font-weight: 700;
 }
 
+.error-message,
+.warning-message {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-weight: 700;
+}
+
+.error-message {
+  border: 1px solid #f1a5a5;
+  color: #7f1d1d;
+  background: #fef2f2;
+}
+
+.warning-message {
+  border: 1px solid #f2c46d;
+  color: #713f12;
+  background: #fffbeb;
+}
+
+.warning-message a {
+  color: #113f67;
+}
+
+.intake-panel {
+  max-width: 720px;
+  border: 1px solid #d8dde3;
+  border-radius: 8px;
+  padding: 22px;
+  background: #ffffff;
+}
+
+.intake-form {
+  display: grid;
+  gap: 16px;
+}
+
+.intake-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.intake-form span {
+  color: #5a6675;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.intake-form input,
+.intake-form select,
+.intake-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px;
+  color: #1d2733;
+  background: #ffffff;
+  font: inherit;
+}
+
+.intake-form textarea {
+  resize: vertical;
+}
+
+.intake-form button {
+  justify-self: start;
+  min-height: 42px;
+  border: 1px solid #113f67;
+  border-radius: 6px;
+  padding: 8px 18px;
+  color: #ffffff;
+  background: #113f67;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
