@@ -3,3 +3,8 @@
 __pycache__/
 *.pyc
 .DS_Store
+.pytest_cache/
+data/cache/
+data/raw_articles/
+data/clean_articles/
+outputs/
