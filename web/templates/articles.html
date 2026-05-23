@@ -55,7 +55,11 @@
               {% set score = article.get("ranking_score") %}
             {% endif %}
             <tr>
-              <td>{{ article.get("title") or "Untitled" }}</td>
+              <td>
+                <a href="{{ article.detail_href }}" class="title-link">
+                  {{ article.get("title") or "Untitled" }}
+                </a>
+              </td>
               <td>{{ article.get("topic") or "-" }}</td>
               <td>{{ article.get("source") or "-" }}</td>
               <td>{{ score if score is not none and score != "" else "-" }}</td>

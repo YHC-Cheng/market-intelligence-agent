@@ -135,6 +135,11 @@ h1 {
   font-weight: 700;
 }
 
+.title-link {
+  color: #113f67;
+  font-weight: 700;
+}
+
 .empty-state {
   border: 1px dashed #b6c1ce;
   border-radius: 8px;
@@ -150,6 +155,123 @@ h1 {
 .empty-state p {
   margin: 0;
   color: #5a6675;
+}
+
+.success-message {
+  margin-bottom: 20px;
+  border: 1px solid #93c5a7;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #14532d;
+  background: #ecfdf3;
+  font-weight: 700;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.detail-grid div,
+.detail-section,
+.review-panel {
+  border: 1px solid #d8dde3;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.detail-grid div {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+}
+
+.detail-grid span,
+.review-form span {
+  color: #5a6675;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.detail-grid strong {
+  overflow-wrap: anywhere;
+}
+
+.detail-grid a {
+  color: #113f67;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.detail-section,
+.review-panel {
+  margin-bottom: 18px;
+  padding: 20px;
+}
+
+.detail-section h2,
+.review-panel h2 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+
+.detail-section p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.review-form {
+  display: grid;
+  gap: 16px;
+}
+
+.review-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.review-form select,
+.review-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px;
+  color: #1d2733;
+  background: #ffffff;
+  font: inherit;
+}
+
+.review-form textarea {
+  resize: vertical;
+}
+
+.review-form button {
+  justify-self: start;
+  min-height: 42px;
+  border: 1px solid #113f67;
+  border-radius: 6px;
+  padding: 8px 18px;
+  color: #ffffff;
+  background: #113f67;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.review-form .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-field input {
+  width: 18px;
+  height: 18px;
 }
 
 @media (max-width: 560px) {
