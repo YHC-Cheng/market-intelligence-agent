@@ -1,14 +1,14 @@
 # Source Validation Report
 
-Generated at: 2026-05-23T13:39:35
+Generated at: 2026-05-14T22:19:11
 
 ## Summary
 
 - Total sources: 14
 - RSS sources: 7
 - Web sources: 7
-- Success: 6
-- Failed: 1
+- Success: 7
+- Failed: 0
 - Static: 4
 - Listing: 3
 - Skipped: 0
@@ -24,12 +24,12 @@ Generated at: 2026-05-23T13:39:35
 - Web mode: 
 - Category: official_ai
 - URL: https://openai.com/news/rss.xml
-- Entries count: 967
+- Entries count: 957
 
 Top entries:
-1. OpenAI named a Leader in enterprise coding agents by Gartner
-2. How Virgin Atlantic ships faster with Codex
-3. AdventHealth advances whole-person care with OpenAI
+1. Building a safe, effective sandbox to enable Codex on Windows
+2. Our response to the TanStack npm supply chain attack
+3. How finance teams use Codex
 
 #### Anthropic News / Blog
 
@@ -55,9 +55,9 @@ Top entries:
 - Entries count: 5
 
 Top entries:
-1. Everything Google Cloud customers need to know coming out of Google I/O
-2. StartupsThe top announcements for startups from Google I/O ‘26By Darren Mowry • 7-minute read
-3. Public SectorSmart moves: Building resilient transportation systems with Google AIBy Kristin White • 3-minute read
+1. Gemini 3.1 Flash-Lite is now generally available on Gemini Enterprise Agent Platform
+2. AI & Machine LearningGoogle Named a Leader in the Gartner® Magic Quadrant™ for AI Application Development Platforms: Mid-cycle updateBy Mike Clark • 5-minute read
+3. Media & EntertainmentHow Glance turns hours of video into mobile-ready clips with AIBy Sharmila Devi • 8-minute read
 
 #### AWS Blog RSS
 
@@ -69,22 +69,23 @@ Top entries:
 - Entries count: 20
 
 Top entries:
-1. AWS Weekly Roundup: AWS Transform at 1 year, Claude Platform on AWS, EC2 M3 Ultra Mac instances, and more (May 18, 2026)
-2. Amazon Bedrock introduces new advanced prompt optimization and migration tool
-3. Amazon Redshift introduces AWS Graviton-based RG instances with an integrated data lake query engine
+1. Amazon Redshift introduces AWS Graviton-based RG instances with an integrated data lake query engine
+2. AWS Weekly Roundup: Amazon Bedrock AgentCore payments, Agent Toolkit for AWS, and more (May 11, 2026)
+3. The AWS MCP Server is now generally available
 
 #### Microsoft Azure Blog RSS
 
-- Status: failed
+- Status: success
 - Type: rss
 - Web mode: 
 - Category: cloud_provider
 - URL: https://azure.microsoft.com/en-us/blog/feed/
-- Entries count: 0
-- Error: <unknown>:2:0: syntax error
+- Entries count: 10
 
 Top entries:
-No entries available.
+1. Red Hat Summit 2026: Platform modernization and AI on Microsoft Azure Red Hat OpenShift
+2. Build AI apps with Azure Cosmos DB: Key trends from Cosmos Conf 2026
+3. Scaling cloud and AI: Microsoft Azure’s commitment to Europe’s digital future
 
 ### FinOps
 
@@ -98,9 +99,9 @@ No entries available.
 - Entries count: 10
 
 Top entries:
-1. Token Economics: The Atomic Unit of AI Value
-2. Speed and Discipline: How Sonali Niswander Manages the Value of AI at MetLife
-3. Bringing Data Center into Modern FinOps Using FOCUS
+1. Speed and Discipline: How Sonali Niswander Manages the Value of AI at MetLife
+2. Bringing Data Center into Modern FinOps Using FOCUS
+3. AI for FinOps: Agentic Use Cases in FinOps
 
 #### Vantage Blog
 
@@ -109,12 +110,12 @@ Top entries:
 - Web mode: 
 - Category: finops_product
 - URL: https://www.vantage.sh/blog/rss.xml
-- Entries count: 368
+- Entries count: 367
 
 Top entries:
-1. Vantage Launches Snowflake Data Sharing
-2. Vantage Launches Simplified Provider Filtering
-3. Vantage Launches Tag Key Columns in Active Resource Reports
+1. Vantage Launches Simplified Provider Filtering
+2. Vantage Launches Tag Key Columns in Active Resource Reports
+3. Token Budgeting: How To Think About AI Cost Control
 
 #### IBM Cloudability / Apptio
 
@@ -139,9 +140,9 @@ No entries available.
 - Entries count: 20
 
 Top entries:
-1. Join us at FinOps X 2026: Your Guide to All Things AWS
-2. Identifying security risks using AWS Cost and Usage Report data
-3. Transforming FinOps with the Latest Amazon Q Cost Capabilities
+1. Identifying security risks using AWS Cost and Usage Report data
+2. Transforming FinOps with the Latest Amazon Q Cost Capabilities
+3. Track Amazon Bedrock Costs by Caller Identity with IAM Principal-Based Cost Allocation
 
 #### Google Cloud Cost Management
 
@@ -165,12 +166,12 @@ No entries available.
 - Web mode: 
 - Category: competitor_product
 - URL: https://www.vantage.sh/blog/rss.xml
-- Entries count: 368
+- Entries count: 367
 
 Top entries:
-1. Vantage Launches Snowflake Data Sharing
-2. Vantage Launches Simplified Provider Filtering
-3. Vantage Launches Tag Key Columns in Active Resource Reports
+1. Vantage Launches Simplified Provider Filtering
+2. Vantage Launches Tag Key Columns in Active Resource Reports
+3. Token Budgeting: How To Think About AI Cost Control
 
 #### CloudZero Blog
 
@@ -184,7 +185,7 @@ Top entries:
 Top entries:
 1. FinOps In Full Bloom
 2. Your Cloud Economics Pulse For May 2026
-3. Why AI economics needs a financial control plane
+3. Claude On AWS: Bedrock Vs. Claude Platform Costs Compared (2026)
 
 #### IBM Cloudability / Apptio
 
