@@ -1,4 +1,5 @@
 import json
+from urllib.parse import quote
 
 from fastapi.testclient import TestClient
 
@@ -8,6 +9,14 @@ from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
 
 def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def read_json(path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def detail_path(article_id):
+    return f"/articles/{quote(article_id, safe='')}"
 
 
 def article_client(monkeypatch, knowledge_path):
@@ -55,6 +64,7 @@ def test_articles_page_displays_repository_articles(tmp_path, monkeypatch):
     assert "88.0" in response.text
     assert "approved" in response.text
     assert "Yes" in response.text
+    assert 'href="/articles/https%3A%2F%2Fexample.com%2Fcloud-costs"' in response.text
     assert 'href="https://example.com/cloud-costs"' in response.text
 
 
@@ -112,3 +122,153 @@ def test_articles_page_filters_by_keyword(tmp_path, monkeypatch):
     assert response.status_code == 200
     assert "Cloud planning guide" in response.text
     assert "Security update" not in response.text
+
+
+def test_article_detail_page_displays_article(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Detailed article",
+                "topic": "FinOps",
+                "source": "Example Blog",
+                "ranking_score": 77,
+                "summary": "Useful summary.",
+                "use_case": "Cloud cost reporting",
+                "problem_solved": "Manual review is slow.",
+                "recommendation": "Core",
+                "review_status": "unreviewed",
+                "newsletter_eligible": False,
+                "review_note": "Initial note",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+
+    assert response.status_code == 200
+    assert "Detailed article" in response.text
+    assert "FinOps" in response.text
+    assert "Example Blog" in response.text
+    assert "77" in response.text
+    assert "Useful summary." in response.text
+    assert "Cloud cost reporting" in response.text
+    assert "Manual review is slow." in response.text
+    assert "Core" in response.text
+    assert "unreviewed" in response.text
+    assert "Initial note" in response.text
+    assert 'href="https://example.com/article-1"' in response.text
+
+
+def test_article_detail_page_supports_url_article_ids(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "https://example.com/url-id": {
+                "url": "https://example.com/url-id",
+                "title": "URL id article",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get(detail_path("https://example.com/url-id"))
+
+    assert response.status_code == 200
+    assert "URL id article" in response.text
+
+
+def test_article_detail_page_returns_404_for_missing_article(tmp_path, monkeypatch):
+    client = article_client(monkeypatch, tmp_path / "missing_articles.json")
+
+    response = client.get("/articles/missing")
+
+    assert response.status_code == 404
+    assert "Article not found" in response.text
+
+
+def test_article_review_form_updates_review_status(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Review me",
+                "custom_field": {"keep": True},
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1",
+        data={"review_status": "approved", "review_note": ""},
+    )
+    persisted = read_json(knowledge_path)["article-1"]
+
+    assert response.status_code == 200
+    assert "Review saved." in response.text
+    assert persisted["review_status"] == "approved"
+    assert persisted["custom_field"] == {"keep": True}
+
+
+def test_article_review_form_updates_newsletter_eligible(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Newsletter candidate",
+                "newsletter_eligible": False,
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1",
+        data={"review_status": "unreviewed", "newsletter_eligible": "true"},
+    )
+    persisted = read_json(knowledge_path)["article-1"]
+
+    assert response.status_code == 200
+    assert "Review saved." in response.text
+    assert persisted["newsletter_eligible"] is True
+
+
+def test_article_review_form_updates_review_note(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Needs a note",
+                "review_note": "",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1",
+        data={
+            "review_status": "needs_fix",
+            "review_note": "Needs a clearer source summary.",
+        },
+    )
+    persisted = read_json(knowledge_path)["article-1"]
+
+    assert response.status_code == 200
+    assert "Review saved." in response.text
+    assert persisted["review_note"] == "Needs a clearer source summary."

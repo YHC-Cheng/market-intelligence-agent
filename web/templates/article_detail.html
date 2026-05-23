@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <p class="eyebrow">Article Detail</p>
+  <h1>{{ article.get("title") or "Untitled" }}</h1>
+
+  <nav class="nav-links compact-nav" aria-label="Main navigation">
+    {% for item in navigation_items %}
+      <a href="{{ item.href }}">{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+
+  {% if saved %}
+    <div class="success-message" role="status">Review saved.</div>
+  {% endif %}
+
+  {% set score = article.get("score") %}
+  {% if score is none %}
+    {% set score = article.get("ranking_score") %}
+  {% endif %}
+
+  <section class="detail-grid" aria-label="Article metadata">
+    <div>
+      <span>Topic</span>
+      <strong>{{ article.get("topic") or "-" }}</strong>
+    </div>
+    <div>
+      <span>Source</span>
+      <strong>{{ article.get("source") or "-" }}</strong>
+    </div>
+    <div>
+      <span>Score</span>
+      <strong>{{ score if score is not none and score != "" else "-" }}</strong>
+    </div>
+    <div>
+      <span>Review status</span>
+      <strong>{{ article.get("review_status") or "-" }}</strong>
+    </div>
+    <div>
+      <span>Newsletter eligible</span>
+      <strong>{{ "Yes" if article.get("newsletter_eligible") else "No" }}</strong>
+    </div>
+    <div>
+      <span>URL</span>
+      {% if article.get("url") %}
+        <a href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">Original</a>
+      {% else %}
+        <strong>-</strong>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="detail-section">
+    <h2>Summary</h2>
+    <p>{{ article.get("summary") or "-" }}</p>
+  </section>
+
+  <section class="detail-section">
+    <h2>Use case</h2>
+    <p>{{ article.get("use_case") or "-" }}</p>
+  </section>
+
+  <section class="detail-section">
+    <h2>Problem solved</h2>
+    <p>{{ article.get("problem_solved") or "-" }}</p>
+  </section>
+
+  <section class="detail-section">
+    <h2>Recommendation</h2>
+    <p>{{ article.get("recommendation") or "-" }}</p>
+  </section>
+
+  <section class="review-panel">
+    <h2>Review</h2>
+    <form class="review-form" method="post" action="{{ detail_href }}">
+      <label>
+        <span>Review status</span>
+        <select name="review_status">
+          {% for status in review_status_options %}
+            <option value="{{ status }}" {% if article.get("review_status") == status %}selected{% endif %}>
+              {{ status }}
+            </option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="checkbox-field">
+        <input
+          type="checkbox"
+          name="newsletter_eligible"
+          value="true"
+          {% if article.get("newsletter_eligible") %}checked{% endif %}
+        >
+        <span>Newsletter eligible</span>
+      </label>
+
+      <label>
+        <span>Review note</span>
+        <textarea name="review_note" rows="5">{{ article.get("review_note") or "" }}</textarea>
+      </label>
+
+      <button type="submit">Save</button>
+    </form>
+  </section>
+{% endblock %}

@@ -1,8 +1,9 @@
 from pathlib import Path
 from typing import Optional
+from urllib.parse import quote
 
-from fastapi import FastAPI, Query, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Form, HTTPException, Query, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -28,6 +29,14 @@ PLACEHOLDER_PAGES = {
     "/review": "Review Queue",
     "/newsletter": "Newsletter Draft",
 }
+
+REVIEW_STATUS_OPTIONS = [
+    "unreviewed",
+    "approved",
+    "rejected",
+    "needs_fix",
+    "duplicate",
+]
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -69,6 +78,26 @@ def parse_bool_filter(value):
     return None
 
 
+def article_detail_href(article):
+    article_id = (
+        article.get("id")
+        or article.get("canonical_url")
+        or article.get("url")
+        or ""
+    )
+    return f"/articles/{quote(str(article_id), safe='')}"
+
+
+def with_detail_hrefs(articles):
+    article_list = []
+    for article in articles:
+        article_copy = dict(article)
+        article_copy["detail_href"] = article_detail_href(article_copy)
+        article_list.append(article_copy)
+
+    return article_list
+
+
 @app.get("/articles", response_class=HTMLResponse)
 async def articles(
     request: Request,
@@ -97,9 +126,62 @@ async def articles(
         {
             "title": "Knowledge Explorer",
             "navigation_items": NAVIGATION_ITEMS,
-            "articles": article_list,
+            "articles": with_detail_hrefs(article_list),
             "filters": filters,
         },
+    )
+
+
+@app.get("/articles/{article_id:path}", response_class=HTMLResponse)
+async def article_detail(
+    request: Request,
+    article_id: str,
+    saved: Optional[str] = None,
+):
+    repository = get_knowledge_repository()
+    article = repository.get_article(article_id)
+
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    return templates.TemplateResponse(
+        request,
+        "article_detail.html",
+        {
+            "title": article.get("title") or "Article Detail",
+            "navigation_items": NAVIGATION_ITEMS,
+            "article": article,
+            "detail_href": article_detail_href(article),
+            "review_status_options": REVIEW_STATUS_OPTIONS,
+            "saved": saved == "1",
+        },
+    )
+
+
+@app.post("/articles/{article_id:path}", response_class=HTMLResponse)
+async def update_article_review(
+    article_id: str,
+    review_status: str = Form(...),
+    newsletter_eligible: bool = Form(False),
+    review_note: Optional[str] = Form(default=""),
+):
+    if review_status not in REVIEW_STATUS_OPTIONS:
+        raise HTTPException(status_code=400, detail="Invalid review status")
+
+    repository = get_knowledge_repository()
+    article = repository.update_article_review(
+        article_id,
+        review_status=review_status,
+        newsletter_eligible=newsletter_eligible,
+        review_note=review_note or "",
+    )
+
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    return RedirectResponse(
+        url=f"{article_detail_href(article)}?saved=1",
+        status_code=303,
     )
 
 
