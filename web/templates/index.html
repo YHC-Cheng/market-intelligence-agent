@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  {% if page_name %}
+    <p class="eyebrow">Phase 2.1 Placeholder</p>
+    <h1>{{ page_name }}</h1>
+    <nav class="nav-links" aria-label="Main navigation">
+      {% for item in navigation_items %}
+        <a href="{{ item.href }}">{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+  {% else %}
+    <p class="eyebrow">Phase 2.1</p>
+    <h1>Market Intelligence Agent 2.0</h1>
+    <nav class="nav-links" aria-label="Main navigation">
+      {% for item in navigation_items %}
+        <a href="{{ item.href }}">{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+  {% endif %}
+{% endblock %}

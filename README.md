@@ -67,6 +67,13 @@ market-intelligence-agent/
 │   ├── validate_sources.py
 │   ├── review_outputs.py
 │   └── query_reports.py
+├── web/
+│   ├── app.py
+│   ├── static/
+│   │   └── style.css
+│   └── templates/
+│       ├── layout.html
+│       └── index.html
 ├── llm/
 │   ├── base.py
 │   ├── gemini_provider.py
@@ -94,6 +101,7 @@ market-intelligence-agent/
 - `config.py`: Main runtime settings, source configuration, LLM settings, and workflow limits.
 - `main.py`: Full market intelligence workflow entry point.
 - `scripts/`: Utility scripts, including source validation.
+- `web/`: Minimal FastAPI and Jinja2 UI skeleton for Phase 2.
 - `llm/`: LLM provider interface and provider implementations.
 - `utils/`: Shared helpers such as JSON cache utilities.
 - `config/`: Topic keywords and ranking criteria.
@@ -135,6 +143,18 @@ Do not commit `.env` to GitHub.
 For GitHub Actions, set `GEMINI_API_KEY` in repository secrets.
 
 ## How to Run
+
+### Run Local Web UI
+
+```bash
+uvicorn web.app:app --reload
+```
+
+Open:
+
+```text
+http://127.0.0.1:8000
+```
 
 ### Validate Sources
 
