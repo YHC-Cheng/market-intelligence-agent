@@ -6,11 +6,12 @@
     "type": "rss",
     "web_mode": null,
     "topics": [
-      "ProductObservation"
+      "ProductObservation",
+      "FinOps"
     ],
-    "last_checked": "2026-05-15T00:02:12",
-    "status": "failed",
-    "last_entries_count": 0
+    "last_checked": "2026-05-17T18:57:17",
+    "status": "active",
+    "last_entries_count": 5
   },
   "CloudZero Blog": {
     "name": "CloudZero Blog",
@@ -21,7 +22,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-05-15T00:02:12",
+    "last_checked": "2026-05-17T18:57:17",
     "status": "listing",
     "last_entries_count": 5
   },
@@ -32,9 +33,10 @@
     "type": "web",
     "web_mode": "static",
     "topics": [
-      "ProductObservation"
+      "ProductObservation",
+      "FinOps"
     ],
-    "last_checked": "2026-05-15T00:02:12",
+    "last_checked": "2026-05-17T18:57:17",
     "status": "static",
     "last_entries_count": 1
   },
@@ -47,8 +49,112 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-05-15T00:02:12",
+    "last_checked": "2026-05-17T18:57:17",
     "status": "static",
     "last_entries_count": 1
+  },
+  "FinOps Foundation Blog": {
+    "name": "FinOps Foundation Blog",
+    "url": "https://www.finops.org/feed/",
+    "category": "industry_foundation",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "FinOps"
+    ],
+    "last_checked": "2026-05-17T18:52:12",
+    "status": "active",
+    "last_entries_count": 5
+  },
+  "AWS Cloud Financial Management Blog": {
+    "name": "AWS Cloud Financial Management Blog",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/feed/",
+    "category": "cloud_cost",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "FinOps"
+    ],
+    "last_checked": "2026-05-17T18:52:12",
+    "status": "active",
+    "last_entries_count": 5
+  },
+  "Google Cloud Cost Management": {
+    "name": "Google Cloud Cost Management",
+    "url": "https://cloud.google.com/blog/topics/cost-management",
+    "category": "cloud_cost",
+    "type": "web",
+    "web_mode": "static",
+    "topics": [
+      "FinOps"
+    ],
+    "last_checked": "2026-05-17T18:52:12",
+    "status": "static",
+    "last_entries_count": 1
+  },
+  "OpenAI News RSS": {
+    "name": "OpenAI News RSS",
+    "url": "https://openai.com/news/rss.xml",
+    "category": "official_ai",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "AI"
+    ],
+    "last_checked": "2026-05-17T18:46:46",
+    "status": "active",
+    "last_entries_count": 5
+  },
+  "Anthropic News / Blog": {
+    "name": "Anthropic News / Blog",
+    "url": "https://www.anthropic.com/news",
+    "category": "official_ai",
+    "type": "web",
+    "web_mode": "listing",
+    "topics": [
+      "AI"
+    ],
+    "last_checked": "2026-05-17T18:46:46",
+    "status": "listing",
+    "last_entries_count": 5
+  },
+  "Google Cloud Blog": {
+    "name": "Google Cloud Blog",
+    "url": "https://cloud.google.com/blog",
+    "category": "cloud_provider",
+    "type": "web",
+    "web_mode": "listing",
+    "topics": [
+      "AI"
+    ],
+    "last_checked": "2026-05-17T18:46:46",
+    "status": "listing",
+    "last_entries_count": 5
+  },
+  "AWS Blog RSS": {
+    "name": "AWS Blog RSS",
+    "url": "https://aws.amazon.com/blogs/aws/feed/",
+    "category": "cloud_provider",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "AI"
+    ],
+    "last_checked": "2026-05-17T18:46:46",
+    "status": "active",
+    "last_entries_count": 5
+  },
+  "Microsoft Azure Blog RSS": {
+    "name": "Microsoft Azure Blog RSS",
+    "url": "https://azure.microsoft.com/en-us/blog/feed/",
+    "category": "cloud_provider",
+    "type": "rss",
+    "web_mode": null,
+    "topics": [
+      "AI"
+    ],
+    "last_checked": "2026-05-17T18:46:46",
+    "status": "active",
+    "last_entries_count": 5
   }
 }

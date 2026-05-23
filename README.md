@@ -244,15 +244,27 @@ python -m pytest
 
 `.github/workflows/weekly-market-intelligence.yml` runs weekly on a schedule and can also be started manually with `workflow_dispatch`.
 
+Weekly workflow runs every Monday at 02:00 Taiwan time. This corresponds to Sunday 18:00 UTC. The workflow is designed to finish before Monday 08:00 Taiwan time.
+
 Manual runs support:
 
-- `topic`: `AI`, `FinOps`, or `ProductObservation`
+- `topic`: `AI`, `FinOps`, `ProductObservation`, or `all`
 - `max_articles`: default `1`
 - `skip_slides`: default `true`
 
-GitHub Actions weekly runner defaults `max_articles` to `1` to reduce Gemini free tier rate-limit risk. If you increase `max_articles` for a manual run, the workflow may hit a Gemini 429 quota error.
-Scheduled weekly runs skip slide draft generation by default. Set `skip_slides` to `false` in manual runs if a slide draft is needed. Enabling slide draft generation may increase Gemini 429 quota risk.
-Weekly runner already uses `max_articles = 1` and `skip_slides = true` by default to reduce Gemini quota risk. Request delay can be configured through `LLM_REQUEST_DELAY_SECONDS` if needed in future automation environments.
+Scheduled weekly runs process all production topics in order:
+
+1. `AI`
+2. `FinOps`
+3. `ProductObservation`
+
+Manual runs can process one topic or use `topic = all` to run the same `AI` / `FinOps` / `ProductObservation` sequence.
+
+Weekly scheduled runs use `max_articles = 1` by default for quota safety. With `topic = all`, this means each topic analyzes up to one article with Gemini. Source collection, keyword filtering, and freshness tracking still collect and filter multiple articles before the per-topic LLM limit is applied. Manual runs can increase `max_articles`, but this may increase Gemini 429 risk.
+
+Scheduled weekly runs skip slide draft generation by default. Manual runs can set `skip_slides=false` to generate slide drafts. Enabling slide generation may increase Gemini 429 risk because slide draft generation creates extra Gemini requests.
+
+Scheduled all-topic runs include a 300-second pause between topics to reduce Gemini rate-limit risk. The workflow is expected to complete well before Monday 08:00 Taiwan time.
 
 The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 
@@ -260,7 +272,9 @@ The workflow reads `GEMINI_API_KEY` from GitHub repository secrets and runs:
 python main.py --topic {topic} --run-mode weekly --max-articles {max_articles} [--skip-slides]
 ```
 
-Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow also writes a GitHub Actions run summary with the latest run status, quality status, warnings, artifact name, and key files, so users can judge the run without downloading the artifact. The workflow does not automatically commit `outputs/`, `data/history/`, or `data/knowledge/` back to the repository.
+Generated weekly outputs are uploaded as the GitHub Actions artifact `market-intelligence-outputs` for 30 days. The workflow also writes a GitHub Actions run summary with the latest run status, quality status, warnings, artifact name, key files, and knowledge/history persistence result, so users can judge the run without downloading the artifact.
+
+The weekly workflow commits long-term state from `data/history/` and `data/knowledge/` back to the repository when those files change. Generated reports remain artifacts and are not committed. The workflow does not commit `outputs/`, `data/cache/`, `data/raw_articles/`, or `data/clean_articles/`. If there are no knowledge/history changes, the workflow does not create an empty commit.
 
 ## Output Quality Checks
 
@@ -277,6 +291,9 @@ Generated weekly outputs are uploaded as the GitHub Actions artifact `market-int
 - `data/cache/` saves weekly topic-based LLM results to reduce repeated API calls within the same week.
 - `data/history/processed_articles.json` supports cross-week deduplication and freshness checks with URL, content hash, first seen, last seen, and seen count.
 - `data/knowledge/` stores long-term article knowledge, including summaries, ranking scores, recommendations, use cases, problems solved, source metadata, and market insight records linked to generated reports and slide drafts.
+- GitHub Actions persists long-term state by committing `data/history/` and `data/knowledge/` after successful weekly runs when those files change.
+- Generated reports stay in the `market-intelligence-outputs` artifact and are not committed.
+- Intermediate files in `data/cache/`, `data/raw_articles/`, and `data/clean_articles/` are not committed by automation.
 - `outputs/runs/{run_id}/` stores per-run summaries, generated output snapshots, quality review, review summary, and copy-ready report so each run can be audited later.
 - `outputs/latest/{topic}/` stores the latest copied outputs for each topic, including `review_summary.md` and `copy_ready_report.md`.
 - `outputs/index/report_index.json` stores a queryable list of generated reports with quality status and review-ready output paths.
@@ -381,6 +398,7 @@ The following files are generated during runs and should not be automatically co
 - Phase 8.3: Gemini quota risk reduction
 - Phase 8.4: LLM reliability improvements
 - Phase 8.5: Output quality checks
+- Phase 8.6: Knowledge / history persistence
 
 ### Next
 

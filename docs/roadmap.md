@@ -26,7 +26,7 @@
 | Phase 8.3 | Gemini quota risk reduction | Reduce default weekly LLM volume to lower Gemini free tier rate-limit risk | Completed |
 | Phase 8.4 | LLM reliability improvements | Reduce unnecessary LLM calls, add request pacing, and improve 429 handling | Completed |
 | Phase 8.5 | Output quality checks | Improve validation and quality checks for generated outputs | Completed |
-| Phase 8.6 | Knowledge / history persistence | Define persistence strategy for data/history and data/knowledge across GitHub Actions runs | Planned |
+| Phase 8.6 | Knowledge / history persistence | Commit long-term history and knowledge state from weekly automation | Completed |
 | Phase 9 | Notification and review workflow | Add proactive weekly report notification and review records | Planned |
 | Phase 10 | Agentic research planning | Let the agent plan research tasks and identify follow-up questions | Planned |
 
@@ -140,19 +140,26 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 
 - `.github/workflows/test.yml` 在 pull request 與 push 到 `main` 時執行 `python -m pytest`。
 - `.github/workflows/weekly-market-intelligence.yml` 支援 weekly schedule 與 `workflow_dispatch`。
-- 手動執行 weekly workflow 時可選 `AI`、`FinOps` 或 `ProductObservation`。
+- weekly schedule 為每週一台灣時間 02:00 執行，對應 GitHub Actions cron 的 Sunday 18:00 UTC。
+- scheduled run 預設等同 `topic = all`，依序執行 `AI`、`FinOps`、`ProductObservation`。
+- 手動執行 weekly workflow 時可選 `AI`、`FinOps`、`ProductObservation` 或 `all`。
+- 手動執行 `topic = all` 時，會依序執行 `AI`、`FinOps`、`ProductObservation`。
 - 手動執行 weekly workflow 時可設定 `max_articles`，預設為 `1`。
 - GitHub Actions weekly runner 預設 `max_articles = 1`，以降低 Gemini free tier rate limit 風險；若手動執行時提高 `max_articles`，可能遇到 Gemini 429 quota error。
+- 當 `topic = all` 時，`max_articles = 1` 代表每個 topic 最多使用 Gemini 分析 1 篇文章；source collection、keyword filtering 與 freshness tracking 仍會照常收集與篩選多篇文章。
 - 手動執行 weekly workflow 時可設定 `skip_slides`，預設為 `true`。
 - scheduled weekly run 預設略過 slide draft generation，以降低 Gemini API request 數量與 429 quota risk。
 - 若手動執行時將 `skip_slides` 設為 `false`，會產生 slide draft，但可能增加 Gemini 429 quota risk。
+- scheduled all-topic run 會在 topic 之間等待 300 秒，以降低 Gemini rate-limit 風險；最後一個 topic 完成後不會再等待。
+- weekly workflow 預期可在每週一台灣時間 08:00 前完成。
 - workflow 使用 GitHub repository secret `GEMINI_API_KEY`。
 - weekly outputs 會以 GitHub Actions artifact `market-intelligence-outputs` 保存 30 天。
 
 注意事項：
 
 - workflow 不會自動 commit `outputs/` 回 repo。
-- workflow 不會自動 commit `data/history/` 或 `data/knowledge/` 回 repo。
+- Phase 8.6 之後，weekly workflow 只會自動 commit `data/history/` 與 `data/knowledge/` 回 repo。
+- workflow 不會自動 commit `data/cache/`、`data/raw_articles/`、`data/clean_articles/` 或 generated `outputs/`。
 - 目前未新增 Slack、Email、GitHub Pages 或其他通知/發布流程。
 
 ### Phase 8.3｜Gemini Quota Risk Reduction
@@ -205,32 +212,22 @@ Phase 8 會讓 workflow 可以被排程工具穩定執行。Phase 8.1 先不新�
 
 ### Phase 8.6｜Knowledge / History Persistence
 
-狀態：Planned
+狀態：Completed
 
 目標：
 
-定義清晰的 persistence strategy，讓 GitHub Actions scheduled runs 能保留長期 knowledge / history，避免每週 run 都像全新環境。
+讓 GitHub Actions weekly automation 在產生報告後，保留跨週需要延續的長期狀態，同時避免把報告與中間檔 commit 回 repo。
 
-規劃方向：
+新增能力：
 
-Should be persisted:
-- `data/history/processed_articles.json` — Supports cross-week deduplication and freshness tracking.
-- `data/knowledge/articles_knowledge.json` — Long-term article knowledge, including summaries, ranking scores, recommendations, and use cases.
-- `data/knowledge/market_insights.json` — Accumulated market insight records and linked report references.
-- `data/knowledge/source_index.json` — Source metadata and quality tracking.
-
-Should NOT be persisted automatically:
-- `outputs/` — Generated reports and should remain downloadable artifacts.
-- `data/cache/` — Intermediate or run-specific files and should not be committed automatically.
-- `data/raw_articles/` — Intermediate processing files.
-- `data/clean_articles/` — Intermediate processing files.
-- `.env` — Local API keys and secrets.
-
-實作步驟：
-
-- 更新 .gitignore 排除 intermediate files，但保留 `data/history/` 和 `data/knowledge/`。
-- 更新 README.md 文件化 persistence policy。
-- 更新 roadmap 文件。
+- weekly workflow 具備 `contents: write` permission，可將指定狀態檔推回目前 branch。
+- `Run market intelligence workflow` 完成後會執行 `Commit knowledge and history updates`。
+- auto-commit step 只會 `git add data/history data/knowledge`。
+- 若 `data/history/` 與 `data/knowledge/` 沒有變更，workflow 不會建立 empty commit。
+- commit message 使用 `chore: update market intelligence knowledge base`。
+- generated reports 仍以 GitHub Actions artifact `market-intelligence-outputs` 保存，不會 commit `outputs/`。
+- automation 不會 commit `data/cache/`、`data/raw_articles/` 或 `data/clean_articles/`。
+- GitHub Actions Step Summary 會顯示 `Knowledge/history persistence: updated` 或 `Knowledge/history persistence: no changes`。
 
 ### Phase 9｜Notification and Review Workflow
 
