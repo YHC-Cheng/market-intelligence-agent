@@ -97,6 +97,10 @@ h1 {
   cursor: pointer;
 }
 
+.review-filter {
+  grid-template-columns: minmax(180px, 320px) auto;
+}
+
 .table-wrap {
   overflow-x: auto;
   border: 1px solid #d8dde3;
@@ -133,6 +137,40 @@ h1 {
 .article-table a {
   color: #113f67;
   font-weight: 700;
+}
+
+.review-table {
+  min-width: 1180px;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 260px;
+}
+
+.quick-actions form {
+  margin: 0;
+}
+
+.quick-actions button {
+  min-height: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #113f67;
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quick-actions button:hover,
+.quick-actions button:focus {
+  border-color: #6a95b8;
+  outline: none;
 }
 
 .title-link {
@@ -362,6 +400,10 @@ h1 {
   }
 
   .filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .review-filter {
     grid-template-columns: 1fr;
   }
 }

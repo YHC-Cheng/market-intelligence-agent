@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <p class="eyebrow">Review Queue</p>
+  <h1>Articles to review</h1>
+
+  <nav class="nav-links compact-nav" aria-label="Main navigation">
+    {% for item in navigation_items %}
+      <a href="{{ item.href }}">{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+
+  {% if message %}
+    <div class="success-message" role="status">{{ message }}</div>
+  {% endif %}
+
+  {% if error %}
+    <div class="error-message" role="alert">{{ error }}</div>
+  {% endif %}
+
+  <form class="filter-bar review-filter" method="get" action="/review">
+    <label>
+      <span>Topic</span>
+      <input type="search" name="topic" value="{{ topic or '' }}">
+    </label>
+    <button type="submit">Apply</button>
+  </form>
+
+  {% if articles %}
+    <div class="table-wrap">
+      <table class="article-table review-table">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Topic</th>
+            <th scope="col">Source</th>
+            <th scope="col">Score</th>
+            <th scope="col">Review</th>
+            <th scope="col">Newsletter</th>
+            <th scope="col">URL</th>
+            <th scope="col">Detail</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for article in articles %}
+            {% set score = article.get("score") %}
+            {% if score is none %}
+              {% set score = article.get("ranking_score") %}
+            {% endif %}
+            <tr>
+              <td>{{ article.get("title") or "Untitled" }}</td>
+              <td>{{ article.get("topic") or "-" }}</td>
+              <td>{{ article.get("source") or "-" }}</td>
+              <td>{{ score if score is not none and score != "" else "-" }}</td>
+              <td>{{ article.get("review_status") or "-" }}</td>
+              <td>{{ "Yes" if article.get("newsletter_eligible") else "No" }}</td>
+              <td>
+                {% if article.get("url") %}
+                  <a href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">Original</a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td><a href="{{ article.detail_href }}">Detail</a></td>
+              <td>
+                <div class="quick-actions">
+                  <form method="post" action="/review/action">
+                    <input type="hidden" name="article_id" value="{{ article.get('id') }}">
+                    <input type="hidden" name="topic" value="{{ topic or '' }}">
+                    <input type="hidden" name="action" value="approve">
+                    <button type="submit">Approve</button>
+                  </form>
+                  <form method="post" action="/review/action">
+                    <input type="hidden" name="article_id" value="{{ article.get('id') }}">
+                    <input type="hidden" name="topic" value="{{ topic or '' }}">
+                    <input type="hidden" name="action" value="reject">
+                    <button type="submit">Reject</button>
+                  </form>
+                  <form method="post" action="/review/action">
+                    <input type="hidden" name="article_id" value="{{ article.get('id') }}">
+                    <input type="hidden" name="topic" value="{{ topic or '' }}">
+                    <input type="hidden" name="action" value="mark_duplicate">
+                    <button type="submit">Duplicate</button>
+                  </form>
+                  <form method="post" action="/review/action">
+                    <input type="hidden" name="article_id" value="{{ article.get('id') }}">
+                    <input type="hidden" name="topic" value="{{ topic or '' }}">
+                    <input type="hidden" name="action" value="toggle_eligible">
+                    <button type="submit">Toggle newsletter</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <section class="empty-state" aria-live="polite">
+      <h2>No articles waiting for review</h2>
+      <p>The queue is clear for the selected filters.</p>
+    </section>
+  {% endif %}
+{% endblock %}

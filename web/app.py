@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import Optional
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 
 from fastapi import FastAPI, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -25,7 +25,6 @@ NAVIGATION_ITEMS = [
 ]
 
 PLACEHOLDER_PAGES = {
-    "/review": "Review Queue",
     "/newsletter": "Newsletter Draft",
 }
 
@@ -42,6 +41,18 @@ REVIEW_STATUS_OPTIONS = [
     "needs_fix",
     "duplicate",
 ]
+
+REVIEW_QUEUE_STATUSES = {
+    "unreviewed",
+    "needs_fix",
+    "duplicate",
+}
+
+REVIEW_ACTION_STATUS_UPDATES = {
+    "approve": "approved",
+    "reject": "rejected",
+    "mark_duplicate": "duplicate",
+}
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -125,6 +136,32 @@ def intake_context(
     }
 
 
+def review_queue_url(topic=None, message=None, error=None):
+    params = {}
+    if topic:
+        params["topic"] = topic
+    if message:
+        params["message"] = message
+    if error:
+        params["error"] = error
+
+    if not params:
+        return "/review"
+
+    return f"/review?{urlencode(params)}"
+
+
+def review_queue_articles(topic=None):
+    repository = get_knowledge_repository()
+    articles = repository.list_articles(topic=topic)
+    queue_articles = [
+        article
+        for article in articles
+        if article.get("review_status") in REVIEW_QUEUE_STATUSES
+    ]
+    return with_detail_hrefs(queue_articles)
+
+
 @app.get("/articles", response_class=HTMLResponse)
 async def articles(
     request: Request,
@@ -156,6 +193,97 @@ async def articles(
             "articles": with_detail_hrefs(article_list),
             "filters": filters,
         },
+    )
+
+
+@app.get("/review", response_class=HTMLResponse)
+async def review_queue(
+    request: Request,
+    topic: Optional[str] = None,
+    message: Optional[str] = None,
+    error: Optional[str] = None,
+):
+    selected_topic = clean_filter(topic)
+
+    return templates.TemplateResponse(
+        request,
+        "review_queue.html",
+        {
+            "title": "Review Queue",
+            "navigation_items": NAVIGATION_ITEMS,
+            "articles": review_queue_articles(topic=selected_topic),
+            "topic": selected_topic,
+            "message": clean_filter(message),
+            "error": clean_filter(error),
+        },
+    )
+
+
+@app.post("/review/action", response_class=HTMLResponse)
+async def review_action(
+    article_id: str = Form(default=""),
+    action: str = Form(default=""),
+    topic: str = Form(default=""),
+):
+    selected_topic = clean_filter(topic)
+    cleaned_article_id = clean_filter(article_id)
+    cleaned_action = clean_filter(action)
+
+    if cleaned_action not in {*REVIEW_ACTION_STATUS_UPDATES, "toggle_eligible"}:
+        return RedirectResponse(
+            url=review_queue_url(
+                topic=selected_topic,
+                error="Invalid review action.",
+            ),
+            status_code=303,
+        )
+
+    if cleaned_article_id is None:
+        return RedirectResponse(
+            url=review_queue_url(
+                topic=selected_topic,
+                error="Article not found.",
+            ),
+            status_code=303,
+        )
+
+    repository = get_knowledge_repository()
+    article = repository.get_article(cleaned_article_id)
+    if article is None:
+        return RedirectResponse(
+            url=review_queue_url(
+                topic=selected_topic,
+                error="Article not found.",
+            ),
+            status_code=303,
+        )
+
+    if cleaned_action == "toggle_eligible":
+        updated_article = repository.update_article_review(
+            cleaned_article_id,
+            newsletter_eligible=not article.get("newsletter_eligible", False),
+        )
+    else:
+        updated_article = repository.update_article_review(
+            cleaned_article_id,
+            review_status=REVIEW_ACTION_STATUS_UPDATES[cleaned_action],
+        )
+
+    if updated_article is None:
+        return RedirectResponse(
+            url=review_queue_url(
+                topic=selected_topic,
+                error="Article not found.",
+            ),
+            status_code=303,
+        )
+
+    return RedirectResponse(
+        url=review_queue_url(
+            topic=selected_topic,
+            message="Review queue updated.",
+        ),
+        status_code=303,
     )
 
 
