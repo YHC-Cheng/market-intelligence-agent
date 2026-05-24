@@ -488,7 +488,16 @@ The following files are generated during runs and should not be automatically co
 
 ## Roadmap
 
-### Completed
+The project has two related but separate roadmap tracks:
+
+- Market Intelligence Agent 1.0: the original pipeline, automation, and report generation workflow.
+- Market Intelligence Agent 2.0: the Web UI and workflow layer built beside the 1.0 pipeline.
+
+Market Intelligence Agent 2.0 does not replace or modify the 1.0 pipeline in Phase 2. It uses FastAPI, Jinja2 templates, static CSS, and the JSON knowledge repository to provide a local workspace on top of the existing knowledge data.
+
+### Market Intelligence Agent 1.0 Roadmap
+
+#### Completed
 
 - Phase 0: Project setup
 - Phase 1: RSS metadata collection
@@ -515,33 +524,46 @@ The following files are generated during runs and should not be automatically co
 - Phase 8.4: LLM reliability improvements
 - Phase 8.5: Output quality checks
 - Phase 8.6: Knowledge / history persistence
-- Market Intelligence Agent 2.0 Phase 2: FastAPI/Jinja2 Web UI
-- Phase 2.8: UI Polish
-- Phase 2.9: Documentation Update
 
-### Next
+### Market Intelligence Agent 2.0 Roadmap
 
-- Phase 3: Manual Article Summary Flow Spec
-- Phase 3: Manual Article Summary Implementation
-- Phase 3: Weekly Brief Selection Logic Spec
-- Phase 3: Weekly Brief Selection Implementation
-- Phase 3: Needs Attention / exception handling
+Market Intelligence Agent 2.0 is the Web UI and workflow layer built beside the 1.0 pipeline. It uses FastAPI, Jinja2, static CSS, the JSON knowledge repository, and pytest. Phase 2 does not introduce React, Vite, Tailwind, a frontend build pipeline, a database, article schema migration, or 1.0 pipeline changes.
+
+#### Completed
+
+- Phase 1: Web UI direction and architecture planning
+- Phase 2.1: UI audit and information architecture
+- Phase 2.2: Shared SaaS admin UI shell
+- Phase 2.3: Dashboard / Articles workspace
+- Phase 2.4: Add Article side panel
+- Phase 2.5: Weekly Brief list and detail pages
+- Phase 2.6: Reference page
+- Phase 2.7: Article workflow controls
+- Phase 2.8: UI polish
+- Phase 2.9: Documentation update
+
+#### Next
+
+- Phase 3.1: Manual Article Summary Flow Spec
+- Phase 3.2: Manual Article Summary Implementation
+- Phase 3.3: Weekly Brief Selection Logic Spec
+- Phase 3.4: Weekly Brief Selection Implementation
+- Phase 3.5: Needs Attention / exception handling
 
 ## Next Development Focus
 
-The next major improvement is Phase 3 for Market Intelligence Agent 2.0 Web UI.
+The next major improvement is Market Intelligence Agent 2.0 Phase 3.
 
 Why it matters:
 
-- Phase 2 established the Dashboard, Article Detail, Add Article panel, Weekly Brief views, Reference page, and polished local UI shell.
-- Manual articles can now be created, but they do not yet have a complete manual summary workflow.
-- Weekly Brief pages exist, but formal article selection logic and historical brief persistence are still planned.
-- The UI needs clear handling for articles that need attention, fail processing, or require manual follow-up.
+- Phase 3 builds on the completed 2.0 Phase 2 Web UI.
+- It does not replace the Market Intelligence Agent 1.0 pipeline.
+- It will connect manual article intake, summary generation, Weekly Brief selection logic, and Needs Attention workflows.
 
 Planned improvements:
 
-- Define the Manual Article Summary Flow Spec.
-- Implement manual summary creation and editing.
-- Define Weekly Brief selection rules.
-- Implement Weekly Brief selection logic.
-- Add Needs Attention and exception handling flows.
+- Phase 3.1: Manual Article Summary Flow Spec
+- Phase 3.2: Manual Article Summary Implementation
+- Phase 3.3: Weekly Brief Selection Logic Spec
+- Phase 3.4: Weekly Brief Selection Implementation
+- Phase 3.5: Needs Attention / exception handling
