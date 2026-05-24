@@ -101,7 +101,7 @@ market-intelligence-agent/
 - `config.py`: Main runtime settings, source configuration, LLM settings, and workflow limits.
 - `main.py`: Full market intelligence workflow entry point.
 - `scripts/`: Utility scripts, including source validation.
-- `web/`: Market Intelligence Agent 2.0 UI Preview for Phase 1: Knowledge Review UI MVP.
+- `web/`: Market Intelligence Agent 2.0 Phase 2 Web UI built with FastAPI, Jinja2 templates, and static CSS.
 - `llm/`: LLM provider interface and provider implementations.
 - `utils/`: Shared helpers such as JSON cache utilities.
 - `config/`: Topic keywords and ranking criteria.
@@ -147,7 +147,7 @@ For GitHub Actions, set `GEMINI_API_KEY` in repository secrets.
 ### Run Local Web UI
 
 ```bash
-uvicorn web.app:app --reload
+PYTHONPATH=. .venv/bin/python -m uvicorn web.app:app --reload
 ```
 
 Open:
@@ -156,13 +156,101 @@ Open:
 http://127.0.0.1:8000
 ```
 
-#### Market Intelligence Agent 2.0 UI Preview
+#### Market Intelligence Agent 2.0 Phase 2 Web UI
 
-Phase 1: Knowledge Review UI MVP adds a local FastAPI/Jinja2 review interface alongside the existing Market Intelligence Agent 1.0 pipeline.
+Phase 2 provides a local product UI for browsing, filtering, reviewing, and manually organizing the JSON knowledge repository. It is intentionally lightweight and remains separate from the Market Intelligence Agent 1.0 pipeline.
 
-- Completed: Knowledge Explorer, Article Detail, Manual Intake, Review Queue
-- Current: Phase 1.7 Newsletter Draft
-- Newsletter drafts are exported as Markdown files under `outputs/newsletter/`
+Current stack:
+
+- FastAPI
+- Jinja2 templates
+- Static CSS
+- JSON knowledge repository
+- pytest
+
+Explicit non-goals for Phase 2:
+
+- No React
+- No Vite
+- No Tailwind build system
+- No frontend build pipeline
+- No database
+- No article schema migration
+- No Market Intelligence Agent 1.0 pipeline changes
+
+Routes:
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Dashboard |
+| `/articles` | Redirects to `/` |
+| `/articles/{id}` | Article Detail |
+| `/intake` | Add Article side panel |
+| `/newsletter` | Weekly Brief list |
+| `/newsletter/current` | Current Weekly Brief detail |
+| `/reference` | Read-only keywords and source links |
+| `/review` | Internal/manual route, not primary navigation |
+
+Phase 2 completed UI areas:
+
+- Dashboard: Weekly Brief summary card, article list, Keyword / Topic / Recommendation filters, Summary Status tabs, pagination, and article title links to detail pages.
+- Article Detail: intelligence content page with Summary Processing, a placeholder Generate Summary button for non-ready or failed articles, manual Recommendation dropdown, Open Original Article button, and Article Information side card.
+- Add Article: `/intake` behaves like a right-side panel from Dashboard and stores URL / Topic / Note as a local workspace article.
+- Weekly Brief: sidebar navigation includes Weekly Brief; `/newsletter` lists briefs; `/newsletter/current` shows the current brief detail; Dashboard Open brief links to `/newsletter/current`.
+- Reference: read-only keywords from `config/keywords.json` and configured source links from `config.py`.
+- UI Polish: Source Han Sans / Noto Sans TC style font stack, softer SaaS admin workspace styling, and more consistent cards, tables, buttons, badges, sidebar, and empty states.
+
+Dashboard details:
+
+- Summary Status tabs are `Ready`, `Failed`, `To-do`, and `All`.
+- Pagination shows 15 articles per page.
+- Article titles link to `/articles/{id}`.
+
+Article Detail details:
+
+- The page is an intelligence content page, not a review console.
+- `Generate Summary` is a Phase 2 placeholder and does not call AI yet.
+- Recommendation can be updated manually as `Core`, `Useful`, or `Exclude`.
+- Summary Processing shows article processing state separately from recommendation value.
+
+Add Article details:
+
+- `/intake` stores manually added URL / Topic / Note records in the local workspace.
+- It does not run extraction or AI summary in Phase 2.
+- Manual summary workflow is planned for Phase 3.
+
+Weekly Brief details:
+
+- The current implementation uses existing article data as a display-safe fallback.
+- Formal weekly selection logic and historical brief persistence are planned for a later phase.
+
+Reference details:
+
+- `source_index.json` is not used as canonical source configuration for the Reference page.
+- There are no create, edit, or delete controls.
+
+Important product principles:
+
+- Summary Status means article processing state.
+- Recommendation means article value judgment.
+- `Exclude` can still have a summary.
+- Manual articles can exist without a summary.
+- `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts.
+
+Run tests:
+
+```bash
+PYTHONPATH=. .venv/bin/pytest -q
+```
+
+Planned Phase 3 next steps:
+
+- Manual Article Summary Flow Spec
+- Manual Article Summary Implementation
+- Weekly Brief Selection Logic Spec
+- Weekly Brief Selection Implementation
+- Needs Attention / exception handling
+
 
 ### Validate Sources
 
@@ -427,26 +515,33 @@ The following files are generated during runs and should not be automatically co
 - Phase 8.4: LLM reliability improvements
 - Phase 8.5: Output quality checks
 - Phase 8.6: Knowledge / history persistence
+- Market Intelligence Agent 2.0 Phase 2: FastAPI/Jinja2 Web UI
+- Phase 2.8: UI Polish
+- Phase 2.9: Documentation Update
 
 ### Next
 
-- Phase 8.6: Knowledge / history persistence
-- Phase 9: Notification and review workflow
-- Phase 10: Agentic research planning
+- Phase 3: Manual Article Summary Flow Spec
+- Phase 3: Manual Article Summary Implementation
+- Phase 3: Weekly Brief Selection Logic Spec
+- Phase 3: Weekly Brief Selection Implementation
+- Phase 3: Needs Attention / exception handling
 
 ## Next Development Focus
 
-The next major improvement is Phase 8.6: Knowledge / history persistence.
+The next major improvement is Phase 3 for Market Intelligence Agent 2.0 Web UI.
 
 Why it matters:
 
-- GitHub Actions can now generate reports, artifacts, and review summaries, but long-term knowledge and history persistence still needs a clear strategy.
-- The workflow needs a reliable way to preserve `data/history/` and `data/knowledge/` across scheduled runs to maintain cross-week deduplication, freshness tracking, and long-term market insight accumulation.
-- A clear persistence policy ensures that temporary intermediate files do not bloat the repository while valuable knowledge is preserved for future analysis.
+- Phase 2 established the Dashboard, Article Detail, Add Article panel, Weekly Brief views, Reference page, and polished local UI shell.
+- Manual articles can now be created, but they do not yet have a complete manual summary workflow.
+- Weekly Brief pages exist, but formal article selection logic and historical brief persistence are still planned.
+- The UI needs clear handling for articles that need attention, fail processing, or require manual follow-up.
 
 Planned improvements:
 
-- Define which files should persist across GitHub Actions runs.
-- Preserve `data/history/` and `data/knowledge/` across weekly runs.
-- Keep generated reports as downloadable artifacts.
-- Avoid committing large generated outputs, cache files, or intermediate processing results unnecessarily.
+- Define the Manual Article Summary Flow Spec.
+- Implement manual summary creation and editing.
+- Define Weekly Brief selection rules.
+- Implement Weekly Brief selection logic.
+- Add Needs Attention and exception handling flows.
