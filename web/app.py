@@ -654,9 +654,9 @@ def reference_sources():
         for source in topic_sources:
             if not isinstance(source, dict):
                 continue
-            name = source.get("name") or source.get("url")
+            name = source.get("name")
             url = source.get("url")
-            source_type = source.get("type") or source.get("web_mode") or "web"
+            source_type = source.get("type") or source.get("web_mode")
             key = (name, topic, source_type, url)
             if key in seen:
                 continue
@@ -673,7 +673,7 @@ def reference_sources():
     for source in SOURCES:
         if not isinstance(source, dict):
             continue
-        name = source.get("name") or source.get("url")
+        name = source.get("name")
         url = source.get("url")
         key = (name, "General", "web", url)
         if key in seen:
