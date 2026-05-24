@@ -16,10 +16,6 @@
         <h2 id="brief-overview-title">Brief overview</h2>
         <p>{{ brief_date_range }}</p>
       </div>
-      <form method="post" action="/newsletter/export">
-        <input type="hidden" name="topic" value="{{ topic or '' }}">
-        <button class="button button-secondary" type="submit">Export markdown</button>
-      </form>
     </div>
 
     <p class="weekly-brief-summary">
@@ -36,7 +32,7 @@
           </li>
         {% endfor %}
       {% else %}
-        <li>No article data is available yet for this weekly intelligence summary.</li>
+        <li>No high-signal articles available for this week yet.</li>
       {% endif %}
     </ul>
   </section>
@@ -45,7 +41,7 @@
     <div class="section-header">
       <div>
         <h2 id="brief-candidates-title">High-signal articles</h2>
-        <p>Brief candidates shown with the current Phase 2.2 fallback ranking.</p>
+        <p>Articles are prioritized using existing recommendation and scoring signals.</p>
       </div>
     </div>
 
@@ -106,7 +102,7 @@
       </div>
     {% else %}
       <section class="empty-state" aria-live="polite">
-        <h2>No articles available</h2>
+        <h2>No high-signal articles available for this week yet.</h2>
         <p>Add or import articles to build this week's brief.</p>
       </section>
     {% endif %}

@@ -78,7 +78,9 @@ def test_intake_page_uses_shared_shell_and_drawer(tmp_path, monkeypatch):
     assert '<div class="app-shell">' in response.text
     assert '<aside class="sidebar" aria-label="Main navigation">' in response.text
     assert 'href="/"' in sidebar
-    assert "Home" in sidebar
+    assert "Dashboard" in sidebar
+    assert 'href="/newsletter"' in sidebar
+    assert "Weekly Brief" in sidebar
     assert 'aria-current="page"' in sidebar
     assert 'class="drawer-backdrop"' in response.text
     assert 'class="drawer-panel"' in response.text

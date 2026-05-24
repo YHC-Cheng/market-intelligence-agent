@@ -95,7 +95,7 @@ def test_articles_page_handles_empty_repository(tmp_path, monkeypatch):
     assert "<h1>Dashboard</h1>" in response.text
     assert "Weekly Brief" in response.text
     assert "high-signal market intelligence summary" in response.text
-    assert 'href="/newsletter">Open brief</a>' in response.text
+    assert 'href="/newsletter/current">Open brief</a>' in response.text
     assert 'href="/intake"' in response.text
     assert "Add Article" in response.text
     assert "No articles found" in response.text
@@ -130,13 +130,13 @@ def test_main_navigation_uses_phase_2_sidebar_items(tmp_path, monkeypatch):
 
     assert response.status_code == 200
     assert 'href="/"' in sidebar
-    assert "Home" in sidebar
+    assert "Dashboard" in sidebar
+    assert 'href="/newsletter"' in sidebar
+    assert "Weekly Brief" in sidebar
     assert 'href="/reference"' in sidebar
     assert "Reference" in sidebar
     assert 'href="/intake"' not in sidebar
     assert "Add Article" not in sidebar
-    assert 'href="/newsletter"' not in sidebar
-    assert "Weekly Brief" not in sidebar
     assert 'href="/review"' not in sidebar
     assert "Review Queue" not in sidebar
 

@@ -205,6 +205,10 @@ a {
   line-height: 1.55;
 }
 
+.brief-index-table {
+  min-width: 820px;
+}
+
 .chip-row {
   display: flex;
   flex-wrap: wrap;

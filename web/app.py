@@ -24,7 +24,8 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 NAVIGATION_ITEMS = [
-    {"key": "home", "label": "Home", "href": "/"},
+    {"key": "home", "label": "Dashboard", "href": "/"},
+    {"key": "newsletter", "label": "Weekly Brief", "href": "/newsletter"},
     {"key": "reference", "label": "Reference", "href": "/reference"},
 ]
 
@@ -600,7 +601,24 @@ def newsletter_markdown(articles, topic=None, generated_at=None):
 
 def newsletter_output_path(topic=None):
     filename_topic = newsletter_filename_topic(topic)
-    return NEWSLETTER_OUTPUT_DIR / f"newsletter_draft_{filename_topic}.md"
+    return NEWSLETTER_OUTPUT_DIR / f"weekly_brief_{filename_topic}.md"
+
+
+def current_weekly_brief_item(topic=None):
+    articles = newsletter_articles(topic=topic)
+    article_count = len(articles)
+    return {
+        "title": "Current Weekly Brief",
+        "href": "/newsletter/current",
+        "date_range": current_week_label(),
+        "article_count": article_count,
+        "article_count_display": (
+            f"{article_count} high-signal article"
+            f"{'' if article_count == 1 else 's'}"
+        ),
+        "status": "Current",
+        "updated": datetime.now().date().isoformat(),
+    }
 
 
 def reference_keywords():
@@ -701,6 +719,26 @@ async def reference(request: Request):
 @app.get("/newsletter", response_class=HTMLResponse)
 async def newsletter(
     request: Request,
+):
+    return templates.TemplateResponse(
+        request,
+        "newsletter_list.html",
+        {
+            **base_template_context(
+                request,
+                title="Weekly Brief",
+                active_nav="newsletter",
+                page_title="Weekly Brief",
+                page_subtitle="Browse available weekly market intelligence briefs.",
+            ),
+            "briefs": [current_weekly_brief_item()],
+        },
+    )
+
+
+@app.get("/newsletter/current", response_class=HTMLResponse)
+async def current_newsletter(
+    request: Request,
     topic: Optional[str] = None,
 ):
     selected_topic = normalize_newsletter_topic(topic)
@@ -714,8 +752,9 @@ async def newsletter(
             **base_template_context(
                 request,
                 title="Weekly Brief",
+                active_nav="newsletter",
                 page_title="Weekly Brief",
-                page_subtitle="This week's high-signal market intelligence articles.",
+                page_subtitle="A current view of high-signal market intelligence articles.",
             ),
             "topic_options": NEWSLETTER_TOPIC_OPTIONS,
             "topic": selected_topic,
@@ -747,8 +786,9 @@ async def export_newsletter(
             **base_template_context(
                 request,
                 title="Weekly Brief",
+                active_nav="newsletter",
                 page_title="Weekly Brief",
-                page_subtitle="This week's high-signal market intelligence articles.",
+                page_subtitle="A current view of high-signal market intelligence articles.",
             ),
             "topic_options": NEWSLETTER_TOPIC_OPTIONS,
             "topic": selected_topic,
