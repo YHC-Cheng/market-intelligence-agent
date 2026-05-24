@@ -21,6 +21,32 @@ def sidebar_markup(response_text):
     return response_text[start:end]
 
 
+def articles_filter_markup(response_text):
+    start = response_text.index('<form class="filters-row article-filters"')
+    end = response_text.index("</form>", start)
+    return response_text[start:end]
+
+
+def articles_table_head_markup(response_text):
+    start = response_text.index('<table class="data-table article-table">')
+    head_start = response_text.index("<thead>", start)
+    head_end = response_text.index("</thead>", head_start)
+    return response_text[head_start:head_end]
+
+
+def articles_table_body_markup(response_text):
+    start = response_text.index('<table class="data-table article-table">')
+    body_start = response_text.index("<tbody>", start)
+    body_end = response_text.index("</tbody>", body_start)
+    return response_text[body_start:body_end]
+
+
+def articles_pagination_markup(response_text):
+    start = response_text.index('<nav class="pagination"')
+    end = response_text.index("</nav>", start)
+    return response_text[start:end]
+
+
 def detail_path(article_id):
     return f"/articles/{quote(article_id, safe='')}"
 
@@ -33,16 +59,33 @@ def article_client(monkeypatch, knowledge_path):
     return TestClient(app_module.app)
 
 
+def numbered_articles(count, **overrides):
+    return {
+        f"article-{index:02d}": {
+            "id": f"article-{index:02d}",
+            "title": f"Article {index:02d}",
+            "topic": "FinOps",
+            "summary": f"cloud summary {index:02d}",
+            "recommendation": "Core",
+            "updated_at": f"2026-05-{index:02d}T14:22:31",
+            **overrides,
+        }
+        for index in range(1, count + 1)
+    }
+
+
 def test_articles_page_handles_empty_repository(tmp_path, monkeypatch):
     client = article_client(monkeypatch, tmp_path / "missing_articles.json")
 
     response = client.get("/")
 
     assert response.status_code == 200
-    assert "Home" in response.text
+    assert "<h1>Dashboard</h1>" in response.text
     assert "Weekly Brief" in response.text
     assert "high-signal market intelligence summary" in response.text
     assert 'href="/newsletter">Open brief</a>' in response.text
+    assert 'href="/intake"' in response.text
+    assert "Add Article" in response.text
     assert "No articles found" in response.text
 
 
@@ -110,6 +153,9 @@ def test_articles_page_displays_repository_articles(tmp_path, monkeypatch):
                 "topic": "FinOps",
                 "source": "Example Blog",
                 "score": 88.0,
+                "summary": "Cost summary.",
+                "recommendation": "Core",
+                "updated_at": "2026-05-17T14:22:31",
                 "review_status": "approved",
                 "newsletter_eligible": True,
             }
@@ -122,13 +168,102 @@ def test_articles_page_displays_repository_articles(tmp_path, monkeypatch):
     assert response.status_code == 200
     assert "Cloud cost control" in response.text
     assert "FinOps" in response.text
-    assert "Example Blog" in response.text
-    assert "88.0" in response.text
+    assert "ready" in response.text
+    assert "Core" in response.text
+    assert "2026-05-17" in response.text
+    assert "2026-05-17T14:22:31" not in response.text
+    assert "Example Blog" not in response.text
+    assert "88.0" not in response.text
     assert 'href="/articles/https%3A%2F%2Fexample.com%2Fcloud-costs"' in response.text
-    assert '<th scope="col">Action</th>' not in response.text
     assert "approved for downstream use" not in response.text
     assert "review readiness" not in response.text
     assert "newsletter eligible" not in response.text.casefold()
+
+
+def test_articles_filters_use_phase_2_dashboard_fields(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Cloud cost control",
+                "topic": "FinOps",
+                "summary": "Cost summary.",
+                "recommendation": "Core",
+                "source": "Example Blog",
+                "ingestion_type": "rss",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/")
+    filters = articles_filter_markup(response.text)
+
+    assert response.status_code == 200
+    assert "Keyword search" in filters
+    assert 'name="keyword"' in filters
+    assert 'name="topic"' in filters
+    assert 'name="summary_status"' in filters
+    assert 'name="recommendation"' in filters
+    assert "All Summary Statuses" in filters
+    assert "All Recommendations" in filters
+    assert 'name="source"' not in filters
+    assert 'name="type"' not in filters
+    assert "All Sources" not in filters
+    assert "All Types" not in filters
+
+
+def test_keyword_search_input_does_not_render_search_icon(tmp_path, monkeypatch):
+    client = article_client(monkeypatch, tmp_path / "missing_articles.json")
+
+    response = client.get("/")
+    filters = articles_filter_markup(response.text)
+    stylesheet = client.get("/static/style.css")
+
+    assert response.status_code == 200
+    assert 'placeholder="Keyword search"' in filters
+    assert "search-field" not in filters
+    assert "search-control" not in filters
+    assert "search-field::before" not in stylesheet.text
+    assert "search-field::after" not in stylesheet.text
+
+
+def test_articles_table_uses_phase_2_dashboard_columns(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Cloud cost control",
+                "topic": "FinOps",
+                "summary": "Cost summary.",
+                "recommendation": "Core",
+                "source": "Example Blog",
+                "ingestion_type": "rss",
+                "score": 88.0,
+                "updated_at": "2026-05-17T14:22:31",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/")
+    table_head = articles_table_head_markup(response.text)
+
+    assert response.status_code == 200
+    assert '<th scope="col">Title</th>' in table_head
+    assert '<th scope="col">Topic</th>' in table_head
+    assert '<th scope="col">Summary Status</th>' in table_head
+    assert '<th scope="col">Recommendation</th>' in table_head
+    assert '<th scope="col">Updated</th>' in table_head
+    assert '<th scope="col">Source</th>' not in table_head
+    assert '<th scope="col">Type</th>' not in table_head
+    assert '<th scope="col">Score</th>' not in table_head
+    assert '<th scope="col">Action</th>' not in table_head
+    assert '<th scope="col">View</th>' not in table_head
 
 
 def test_articles_page_filters_by_topic(tmp_path, monkeypatch):
@@ -159,6 +294,58 @@ def test_articles_page_filters_by_topic(tmp_path, monkeypatch):
     assert "Security update" not in response.text
 
 
+def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "https://example.com/ready": {
+                "url": "https://example.com/ready",
+                "title": "Ready intelligence",
+                "summary": "A complete summary.",
+            },
+            "https://example.com/pending": {
+                "url": "https://example.com/pending",
+                "title": "Pending intelligence",
+                "analysis_status": "pending",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?summary_status=ready")
+
+    assert response.status_code == 200
+    assert "Ready intelligence" in response.text
+    assert "Pending intelligence" not in response.text
+
+
+def test_articles_page_filters_by_recommendation(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "https://example.com/core": {
+                "url": "https://example.com/core",
+                "title": "Core intelligence",
+                "recommendation": "Core",
+            },
+            "https://example.com/useful": {
+                "url": "https://example.com/useful",
+                "title": "Useful intelligence",
+                "recommendation": "Useful",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?recommendation=Core")
+
+    assert response.status_code == 200
+    assert "Core intelligence" in response.text
+    assert "Useful intelligence" not in response.text
+
+
 def test_articles_page_filters_by_keyword(tmp_path, monkeypatch):
     knowledge_path = tmp_path / "articles_knowledge.json"
     write_json(
@@ -185,6 +372,127 @@ def test_articles_page_filters_by_keyword(tmp_path, monkeypatch):
     assert response.status_code == 200
     assert "Cloud planning guide" in response.text
     assert "Security update" not in response.text
+
+
+def test_articles_page_renders_missing_values_as_dash(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "updated_at": "not-a-date",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "—" in response.text
+    assert "not-a-date" not in response.text
+
+
+def test_articles_page_shows_at_most_15_articles_per_page(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(knowledge_path, numbered_articles(16))
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/")
+    table_body = articles_table_body_markup(response.text)
+
+    assert response.status_code == 200
+    assert table_body.count('class="title-link"') == 15
+    assert "Article 01" in table_body
+    assert "Article 15" in table_body
+    assert "Article 16" not in table_body
+
+
+def test_articles_page_renders_pagination_for_more_than_15_articles(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(knowledge_path, numbered_articles(16))
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "Showing 1–15 of 16 articles" in response.text
+    assert "Page 1 of 2" in response.text
+    assert '<span class="button button-secondary button-sm is-disabled" aria-disabled="true">Previous</span>' in response.text
+    assert 'href="/?page=2">Next</a>' in response.text
+
+
+def test_articles_page_query_parameter_changes_visible_article_set(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(knowledge_path, numbered_articles(16))
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?page=2")
+    table_body = articles_table_body_markup(response.text)
+
+    assert response.status_code == 200
+    assert "Article 16" in table_body
+    assert "Article 01" not in table_body
+    assert "Showing 16–16 of 16 articles" in response.text
+    assert "Page 2 of 2" in response.text
+
+
+def test_articles_pagination_links_preserve_filter_query_parameters(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(knowledge_path, numbered_articles(16))
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get(
+        "/?keyword=cloud&topic=FinOps&summary_status=ready&recommendation=Core",
+    )
+    pagination = articles_pagination_markup(response.text)
+
+    assert response.status_code == 200
+    assert (
+        'href="/?keyword=cloud&amp;topic=FinOps&amp;summary_status=ready'
+        '&amp;recommendation=Core&amp;page=2">Next</a>'
+    ) in pagination
+
+
+def test_articles_invalid_page_values_fall_back_safely(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(knowledge_path, numbered_articles(16))
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?page=not-a-number")
+    table_body = articles_table_body_markup(response.text)
+
+    assert response.status_code == 200
+    assert "Article 01" in table_body
+    assert "Article 16" not in table_body
+    assert "Page 1 of 2" in response.text
+
+
+def test_articles_page_beyond_last_page_falls_back_to_last_page(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(knowledge_path, numbered_articles(16))
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?page=99")
+    table_body = articles_table_body_markup(response.text)
+
+    assert response.status_code == 200
+    assert "Article 16" in table_body
+    assert "Article 01" not in table_body
+    assert "Page 2 of 2" in response.text
 
 
 def test_article_detail_page_displays_article(tmp_path, monkeypatch):

@@ -25,7 +25,7 @@
         {% endfor %}
       {% else %}
         <li>Latest high-signal articles are listed below for this week's brief.</li>
-        <li>Use topic, source, and type filters to narrow the intelligence view.</li>
+        <li>Use focused filters to narrow the intelligence view.</li>
       {% endif %}
     </ul>
 
@@ -49,8 +49,8 @@
 
     <form class="filters-row article-filters" method="get" action="/">
       <label class="field field-compact">
-        <span class="visually-hidden">Search</span>
-        <input class="form-control" type="search" name="keyword" value="{{ filters.keyword or '' }}" placeholder="Search...">
+        <span class="visually-hidden">Keyword search</span>
+        <input class="form-control" type="search" name="keyword" value="{{ filters.keyword or '' }}" placeholder="Keyword search">
       </label>
 
       <label class="field field-compact">
@@ -64,31 +64,24 @@
       </label>
 
       <label class="field field-compact">
-        <span class="visually-hidden">Source</span>
-        <select class="form-control" name="source">
-          <option value="" {% if not filters.source %}selected{% endif %}>All Sources</option>
-          {% for source in source_options %}
-            <option value="{{ source }}" {% if filters.source == source %}selected{% endif %}>{{ source }}</option>
+        <span class="visually-hidden">Summary Status</span>
+        <select class="form-control" name="summary_status">
+          <option value="" {% if not filters.summary_status %}selected{% endif %}>All Summary Statuses</option>
+          {% for summary_status in summary_status_options %}
+            <option value="{{ summary_status }}" {% if filters.summary_status == summary_status %}selected{% endif %}>{{ summary_status }}</option>
           {% endfor %}
         </select>
       </label>
 
       <label class="field field-compact">
-        <span class="visually-hidden">Type</span>
-        <select class="form-control" name="type">
-          <option value="" {% if not filters.article_type %}selected{% endif %}>All Types</option>
-          {% for type_option in type_options %}
-            <option value="{{ type_option }}" {% if filters.article_type == type_option %}selected{% endif %}>{{ type_option }}</option>
+        <span class="visually-hidden">Recommendation</span>
+        <select class="form-control" name="recommendation">
+          <option value="" {% if not filters.recommendation %}selected{% endif %}>All Recommendations</option>
+          {% for recommendation in recommendation_options %}
+            <option value="{{ recommendation }}" {% if filters.recommendation == recommendation %}selected{% endif %}>{{ recommendation }}</option>
           {% endfor %}
         </select>
       </label>
-
-      {% if filters.review_status %}
-        <input type="hidden" name="review_status" value="{{ filters.review_status }}">
-      {% endif %}
-      {% if filters.newsletter_eligible %}
-        <input type="hidden" name="newsletter_eligible" value="{{ filters.newsletter_eligible }}">
-      {% endif %}
 
       <button class="button button-secondary filter-submit" type="submit">Apply</button>
     </form>
@@ -100,68 +93,66 @@
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Topic</th>
-              <th scope="col">Source</th>
-              <th scope="col">Type</th>
               <th scope="col">Summary Status</th>
               <th scope="col">Recommendation</th>
-              <th scope="col">Score</th>
               <th scope="col">Updated</th>
             </tr>
           </thead>
           <tbody>
             {% for article in articles %}
-              {% set score = article.get("score") %}
-              {% if score is none %}
-                {% set score = article.get("ranking_score") %}
-              {% endif %}
-              {% set article_type = article.get("ingestion_type") or article.get("type") %}
-              {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
-              {% if not summary_status and article.get("summary") %}
-                {% set summary_status = "ready" %}
-              {% endif %}
+              {% set summary_status = article.get("summary_status_display") %}
               <tr>
                 <td>
                   {% if article.get("title") %}
                     <a href="{{ article.detail_href }}" class="title-link">{{ article.get("title") }}</a>
                   {% else %}
-                    &mdash;
+                    —
                   {% endif %}
                 </td>
                 <td>
                   {% if article.get("topic") %}
                     <span class="badge badge-outline">{{ article.get("topic") }}</span>
                   {% else %}
-                    &mdash;
-                  {% endif %}
-                </td>
-                <td>{{ article.get("source") or "&mdash;" | safe }}</td>
-                <td>
-                  {% if article_type %}
-                    <span class="badge badge-secondary">{{ article_type }}</span>
-                  {% else %}
-                    &mdash;
+                    —
                   {% endif %}
                 </td>
                 <td>
                   {% if summary_status %}
                     <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
                   {% else %}
-                    &mdash;
+                    —
                   {% endif %}
                 </td>
                 <td>
                   {% if article.get("recommendation") %}
-                    <span class="badge">{{ article.get("recommendation") }}</span>
+                    <span class="badge badge-secondary">{{ article.get("recommendation") }}</span>
                   {% else %}
-                    &mdash;
+                    —
                   {% endif %}
                 </td>
-                <td>{{ score if score is not none and score != "" else "&mdash;" | safe }}</td>
-                <td>{{ article.get("updated_at") or "&mdash;" | safe }}</td>
+                <td>{{ article.get("updated_date") or "—" }}</td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
+      </div>
+      <div class="table-footer">
+        <p class="result-count">
+          Showing {{ pagination.display_start }}–{{ pagination.display_end }} of {{ pagination.total_count }} articles
+        </p>
+        <nav class="pagination" aria-label="Articles pagination">
+          {% if pagination.has_previous %}
+            <a class="button button-secondary button-sm" href="{{ pagination.previous_href }}">Previous</a>
+          {% else %}
+            <span class="button button-secondary button-sm is-disabled" aria-disabled="true">Previous</span>
+          {% endif %}
+          <span class="page-indicator">Page {{ pagination.page }} of {{ pagination.total_pages }}</span>
+          {% if pagination.has_next %}
+            <a class="button button-secondary button-sm" href="{{ pagination.next_href }}">Next</a>
+          {% else %}
+            <span class="button button-secondary button-sm is-disabled" aria-disabled="true">Next</span>
+          {% endif %}
+        </nav>
       </div>
     {% else %}
       <section class="empty-state" aria-live="polite">

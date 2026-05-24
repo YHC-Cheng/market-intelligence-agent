@@ -55,6 +55,7 @@ REVIEW_ACTION_STATUS_UPDATES = {
 }
 
 NEWSLETTER_TOPIC_OPTIONS = INTAKE_TOPIC_OPTIONS
+ARTICLES_PER_PAGE = 15
 
 
 def get_knowledge_repository():
@@ -133,6 +134,8 @@ def article_filters(
     newsletter_eligible=None,
     source=None,
     article_type=None,
+    summary_status=None,
+    recommendation=None,
 ):
     return {
         "topic": clean_filter(topic),
@@ -141,11 +144,97 @@ def article_filters(
         "newsletter_eligible": clean_filter(newsletter_eligible),
         "source": clean_filter(source),
         "article_type": clean_filter(article_type),
+        "summary_status": clean_filter(summary_status),
+        "recommendation": clean_filter(recommendation),
     }
 
 
 def article_type(article):
     return article.get("ingestion_type") or article.get("type")
+
+
+def article_summary_status(article):
+    summary_status = article.get("summary_status") or article.get("analysis_status")
+    if not summary_status and article.get("summary"):
+        return "ready"
+
+    return summary_status
+
+
+def updated_date(article):
+    updated_at = article.get("updated_at")
+    if updated_at in (None, ""):
+        return None
+
+    try:
+        parsed_date = datetime.fromisoformat(str(updated_at).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+    return parsed_date.date().isoformat()
+
+
+def with_home_article_fields(articles):
+    article_list = []
+    for article in with_detail_hrefs(articles):
+        article_copy = dict(article)
+        article_copy["summary_status_display"] = article_summary_status(article_copy)
+        article_copy["updated_date"] = updated_date(article_copy)
+        article_list.append(article_copy)
+
+    return article_list
+
+
+def parse_page(value):
+    try:
+        page = int(value)
+    except (TypeError, ValueError):
+        return 1
+
+    if page < 1:
+        return 1
+
+    return page
+
+
+def pagination_href(page, filters):
+    query_params = []
+    for query_name, filter_name in [
+        ("keyword", "keyword"),
+        ("topic", "topic"),
+        ("summary_status", "summary_status"),
+        ("recommendation", "recommendation"),
+    ]:
+        if filters.get(filter_name):
+            query_params.append((query_name, filters[filter_name]))
+
+    query_params.append(("page", page))
+    return f"/?{urlencode(query_params)}"
+
+
+def paginate_articles(articles, page, filters):
+    total_count = len(articles)
+    total_pages = max(1, (total_count + ARTICLES_PER_PAGE - 1) // ARTICLES_PER_PAGE)
+    current_page = min(parse_page(page), total_pages)
+    start_index = (current_page - 1) * ARTICLES_PER_PAGE
+    end_index = min(start_index + ARTICLES_PER_PAGE, total_count)
+
+    return {
+        "articles": articles[start_index:end_index],
+        "page": current_page,
+        "total_pages": total_pages,
+        "total_count": total_count,
+        "display_start": start_index + 1 if total_count else 0,
+        "display_end": end_index,
+        "has_previous": current_page > 1,
+        "has_next": current_page < total_pages,
+        "previous_href": pagination_href(current_page - 1, filters)
+        if current_page > 1
+        else None,
+        "next_href": pagination_href(current_page + 1, filters)
+        if current_page < total_pages
+        else None,
+    }
 
 
 def apply_home_filters(articles, filters):
@@ -165,6 +254,20 @@ def apply_home_filters(articles, filters):
             if article_type(article) == filters["article_type"]
         ]
 
+    if filters["summary_status"] is not None:
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article_summary_status(article) == filters["summary_status"]
+        ]
+
+    if filters["recommendation"] is not None:
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article.get("recommendation") == filters["recommendation"]
+        ]
+
     return filtered_articles
 
 
@@ -182,6 +285,15 @@ def type_option_values(articles):
         article_type(article)
         for article in articles
         if article_type(article) not in (None, "")
+    }
+    return sorted(values)
+
+
+def summary_status_option_values(articles):
+    values = {
+        article_summary_status(article)
+        for article in articles
+        if article_summary_status(article) not in (None, "")
     }
     return sorted(values)
 
@@ -263,6 +375,9 @@ def home_articles_context(
     newsletter_eligible=None,
     source=None,
     article_type_filter=None,
+    summary_status=None,
+    recommendation=None,
+    page=None,
 ):
     filters = article_filters(
         topic=topic,
@@ -271,6 +386,8 @@ def home_articles_context(
         newsletter_eligible=newsletter_eligible,
         source=source,
         article_type=article_type_filter,
+        summary_status=summary_status,
+        recommendation=recommendation,
     )
     repository = get_knowledge_repository()
     repository_articles = repository.list_articles(
@@ -280,6 +397,7 @@ def home_articles_context(
         newsletter_eligible=parse_bool_filter(filters["newsletter_eligible"]),
     )
     filtered_articles = apply_home_filters(repository_articles, filters)
+    pagination = paginate_articles(filtered_articles, page, filters)
     all_articles = repository.list_articles()
     topic_counts = {}
     for article in all_articles:
@@ -289,20 +407,24 @@ def home_articles_context(
 
     context = base_template_context(
         request,
-        title="Home",
+        title="Dashboard",
         active_nav="home",
-        page_title="Home",
+        page_title="Dashboard",
         page_subtitle="Track this week's market intelligence and articles.",
         page_action_label="Add Article",
         page_action_href="/intake",
     )
     context.update(
         {
-            "articles": with_detail_hrefs(filtered_articles),
+            "articles": with_home_article_fields(pagination["articles"]),
             "filters": filters,
+            "pagination": pagination,
             "topic_options": option_values(all_articles, "topic"),
-            "source_options": option_values(all_articles, "source"),
-            "type_options": type_option_values(all_articles),
+            "summary_status_options": summary_status_option_values(all_articles),
+            "recommendation_options": option_values(
+                all_articles,
+                "recommendation",
+            ),
             "brief_signal_articles": with_detail_hrefs(
                 brief_signal_articles(filtered_articles)
             ),
@@ -331,6 +453,9 @@ async def index(
     newsletter_eligible: Optional[str] = Query(default=None),
     source: Optional[str] = None,
     article_type_filter: Optional[str] = Query(default=None, alias="type"),
+    summary_status: Optional[str] = None,
+    recommendation: Optional[str] = None,
+    page: Optional[str] = None,
 ):
     return templates.TemplateResponse(
         request,
@@ -343,6 +468,9 @@ async def index(
             newsletter_eligible=newsletter_eligible,
             source=source,
             article_type_filter=article_type_filter,
+            summary_status=summary_status,
+            recommendation=recommendation,
+            page=page,
         ),
     )
 
