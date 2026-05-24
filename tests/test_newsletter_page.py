@@ -23,7 +23,7 @@ def newsletter_client(monkeypatch, knowledge_path, output_dir):
     return TestClient(app_module.app)
 
 
-def test_newsletter_page_displays_phase_1_7(tmp_path, monkeypatch):
+def test_newsletter_page_displays_weekly_brief(tmp_path, monkeypatch):
     client = newsletter_client(
         monkeypatch,
         tmp_path / "articles_knowledge.json",
@@ -33,41 +33,45 @@ def test_newsletter_page_displays_phase_1_7(tmp_path, monkeypatch):
     response = client.get("/newsletter")
 
     assert response.status_code == 200
-    assert "Market Intelligence Agent 2.0" in response.text
-    assert "Phase 1.7 Newsletter Draft" in response.text
+    assert "Market Intelligence agent" in response.text
+    assert "Weekly Brief" in response.text
+    assert "This week&#39;s high-signal market intelligence articles." in response.text
+    assert "High-signal articles" in response.text
+    assert "Phase 1.7 Newsletter Draft" not in response.text
     assert "Phase 2.7" not in response.text
     assert "Markdown preview" in response.text
 
 
-def test_newsletter_page_only_shows_approved_eligible_articles(tmp_path, monkeypatch):
+def test_newsletter_page_shows_high_signal_article_candidates(tmp_path, monkeypatch):
     knowledge_path = tmp_path / "articles_knowledge.json"
     write_json(
         knowledge_path,
         {
-            "eligible": {
-                "id": "eligible",
-                "url": "https://example.com/eligible",
-                "title": "Eligible article",
+            "core": {
+                "id": "core",
+                "url": "https://example.com/core",
+                "title": "Core market signal",
                 "topic": "AI",
                 "source": "Example",
                 "score": 91,
                 "summary": "A useful article.",
                 "use_case": "Planning",
                 "problem_solved": "Prioritization",
-                "review_status": "approved",
-                "newsletter_eligible": True,
+                "recommendation": "Core",
             },
-            "not-approved": {
-                "id": "not-approved",
-                "title": "Not approved article",
-                "review_status": "unreviewed",
-                "newsletter_eligible": True,
+            "useful": {
+                "id": "useful",
+                "title": "Useful FinOps signal",
+                "topic": "FinOps",
+                "source": "Example",
+                "score": 74,
+                "recommendation": "Useful",
             },
-            "not-eligible": {
-                "id": "not-eligible",
-                "title": "Not eligible article",
-                "review_status": "approved",
-                "newsletter_eligible": False,
+            "low": {
+                "id": "low",
+                "title": "Low priority item",
+                "score": 99,
+                "recommendation": "Low",
             },
         },
     )
@@ -76,14 +80,15 @@ def test_newsletter_page_only_shows_approved_eligible_articles(tmp_path, monkeyp
     response = client.get("/newsletter")
 
     assert response.status_code == 200
-    assert "Eligible article" in response.text
+    assert "Core market signal" in response.text
+    assert "Useful FinOps signal" in response.text
     assert "A useful article." in response.text
     assert "Planning" in response.text
     assert "Prioritization" in response.text
-    assert 'href="https://example.com/eligible"' in response.text
-    assert 'href="/articles/eligible"' in response.text
-    assert "Not approved article" not in response.text
-    assert "Not eligible article" not in response.text
+    assert 'href="/articles/core"' in response.text
+    assert "Low priority item" not in response.text
+    assert "newsletter eligible" not in response.text.casefold()
+    assert "approved" not in response.text.casefold()
 
 
 def test_newsletter_page_topic_filter(tmp_path, monkeypatch):
@@ -93,17 +98,15 @@ def test_newsletter_page_topic_filter(tmp_path, monkeypatch):
         {
             "finops": {
                 "id": "finops",
-                "title": "FinOps newsletter item",
+                "title": "FinOps brief item",
                 "topic": "FinOps",
-                "review_status": "approved",
-                "newsletter_eligible": True,
+                "recommendation": "Core",
             },
             "ai": {
                 "id": "ai",
-                "title": "AI newsletter item",
+                "title": "AI brief item",
                 "topic": "AI",
-                "review_status": "approved",
-                "newsletter_eligible": True,
+                "recommendation": "Core",
             },
         },
     )
@@ -112,22 +115,20 @@ def test_newsletter_page_topic_filter(tmp_path, monkeypatch):
     response = client.get("/newsletter?topic=FinOps")
 
     assert response.status_code == 200
-    assert "FinOps newsletter item" in response.text
-    assert "AI newsletter item" not in response.text
-    assert "<option value=\"FinOps\" selected>" in response.text
+    assert "FinOps brief item" in response.text
+    assert "AI brief item" not in response.text
     assert "- topic: FinOps" in response.text
 
 
-def test_newsletter_page_empty_state(tmp_path, monkeypatch):
+def test_newsletter_page_falls_back_to_available_articles(tmp_path, monkeypatch):
     knowledge_path = tmp_path / "articles_knowledge.json"
     write_json(
         knowledge_path,
         {
             "article": {
                 "id": "article",
-                "title": "Unreviewed article",
-                "review_status": "unreviewed",
-                "newsletter_eligible": True,
+                "title": "Available article",
+                "score": 12,
             }
         },
     )
@@ -136,8 +137,8 @@ def test_newsletter_page_empty_state(tmp_path, monkeypatch):
     response = client.get("/newsletter")
 
     assert response.status_code == 200
-    assert "No eligible articles" in response.text
-    assert "- article_count: 0" in response.text
+    assert "Available article" in response.text
+    assert "- article_count: 1" in response.text
 
 
 def test_newsletter_export_writes_markdown_file(tmp_path, monkeypatch):
@@ -155,8 +156,7 @@ def test_newsletter_export_writes_markdown_file(tmp_path, monkeypatch):
                 "summary": "Export summary.",
                 "use_case": "Weekly briefing",
                 "problem_solved": "Manual copy-paste",
-                "review_status": "approved",
-                "newsletter_eligible": True,
+                "recommendation": "Core",
                 "newsletter_status": "not_included",
             }
         },
@@ -168,14 +168,15 @@ def test_newsletter_export_writes_markdown_file(tmp_path, monkeypatch):
     markdown = output_path.read_text(encoding="utf-8")
 
     assert response.status_code == 200
-    assert "Newsletter draft exported." in response.text
+    assert "Weekly brief exported." in response.text
     assert str(output_path) in response.text
     assert output_path.exists()
-    assert "# Market Intelligence Newsletter Draft" in markdown
+    assert "# Weekly Brief" in markdown
     assert "- topic: FinOps" in markdown
     assert "- generated_at:" in markdown
     assert "- article_count: 1" in markdown
     assert "## 1. Exported article" in markdown
+    assert "- recommendation: Core" in markdown
     assert "Export summary." in markdown
     assert "Weekly briefing" in markdown
     assert "Manual copy-paste" in markdown
@@ -191,8 +192,6 @@ def test_newsletter_export_does_not_update_newsletter_status(tmp_path, monkeypat
             "article": {
                 "id": "article",
                 "title": "Do not mutate",
-                "review_status": "approved",
-                "newsletter_eligible": True,
                 "newsletter_status": "not_included",
                 "custom_field": {"keep": True},
             }

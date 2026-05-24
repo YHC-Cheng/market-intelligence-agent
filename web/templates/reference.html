@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <section class="reference-section" aria-labelledby="keywords-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="keywords-title">Keywords</h2>
+        <p>Read-only keyword groups loaded from config/keywords.json.</p>
+      </div>
+      <span class="badge badge-outline">Read-only</span>
+    </div>
+
+    {% if keyword_groups %}
+      <div class="keyword-grid">
+        {% for group in keyword_groups %}
+          <article class="card keyword-card">
+            <h3>{{ group.topic }}</h3>
+            {% if group.keywords %}
+              <div class="chip-row">
+                {% for keyword in group.keywords %}
+                  <span class="chip">{{ keyword }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="muted-text">No keywords configured.</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <section class="card empty-state" aria-live="polite">
+        <h2>No keywords available</h2>
+        <p>Keyword configuration could not be loaded.</p>
+      </section>
+    {% endif %}
+  </section>
+
+  <section class="reference-section" aria-labelledby="sources-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="sources-title">Source Links</h2>
+        <p>Configured sources from config.py. Runtime source_index.json is not used here.</p>
+      </div>
+      <span class="badge badge-outline">Read-only</span>
+    </div>
+
+    {% if source_links %}
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table class="data-table reference-table">
+            <thead>
+              <tr>
+                <th scope="col">Source Name</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Type</th>
+                <th scope="col">URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for source in source_links %}
+                <tr>
+                  <td>{{ source.name or "—" }}</td>
+                  <td>
+                    {% if source.topic %}
+                      <span class="badge badge-outline">{{ source.topic }}</span>
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if source.type %}
+                      <span class="badge badge-secondary">{{ source.type }}</span>
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if source.url %}
+                      <a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">Open link</a>
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% else %}
+      <section class="card empty-state" aria-live="polite">
+        <h2>No source links available</h2>
+        <p>Source configuration could not be loaded.</p>
+      </section>
+    {% endif %}
+  </section>
+{% endblock %}

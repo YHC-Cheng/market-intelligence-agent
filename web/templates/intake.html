@@ -1,56 +1,63 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <p class="eyebrow">Manual Intake</p>
-  <h1>Add article URL</h1>
-
-  <nav class="nav-links compact-nav" aria-label="Main navigation">
-    {% for item in navigation_items %}
-      <a href="{{ item.href }}">{{ item.label }}</a>
-    {% endfor %}
-  </nav>
-
-  {% if error %}
-    <div class="error-message" role="alert">{{ error }}</div>
-  {% endif %}
-
-  {% if duplicate_article %}
-    <div class="warning-message" role="status">
-      This URL is already in the knowledge repository.
-      <a href="{{ duplicate_detail_href }}">Open existing article</a>
+  <div class="drawer-backdrop" aria-hidden="true"></div>
+  <aside class="drawer-panel" aria-labelledby="intake-title">
+    <div class="drawer-header">
+      <h1 id="intake-title">Add Article</h1>
     </div>
-  {% endif %}
 
-  <section class="intake-panel">
-    <form class="intake-form" method="post" action="/intake">
-      <label>
-        <span>URL</span>
-        <input
-          type="url"
-          name="url"
-          value="{{ form.url or '' }}"
-          required
-        >
-      </label>
+    <div class="drawer-content">
+      {% if error %}
+        <div class="alert alert-error" role="alert">{{ error }}</div>
+      {% endif %}
 
-      <label>
-        <span>Topic</span>
-        <select name="topic" required>
-          <option value="" {% if not form.topic %}selected{% endif %}>Choose topic</option>
-          {% for topic in topic_options %}
-            <option value="{{ topic }}" {% if form.topic == topic %}selected{% endif %}>
-              {{ topic }}
-            </option>
-          {% endfor %}
-        </select>
-      </label>
+      {% if duplicate_article %}
+        <div class="alert alert-warning" role="status">
+          This URL is already in the knowledge repository.
+          <a href="{{ duplicate_detail_href }}">Open existing article</a>
+        </div>
+      {% endif %}
 
-      <label>
-        <span>Note</span>
-        <textarea name="note" rows="5">{{ form.note or "" }}</textarea>
-      </label>
+      <form class="intake-form drawer-form" method="post" action="/intake">
+        <label class="field">
+          <span>Article URL</span>
+          <input
+            class="form-control"
+            type="url"
+            name="url"
+            value="{{ form.url or '' }}"
+            placeholder="https://..."
+            required
+          >
+        </label>
 
-      <button type="submit">Add article</button>
-    </form>
-  </section>
+        <label class="field">
+          <span>Topic</span>
+          <select class="form-control" name="topic" required>
+            <option value="" {% if not form.topic %}selected{% endif %}>Choose topic</option>
+            {% for topic in topic_options %}
+              <option value="{{ topic }}" {% if form.topic == topic %}selected{% endif %}>
+                {{ topic }}
+              </option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Note</span>
+          <textarea class="form-control" name="note" rows="5" placeholder="Add optional context...">{{ form.note or "" }}</textarea>
+        </label>
+
+        <p class="drawer-helper">
+          Manual articles are added to the local workspace for later extraction and analysis.
+        </p>
+
+        <div class="drawer-actions">
+          <a class="button button-secondary" href="/">Cancel</a>
+          <button class="button button-primary" type="submit">Add Article</button>
+        </div>
+      </form>
+    </div>
+  </aside>
 {% endblock %}

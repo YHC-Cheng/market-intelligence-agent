@@ -1,109 +1,150 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <p class="eyebrow">Article Detail</p>
-  <h1>{{ article.get("title") or "Untitled" }}</h1>
-
-  <nav class="nav-links compact-nav" aria-label="Main navigation">
-    {% for item in navigation_items %}
-      <a href="{{ item.href }}">{{ item.label }}</a>
-    {% endfor %}
-  </nav>
+  <p class="back-link"><a href="/">Back to Home</a></p>
 
   {% if saved %}
-    <div class="success-message" role="status">Review saved.</div>
+    <div class="alert alert-success" role="status">Internal metadata saved.</div>
   {% endif %}
 
   {% if created %}
-    <div class="success-message" role="status">Manual article created.</div>
+    <div class="alert alert-success" role="status">Manual article created.</div>
   {% endif %}
 
   {% set score = article.get("score") %}
   {% if score is none %}
     {% set score = article.get("ranking_score") %}
   {% endif %}
+  {% set article_type = article.get("ingestion_type") or article.get("type") %}
+  {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
+  {% if not summary_status and article.get("summary") %}
+    {% set summary_status = "ready" %}
+  {% endif %}
 
-  <section class="detail-grid" aria-label="Article metadata">
-    <div>
-      <span>Topic</span>
-      <strong>{{ article.get("topic") or "-" }}</strong>
-    </div>
-    <div>
-      <span>Source</span>
-      <strong>{{ article.get("source") or "-" }}</strong>
-    </div>
-    <div>
-      <span>Score</span>
-      <strong>{{ score if score is not none and score != "" else "-" }}</strong>
-    </div>
-    <div>
-      <span>Review status</span>
-      <strong>{{ article.get("review_status") or "-" }}</strong>
-    </div>
-    <div>
-      <span>Newsletter eligible</span>
-      <strong>{{ "Yes" if article.get("newsletter_eligible") else "No" }}</strong>
-    </div>
-    <div>
-      <span>URL</span>
-      {% if article.get("url") %}
-        <a href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">Original</a>
-      {% else %}
-        <strong>-</strong>
+  <div class="article-hero">
+    <div class="metadata-row" aria-label="Article metadata">
+      {% if article.get("topic") %}
+        <span class="badge badge-outline">{{ article.get("topic") }}</span>
+      {% endif %}
+      {% if article.get("source") %}
+        <span>{{ article.get("source") }}</span>
+      {% endif %}
+      {% if article_type %}
+        <span class="badge badge-secondary">{{ article_type }}</span>
+      {% endif %}
+      {% if score is not none and score != "" %}
+        <span>Score {{ score }}</span>
+      {% endif %}
+      {% if article.get("recommendation") %}
+        <span class="badge">{{ article.get("recommendation") }}</span>
       {% endif %}
     </div>
-  </section>
 
-  <section class="detail-section">
-    <h2>Summary</h2>
-    <p>{{ article.get("summary") or "-" }}</p>
-  </section>
+    {% if article.get("url") %}
+      <a class="button button-secondary" href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">
+        Open Original Article
+      </a>
+    {% endif %}
+  </div>
 
-  <section class="detail-section">
-    <h2>Use case</h2>
-    <p>{{ article.get("use_case") or "-" }}</p>
-  </section>
+  <div class="detail-layout">
+    <div class="detail-main">
+      <section class="detail-section">
+        <h2>Summary</h2>
+        {% if summary_status and not article.get("summary") %}
+          <p class="muted-text">Summary status: {{ summary_status }}</p>
+        {% endif %}
+        <p>{{ article.get("summary") or "—" }}</p>
+      </section>
 
-  <section class="detail-section">
-    <h2>Problem solved</h2>
-    <p>{{ article.get("problem_solved") or "-" }}</p>
-  </section>
+      <section class="detail-section">
+        <h2>Use Case</h2>
+        <p>{{ article.get("use_case") or "—" }}</p>
+      </section>
 
-  <section class="detail-section">
-    <h2>Recommendation</h2>
-    <p>{{ article.get("recommendation") or "-" }}</p>
-  </section>
+      <section class="detail-section">
+        <h2>Problem Solved</h2>
+        <p>{{ article.get("problem_solved") or "—" }}</p>
+      </section>
 
-  <section class="review-panel">
-    <h2>Review</h2>
-    <form class="review-form" method="post" action="{{ detail_href }}">
-      <label>
-        <span>Review status</span>
-        <select name="review_status">
-          {% for status in review_status_options %}
-            <option value="{{ status }}" {% if article.get("review_status") == status %}selected{% endif %}>
-              {{ status }}
-            </option>
-          {% endfor %}
-        </select>
-      </label>
+      <section class="detail-section">
+        <h2>Key Takeaways</h2>
+        {% set takeaways = article.get("key_takeaways") or article.get("takeaways") %}
+        {% if takeaways is iterable and takeaways is not string %}
+          <ul class="brief-list">
+            {% for takeaway in takeaways %}
+              <li>{{ takeaway }}</li>
+            {% endfor %}
+          </ul>
+        {% elif takeaways %}
+          <p>{{ takeaways }}</p>
+        {% elif article.get("recommendation") %}
+          <ul class="brief-list">
+            <li>Recommendation: {{ article.get("recommendation") }}</li>
+            {% if score is not none and score != "" %}
+              <li>Score: {{ score }}</li>
+            {% endif %}
+          </ul>
+        {% else %}
+          <p>—</p>
+        {% endif %}
+      </section>
+    </div>
 
-      <label class="checkbox-field">
-        <input
-          type="checkbox"
-          name="newsletter_eligible"
-          value="true"
-          {% if article.get("newsletter_eligible") %}checked{% endif %}
-        >
-        <span>Newsletter eligible</span>
-      </label>
-
-      <label>
-        <span>Review note</span>
-        <textarea name="review_note" rows="5">{{ article.get("review_note") or "" }}</textarea>
-      </label>
-
-      <button type="submit">Save</button>
-    </form>
-  </section>
+    <aside class="article-info-card" aria-labelledby="article-info-title">
+      <h2 id="article-info-title">Article Information</h2>
+      <dl class="info-list">
+        <div>
+          <dt>Topic</dt>
+          <dd>{{ article.get("topic") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Source</dt>
+          <dd>{{ article.get("source") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Original URL</dt>
+          <dd>
+            {% if article.get("url") %}
+              <a href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">{{ article.get("url") }}</a>
+            {% else %}
+              —
+            {% endif %}
+          </dd>
+        </div>
+        <div>
+          <dt>Ingestion Type</dt>
+          <dd>{{ article_type or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Created At</dt>
+          <dd>{{ article.get("created_at") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Published At</dt>
+          <dd>{{ article.get("published_at") or article.get("published_date") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Updated At</dt>
+          <dd>{{ article.get("updated_at") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Extraction Status</dt>
+          <dd>{{ article.get("extraction_status") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Analysis Status</dt>
+          <dd>{{ article.get("analysis_status") or summary_status or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Recommendation</dt>
+          <dd>{{ article.get("recommendation") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Score</dt>
+          <dd>{{ score if score is not none and score != "" else "—" }}</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
 {% endblock %}
