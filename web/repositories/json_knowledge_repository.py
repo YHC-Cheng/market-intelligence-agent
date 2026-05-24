@@ -121,6 +121,21 @@ class JsonKnowledgeRepository:
         self._write_json(raw_data)
         return self._with_runtime_defaults(article, key)
 
+    def update_article_recommendation(self, article_id, recommendation):
+        raw_data = self._read_json()
+        found = self._find_article(raw_data, article_id)
+
+        if found is None:
+            return None
+
+        key, article = found
+        article["recommendation"] = recommendation
+        article["updated_at"] = self._now()
+
+        self._replace_article(raw_data, key, article)
+        self._write_json(raw_data)
+        return self._with_runtime_defaults(article, key)
+
     def create_manual_article(self, url, topic, note):
         canonical_url = self.canonicalize_url(url)
         raw_data = self._read_json()

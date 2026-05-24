@@ -1,0 +1,198 @@
+<section class="card weekly-brief-card" aria-labelledby="weekly-brief-title">
+  <div class="weekly-brief-header">
+    <div>
+      <h2 id="weekly-brief-title">Weekly Brief</h2>
+      <p>{{ article_summary.date_range }}</p>
+    </div>
+    <a class="button button-secondary button-sm" href="/newsletter/current">Open brief</a>
+  </div>
+
+  <p class="weekly-brief-summary">
+    This week's high-signal market intelligence summary, based on the latest articles in the local workspace.
+  </p>
+
+  <ul class="brief-list">
+    {% if brief_signal_articles %}
+      {% for article in brief_signal_articles %}
+        <li>
+          {{ article.get("title") or "Untitled article" }}
+          {% if article.get("topic") %} in {{ article.get("topic") }}{% endif %}
+          {% if article.get("recommendation") %} ({{ article.get("recommendation") }}){% endif %}
+        </li>
+      {% endfor %}
+    {% else %}
+      <li>Latest high-signal articles are listed below for this week's brief.</li>
+      <li>Use focused filters to narrow the intelligence view.</li>
+    {% endif %}
+  </ul>
+
+  <div class="chip-row" aria-label="Weekly brief summary chips">
+    {% for topic, count in article_summary.topics.items() %}
+      <span class="chip">{{ topic }}: {{ count }}</span>
+    {% endfor %}
+    {% if brief_signal_articles %}
+      <span class="chip">High-signal candidates: {{ brief_signal_articles|length }}</span>
+    {% endif %}
+  </div>
+</section>
+
+<section id="articles-section" class="card table-card" aria-labelledby="articles-title">
+  <div class="section-header">
+    <div>
+      <h2 id="articles-title">Articles</h2>
+      <p>Search and filter the local knowledge repository.</p>
+    </div>
+  </div>
+
+  <form class="filters-row article-filters" method="get" action="/">
+    <input type="hidden" name="summary_status" value="{{ filters.summary_status }}">
+
+    <label class="field field-compact">
+      <span class="visually-hidden">Keyword search</span>
+      <input class="form-control" type="search" name="keyword" value="{{ filters.keyword or '' }}" placeholder="Keyword search">
+    </label>
+
+    <label class="field field-compact">
+      <span class="visually-hidden">Topic</span>
+      <select class="form-control" name="topic">
+        <option value="" {% if not filters.topic %}selected{% endif %}>All Topics</option>
+        {% for topic in topic_options %}
+          <option value="{{ topic }}" {% if filters.topic == topic %}selected{% endif %}>{{ topic }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label class="field field-compact">
+      <span class="visually-hidden">Recommendation</span>
+      <select class="form-control" name="recommendation">
+        <option value="" {% if not filters.recommendation %}selected{% endif %}>All Recommendations</option>
+        {% for recommendation in recommendation_options %}
+          <option value="{{ recommendation }}" {% if filters.recommendation == recommendation %}selected{% endif %}>{{ recommendation }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <button class="button button-secondary filter-submit" type="submit">Apply</button>
+  </form>
+
+  <nav class="status-tabs" aria-label="Summary Status">
+    {% for tab in summary_status_tabs %}
+      <a
+        class="status-tab {% if tab.active %}is-active{% endif %}"
+        href="{{ tab.href }}"
+        {% if tab.active %}aria-current="page"{% endif %}
+      >
+        {{ tab.label }}
+      </a>
+    {% endfor %}
+  </nav>
+
+  {% if articles %}
+    <div class="table-wrap">
+      <table class="data-table article-table">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Topic</th>
+            <th scope="col">Summary Status</th>
+            <th scope="col">Recommendation</th>
+            <th scope="col">Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for article in articles %}
+            {% set summary_status = article.get("summary_status_display") %}
+            <tr>
+              <td>
+                {% if article.get("title") %}
+                  <a href="{{ article.detail_href }}" class="title-link">{{ article.get("title") }}</a>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td>
+                {% if article.get("topic") %}
+                  <span class="badge badge-outline">{{ article.get("topic") }}</span>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td>
+                {% if summary_status %}
+                  <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-todo{% elif summary_status in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td>
+                {% if article.get("recommendation") %}
+                  <span class="badge {% if article.get('recommendation') == 'Core' %}badge-core{% elif article.get('recommendation') == 'Useful' %}badge-useful{% elif article.get('recommendation') == 'Exclude' %}badge-exclude{% else %}badge-secondary{% endif %}">{{ article.get("recommendation") }}</span>
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+              <td>{{ article.get("updated_date") or "—" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <p class="result-count">
+        Showing {{ pagination.display_start }}–{{ pagination.display_end }} of {{ pagination.total_count }} articles
+      </p>
+      <nav class="pagination" aria-label="Articles pagination">
+        {% if pagination.has_previous %}
+          <a class="button button-secondary button-sm" href="{{ pagination.previous_href }}">Previous</a>
+        {% else %}
+          <span class="button button-secondary button-sm is-disabled" aria-disabled="true">Previous</span>
+        {% endif %}
+        <span class="page-indicator">Page {{ pagination.page }} of {{ pagination.total_pages }}</span>
+        {% if pagination.has_next %}
+          <a class="button button-secondary button-sm" href="{{ pagination.next_href }}">Next</a>
+        {% else %}
+          <span class="button button-secondary button-sm is-disabled" aria-disabled="true">Next</span>
+        {% endif %}
+      </nav>
+    </div>
+  {% else %}
+    <section class="empty-state" aria-live="polite">
+      <h2>No articles found</h2>
+      <p>The knowledge repository has no matching articles yet.</p>
+    </section>
+  {% endif %}
+</section>
+
+<script>
+  (function () {
+    var storageKey = "dashboardArticlesScrollY";
+    var articlesSection = document.getElementById("articles-section");
+    if (!articlesSection) {
+      return;
+    }
+
+    var storedScrollY = sessionStorage.getItem(storageKey);
+    if (storedScrollY !== null) {
+      sessionStorage.removeItem(storageKey);
+      var scrollY = parseInt(storedScrollY, 10);
+      if (!Number.isNaN(scrollY)) {
+        window.scrollTo(0, scrollY);
+      }
+    }
+
+    function rememberScrollPosition() {
+      sessionStorage.setItem(storageKey, String(window.scrollY));
+    }
+
+    articlesSection
+      .querySelectorAll(".status-tabs a, .pagination a")
+      .forEach(function (link) {
+        link.addEventListener("click", rememberScrollPosition);
+      });
+
+    var filtersForm = articlesSection.querySelector(".article-filters");
+    if (filtersForm) {
+      filtersForm.addEventListener("submit", rememberScrollPosition);
+    }
+  })();
+</script>

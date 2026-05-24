@@ -16,10 +16,6 @@
         <h2 id="brief-overview-title">Brief overview</h2>
         <p>{{ brief_date_range }}</p>
       </div>
-      <form method="post" action="/newsletter/export">
-        <input type="hidden" name="topic" value="{{ topic or '' }}">
-        <button class="button button-secondary" type="submit">Export markdown</button>
-      </form>
     </div>
 
     <p class="weekly-brief-summary">
@@ -36,7 +32,7 @@
           </li>
         {% endfor %}
       {% else %}
-        <li>No article data is available yet for this weekly intelligence summary.</li>
+        <li>No high-signal articles available for this week yet.</li>
       {% endif %}
     </ul>
   </section>
@@ -45,7 +41,7 @@
     <div class="section-header">
       <div>
         <h2 id="brief-candidates-title">High-signal articles</h2>
-        <p>Brief candidates shown with the current Phase 2.2 fallback ranking.</p>
+        <p>Articles are prioritized using existing recommendation and scoring signals.</p>
       </div>
     </div>
 
@@ -86,7 +82,7 @@
                 <td>{{ article.get("source") or "&mdash;" | safe }}</td>
                 <td>
                   {% if article.get("recommendation") %}
-                    <span class="badge">{{ article.get("recommendation") }}</span>
+                    <span class="badge {% if article.get('recommendation') == 'Core' %}badge-core{% elif article.get('recommendation') == 'Useful' %}badge-useful{% elif article.get('recommendation') == 'Exclude' %}badge-exclude{% else %}badge-secondary{% endif %}">{{ article.get("recommendation") }}</span>
                   {% else %}
                     &mdash;
                   {% endif %}
@@ -94,7 +90,7 @@
                 <td>{{ score if score is not none and score != "" else "&mdash;" | safe }}</td>
                 <td>
                   {% if summary_status %}
-                    <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
+                    <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-todo{% elif summary_status in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
                   {% else %}
                     &mdash;
                   {% endif %}
@@ -106,7 +102,7 @@
       </div>
     {% else %}
       <section class="empty-state" aria-live="polite">
-        <h2>No articles available</h2>
+        <h2>No high-signal articles available for this week yet.</h2>
         <p>Add or import articles to build this week's brief.</p>
       </section>
     {% endif %}

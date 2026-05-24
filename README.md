@@ -101,7 +101,7 @@ market-intelligence-agent/
 - `config.py`: Main runtime settings, source configuration, LLM settings, and workflow limits.
 - `main.py`: Full market intelligence workflow entry point.
 - `scripts/`: Utility scripts, including source validation.
-- `web/`: Market Intelligence Agent 2.0 UI Preview for Phase 1: Knowledge Review UI MVP.
+- `web/`: Market Intelligence Agent 2.0 Phase 2 Web UI built with FastAPI, Jinja2 templates, and static CSS.
 - `llm/`: LLM provider interface and provider implementations.
 - `utils/`: Shared helpers such as JSON cache utilities.
 - `config/`: Topic keywords and ranking criteria.
@@ -147,7 +147,7 @@ For GitHub Actions, set `GEMINI_API_KEY` in repository secrets.
 ### Run Local Web UI
 
 ```bash
-uvicorn web.app:app --reload
+PYTHONPATH=. .venv/bin/python -m uvicorn web.app:app --reload
 ```
 
 Open:
@@ -156,13 +156,101 @@ Open:
 http://127.0.0.1:8000
 ```
 
-#### Market Intelligence Agent 2.0 UI Preview
+#### Market Intelligence Agent 2.0 Phase 2 Web UI
 
-Phase 1: Knowledge Review UI MVP adds a local FastAPI/Jinja2 review interface alongside the existing Market Intelligence Agent 1.0 pipeline.
+Phase 2 provides a local product UI for browsing, filtering, reviewing, and manually organizing the JSON knowledge repository. It is intentionally lightweight and remains separate from the Market Intelligence Agent 1.0 pipeline.
 
-- Completed: Knowledge Explorer, Article Detail, Manual Intake, Review Queue
-- Current: Phase 1.7 Newsletter Draft
-- Newsletter drafts are exported as Markdown files under `outputs/newsletter/`
+Current stack:
+
+- FastAPI
+- Jinja2 templates
+- Static CSS
+- JSON knowledge repository
+- pytest
+
+Explicit non-goals for Phase 2:
+
+- No React
+- No Vite
+- No Tailwind build system
+- No frontend build pipeline
+- No database
+- No article schema migration
+- No Market Intelligence Agent 1.0 pipeline changes
+
+Routes:
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Dashboard |
+| `/articles` | Redirects to `/` |
+| `/articles/{id}` | Article Detail |
+| `/intake` | Add Article side panel |
+| `/newsletter` | Weekly Brief list |
+| `/newsletter/current` | Current Weekly Brief detail |
+| `/reference` | Read-only keywords and source links |
+| `/review` | Internal/manual route, not primary navigation |
+
+Phase 2 completed UI areas:
+
+- Dashboard: Weekly Brief summary card, article list, Keyword / Topic / Recommendation filters, Summary Status tabs, pagination, and article title links to detail pages.
+- Article Detail: intelligence content page with Summary Processing, a placeholder Generate Summary button for non-ready or failed articles, manual Recommendation dropdown, Open Original Article button, and Article Information side card.
+- Add Article: `/intake` behaves like a right-side panel from Dashboard and stores URL / Topic / Note as a local workspace article.
+- Weekly Brief: sidebar navigation includes Weekly Brief; `/newsletter` lists briefs; `/newsletter/current` shows the current brief detail; Dashboard Open brief links to `/newsletter/current`.
+- Reference: read-only keywords from `config/keywords.json` and configured source links from `config.py`.
+- UI Polish: Source Han Sans / Noto Sans TC style font stack, softer SaaS admin workspace styling, and more consistent cards, tables, buttons, badges, sidebar, and empty states.
+
+Dashboard details:
+
+- Summary Status tabs are `Ready`, `Failed`, `To-do`, and `All`.
+- Pagination shows 15 articles per page.
+- Article titles link to `/articles/{id}`.
+
+Article Detail details:
+
+- The page is an intelligence content page, not a review console.
+- `Generate Summary` is a Phase 2 placeholder and does not call AI yet.
+- Recommendation can be updated manually as `Core`, `Useful`, or `Exclude`.
+- Summary Processing shows article processing state separately from recommendation value.
+
+Add Article details:
+
+- `/intake` stores manually added URL / Topic / Note records in the local workspace.
+- It does not run extraction or AI summary in Phase 2.
+- Manual summary workflow is planned for Phase 3.
+
+Weekly Brief details:
+
+- The current implementation uses existing article data as a display-safe fallback.
+- Formal weekly selection logic and historical brief persistence are planned for a later phase.
+
+Reference details:
+
+- `source_index.json` is not used as canonical source configuration for the Reference page.
+- There are no create, edit, or delete controls.
+
+Important product principles:
+
+- Summary Status means article processing state.
+- Recommendation means article value judgment.
+- `Exclude` can still have a summary.
+- Manual articles can exist without a summary.
+- `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts.
+
+Run tests:
+
+```bash
+PYTHONPATH=. .venv/bin/pytest -q
+```
+
+Planned Phase 3 next steps:
+
+- Manual Article Summary Flow Spec
+- Manual Article Summary Implementation
+- Weekly Brief Selection Logic Spec
+- Weekly Brief Selection Implementation
+- Needs Attention / exception handling
+
 
 ### Validate Sources
 
@@ -400,6 +488,15 @@ The following files are generated during runs and should not be automatically co
 
 ## Roadmap
 
+The project has two related but separate roadmap tracks:
+
+- Market Intelligence Agent 1.0 — Pipeline & Automation
+- Market Intelligence Agent 2.0 — Web UI & Workflow Layer
+
+Market Intelligence Agent 2.0 does not replace or modify the 1.0 pipeline in Phase 2. It uses FastAPI, Jinja2 templates, static CSS, and the JSON knowledge repository to provide a local workspace on top of the existing knowledge data.
+
+## Market Intelligence Agent 1.0 — Pipeline & Automation
+
 ### Completed
 
 - Phase 0: Project setup
@@ -428,25 +525,176 @@ The following files are generated during runs and should not be automatically co
 - Phase 8.5: Output quality checks
 - Phase 8.6: Knowledge / history persistence
 
+## Market Intelligence Agent 2.0 Roadmap
+
+Market Intelligence Agent 2.0 is the Web UI and workflow layer built beside the 1.0 pipeline. It uses FastAPI, Jinja2, static CSS, the JSON knowledge repository, and pytest. Phase 2 does not introduce React, Vite, Tailwind, a frontend build pipeline, a database, article schema migration, or 1.0 pipeline changes.
+
+### Completed
+
+#### Phase 1: Web UI MVP and JSON Repository Foundation
+
+Goal:
+Phase 1 established a lightweight browser-based UI beside the existing Market Intelligence Agent 1.0 pipeline. It allowed users to browse knowledge articles, view article details, manually add articles, update article state, review pending articles, and generate a newsletter markdown draft.
+
+Important Phase 1 constraints:
+
+- Did not modify the 1.0 pipeline
+- Did not add a database
+- Did not introduce React
+- Did not add formal deployment
+- Did not send emails
+- Did not add new LLM processing workflows
+
+Phase 1 completed sub-phases:
+
+- Phase 1.1: Simple HTML UI Skeleton
+  - Added FastAPI + Jinja2 Web UI
+  - Added `web/app.py`
+  - Added `layout.html` / `index.html`
+  - Added `style.css`
+  - Created basic navigation and placeholder pages:
+    - `/articles`
+    - `/intake`
+    - `/review`
+    - `/newsletter`
+- Phase 1.2: JSON Knowledge Repository
+  - Added `JsonKnowledgeRepository`
+  - Supported reading `data/knowledge/articles_knowledge.json`
+  - Supported `list_articles`
+  - Supported `get_article`
+  - Supported `update_article_review`
+  - Supported `create_manual_article`
+  - Preserved unknown fields when writing back JSON
+  - Used `tmp_path` in tests to avoid polluting production knowledge JSON
+- Phase 1.3: Knowledge Explorer
+  - Added article listing page
+  - Displayed knowledge articles from JSON
+  - Supported topic filter
+  - Supported keyword search
+  - Supported `review_status` filter
+  - Supported `newsletter_eligible` filter
+  - Added `tests/test_articles_page.py`
+- Phase 1.4: Article Detail + Review Form
+  - Added `/articles/{article_id}`
+  - Article title links opened detail page
+  - Displayed article metadata and intelligence fields
+  - Added review form
+  - Supported updating:
+    - `review_status`
+    - `newsletter_eligible`
+    - `review_note`
+  - Wrote updates back to JSON knowledge repository
+- Phase 1.5: Manual Intake
+  - Added `/intake` page
+  - Form fields:
+    - URL
+    - topic
+    - note
+  - Supported canonical URL duplicate check
+  - Created manual article records
+  - Manual article defaults included:
+    - `ingestion_type = manual`
+    - `review_status = unreviewed`
+    - `newsletter_eligible = false`
+    - `newsletter_status = not_included`
+    - `extraction_status = not_started`
+    - `analysis_status = not_started`
+  - Manual article creation did not run extraction or AI summary
+- Phase 1.6: Review Queue
+  - Added `/review` page
+  - Displayed articles with `review_status`:
+    - `unreviewed`
+    - `needs_fix`
+    - `duplicate`
+  - Supported topic filter
+  - Added quick actions:
+    - approve
+    - reject
+    - mark duplicate
+    - toggle newsletter eligible
+  - Added `tests/test_review_queue.py`
+  - Note: Phase 2 later weakens this review-console model because `review_status` is not the core 2.0 product workflow
+- Phase 1.7: Newsletter Draft
+  - Added `/newsletter` page
+  - Built newsletter markdown preview
+  - Supported topic selection:
+    - Any
+    - AI
+    - FinOps
+    - ProductObservation
+  - Selected articles using:
+    - `review_status = approved`
+    - `newsletter_eligible = true`
+  - Exported markdown to `outputs/newsletter/newsletter_draft_{topic_or_all}.md`
+  - Did not send email
+  - Did not modify `newsletter_status`
+  - Added `tests/test_newsletter_page.py`
+  - Note: Phase 2 later repositions this as Weekly Brief
+
+#### Phase 2: SaaS Admin Web UI and Workflow Controls
+
+Goal:
+Phase 2 refined the 2.0 Web UI from a basic MVP into a more product-like SaaS admin workspace. It shifted the product direction away from `review_status` / `newsletter_eligible` as the main workflow and toward Dashboard, Summary Status, Recommendation, Weekly Brief, and Reference.
+
+Phase 2 completed sub-phases:
+
+- Phase 2.1: UI audit and information architecture
+- Phase 2.2: Shared SaaS admin UI shell
+- Phase 2.3: Dashboard / Articles workspace
+- Phase 2.4: Add Article side panel
+- Phase 2.5: Weekly Brief list and detail pages
+- Phase 2.6: Reference page
+- Phase 2.7: Article workflow controls
+- Phase 2.8: UI polish
+- Phase 2.9: Documentation update
+
+Phase 2 current routes:
+
+- `/` — Dashboard
+- `/articles` — Redirects to `/`
+- `/articles/{id}` — Article Detail
+- `/intake` — Add Article side panel
+- `/newsletter` — Weekly Brief list
+- `/newsletter/current` — Current Weekly Brief detail
+- `/reference` — Read-only keywords and source links
+- `/review` — Internal/manual route, not primary navigation
+
+Phase 2 product principles:
+
+- Summary Status = article processing state
+- Recommendation = article value judgment
+- `Exclude` can still have a summary
+- Manual articles can exist without a summary
+- `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts
+- Generate Summary is a placeholder and does not call AI yet
+- Formal manual article summary workflow is planned for Phase 3
+
 ### Next
 
-- Phase 8.6: Knowledge / history persistence
-- Phase 9: Notification and review workflow
-- Phase 10: Agentic research planning
+#### Phase 3: Backend Workflow Enhancement
+
+Planned:
+
+- Phase 3.1: Manual Article Summary Flow Spec
+- Phase 3.2: Manual Article Summary Implementation
+- Phase 3.3: Weekly Brief Selection Logic Spec
+- Phase 3.4: Weekly Brief Selection Implementation
+- Phase 3.5: Needs Attention / exception handling
 
 ## Next Development Focus
 
-The next major improvement is Phase 8.6: Knowledge / history persistence.
+The next major improvement is Market Intelligence Agent 2.0 Phase 3.
 
 Why it matters:
 
-- GitHub Actions can now generate reports, artifacts, and review summaries, but long-term knowledge and history persistence still needs a clear strategy.
-- The workflow needs a reliable way to preserve `data/history/` and `data/knowledge/` across scheduled runs to maintain cross-week deduplication, freshness tracking, and long-term market insight accumulation.
-- A clear persistence policy ensures that temporary intermediate files do not bloat the repository while valuable knowledge is preserved for future analysis.
+- Phase 3 builds on the completed 2.0 Phase 1 and Phase 2 UI foundation.
+- Phase 3 will connect manual article intake, summary generation, Weekly Brief selection logic, and Needs Attention workflows.
+- Phase 3 does not replace the Market Intelligence Agent 1.0 pipeline.
 
 Planned improvements:
 
-- Define which files should persist across GitHub Actions runs.
-- Preserve `data/history/` and `data/knowledge/` across weekly runs.
-- Keep generated reports as downloadable artifacts.
-- Avoid committing large generated outputs, cache files, or intermediate processing results unnecessarily.
+- Phase 3.1: Manual Article Summary Flow Spec
+- Phase 3.2: Manual Article Summary Implementation
+- Phase 3.3: Weekly Brief Selection Logic Spec
+- Phase 3.4: Weekly Brief Selection Implementation
+- Phase 3.5: Needs Attention / exception handling

@@ -122,6 +122,33 @@ def test_update_article_review_preserves_unknown_fields(tmp_path):
     assert "reviewed_at" in persisted
 
 
+def test_update_article_recommendation_preserves_unknown_fields(tmp_path):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "https://example.com/article": {
+                "url": "https://example.com/article",
+                "title": "Example",
+                "recommendation": "Useful",
+                "custom_field": {"keep": True},
+            }
+        },
+    )
+
+    repository = JsonKnowledgeRepository(knowledge_path)
+    article = repository.update_article_recommendation(
+        "https://example.com/article",
+        "Core",
+    )
+    persisted = read_json(knowledge_path)["https://example.com/article"]
+
+    assert article["recommendation"] == "Core"
+    assert persisted["recommendation"] == "Core"
+    assert persisted["custom_field"] == {"keep": True}
+    assert "updated_at" in persisted
+
+
 def test_create_manual_article_creates_article(tmp_path):
     knowledge_path = tmp_path / "articles_knowledge.json"
     repository = JsonKnowledgeRepository(knowledge_path)

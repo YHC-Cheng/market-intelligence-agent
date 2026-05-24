@@ -59,7 +59,13 @@
             <tbody>
               {% for source in source_links %}
                 <tr>
-                  <td>{{ source.name or "—" }}</td>
+                  <td>
+                    {% if source.name and source.name != "-" %}
+                      {{ source.name }}
+                    {% else %}
+                      &mdash;
+                    {% endif %}
+                  </td>
                   <td>
                     {% if source.topic %}
                       <span class="badge badge-outline">{{ source.topic }}</span>
@@ -76,9 +82,9 @@
                   </td>
                   <td>
                     {% if source.url %}
-                      <a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">Open link</a>
+                      <a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">{{ source.url }}</a>
                     {% else %}
-                      —
+                      &mdash;
                     {% endif %}
                   </td>
                 </tr>

@@ -4,11 +4,15 @@
   <p class="back-link"><a href="/">Back to Home</a></p>
 
   {% if saved %}
-    <div class="alert alert-success" role="status">Internal metadata saved.</div>
+    <div class="alert alert-success" role="status">Recommendation updated.</div>
   {% endif %}
 
   {% if created %}
-    <div class="alert alert-success" role="status">Manual article created.</div>
+    <div class="alert alert-success" role="status">Article added to the local workspace.</div>
+  {% endif %}
+
+  {% if summary_requested %}
+    <div class="alert alert-success" role="status">Summary generation will be connected in a later phase.</div>
   {% endif %}
 
   {% set score = article.get("score") %}
@@ -16,6 +20,18 @@
     {% set score = article.get("ranking_score") %}
   {% endif %}
   {% set article_type = article.get("ingestion_type") or article.get("type") %}
+  {% set normalized_source = article.get("source") or "" %}
+  {% set normalized_article_type = article_type or "" %}
+  {% set source_display = article.get("source") %}
+  {% if normalized_source|lower == "manual" %}
+    {% set source_display = none %}
+  {% endif %}
+  {% set article_type_display = article_type %}
+  {% if normalized_article_type|lower == "manual" %}
+    {% set article_type_display = "Manual" %}
+  {% elif article_type %}
+    {% set article_type_display = article_type|replace("_", " ")|title %}
+  {% endif %}
   {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
   {% if not summary_status and article.get("summary") %}
     {% set summary_status = "ready" %}
@@ -26,18 +42,28 @@
       {% if article.get("topic") %}
         <span class="badge badge-outline">{{ article.get("topic") }}</span>
       {% endif %}
-      {% if article.get("source") %}
-        <span>{{ article.get("source") }}</span>
-      {% endif %}
-      {% if article_type %}
-        <span class="badge badge-secondary">{{ article_type }}</span>
+      <span class="badge {% if summary_status_display in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status_display in ['pending', 'not_started'] %}badge-todo{% elif summary_status_display in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">
+        Summary Status: {{ summary_status_display }}
+      </span>
+      {% if source_display %}
+        <span>{{ source_display }}</span>
       {% endif %}
       {% if score is not none and score != "" %}
         <span>Score {{ score }}</span>
       {% endif %}
-      {% if article.get("recommendation") %}
-        <span class="badge">{{ article.get("recommendation") }}</span>
-      {% endif %}
+      <form class="metadata-recommendation-form" method="post" action="{{ detail_href }}">
+        <label for="recommendation-select">Recommendation:</label>
+        <select
+          id="recommendation-select"
+          class="recommendation-select-badge"
+          name="recommendation"
+          onchange="this.form.submit()"
+        >
+          {% for option in recommendation_options %}
+            <option value="{{ option }}" {% if article.get("recommendation") == option %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </form>
     </div>
 
     {% if article.get("url") %}
@@ -51,10 +77,27 @@
     <div class="detail-main">
       <section class="detail-section">
         <h2>Summary</h2>
-        {% if summary_status and not article.get("summary") %}
-          <p class="muted-text">Summary status: {{ summary_status }}</p>
-        {% endif %}
         <p>{{ article.get("summary") or "—" }}</p>
+      </section>
+
+      <section class="detail-section workflow-section" aria-labelledby="summary-processing-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <h2 id="summary-processing-title">Summary Processing</h2>
+            <p>{{ summary_status_explanation }}</p>
+          </div>
+          {% if can_generate_summary %}
+            <form method="post" action="{{ detail_href }}/summary">
+              <button class="button button-secondary" type="submit">Generate Summary</button>
+            </form>
+          {% endif %}
+        </div>
+        <dl class="info-list inline-info-list">
+          <div>
+            <dt>Summary Status</dt>
+            <dd>{{ summary_status_display }}</dd>
+          </div>
+        </dl>
       </section>
 
       <section class="detail-section">
@@ -100,7 +143,7 @@
         </div>
         <div>
           <dt>Source</dt>
-          <dd>{{ article.get("source") or "—" }}</dd>
+          <dd>{{ source_display or "—" }}</dd>
         </div>
         <div>
           <dt>Original URL</dt>
@@ -114,7 +157,7 @@
         </div>
         <div>
           <dt>Ingestion Type</dt>
-          <dd>{{ article_type or "—" }}</dd>
+          <dd>{{ article_type_display or "—" }}</dd>
         </div>
         <div>
           <dt>Created At</dt>
@@ -133,8 +176,8 @@
           <dd>{{ article.get("extraction_status") or "—" }}</dd>
         </div>
         <div>
-          <dt>Analysis Status</dt>
-          <dd>{{ article.get("analysis_status") or summary_status or "—" }}</dd>
+          <dt>Summary Status</dt>
+          <dd>{{ summary_status_display }}</dd>
         </div>
         <div>
           <dt>Recommendation</dt>

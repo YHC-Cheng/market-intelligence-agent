@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <section class="card table-card" aria-labelledby="brief-list-title">
+    <div class="section-header">
+      <div>
+        <h2 id="brief-list-title">Available briefs</h2>
+        <p>Market intelligence briefs generated from the local article workspace.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table brief-index-table">
+        <thead>
+          <tr>
+            <th scope="col">Brief</th>
+            <th scope="col">Period</th>
+            <th scope="col">Articles</th>
+            <th scope="col">Status</th>
+            <th scope="col">Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for brief in briefs %}
+            <tr>
+              <td>
+                <a href="{{ brief.href }}" class="title-link">{{ brief.title }}</a>
+              </td>
+              <td>{{ brief.date_range }}</td>
+              <td>{{ brief.article_count_display }}</td>
+              <td><span class="badge badge-success">{{ brief.status }}</span></td>
+              <td>
+                {% if brief.updated %}
+                  {{ brief.updated }}
+                {% else %}
+                  &mdash;
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
