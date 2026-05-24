@@ -616,9 +616,17 @@ textarea.form-control,
 
 .drawer-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 256px;
   z-index: 20;
-  background: rgba(3, 2, 19, 0.36);
+  background: rgba(245, 246, 248, 0.62);
+  backdrop-filter: blur(1.5px);
+}
+
+.intake-workspace-context {
+  pointer-events: none;
 }
 
 .drawer-panel {
@@ -934,6 +942,10 @@ textarea.form-control,
 
   .content-container {
     padding: 24px 18px;
+  }
+
+  .drawer-backdrop {
+    left: 0;
   }
 
   .page-header {

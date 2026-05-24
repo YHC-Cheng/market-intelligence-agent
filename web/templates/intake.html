@@ -1,6 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  <div class="intake-workspace-context">
+    <header class="page-header">
+      <div class="page-title-group">
+        <h1>Dashboard</h1>
+        <p>Track this week's market intelligence and articles.</p>
+      </div>
+    </header>
+    {% include "_dashboard_content.html" %}
+  </div>
+
   <div class="drawer-backdrop" aria-hidden="true"></div>
   <aside class="drawer-panel" aria-labelledby="intake-title">
     <div class="drawer-header">
@@ -36,7 +46,7 @@
           <span>Topic</span>
           <select class="form-control" name="topic" required>
             <option value="" {% if not form.topic %}selected{% endif %}>Choose topic</option>
-            {% for topic in topic_options %}
+            {% for topic in intake_topic_options %}
               <option value="{{ topic }}" {% if form.topic == topic %}selected{% endif %}>
                 {{ topic }}
               </option>
@@ -50,12 +60,12 @@
         </label>
 
         <p class="drawer-helper">
-          Manual articles are added to the local workspace for later extraction and analysis.
+          Added articles are saved to the local workspace.
         </p>
 
         <div class="drawer-actions">
           <a class="button button-secondary" href="/">Cancel</a>
-          <button class="button button-primary" type="submit">Add Article</button>
+          <button class="button button-primary" type="submit">Add</button>
         </div>
       </form>
     </div>

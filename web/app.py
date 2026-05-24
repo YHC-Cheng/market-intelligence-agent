@@ -485,16 +485,20 @@ def intake_context(
     if duplicate_article is not None:
         duplicate_detail_href = article_detail_href(duplicate_article)
 
-    context = base_template_context(
-        request,
-        title="Add Article",
-        page_title="Add Article",
-        page_subtitle="Add a market intelligence article URL for review.",
-        show_page_header=False,
+    context = home_articles_context(request)
+    context.update(
+        base_template_context(
+            request,
+            title="Add Article",
+            active_nav="home",
+            page_title="Add Article",
+            page_subtitle="Add a market intelligence article URL.",
+            show_page_header=False,
+        )
     )
     context.update(
         {
-            "topic_options": INTAKE_TOPIC_OPTIONS,
+            "intake_topic_options": INTAKE_TOPIC_OPTIONS,
             "form": form or {"url": "", "topic": "", "note": ""},
             "error": error,
             "duplicate_article": duplicate_article,

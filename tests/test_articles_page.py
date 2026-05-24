@@ -47,6 +47,18 @@ def articles_pagination_markup(response_text):
     return response_text[start:end]
 
 
+def article_metadata_markup(response_text):
+    start = response_text.index('<div class="metadata-row"')
+    end = response_text.index("</div>", start)
+    return response_text[start:end]
+
+
+def article_info_markup(response_text):
+    start = response_text.index('<aside class="article-info-card"')
+    end = response_text.index("</aside>", start)
+    return response_text[start:end]
+
+
 def detail_path(article_id):
     return f"/articles/{quote(article_id, safe='')}"
 
@@ -555,6 +567,72 @@ def test_article_detail_page_supports_url_article_ids(tmp_path, monkeypatch):
 
     assert response.status_code == 200
     assert "URL id article" in response.text
+
+
+def test_article_detail_displays_manual_ingestion_once_with_clear_label(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/pricing",
+                "title": "Pricing article",
+                "topic": "ProductObservation",
+                "source": "manual",
+                "ingestion_type": "manual",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+    metadata = article_metadata_markup(response.text).casefold()
+    article_info = article_info_markup(response.text)
+
+    assert response.status_code == 200
+    assert metadata.count("manual") == 0
+    assert "<dt>Ingestion Type</dt>" in article_info
+    assert "<dd>Manual</dd>" in article_info
+    assert "<dd>manual</dd>" not in article_info
+
+
+def test_article_detail_hides_review_workflow_language(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/pricing",
+                "title": "Pricing article",
+                "topic": "ProductObservation",
+                "source": "manual",
+                "ingestion_type": "manual",
+                "review_status": "approved",
+                "newsletter_eligible": True,
+                "review_note": "Internal note",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+    page_text = response.text.casefold()
+
+    assert response.status_code == 200
+    assert "reviewed" not in page_text
+    assert "approved" not in page_text
+    assert "newsletter eligible" not in page_text
+    assert "review readiness" not in page_text
+    assert "weekly brief eligible" not in page_text
+    assert "internal note" not in page_text
 
 
 def test_article_detail_page_returns_404_for_missing_article(tmp_path, monkeypatch):

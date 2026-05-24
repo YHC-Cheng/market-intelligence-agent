@@ -8,7 +8,7 @@
   {% endif %}
 
   {% if created %}
-    <div class="alert alert-success" role="status">Manual article created.</div>
+    <div class="alert alert-success" role="status">Article added to the local workspace.</div>
   {% endif %}
 
   {% set score = article.get("score") %}
@@ -16,6 +16,18 @@
     {% set score = article.get("ranking_score") %}
   {% endif %}
   {% set article_type = article.get("ingestion_type") or article.get("type") %}
+  {% set normalized_source = article.get("source") or "" %}
+  {% set normalized_article_type = article_type or "" %}
+  {% set source_display = article.get("source") %}
+  {% if normalized_source|lower == "manual" %}
+    {% set source_display = none %}
+  {% endif %}
+  {% set article_type_display = article_type %}
+  {% if normalized_article_type|lower == "manual" %}
+    {% set article_type_display = "Manual" %}
+  {% elif article_type %}
+    {% set article_type_display = article_type|replace("_", " ")|title %}
+  {% endif %}
   {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
   {% if not summary_status and article.get("summary") %}
     {% set summary_status = "ready" %}
@@ -26,11 +38,8 @@
       {% if article.get("topic") %}
         <span class="badge badge-outline">{{ article.get("topic") }}</span>
       {% endif %}
-      {% if article.get("source") %}
-        <span>{{ article.get("source") }}</span>
-      {% endif %}
-      {% if article_type %}
-        <span class="badge badge-secondary">{{ article_type }}</span>
+      {% if source_display %}
+        <span>{{ source_display }}</span>
       {% endif %}
       {% if score is not none and score != "" %}
         <span>Score {{ score }}</span>
@@ -100,7 +109,7 @@
         </div>
         <div>
           <dt>Source</dt>
-          <dd>{{ article.get("source") or "—" }}</dd>
+          <dd>{{ source_display or "—" }}</dd>
         </div>
         <div>
           <dt>Original URL</dt>
@@ -114,7 +123,7 @@
         </div>
         <div>
           <dt>Ingestion Type</dt>
-          <dd>{{ article_type or "—" }}</dd>
+          <dd>{{ article_type_display or "—" }}</dd>
         </div>
         <div>
           <dt>Created At</dt>
