@@ -82,7 +82,7 @@
                 <td>{{ article.get("source") or "&mdash;" | safe }}</td>
                 <td>
                   {% if article.get("recommendation") %}
-                    <span class="badge">{{ article.get("recommendation") }}</span>
+                    <span class="badge {% if article.get('recommendation') == 'Core' %}badge-core{% elif article.get('recommendation') == 'Useful' %}badge-useful{% elif article.get('recommendation') == 'Exclude' %}badge-exclude{% else %}badge-secondary{% endif %}">{{ article.get("recommendation") }}</span>
                   {% else %}
                     &mdash;
                   {% endif %}
@@ -90,7 +90,7 @@
                 <td>{{ score if score is not none and score != "" else "&mdash;" | safe }}</td>
                 <td>
                   {% if summary_status %}
-                    <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
+                    <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-todo{% elif summary_status in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
                   {% else %}
                     &mdash;
                   {% endif %}

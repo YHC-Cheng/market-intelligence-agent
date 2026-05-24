@@ -42,7 +42,7 @@
       {% if article.get("topic") %}
         <span class="badge badge-outline">{{ article.get("topic") }}</span>
       {% endif %}
-      <span class="badge {% if summary_status_display == 'ready' %}badge-success{% elif summary_status_display in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">
+      <span class="badge {% if summary_status_display in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status_display in ['pending', 'not_started'] %}badge-todo{% elif summary_status_display in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">
         Summary Status: {{ summary_status_display }}
       </span>
       {% if source_display %}
