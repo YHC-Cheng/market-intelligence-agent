@@ -27,6 +27,12 @@ def articles_filter_markup(response_text):
     return response_text[start:end]
 
 
+def summary_tabs_markup(response_text):
+    start = response_text.index('<nav class="status-tabs"')
+    end = response_text.index("</nav>", start)
+    return response_text[start:end]
+
+
 def articles_table_head_markup(response_text):
     start = response_text.index('<table class="data-table article-table">')
     head_start = response_text.index("<thead>", start)
@@ -59,6 +65,13 @@ def article_info_markup(response_text):
     return response_text[start:end]
 
 
+def detail_section_markup(response_text, heading):
+    heading_index = response_text.index(heading)
+    start = response_text.rfind("<section", 0, heading_index)
+    end = response_text.index("</section>", heading_index)
+    return response_text[start:end]
+
+
 def detail_path(article_id):
     return f"/articles/{quote(article_id, safe='')}"
 
@@ -78,6 +91,7 @@ def numbered_articles(count, **overrides):
             "title": f"Article {index:02d}",
             "topic": "FinOps",
             "summary": f"cloud summary {index:02d}",
+            "summary_status": "ready",
             "recommendation": "Core",
             "updated_at": f"2026-05-{index:02d}T14:22:31",
             **overrides,
@@ -166,6 +180,7 @@ def test_articles_page_displays_repository_articles(tmp_path, monkeypatch):
                 "source": "Example Blog",
                 "score": 88.0,
                 "summary": "Cost summary.",
+                "summary_status": "ready",
                 "recommendation": "Core",
                 "updated_at": "2026-05-17T14:22:31",
                 "review_status": "approved",
@@ -202,6 +217,7 @@ def test_articles_filters_use_phase_2_dashboard_fields(tmp_path, monkeypatch):
                 "title": "Cloud cost control",
                 "topic": "FinOps",
                 "summary": "Cost summary.",
+                "summary_status": "ready",
                 "recommendation": "Core",
                 "source": "Example Blog",
                 "ingestion_type": "rss",
@@ -219,12 +235,80 @@ def test_articles_filters_use_phase_2_dashboard_fields(tmp_path, monkeypatch):
     assert 'name="topic"' in filters
     assert 'name="summary_status"' in filters
     assert 'name="recommendation"' in filters
-    assert "All Summary Statuses" in filters
     assert "All Recommendations" in filters
     assert 'name="source"' not in filters
     assert 'name="type"' not in filters
-    assert "All Sources" not in filters
-    assert "All Types" not in filters
+    assert "All Summary Statuses" not in filters
+
+
+def test_articles_page_renders_summary_status_tabs(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Ready article",
+                "summary_status": "ready",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/")
+    stylesheet = client.get("/static/style.css")
+    tabs = summary_tabs_markup(response.text)
+    filter_index = response.text.index('<form class="filters-row article-filters"')
+    tabs_index = response.text.index('<nav class="status-tabs"')
+    table_index = response.text.index('<table class="data-table article-table">')
+
+    assert response.status_code == 200
+    assert 'id="articles-section"' in response.text
+    assert filter_index < tabs_index < table_index
+    assert 'href="/?summary_status=ready"' in tabs
+    assert "Ready" in tabs
+    assert 'href="/?summary_status=failed"' in tabs
+    assert "Failed" in tabs
+    assert 'href="/?summary_status=needs_summary"' in tabs
+    assert "To-do" in tabs
+    assert "Needs Summary" not in tabs
+    assert 'href="/?summary_status=all"' in tabs
+    assert "All" in tabs
+    assert 'class="status-tab is-active"' in tabs
+    assert 'aria-current="page"' in tabs
+    assert ".status-tabs {\n  display: flex;" in stylesheet.text
+    assert "grid-template-columns: repeat(4, 1fr);" not in stylesheet.text
+    assert "dashboardArticlesScrollY" in response.text
+    assert "sessionStorage" in response.text
+
+
+def test_summary_status_tabs_preserve_existing_filters(tmp_path, monkeypatch):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Cloud cost control",
+                "topic": "FinOps",
+                "summary": "Cost summary.",
+                "summary_status": "ready",
+                "recommendation": "Core",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get(
+        "/?keyword=cloud&topic=FinOps&recommendation=Core",
+    )
+    tabs = summary_tabs_markup(response.text)
+
+    assert response.status_code == 200
+    assert (
+        'href="/?summary_status=failed&amp;keyword=cloud'
+        '&amp;topic=FinOps&amp;recommendation=Core"'
+    ) in tabs
 
 
 def test_keyword_search_input_does_not_render_search_icon(tmp_path, monkeypatch):
@@ -252,6 +336,7 @@ def test_articles_table_uses_phase_2_dashboard_columns(tmp_path, monkeypatch):
                 "title": "Cloud cost control",
                 "topic": "FinOps",
                 "summary": "Cost summary.",
+                "summary_status": "ready",
                 "recommendation": "Core",
                 "source": "Example Blog",
                 "ingestion_type": "rss",
@@ -299,7 +384,7 @@ def test_articles_page_filters_by_topic(tmp_path, monkeypatch):
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.get("/?topic=FinOps")
+    response = client.get("/?summary_status=all&topic=FinOps")
 
     assert response.status_code == 200
     assert "FinOps cloud report" in response.text
@@ -315,21 +400,129 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
                 "url": "https://example.com/ready",
                 "title": "Ready intelligence",
                 "summary": "A complete summary.",
+                "summary_status": "ready",
             },
             "https://example.com/pending": {
                 "url": "https://example.com/pending",
                 "title": "Pending intelligence",
                 "analysis_status": "pending",
             },
+            "https://example.com/failed": {
+                "url": "https://example.com/failed",
+                "title": "Failed intelligence",
+                "summary_status": "failed",
+            },
         },
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.get("/?summary_status=ready")
+    response = client.get("/")
 
     assert response.status_code == 200
     assert "Ready intelligence" in response.text
     assert "Pending intelligence" not in response.text
+    assert "Failed intelligence" not in response.text
+
+    response = client.get("/?summary_status=failed")
+
+    assert response.status_code == 200
+    assert "Failed intelligence" in response.text
+    assert "Ready intelligence" not in response.text
+    assert "Pending intelligence" not in response.text
+
+    response = client.get("/?summary_status=needs_summary")
+
+    assert response.status_code == 200
+    assert "Pending intelligence" in response.text
+    assert "Ready intelligence" not in response.text
+    assert "Failed intelligence" not in response.text
+
+    response = client.get("/?summary_status=all")
+
+    assert response.status_code == 200
+    assert "Ready intelligence" in response.text
+    assert "Pending intelligence" in response.text
+    assert "Failed intelligence" in response.text
+
+
+def test_articles_needs_summary_tab_includes_missing_not_started_and_pending(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "missing": {
+                "id": "missing",
+                "title": "Missing status intelligence",
+                "summary": "Existing text without a processing state.",
+            },
+            "empty": {
+                "id": "empty",
+                "title": "Empty status intelligence",
+                "summary_status": "",
+            },
+            "not-started": {
+                "id": "not-started",
+                "title": "Not started intelligence",
+                "summary_status": "not_started",
+            },
+            "pending": {
+                "id": "pending",
+                "title": "Pending status intelligence",
+                "summary_status": "pending",
+            },
+            "ready": {
+                "id": "ready",
+                "title": "Ready status intelligence",
+                "summary_status": "ready",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?summary_status=needs_summary")
+
+    assert response.status_code == 200
+    assert "Missing status intelligence" in response.text
+    assert "Empty status intelligence" in response.text
+    assert "Not started intelligence" in response.text
+    assert "Pending status intelligence" in response.text
+    assert "Ready status intelligence" not in response.text
+
+
+def test_articles_invalid_summary_status_falls_back_safely(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "ready": {
+                "id": "ready",
+                "title": "Ready fallback intelligence",
+                "summary_status": "ready",
+            },
+            "pending": {
+                "id": "pending",
+                "title": "Pending fallback intelligence",
+                "summary_status": "pending",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?summary_status=unknown")
+    tabs = summary_tabs_markup(response.text)
+
+    assert response.status_code == 200
+    assert "Ready fallback intelligence" in response.text
+    assert "Pending fallback intelligence" not in response.text
+    assert 'class="status-tab is-active"' in tabs
+    assert 'href="/?summary_status=ready"' in tabs
+    assert 'aria-current="page"' in tabs
 
 
 def test_articles_page_filters_by_recommendation(tmp_path, monkeypatch):
@@ -351,7 +544,7 @@ def test_articles_page_filters_by_recommendation(tmp_path, monkeypatch):
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.get("/?recommendation=Core")
+    response = client.get("/?summary_status=all&recommendation=Core")
 
     assert response.status_code == 200
     assert "Core intelligence" in response.text
@@ -379,7 +572,7 @@ def test_articles_page_filters_by_keyword(tmp_path, monkeypatch):
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.get("/?keyword=cloud")
+    response = client.get("/?summary_status=all&keyword=cloud")
 
     assert response.status_code == 200
     assert "Cloud planning guide" in response.text
@@ -399,7 +592,7 @@ def test_articles_page_renders_missing_values_as_dash(tmp_path, monkeypatch):
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.get("/")
+    response = client.get("/?summary_status=all")
 
     assert response.status_code == 200
     assert "—" in response.text
@@ -435,7 +628,7 @@ def test_articles_page_renders_pagination_for_more_than_15_articles(
     assert "Showing 1–15 of 16 articles" in response.text
     assert "Page 1 of 2" in response.text
     assert '<span class="button button-secondary button-sm is-disabled" aria-disabled="true">Previous</span>' in response.text
-    assert 'href="/?page=2">Next</a>' in response.text
+    assert 'href="/?summary_status=ready&amp;page=2">Next</a>' in response.text
 
 
 def test_articles_page_query_parameter_changes_visible_article_set(
@@ -644,7 +837,10 @@ def test_article_detail_page_returns_404_for_missing_article(tmp_path, monkeypat
     assert "Article not found" in response.text
 
 
-def test_article_review_form_updates_review_status(tmp_path, monkeypatch):
+def test_article_detail_shows_summary_processing_for_ready_article(
+    tmp_path,
+    monkeypatch,
+):
     knowledge_path = tmp_path / "articles_knowledge.json"
     write_json(
         knowledge_path,
@@ -652,7 +848,159 @@ def test_article_review_form_updates_review_status(tmp_path, monkeypatch):
             "article-1": {
                 "id": "article-1",
                 "url": "https://example.com/article-1",
-                "title": "Review me",
+                "title": "Ready article",
+                "summary": "Useful summary.",
+                "summary_status": "ready",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+    section = detail_section_markup(response.text, "Summary Processing")
+
+    assert response.status_code == 200
+    assert "Summary Processing" in section
+    assert "Summary Status" in section
+    assert "ready" in section
+    assert "Summary is available for this article." in section
+    assert "Generate Summary" not in section
+
+
+def test_article_detail_shows_generate_summary_for_unready_states(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "missing": {
+                "id": "missing",
+                "title": "Missing status article",
+            },
+            "not-started": {
+                "id": "not-started",
+                "title": "Not started article",
+                "summary_status": "not_started",
+            },
+            "pending": {
+                "id": "pending",
+                "title": "Pending article",
+                "summary_status": "pending",
+            },
+            "failed": {
+                "id": "failed",
+                "title": "Failed article",
+                "summary_status": "failed",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    for article_id in ["missing", "not-started", "pending", "failed"]:
+        response = client.get(f"/articles/{article_id}")
+        section = detail_section_markup(response.text, "Summary Processing")
+
+        assert response.status_code == 200
+        assert "Generate Summary" in section
+
+    failed_response = client.get("/articles/failed")
+    failed_section = detail_section_markup(
+        failed_response.text,
+        "Summary Processing",
+    )
+    assert (
+        "Summary generation failed. You can try generating it again."
+        in failed_section
+    )
+
+
+def test_article_summary_placeholder_route_redirects_without_generation(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Needs summary",
+                "summary_status": "pending",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1/summary",
+        follow_redirects=False,
+    )
+    persisted = read_json(knowledge_path)["article-1"]
+
+    assert response.status_code == 303
+    assert response.headers["location"] == "/articles/article-1?summary_requested=1"
+    assert persisted["summary_status"] == "pending"
+    assert "summary" not in persisted
+
+    response = client.post("/articles/article-1/summary")
+
+    assert response.status_code == 200
+    assert "Summary generation will be connected in a later phase." in response.text
+    assert "Summary generated" not in response.text
+
+
+def test_article_detail_shows_compact_recommendation_editor_in_header(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Recommendation article",
+                "recommendation": "Useful",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+    metadata = article_metadata_markup(response.text)
+
+    assert response.status_code == 200
+    assert "Recommendation Management" not in response.text
+    assert 'class="metadata-recommendation-form"' in metadata
+    assert 'class="recommendation-select-badge"' in metadata
+    assert 'name="recommendation"' in metadata
+    assert 'onchange="this.form.submit()"' in metadata
+    assert 'value="Core"' in metadata
+    assert 'value="Useful"' in metadata
+    assert 'value="Exclude"' in metadata
+    assert 'value="Useful" selected' in metadata
+    assert ">Save</button>" not in metadata
+
+
+def test_article_recommendation_form_updates_recommendation(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Recommendation candidate",
+                "summary_status": "ready",
+                "summary": "Useful summary.",
+                "recommendation": "Useful",
                 "custom_field": {"keep": True},
             }
         },
@@ -661,17 +1009,26 @@ def test_article_review_form_updates_review_status(tmp_path, monkeypatch):
 
     response = client.post(
         "/articles/article-1",
-        data={"review_status": "approved", "review_note": ""},
+        data={"recommendation": "Core"},
+        follow_redirects=False,
     )
     persisted = read_json(knowledge_path)["article-1"]
 
-    assert response.status_code == 200
-    assert "Internal metadata saved." in response.text
-    assert persisted["review_status"] == "approved"
+    assert response.status_code == 303
+    assert response.headers["location"] == "/articles/article-1?saved=1"
+    assert persisted["recommendation"] == "Core"
     assert persisted["custom_field"] == {"keep": True}
 
+    response = client.post(
+        "/articles/article-1",
+        data={"recommendation": "Exclude"},
+    )
 
-def test_article_review_form_updates_newsletter_eligible(tmp_path, monkeypatch):
+    assert response.status_code == 200
+    assert "Recommendation updated." in response.text
+
+
+def test_dashboard_reflects_updated_recommendation(tmp_path, monkeypatch):
     knowledge_path = tmp_path / "articles_knowledge.json"
     write_json(
         knowledge_path,
@@ -679,48 +1036,18 @@ def test_article_review_form_updates_newsletter_eligible(tmp_path, monkeypatch):
             "article-1": {
                 "id": "article-1",
                 "url": "https://example.com/article-1",
-                "title": "Newsletter candidate",
-                "newsletter_eligible": False,
+                "title": "Dashboard recommendation candidate",
+                "summary_status": "ready",
+                "recommendation": "Useful",
             }
         },
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.post(
-        "/articles/article-1",
-        data={"review_status": "unreviewed", "newsletter_eligible": "true"},
-    )
-    persisted = read_json(knowledge_path)["article-1"]
+    client.post("/articles/article-1", data={"recommendation": "Core"})
+    response = client.get("/")
+    table_body = articles_table_body_markup(response.text)
 
     assert response.status_code == 200
-    assert "Internal metadata saved." in response.text
-    assert persisted["newsletter_eligible"] is True
-
-
-def test_article_review_form_updates_review_note(tmp_path, monkeypatch):
-    knowledge_path = tmp_path / "articles_knowledge.json"
-    write_json(
-        knowledge_path,
-        {
-            "article-1": {
-                "id": "article-1",
-                "url": "https://example.com/article-1",
-                "title": "Needs a note",
-                "review_note": "",
-            }
-        },
-    )
-    client = article_client(monkeypatch, knowledge_path)
-
-    response = client.post(
-        "/articles/article-1",
-        data={
-            "review_status": "needs_fix",
-            "review_note": "Needs a clearer source summary.",
-        },
-    )
-    persisted = read_json(knowledge_path)["article-1"]
-
-    assert response.status_code == 200
-    assert "Internal metadata saved." in response.text
-    assert persisted["review_note"] == "Needs a clearer source summary."
+    assert "Dashboard recommendation candidate" in table_body
+    assert "Core" in table_body

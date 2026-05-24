@@ -57,6 +57,15 @@ REVIEW_ACTION_STATUS_UPDATES = {
 
 NEWSLETTER_TOPIC_OPTIONS = INTAKE_TOPIC_OPTIONS
 ARTICLES_PER_PAGE = 15
+SUMMARY_STATUS_TABS = [
+    {"value": "ready", "label": "Ready"},
+    {"value": "failed", "label": "Failed"},
+    {"value": "needs_summary", "label": "To-do"},
+    {"value": "all", "label": "All"},
+]
+SUMMARY_STATUS_FILTERS = {tab["value"] for tab in SUMMARY_STATUS_TABS}
+DEFAULT_SUMMARY_STATUS_FILTER = "ready"
+RECOMMENDATION_OPTIONS = ["Core", "Useful", "Exclude"]
 
 
 def get_knowledge_repository():
@@ -108,6 +117,18 @@ def parse_bool_filter(value):
     return None
 
 
+def normalize_summary_status_filter(value):
+    normalized_value = clean_filter(value)
+    if normalized_value is None:
+        return DEFAULT_SUMMARY_STATUS_FILTER
+
+    normalized_value = normalized_value.casefold()
+    if normalized_value in SUMMARY_STATUS_FILTERS:
+        return normalized_value
+
+    return DEFAULT_SUMMARY_STATUS_FILTER
+
+
 def article_detail_href(article):
     article_id = (
         article.get("id")
@@ -145,7 +166,7 @@ def article_filters(
         "newsletter_eligible": clean_filter(newsletter_eligible),
         "source": clean_filter(source),
         "article_type": clean_filter(article_type),
-        "summary_status": clean_filter(summary_status),
+        "summary_status": normalize_summary_status_filter(summary_status),
         "recommendation": clean_filter(recommendation),
     }
 
@@ -155,11 +176,32 @@ def article_type(article):
 
 
 def article_summary_status(article):
-    summary_status = article.get("summary_status") or article.get("analysis_status")
-    if not summary_status and article.get("summary"):
-        return "ready"
+    return article.get("summary_status") or article.get("analysis_status")
 
-    return summary_status
+
+def article_summary_status_bucket(article):
+    summary_status = article_summary_status(article)
+    normalized_status = str(summary_status or "").strip().casefold()
+    if normalized_status == "ready":
+        return "ready"
+    if normalized_status == "failed":
+        return "failed"
+
+    return "needs_summary"
+
+
+def summary_status_explanation(article):
+    bucket = article_summary_status_bucket(article)
+    if bucket == "ready":
+        return "Summary is available for this article."
+    if bucket == "failed":
+        return "Summary generation failed. You can try generating it again."
+
+    return "This article has not been summarized yet."
+
+
+def can_generate_summary(article):
+    return article_summary_status_bucket(article) != "ready"
 
 
 def updated_date(article):
@@ -213,6 +255,30 @@ def pagination_href(page, filters):
     return f"/?{urlencode(query_params)}"
 
 
+def summary_status_tab_href(filters, summary_status):
+    query_params = [("summary_status", summary_status)]
+    for query_name, filter_name in [
+        ("keyword", "keyword"),
+        ("topic", "topic"),
+        ("recommendation", "recommendation"),
+    ]:
+        if filters.get(filter_name):
+            query_params.append((query_name, filters[filter_name]))
+
+    return f"/?{urlencode(query_params)}"
+
+
+def summary_status_tabs(filters):
+    return [
+        {
+            **tab,
+            "href": summary_status_tab_href(filters, tab["value"]),
+            "active": filters["summary_status"] == tab["value"],
+        }
+        for tab in SUMMARY_STATUS_TABS
+    ]
+
+
 def paginate_articles(articles, page, filters):
     total_count = len(articles)
     total_pages = max(1, (total_count + ARTICLES_PER_PAGE - 1) // ARTICLES_PER_PAGE)
@@ -255,11 +321,23 @@ def apply_home_filters(articles, filters):
             if article_type(article) == filters["article_type"]
         ]
 
-    if filters["summary_status"] is not None:
+    if filters["summary_status"] == "ready":
         filtered_articles = [
             article
             for article in filtered_articles
-            if article_summary_status(article) == filters["summary_status"]
+            if article_summary_status_bucket(article) == "ready"
+        ]
+    elif filters["summary_status"] == "failed":
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article_summary_status_bucket(article) == "failed"
+        ]
+    elif filters["summary_status"] == "needs_summary":
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article_summary_status_bucket(article) == "needs_summary"
         ]
 
     if filters["recommendation"] is not None:
@@ -286,15 +364,6 @@ def type_option_values(articles):
         article_type(article)
         for article in articles
         if article_type(article) not in (None, "")
-    }
-    return sorted(values)
-
-
-def summary_status_option_values(articles):
-    values = {
-        article_summary_status(article)
-        for article in articles
-        if article_summary_status(article) not in (None, "")
     }
     return sorted(values)
 
@@ -420,8 +489,8 @@ def home_articles_context(
             "articles": with_home_article_fields(pagination["articles"]),
             "filters": filters,
             "pagination": pagination,
+            "summary_status_tabs": summary_status_tabs(filters),
             "topic_options": option_values(all_articles, "topic"),
-            "summary_status_options": summary_status_option_values(all_articles),
             "recommendation_options": option_values(
                 all_articles,
                 "recommendation",
@@ -976,6 +1045,7 @@ async def article_detail(
     article_id: str,
     saved: Optional[str] = None,
     created: Optional[str] = None,
+    summary_requested: Optional[str] = None,
 ):
     repository = get_knowledge_repository()
     article = repository.get_article(article_id)
@@ -995,29 +1065,43 @@ async def article_detail(
             ),
             "article": article,
             "detail_href": article_detail_href(article),
-            "review_status_options": REVIEW_STATUS_OPTIONS,
+            "summary_status_display": article_summary_status(article) or "—",
+            "summary_status_explanation": summary_status_explanation(article),
+            "can_generate_summary": can_generate_summary(article),
+            "recommendation_options": RECOMMENDATION_OPTIONS,
             "saved": saved == "1",
             "created": created == "1",
+            "summary_requested": summary_requested == "1",
         },
     )
 
 
+@app.post("/articles/{article_id:path}/summary", response_class=HTMLResponse)
+async def request_article_summary(article_id: str):
+    repository = get_knowledge_repository()
+    article = repository.get_article(article_id)
+
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    return RedirectResponse(
+        url=f"{article_detail_href(article)}?summary_requested=1",
+        status_code=303,
+    )
+
+
 @app.post("/articles/{article_id:path}", response_class=HTMLResponse)
-async def update_article_review(
+async def update_article_recommendation(
     article_id: str,
-    review_status: str = Form(...),
-    newsletter_eligible: bool = Form(False),
-    review_note: Optional[str] = Form(default=""),
+    recommendation: str = Form(...),
 ):
-    if review_status not in REVIEW_STATUS_OPTIONS:
-        raise HTTPException(status_code=400, detail="Invalid review status")
+    if recommendation not in RECOMMENDATION_OPTIONS:
+        raise HTTPException(status_code=400, detail="Invalid recommendation")
 
     repository = get_knowledge_repository()
-    article = repository.update_article_review(
+    article = repository.update_article_recommendation(
         article_id,
-        review_status=review_status,
-        newsletter_eligible=newsletter_eligible,
-        review_note=review_note or "",
+        recommendation=recommendation,
     )
 
     if article is None:

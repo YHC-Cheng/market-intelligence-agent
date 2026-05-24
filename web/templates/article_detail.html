@@ -4,11 +4,15 @@
   <p class="back-link"><a href="/">Back to Home</a></p>
 
   {% if saved %}
-    <div class="alert alert-success" role="status">Internal metadata saved.</div>
+    <div class="alert alert-success" role="status">Recommendation updated.</div>
   {% endif %}
 
   {% if created %}
     <div class="alert alert-success" role="status">Article added to the local workspace.</div>
+  {% endif %}
+
+  {% if summary_requested %}
+    <div class="alert alert-success" role="status">Summary generation will be connected in a later phase.</div>
   {% endif %}
 
   {% set score = article.get("score") %}
@@ -38,15 +42,28 @@
       {% if article.get("topic") %}
         <span class="badge badge-outline">{{ article.get("topic") }}</span>
       {% endif %}
+      <span class="badge {% if summary_status_display == 'ready' %}badge-success{% elif summary_status_display in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">
+        Summary Status: {{ summary_status_display }}
+      </span>
       {% if source_display %}
         <span>{{ source_display }}</span>
       {% endif %}
       {% if score is not none and score != "" %}
         <span>Score {{ score }}</span>
       {% endif %}
-      {% if article.get("recommendation") %}
-        <span class="badge">{{ article.get("recommendation") }}</span>
-      {% endif %}
+      <form class="metadata-recommendation-form" method="post" action="{{ detail_href }}">
+        <label for="recommendation-select">Recommendation:</label>
+        <select
+          id="recommendation-select"
+          class="recommendation-select-badge"
+          name="recommendation"
+          onchange="this.form.submit()"
+        >
+          {% for option in recommendation_options %}
+            <option value="{{ option }}" {% if article.get("recommendation") == option %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </form>
     </div>
 
     {% if article.get("url") %}
@@ -60,10 +77,27 @@
     <div class="detail-main">
       <section class="detail-section">
         <h2>Summary</h2>
-        {% if summary_status and not article.get("summary") %}
-          <p class="muted-text">Summary status: {{ summary_status }}</p>
-        {% endif %}
         <p>{{ article.get("summary") or "—" }}</p>
+      </section>
+
+      <section class="detail-section workflow-section" aria-labelledby="summary-processing-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <h2 id="summary-processing-title">Summary Processing</h2>
+            <p>{{ summary_status_explanation }}</p>
+          </div>
+          {% if can_generate_summary %}
+            <form method="post" action="{{ detail_href }}/summary">
+              <button class="button button-secondary" type="submit">Generate Summary</button>
+            </form>
+          {% endif %}
+        </div>
+        <dl class="info-list inline-info-list">
+          <div>
+            <dt>Summary Status</dt>
+            <dd>{{ summary_status_display }}</dd>
+          </div>
+        </dl>
       </section>
 
       <section class="detail-section">
@@ -142,8 +176,8 @@
           <dd>{{ article.get("extraction_status") or "—" }}</dd>
         </div>
         <div>
-          <dt>Analysis Status</dt>
-          <dd>{{ article.get("analysis_status") or summary_status or "—" }}</dd>
+          <dt>Summary Status</dt>
+          <dd>{{ summary_status_display }}</dd>
         </div>
         <div>
           <dt>Recommendation</dt>

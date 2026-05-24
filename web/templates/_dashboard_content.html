@@ -36,7 +36,7 @@
   </div>
 </section>
 
-<section class="card table-card" aria-labelledby="articles-title">
+<section id="articles-section" class="card table-card" aria-labelledby="articles-title">
   <div class="section-header">
     <div>
       <h2 id="articles-title">Articles</h2>
@@ -45,6 +45,8 @@
   </div>
 
   <form class="filters-row article-filters" method="get" action="/">
+    <input type="hidden" name="summary_status" value="{{ filters.summary_status }}">
+
     <label class="field field-compact">
       <span class="visually-hidden">Keyword search</span>
       <input class="form-control" type="search" name="keyword" value="{{ filters.keyword or '' }}" placeholder="Keyword search">
@@ -61,16 +63,6 @@
     </label>
 
     <label class="field field-compact">
-      <span class="visually-hidden">Summary Status</span>
-      <select class="form-control" name="summary_status">
-        <option value="" {% if not filters.summary_status %}selected{% endif %}>All Summary Statuses</option>
-        {% for summary_status in summary_status_options %}
-          <option value="{{ summary_status }}" {% if filters.summary_status == summary_status %}selected{% endif %}>{{ summary_status }}</option>
-        {% endfor %}
-      </select>
-    </label>
-
-    <label class="field field-compact">
       <span class="visually-hidden">Recommendation</span>
       <select class="form-control" name="recommendation">
         <option value="" {% if not filters.recommendation %}selected{% endif %}>All Recommendations</option>
@@ -82,6 +74,18 @@
 
     <button class="button button-secondary filter-submit" type="submit">Apply</button>
   </form>
+
+  <nav class="status-tabs" aria-label="Summary Status">
+    {% for tab in summary_status_tabs %}
+      <a
+        class="status-tab {% if tab.active %}is-active{% endif %}"
+        href="{{ tab.href }}"
+        {% if tab.active %}aria-current="page"{% endif %}
+      >
+        {{ tab.label }}
+      </a>
+    {% endfor %}
+  </nav>
 
   {% if articles %}
     <div class="table-wrap">
@@ -158,3 +162,37 @@
     </section>
   {% endif %}
 </section>
+
+<script>
+  (function () {
+    var storageKey = "dashboardArticlesScrollY";
+    var articlesSection = document.getElementById("articles-section");
+    if (!articlesSection) {
+      return;
+    }
+
+    var storedScrollY = sessionStorage.getItem(storageKey);
+    if (storedScrollY !== null) {
+      sessionStorage.removeItem(storageKey);
+      var scrollY = parseInt(storedScrollY, 10);
+      if (!Number.isNaN(scrollY)) {
+        window.scrollTo(0, scrollY);
+      }
+    }
+
+    function rememberScrollPosition() {
+      sessionStorage.setItem(storageKey, String(window.scrollY));
+    }
+
+    articlesSection
+      .querySelectorAll(".status-tabs a, .pagination a")
+      .forEach(function (link) {
+        link.addEventListener("click", rememberScrollPosition);
+      });
+
+    var filtersForm = articlesSection.querySelector(".article-filters");
+    if (filtersForm) {
+      filtersForm.addEventListener("submit", rememberScrollPosition);
+    }
+  })();
+</script>
