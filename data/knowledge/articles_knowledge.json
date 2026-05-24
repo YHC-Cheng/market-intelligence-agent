@@ -9,8 +9,8 @@
     "web_mode": "listing",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-17",
-    "seen_count": 7,
+    "last_seen": "2026-05-24",
+    "seen_count": 8,
     "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
     "freshness_status": "repeated",
     "summary": "",
@@ -27,7 +27,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://www.ibm.com/blog/category/cloudability/": {
     "url": "https://www.ibm.com/blog/category/cloudability/",
@@ -39,9 +39,9 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-17",
-    "seen_count": 11,
-    "content_hash": "6414764c50da702abedc464a2e57041f5cd0c222dac0d7a7878685a5fe209a2f",
+    "last_seen": "2026-05-24",
+    "seen_count": 13,
+    "content_hash": "e08df0c96acded6666018fcb56e46a598f14f1adb1abd36501850abd4bf7378c",
     "freshness_status": "repeated",
     "summary": "",
     "key_points": [],
@@ -57,7 +57,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://www.ecloudvalley.com/": {
     "url": "https://www.ecloudvalley.com/",
@@ -69,8 +69,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-17",
-    "seen_count": 8,
+    "last_seen": "2026-05-24",
+    "seen_count": 9,
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
     "freshness_status": "repeated",
     "summary": "",
@@ -87,7 +87,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://www.vantage.sh/blog/ai-token-budgeting": {
     "url": "https://www.vantage.sh/blog/ai-token-budgeting",
@@ -99,8 +99,8 @@
     "web_mode": null,
     "published_date": "2026-05-11",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 5,
+    "last_seen": "2026-05-24",
+    "seen_count": 7,
     "content_hash": "5d8466a22f81dde9ca39113840583bf1bdf0f73957bec2d9f4480b73f2852af9",
     "freshness_status": "repeated",
     "summary": "This article outlines a framework for managing escalating AI token costs by shifting the focus from raw expenditure to cost allocation and efficiency metrics. It argues that businesses must distinguish between COGS and R&D spend and implement unit-cost analysis to determine whether high token usage reflects waste or high productivity.",
@@ -123,7 +123,7 @@
     "problem_solved": "Solves the 'opaque spend' problem where high token usage cannot be distinguished from productive output. It prevents arbitrary flat budgeting that might stifle high-performing developers by shifting the focus to unit costs and ROI per engineer.",
     "reason": "The article is highly relevant to the evolving AI FinOps landscape. It provides an explicit problem-solution framework and concrete examples of efficiency metrics. While it doesn't provide a step-by-step technical tutorial for a specific tool, it offers a clear strategic workflow for resource allocation and cost optimization in the AI era.",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/": {
     "url": "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/",
@@ -171,8 +171,8 @@
     "web_mode": null,
     "published_date": "2026-04-03",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 3,
+    "last_seen": "2026-05-24",
+    "seen_count": 4,
     "content_hash": "f0e348b718f590a721d6f45216ec73f54bfee982ebec93f1fb14e897547af1e9",
     "freshness_status": "old",
     "summary": "",
@@ -189,7 +189,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:52:14"
+    "updated_at": "2026-05-24T19:01:55"
   },
   "https://www.finops.org/insights/ai-for-finops-agentic-use-cases/": {
     "url": "https://www.finops.org/insights/ai-for-finops-agentic-use-cases/",
@@ -201,8 +201,8 @@
     "web_mode": null,
     "published_date": "2026-03-27",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 3,
+    "last_seen": "2026-05-24",
+    "seen_count": 4,
     "content_hash": "de5b406cb6dc4ed0ccc2b380048ee5e1e518211ddc91dbab2ab198ae99062c10",
     "freshness_status": "old",
     "summary": "",
@@ -219,7 +219,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:52:14"
+    "updated_at": "2026-05-24T19:01:55"
   },
   "https://www.finops.org/insights/2026-finops-framework/": {
     "url": "https://www.finops.org/insights/2026-finops-framework/",
@@ -231,8 +231,8 @@
     "web_mode": null,
     "published_date": "2026-03-19",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 3,
+    "last_seen": "2026-05-24",
+    "seen_count": 4,
     "content_hash": "7b964b270d402d9058b8008b5aa1e93e4ff04387c161b1f5bd022e68e28551b7",
     "freshness_status": "old",
     "summary": "",
@@ -249,7 +249,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:52:14"
+    "updated_at": "2026-05-24T19:01:55"
   },
   "https://www.vantage.sh/blog/finops-agent-console": {
     "url": "https://www.vantage.sh/blog/finops-agent-console",
@@ -261,10 +261,10 @@
     "web_mode": null,
     "published_date": "2026-05-05",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 5,
+    "last_seen": "2026-05-24",
+    "seen_count": 7,
     "content_hash": "2e9fda1724895ed31b180d311f08712145831538141a1a7c335a89afca9f38d0",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "",
     "key_points": [],
     "why_it_matters": "",
@@ -279,7 +279,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/transforming-finops-with-the-latest-amazon-q-cost-capabilities/": {
     "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/transforming-finops-with-the-latest-amazon-q-cost-capabilities/",
@@ -291,8 +291,8 @@
     "web_mode": null,
     "published_date": "2026-04-17",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 3,
+    "last_seen": "2026-05-24",
+    "seen_count": 4,
     "content_hash": "3089e9441c799312b86eaf554cad4052f6009feb6d082e8041ee51959eff4d9e",
     "freshness_status": "old",
     "summary": "",
@@ -309,7 +309,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:52:14"
+    "updated_at": "2026-05-24T19:01:55"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/track-amazon-bedrock-costs-by-caller-identity-with-iam-based-cost-allocation/": {
     "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/track-amazon-bedrock-costs-by-caller-identity-with-iam-based-cost-allocation/",
@@ -321,8 +321,8 @@
     "web_mode": null,
     "published_date": "2026-04-17",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 3,
+    "last_seen": "2026-05-24",
+    "seen_count": 4,
     "content_hash": "22de182bb68d80c6bc2a9252ac75818fc5632dcd2a1b36efeffdf00eab77a744",
     "freshness_status": "old",
     "summary": "",
@@ -339,7 +339,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:52:14"
+    "updated_at": "2026-05-24T19:01:55"
   },
   "https://cloud.google.com/blog/topics/cost-management": {
     "url": "https://cloud.google.com/blog/topics/cost-management",
@@ -351,8 +351,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 3,
+    "last_seen": "2026-05-24",
+    "seen_count": 4,
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
     "freshness_status": "repeated",
     "summary": "",
@@ -369,7 +369,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:52:14"
+    "updated_at": "2026-05-24T19:01:55"
   },
   "https://www.vantage.sh/blog/snowflake-data-sharing": {
     "url": "https://www.vantage.sh/blog/snowflake-data-sharing",
@@ -381,8 +381,8 @@
     "web_mode": null,
     "published_date": "2026-05-14",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 2,
+    "last_seen": "2026-05-24",
+    "seen_count": 3,
     "content_hash": "96d17c123cbb656f83a735a77b1725b0cf17a7bdf15500b4d999784e892ddf2c",
     "freshness_status": "repeated",
     "summary": "Vantage has launched 'Snowflake Data Sharing,' a new feature that allows Enterprise customers to access their consolidated cloud cost and usage data directly within their Snowflake accounts. Utilizing Snowflake Secure Data Sharing, this integration provides managed, read-only SQL access to normalized data across all connected cloud providers, effectively replacing the need for manual CSV exports or custom ETL pipelines.",
@@ -405,7 +405,7 @@
     "problem_solved": "Eliminates the requirement for teams to build and maintain custom, brittle ETL pipelines or manual CSV exports to sync frequently changing cloud billing data into external data environments.",
     "reason": "The article is a high-quality product announcement that provides a concrete workflow, identifies a specific enterprise pain point, and details the technical implementation (Snowflake Secure Data Sharing) and limitations. It serves as a strong market signal for how SaaS providers are leveraging warehouse-native data sharing to reduce customer engineering overhead.",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
     "url": "https://openai.com/index/malta-chatgpt-plus-partnership",
@@ -837,10 +837,10 @@
     "web_mode": null,
     "published_date": "2026-05-06",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 2,
+    "last_seen": "2026-05-24",
+    "seen_count": 3,
     "content_hash": "b028abf49b3a3fb69d3aca1970aabbd2d4aa49dbbd14711a656c7cbd281fe218",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "",
     "key_points": [],
     "why_it_matters": "",
@@ -855,7 +855,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:47:09"
+    "updated_at": "2026-05-24T18:55:46"
   },
   "https://azure.microsoft.com/en-us/blog/advancing-enterprise-ai-new-sap-on-azure-announcements-from-sap-sapphire-2026/": {
     "url": "https://azure.microsoft.com/en-us/blog/advancing-enterprise-ai-new-sap-on-azure-announcements-from-sap-sapphire-2026/",
@@ -867,8 +867,8 @@
     "web_mode": null,
     "published_date": "2026-05-12",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 2,
+    "last_seen": "2026-05-24",
+    "seen_count": 3,
     "content_hash": "724491b230ecbc7225714d15ea16e2607f6f8e882ba7caca730b9a2f04182c2c",
     "freshness_status": "repeated",
     "summary": "",
@@ -885,7 +885,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:47:09"
+    "updated_at": "2026-05-24T18:55:46"
   },
   "https://azure.microsoft.com/en-us/blog/red-hat-summit-2026-platform-modernization-and-ai-on-azure-microsoft-red-hat-openshift/": {
     "url": "https://azure.microsoft.com/en-us/blog/red-hat-summit-2026-platform-modernization-and-ai-on-azure-microsoft-red-hat-openshift/",
@@ -987,8 +987,8 @@
     "web_mode": null,
     "published_date": "2026-05-13",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 2,
+    "last_seen": "2026-05-24",
+    "seen_count": 3,
     "content_hash": "fb52f74d5bbd09c87ea311326183e484b9f875f732b98c8308bcc6817d2cae74",
     "freshness_status": "repeated",
     "summary": "",
@@ -1005,7 +1005,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
   },
   "https://www.vantage.sh/blog/tag-column-resource-reports": {
     "url": "https://www.vantage.sh/blog/tag-column-resource-reports",
@@ -1017,8 +1017,8 @@
     "web_mode": null,
     "published_date": "2026-05-12",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "seen_count": 2,
+    "last_seen": "2026-05-24",
+    "seen_count": 3,
     "content_hash": "538703e2b30809275785f4eaa64907efdc34371dd3900fe2cdf375f7758cbb7a",
     "freshness_status": "repeated",
     "summary": "",
@@ -1035,6 +1035,76 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-17T18:57:20"
+    "updated_at": "2026-05-24T19:07:51"
+  },
+  "https://openai.com/index/model-disproves-discrete-geometry-conjecture": {
+    "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture",
+    "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+    "topic": "AI",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-20",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "seen_count": 1,
+    "content_hash": "47a9cdda99642f6c9343881712ac8dae7559cb4dd18b6532cf87e398993c6f3b",
+    "freshness_status": "new",
+    "summary": "An internal, general-purpose OpenAI reasoning model has autonomously disproved a famous 80-year-old mathematical conjecture in discrete geometry (Paul Erdős' planar unit distance problem). By blending discrete geometry with sophisticated concepts from algebraic number theory, the AI generated an original proof that has been verified and lauded by leading external mathematicians.",
+    "key_points": [
+      "The OpenAI model successfully solved the 'planar unit distance problem', a major question in combinatorial geometry open since 1946.",
+      "The breakthrough was achieved by a general-purpose reasoning model, rather than a specialized system trained specifically for mathematics or heavily scaffolded for theorem-proving.",
+      "The AI's proof introduced unexpected, sophisticated ideas from algebraic number theory, demonstrating an ability to cross-pollinate distinct mathematical disciplines.",
+      "The result has been formally validated by external experts, including Fields medalist Tim Gowers, who called it 'a milestone in AI mathematics'."
+    ],
+    "why_it_matters": "This breakthrough signals a paradigm shift in AI capabilities, demonstrating that advanced models are transitioning from productivity assistants to autonomous researchers capable of genuine, original logic and complex problem-solving. For businesses, this proves that AI's cognitive reasoning can now be applied to unlock deep, long-standing bottlenecks in R&D, science, and high-tech engineering.",
+    "score": 80.0,
+    "recommendation": "Useful",
+    "relevance": 5,
+    "use_case_clarity": 3,
+    "problem_solution_fit": 4,
+    "actionability": 4,
+    "credibility_novelty": 5,
+    "use_case": "Using advanced general-purpose AI reasoning models to autonomously conduct frontier scientific and mathematical research, specifically solving long-standing open mathematical conjectures.",
+    "problem_solved": "Solving the 80-year-old planar unit distance problem (Erdős conjecture) in discrete geometry, proving that AI can generate original, sophisticated ideas (e.g., applying algebraic number theory to geometric problems) to solve complex, multi-step reasoning tasks that have stumped human mathematicians.",
+    "reason": "The article details a major paradigm-shifting milestone in AI capability—autonomous scientific discovery. The mathematical problem and the AI's novel solution are extremely clear. However, because this is an R&D milestone rather than a product launch, the specific user workflow and product interface are not deeply described, keeping the use case clarity at a moderate level for market analysts.",
+    "tags": [],
+    "updated_at": "2026-05-24T18:56:00"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/join-us-at-finops-x-2026-your-guide-to-all-things-aws/": {
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/join-us-at-finops-x-2026-your-guide-to-all-things-aws/",
+    "title": "Join us at FinOps X 2026: Your Guide to All Things AWS",
+    "topic": "FinOps",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-20",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "seen_count": 1,
+    "content_hash": "e5b8c3cf117a6fed4f1a92425c19bdbdacc6eef92a837ca9a789ae3d9a55268b",
+    "freshness_status": "new",
+    "summary": "AWS has announced its comprehensive agenda for the FinOps X 2026 conference in San Diego, highlighting interactive workshops, keynotes, and sessions focused on new AWS FinOps feature launches and managing the high costs of AI workloads.",
+    "key_points": [
+      "AWS will introduce new FinOps product capabilities and enhancements aimed at enabling automated cloud analysis and optimization.",
+      "A dedicated session with Capital One will outline a practical framework for AI infrastructure cost management, addressing GPU underutilization, token consumption, and multi-model agentic environments.",
+      "The 'AWS Frugal Architect GameDay' offers hands-on, expert-led training to help practitioners design sustainable, cost-optimized cloud architectures.",
+      "Attendees can connect directly with AWS Cloud Financial Management product leaders through structured networking events, 1:1 meetings, and interactive booth sessions."
+    ],
+    "why_it_matters": "As generative AI workloads scale, managing their unique economic challenges—such as unpredictable GPU and token costs—has become a board-level concern. AWS's agenda at FinOps X 2026 demonstrates how the cloud leader is evolving its tooling to help enterprises establish visibility, governance, and sustainability over next-generation AI spend.",
+    "score": 68.0,
+    "recommendation": "Background",
+    "relevance": 5,
+    "use_case_clarity": 3,
+    "problem_solution_fit": 3,
+    "actionability": 3,
+    "credibility_novelty": 4,
+    "use_case": "FinOps practitioners and cloud architects seeking to learn and implement cloud optimization strategies, specifically around AI workload economics (GPU utilization, token routing) and AWS cost allocation, through sessions and interactive challenges at the FinOps X conference.",
+    "problem_solved": "Addressing high cloud spend, lack of governance, and unpredictable costs of modern workloads—particularly GenAI and GPU infrastructures—by sharing frameworks for visibility, optimization, and sustainability.",
+    "reason": "This is an event guide rather than a deep technical announcement. While it highly aligns with modern FinOps trends (specifically AI/ML cost management and CUR 2.0 migrations), the specific use cases and problem-solution details are distributed across multiple highlighted sessions to be delivered at the conference.",
+    "tags": [],
+    "updated_at": "2026-05-24T19:02:09"
   }
 }

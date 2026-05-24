@@ -22,5 +22,43 @@
     "slide_path": "outputs/slides/slide_draft.md",
     "related_sources": [],
     "created_at": "2026-05-17T18:47:09"
+  },
+  "AI_2026-W21": {
+    "topic": "AI",
+    "week": "2026-W21",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+        "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture",
+        "source": "OpenAI News RSS",
+        "recommendation": "Useful"
+      }
+    ],
+    "created_at": "2026-05-24T18:56:39"
+  },
+  "FinOps_2026-W21": {
+    "topic": "FinOps",
+    "week": "2026-W21",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Join us at FinOps X 2026: Your Guide to All Things AWS",
+        "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/join-us-at-finops-x-2026-your-guide-to-all-things-aws/",
+        "source": "AWS Cloud Financial Management Blog",
+        "recommendation": "Background"
+      }
+    ],
+    "created_at": "2026-05-24T19:02:46"
+  },
+  "ProductObservation_2026-W21": {
+    "topic": "ProductObservation",
+    "week": "2026-W21",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [],
+    "created_at": "2026-05-24T19:07:51"
   }
 }

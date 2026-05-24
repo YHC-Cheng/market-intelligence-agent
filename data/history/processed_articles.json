@@ -9,9 +9,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
-    "seen_count": 7,
+    "seen_count": 8,
     "last_freshness_status": "repeated"
   },
   "https://www.ibm.com/blog/category/cloudability/": {
@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-17",
-    "content_hash": "6414764c50da702abedc464a2e57041f5cd0c222dac0d7a7878685a5fe209a2f",
-    "seen_count": 11,
+    "last_seen": "2026-05-24",
+    "content_hash": "e08df0c96acded6666018fcb56e46a598f14f1adb1abd36501850abd4bf7378c",
+    "seen_count": 13,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 8,
+    "seen_count": 9,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -54,9 +54,9 @@
     "topic": "FinOps",
     "published_date": "2026-04-03",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "f0e348b718f590a721d6f45216ec73f54bfee982ebec93f1fb14e897547af1e9",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/ai-for-finops-agentic-use-cases/": {
@@ -69,9 +69,9 @@
     "topic": "FinOps",
     "published_date": "2026-03-27",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "de5b406cb6dc4ed0ccc2b380048ee5e1e518211ddc91dbab2ab198ae99062c10",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/2026-finops-framework/": {
@@ -84,9 +84,9 @@
     "topic": "FinOps",
     "published_date": "2026-03-19",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "7b964b270d402d9058b8008b5aa1e93e4ff04387c161b1f5bd022e68e28551b7",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/ai-token-budgeting": {
@@ -99,9 +99,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-11",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "5d8466a22f81dde9ca39113840583bf1bdf0f73957bec2d9f4480b73f2852af9",
-    "seen_count": 5,
+    "seen_count": 7,
     "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/finops-agent-console": {
@@ -114,10 +114,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-05",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "2e9fda1724895ed31b180d311f08712145831538141a1a7c335a89afca9f38d0",
-    "seen_count": 5,
-    "last_freshness_status": "repeated"
+    "seen_count": 7,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/transforming-finops-with-the-latest-amazon-q-cost-capabilities/": {
     "title": "Transforming FinOps with the Latest Amazon Q Cost Capabilities",
@@ -129,9 +129,9 @@
     "topic": "FinOps",
     "published_date": "2026-04-17",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "3089e9441c799312b86eaf554cad4052f6009feb6d082e8041ee51959eff4d9e",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/track-amazon-bedrock-costs-by-caller-identity-with-iam-based-cost-allocation/": {
@@ -144,9 +144,9 @@
     "topic": "FinOps",
     "published_date": "2026-04-17",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "22de182bb68d80c6bc2a9252ac75818fc5632dcd2a1b36efeffdf00eab77a744",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://cloud.google.com/blog/topics/cost-management": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -234,10 +234,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "content_hash": "9a605ca75b314689cbd732c4a08afd796b10ddf4bead0a09571f656d8f7f80b9",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "last_seen": "2026-05-24",
+    "content_hash": "1c07c98e2c99d20b836aa1a4edcdaf54fb12c2edfe77d8bb05ae08f648608eac",
+    "seen_count": 3,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/claude-design-anthropic-labs": {
     "title": "ProductApr 17, 2026Introducing Claude Design by Anthropic LabsToday, we’re launching Claude Design, a new Anthropic Labs product that lets you collaborate with Claude to create polished visual work like designs, prototypes, slides, one-pagers, and more.",
@@ -249,10 +249,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "content_hash": "99cd5b672816fe6934dd5cdf16ef8d4287134d78ee967c34bd8ddf19aa034a1b",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "last_seen": "2026-05-24",
+    "content_hash": "ae8fbcd39acf577875951cdff510a46889c09b09fc264a96298396495e299617",
+    "seen_count": 3,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/claude-is-a-space-to-think": {
     "title": "AnnouncementsFeb 4, 2026Claude is a space to thinkWe’ve made a choice: Claude will remain ad-free. We explain why advertising incentives are incompatible with a genuinely helpful AI assistant, and how we plan to expand access without compromising user trust.",
@@ -264,10 +264,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "content_hash": "90b2ca1740124f6f1ed09963e4ae2ad0a480a4d6b7991ba3a51739b98c237e8e",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "last_seen": "2026-05-24",
+    "content_hash": "c1303b280facbaef6183882afc8b34916a423ba1fb27221c2794fc90d11582d7",
+    "seen_count": 3,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/pwc-expanded-partnership": {
     "title": "May 14, 2026AnnouncementsPwC is deploying Claude to build technology, execute deals, and reinvent enterprise functions for clients",
@@ -384,10 +384,10 @@
     "topic": "AI",
     "published_date": "2026-05-06",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "b028abf49b3a3fb69d3aca1970aabbd2d4aa49dbbd14711a656c7cbd281fe218",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/": {
     "title": "Modernize your workflows: Amazon WorkSpaces now gives AI agents their own desktop (preview)",
@@ -414,9 +414,9 @@
     "topic": "AI",
     "published_date": "2026-05-12",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "724491b230ecbc7225714d15ea16e2607f6f8e882ba7caca730b9a2f04182c2c",
-    "seen_count": 2,
+    "seen_count": 3,
     "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/red-hat-summit-2026-platform-modernization-and-ai-on-azure-microsoft-red-hat-openshift/": {
@@ -429,10 +429,10 @@
     "topic": "AI",
     "published_date": "2026-05-11",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
-    "content_hash": "1f62769e7b9b987de5d532e9b55754c175ada2461fd5badca5bb5d6247c0530b",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "last_seen": "2026-05-24",
+    "content_hash": "4c253e9228d24bad23da2c9b0fbe08cc37ba367b1a104b9c1b3b611e67d612a4",
+    "seen_count": 3,
+    "last_freshness_status": "updated"
   },
   "https://azure.microsoft.com/en-us/blog/build-ai-apps-with-azure-cosmos-db-key-trends-from-cosmos-conf-2026/": {
     "title": "Build AI apps with Azure Cosmos DB: Key trends from Cosmos Conf 2026",
@@ -474,9 +474,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-14",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "96d17c123cbb656f83a735a77b1725b0cf17a7bdf15500b4d999784e892ddf2c",
-    "seen_count": 2,
+    "seen_count": 3,
     "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/simplified-provider-filtering": {
@@ -489,9 +489,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-13",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "fb52f74d5bbd09c87ea311326183e484b9f875f732b98c8308bcc6817d2cae74",
-    "seen_count": 2,
+    "seen_count": 3,
     "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/tag-column-resource-reports": {
@@ -504,9 +504,189 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-12",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-17",
+    "last_seen": "2026-05-24",
     "content_hash": "538703e2b30809275785f4eaa64907efdc34371dd3900fe2cdf375f7758cbb7a",
-    "seen_count": 2,
+    "seen_count": 3,
     "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/gartner-2026-agentic-coding-leader": {
+    "title": "OpenAI named a Leader in enterprise coding agents by Gartner",
+    "url": "https://openai.com/index/gartner-2026-agentic-coding-leader",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-05-22",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "477214642fd719b0afa0c9950724c4ffe9b8d0ae46d160aaa76ddfef698a0144",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/virgin-atlantic": {
+    "title": "How Virgin Atlantic ships faster with Codex",
+    "url": "https://openai.com/index/virgin-atlantic",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-05-22",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "6ba8b3f453b8002d10b09abf42772d33d825e5942812eae2ab03fe22257569ea",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/adventhealth": {
+    "title": "AdventHealth advances whole-person care with OpenAI",
+    "url": "https://openai.com/index/adventhealth",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-05-21",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "5fe873349ce8299a0f9508cc03aa76f1931409c4deefa68cccc5f6a5ec9d7ce1",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/model-disproves-discrete-geometry-conjecture": {
+    "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+    "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-05-20",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "47a9cdda99642f6c9343881712ac8dae7559cb4dd18b6532cf87e398993c6f3b",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/the-next-phase-of-education-for-countries": {
+    "title": "The next phase of OpenAI’s Education for Countries",
+    "url": "https://openai.com/index/the-next-phase-of-education-for-countries",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-05-20",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "32d9db46dc2068495acf453afd78b01a6a56156b4cd4fcf022bbe0a05b0cc923",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/widening-conversation-ai": {
+    "title": "May 19, 2026AnnouncementsWidening the conversation on frontier AI",
+    "url": "https://www.anthropic.com/news/widening-conversation-ai",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "afa4e6a3f21eba353fd8850a991f85fc6d4cfc8f4a8d7713f35659ad2091f858",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/anthropic-kpmg": {
+    "title": "May 19, 2026AnnouncementsKPMG integrates Claude across its core business and workforce of more than 276,000 in strategic alliance",
+    "url": "https://www.anthropic.com/news/anthropic-kpmg",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "8dee17ece23b15588f44c683a301f0776226b2109367b48c8f00ebcc5b876762",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/public-sector/smart-moves-building-resilient-transportation-systems-with-google-ai": {
+    "title": "Public SectorSmart moves: Building resilient transportation systems with Google AIBy Kristin White • 3-minute read",
+    "url": "https://cloud.google.com/blog/topics/public-sector/smart-moves-building-resilient-transportation-systems-with-google-ai",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "e8e225ff04eabab1e1c086cc851aa967eff7d6d31cb5341f24227852241ce6af",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/benchmark-llms-on-device-with-ai-edge-portal": {
+    "title": "AI & Machine LearningBenchmark and optimize LLMs on-device with AI Edge PortalBy Derek Bekebrede • 5-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/benchmark-llms-on-device-with-ai-edge-portal",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "89c311d8f682c1813ce10b8a3186c79f71977bde006d76ec3e73689df365a00e",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/containers-kubernetes/bringing-you-agent-sandbox-on-gke-and-agent-substrate": {
+    "title": "Containers & KubernetesAgent Sandbox on GKE is now available for everyone, and a first look at Agent SubstrateBy Brandon Royal • 5-minute read",
+    "url": "https://cloud.google.com/blog/products/containers-kubernetes/bringing-you-agent-sandbox-on-gke-and-agent-substrate",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "df5b891977f2e37f29b66feff44b53785b80ac9ecf527cce058275183fe3c636",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-transform-at-1-year-claude-platform-on-aws-ec2-m3-ultra-mac-instances-and-more-may-18-2026/": {
+    "title": "AWS Weekly Roundup: AWS Transform at 1 year, Claude Platform on AWS, EC2 M3 Ultra Mac instances, and more (May 18, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-transform-at-1-year-claude-platform-on-aws-ec2-m3-ultra-mac-instances-and-more-may-18-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-05-18",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "32617ae83ce4835f287a277bbbc6efeb55f5f8787e710e516192320589a9d517",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/join-us-at-finops-x-2026-your-guide-to-all-things-aws/": {
+    "title": "Join us at FinOps X 2026: Your Guide to All Things AWS",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/join-us-at-finops-x-2026-your-guide-to-all-things-aws/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-05-20",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-24",
+    "content_hash": "e5b8c3cf117a6fed4f1a92425c19bdbdacc6eef92a837ca9a789ae3d9a55268b",
+    "seen_count": 1,
+    "last_freshness_status": "new"
   }
 }
