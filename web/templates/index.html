@@ -1,21 +1,173 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  {% if page_name %}
-    <p class="eyebrow">Phase 2.1 Placeholder</p>
-    <h1>{{ page_name }}</h1>
-    <nav class="nav-links" aria-label="Main navigation">
-      {% for item in navigation_items %}
-        <a href="{{ item.href }}">{{ item.label }}</a>
+  <section class="card weekly-brief-card" aria-labelledby="weekly-brief-title">
+    <div class="weekly-brief-header">
+      <div>
+        <h2 id="weekly-brief-title">Weekly Brief</h2>
+        <p>{{ article_summary.date_range }}</p>
+      </div>
+      <a class="button button-secondary button-sm" href="/newsletter">Open brief</a>
+    </div>
+
+    <p class="weekly-brief-summary">
+      This week's high-signal market intelligence summary, based on the latest articles in the local workspace.
+    </p>
+
+    <ul class="brief-list">
+      {% if brief_signal_articles %}
+        {% for article in brief_signal_articles %}
+          <li>
+            {{ article.get("title") or "Untitled article" }}
+            {% if article.get("topic") %} in {{ article.get("topic") }}{% endif %}
+            {% if article.get("recommendation") %} ({{ article.get("recommendation") }}){% endif %}
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>Latest high-signal articles are listed below for this week's brief.</li>
+        <li>Use topic, source, and type filters to narrow the intelligence view.</li>
+      {% endif %}
+    </ul>
+
+    <div class="chip-row" aria-label="Weekly brief summary chips">
+      {% for topic, count in article_summary.topics.items() %}
+        <span class="chip">{{ topic }}: {{ count }}</span>
       {% endfor %}
-    </nav>
-  {% else %}
-    <p class="eyebrow">Phase 2.1</p>
-    <h1>Market Intelligence Agent 2.0</h1>
-    <nav class="nav-links" aria-label="Main navigation">
-      {% for item in navigation_items %}
-        <a href="{{ item.href }}">{{ item.label }}</a>
-      {% endfor %}
-    </nav>
-  {% endif %}
+      {% if brief_signal_articles %}
+        <span class="chip">High-signal candidates: {{ brief_signal_articles|length }}</span>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="card table-card" aria-labelledby="articles-title">
+    <div class="section-header">
+      <div>
+        <h2 id="articles-title">Articles</h2>
+        <p>Search and filter the local knowledge repository.</p>
+      </div>
+    </div>
+
+    <form class="filters-row article-filters" method="get" action="/">
+      <label class="field field-compact">
+        <span class="visually-hidden">Search</span>
+        <input class="form-control" type="search" name="keyword" value="{{ filters.keyword or '' }}" placeholder="Search...">
+      </label>
+
+      <label class="field field-compact">
+        <span class="visually-hidden">Topic</span>
+        <select class="form-control" name="topic">
+          <option value="" {% if not filters.topic %}selected{% endif %}>All Topics</option>
+          {% for topic in topic_options %}
+            <option value="{{ topic }}" {% if filters.topic == topic %}selected{% endif %}>{{ topic }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="field field-compact">
+        <span class="visually-hidden">Source</span>
+        <select class="form-control" name="source">
+          <option value="" {% if not filters.source %}selected{% endif %}>All Sources</option>
+          {% for source in source_options %}
+            <option value="{{ source }}" {% if filters.source == source %}selected{% endif %}>{{ source }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="field field-compact">
+        <span class="visually-hidden">Type</span>
+        <select class="form-control" name="type">
+          <option value="" {% if not filters.article_type %}selected{% endif %}>All Types</option>
+          {% for type_option in type_options %}
+            <option value="{{ type_option }}" {% if filters.article_type == type_option %}selected{% endif %}>{{ type_option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      {% if filters.review_status %}
+        <input type="hidden" name="review_status" value="{{ filters.review_status }}">
+      {% endif %}
+      {% if filters.newsletter_eligible %}
+        <input type="hidden" name="newsletter_eligible" value="{{ filters.newsletter_eligible }}">
+      {% endif %}
+
+      <button class="button button-secondary filter-submit" type="submit">Apply</button>
+    </form>
+
+    {% if articles %}
+      <div class="table-wrap">
+        <table class="data-table article-table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Source</th>
+              <th scope="col">Type</th>
+              <th scope="col">Summary Status</th>
+              <th scope="col">Recommendation</th>
+              <th scope="col">Score</th>
+              <th scope="col">Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for article in articles %}
+              {% set score = article.get("score") %}
+              {% if score is none %}
+                {% set score = article.get("ranking_score") %}
+              {% endif %}
+              {% set article_type = article.get("ingestion_type") or article.get("type") %}
+              {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
+              {% if not summary_status and article.get("summary") %}
+                {% set summary_status = "ready" %}
+              {% endif %}
+              <tr>
+                <td>
+                  {% if article.get("title") %}
+                    <a href="{{ article.detail_href }}" class="title-link">{{ article.get("title") }}</a>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>
+                  {% if article.get("topic") %}
+                    <span class="badge badge-outline">{{ article.get("topic") }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>{{ article.get("source") or "&mdash;" | safe }}</td>
+                <td>
+                  {% if article_type %}
+                    <span class="badge badge-secondary">{{ article_type }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>
+                  {% if summary_status %}
+                    <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>
+                  {% if article.get("recommendation") %}
+                    <span class="badge">{{ article.get("recommendation") }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>{{ score if score is not none and score != "" else "&mdash;" | safe }}</td>
+                <td>{{ article.get("updated_at") or "&mdash;" | safe }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <section class="empty-state" aria-live="polite">
+        <h2>No articles found</h2>
+        <p>The knowledge repository has no matching articles yet.</p>
+      </section>
+    {% endif %}
+  </section>
 {% endblock %}

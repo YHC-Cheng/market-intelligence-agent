@@ -1,34 +1,33 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <p class="eyebrow">Review Queue</p>
-  <h1>Articles to review</h1>
-
-  <nav class="nav-links compact-nav" aria-label="Main navigation">
-    {% for item in navigation_items %}
-      <a href="{{ item.href }}">{{ item.label }}</a>
-    {% endfor %}
-  </nav>
-
   {% if message %}
-    <div class="success-message" role="status">{{ message }}</div>
+    <div class="alert alert-success" role="status">{{ message }}</div>
   {% endif %}
 
   {% if error %}
-    <div class="error-message" role="alert">{{ error }}</div>
+    <div class="alert alert-error" role="alert">{{ error }}</div>
   {% endif %}
 
-  <form class="filter-bar review-filter" method="get" action="/review">
-    <label>
+  <section class="card table-card" aria-labelledby="review-title">
+    <div class="section-header">
+      <div>
+        <h2 id="review-title">Articles to review</h2>
+        <p>This legacy queue is available directly at /review.</p>
+      </div>
+    </div>
+
+  <form class="filters-row review-filter" method="get" action="/review">
+    <label class="field">
       <span>Topic</span>
-      <input type="search" name="topic" value="{{ topic or '' }}">
+      <input class="form-control" type="search" name="topic" value="{{ topic or '' }}">
     </label>
-    <button type="submit">Apply</button>
+    <button class="button button-primary" type="submit">Apply</button>
   </form>
 
   {% if articles %}
     <div class="table-wrap">
-      <table class="article-table review-table">
+      <table class="data-table article-table review-table">
         <thead>
           <tr>
             <th scope="col">Title</th>
@@ -36,7 +35,7 @@
             <th scope="col">Source</th>
             <th scope="col">Score</th>
             <th scope="col">Review</th>
-            <th scope="col">Newsletter</th>
+            <th scope="col">Weekly Brief</th>
             <th scope="col">URL</th>
             <th scope="col">Detail</th>
             <th scope="col">Actions</th>
@@ -69,25 +68,25 @@
                     <input type="hidden" name="article_id" value="{{ article.get('id') }}">
                     <input type="hidden" name="topic" value="{{ topic or '' }}">
                     <input type="hidden" name="action" value="approve">
-                    <button type="submit">Approve</button>
+                    <button class="button button-secondary button-sm" type="submit">Approve</button>
                   </form>
                   <form method="post" action="/review/action">
                     <input type="hidden" name="article_id" value="{{ article.get('id') }}">
                     <input type="hidden" name="topic" value="{{ topic or '' }}">
                     <input type="hidden" name="action" value="reject">
-                    <button type="submit">Reject</button>
+                    <button class="button button-secondary button-sm" type="submit">Reject</button>
                   </form>
                   <form method="post" action="/review/action">
                     <input type="hidden" name="article_id" value="{{ article.get('id') }}">
                     <input type="hidden" name="topic" value="{{ topic or '' }}">
                     <input type="hidden" name="action" value="mark_duplicate">
-                    <button type="submit">Duplicate</button>
+                    <button class="button button-secondary button-sm" type="submit">Duplicate</button>
                   </form>
                   <form method="post" action="/review/action">
                     <input type="hidden" name="article_id" value="{{ article.get('id') }}">
                     <input type="hidden" name="topic" value="{{ topic or '' }}">
                     <input type="hidden" name="action" value="toggle_eligible">
-                    <button type="submit">Toggle newsletter</button>
+                    <button class="button button-secondary button-sm" type="submit">Toggle weekly brief</button>
                   </form>
                 </div>
               </td>
@@ -102,4 +101,5 @@
       <p>The queue is clear for the selected filters.</p>
     </section>
   {% endif %}
+  </section>
 {% endblock %}

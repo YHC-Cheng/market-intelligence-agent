@@ -1,17 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <p class="eyebrow">Market Intelligence Agent 2.0</p>
-  <h1>Phase 1.7 Newsletter Draft</h1>
-
-  <nav class="nav-links compact-nav" aria-label="Main navigation">
-    {% for item in navigation_items %}
-      <a href="{{ item.href }}">{{ item.label }}</a>
-    {% endfor %}
-  </nav>
-
   {% if message %}
-    <div class="success-message" role="status">
+    <div class="alert alert-success" role="status">
       {{ message }}
       {% if output_path %}
         <span class="output-path">{{ output_path }}</span>
@@ -19,77 +10,114 @@
     </div>
   {% endif %}
 
-  <form class="filter-bar newsletter-filter" method="get" action="/newsletter">
-    <label>
-      <span>Topic</span>
-      <select name="topic">
-        <option value="" {% if not topic %}selected{% endif %}>Any</option>
-        {% for option in topic_options %}
-          <option value="{{ option }}" {% if topic == option %}selected{% endif %}>
-            {{ option }}
-          </option>
-        {% endfor %}
-      </select>
-    </label>
-    <button type="submit">Apply</button>
-  </form>
-
-  {% if articles %}
-    <div class="table-wrap">
-      <table class="article-table newsletter-table">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Topic</th>
-            <th scope="col">Source</th>
-            <th scope="col">Score</th>
-            <th scope="col">Summary</th>
-            <th scope="col">Use case</th>
-            <th scope="col">Problem solved</th>
-            <th scope="col">URL</th>
-            <th scope="col">Detail</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for article in articles %}
-            {% set score = article.get("score") %}
-            {% if score is none %}
-              {% set score = article.get("ranking_score") %}
-            {% endif %}
-            <tr>
-              <td>{{ article.get("title") or "Untitled" }}</td>
-              <td>{{ article.get("topic") or "-" }}</td>
-              <td>{{ article.get("source") or "-" }}</td>
-              <td>{{ score if score is not none and score != "" else "-" }}</td>
-              <td>{{ article.get("summary") or "-" }}</td>
-              <td>{{ article.get("use_case") or "-" }}</td>
-              <td>{{ article.get("problem_solved") or "-" }}</td>
-              <td>
-                {% if article.get("url") %}
-                  <a href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">Original</a>
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-              <td><a href="{{ article.detail_href }}">Detail</a></td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <section class="card weekly-brief-card" aria-labelledby="brief-overview-title">
+    <div class="weekly-brief-header">
+      <div>
+        <h2 id="brief-overview-title">Brief overview</h2>
+        <p>{{ brief_date_range }}</p>
+      </div>
+      <form method="post" action="/newsletter/export">
+        <input type="hidden" name="topic" value="{{ topic or '' }}">
+        <button class="button button-secondary" type="submit">Export markdown</button>
+      </form>
     </div>
-  {% else %}
-    <section class="empty-state" aria-live="polite">
-      <h2>No eligible articles</h2>
-      <p>Approved articles marked newsletter eligible will appear here.</p>
-    </section>
-  {% endif %}
 
-  <section class="newsletter-preview">
+    <p class="weekly-brief-summary">
+      Latest market signals selected from the local article workspace for this week's intelligence summary.
+    </p>
+
+    <ul class="brief-list">
+      {% if articles %}
+        {% for article in articles[:4] %}
+          <li>
+            {{ article.get("title") or "Untitled article" }}
+            {% if article.get("topic") %} in {{ article.get("topic") }}{% endif %}
+            {% if article.get("recommendation") %} ({{ article.get("recommendation") }}){% endif %}
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>No article data is available yet for this weekly intelligence summary.</li>
+      {% endif %}
+    </ul>
+  </section>
+
+  <section class="card table-card" aria-labelledby="brief-candidates-title">
+    <div class="section-header">
+      <div>
+        <h2 id="brief-candidates-title">High-signal articles</h2>
+        <p>Brief candidates shown with the current Phase 2.2 fallback ranking.</p>
+      </div>
+    </div>
+
+    {% if articles %}
+      <div class="table-wrap">
+        <table class="data-table article-table newsletter-table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Source</th>
+              <th scope="col">Recommendation</th>
+              <th scope="col">Score</th>
+              <th scope="col">Summary Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for article in articles %}
+              {% set score = article.get("score") %}
+              {% if score is none %}
+                {% set score = article.get("ranking_score") %}
+              {% endif %}
+              {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
+              {% if not summary_status and article.get("summary") %}
+                {% set summary_status = "ready" %}
+              {% endif %}
+              <tr>
+                <td>
+                  <a href="{{ article.detail_href }}" class="title-link">{{ article.get("title") or "Untitled" }}</a>
+                </td>
+                <td>
+                  {% if article.get("topic") %}
+                    <span class="badge badge-outline">{{ article.get("topic") }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>{{ article.get("source") or "&mdash;" | safe }}</td>
+                <td>
+                  {% if article.get("recommendation") %}
+                    <span class="badge">{{ article.get("recommendation") }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>{{ score if score is not none and score != "" else "&mdash;" | safe }}</td>
+                <td>
+                  {% if summary_status %}
+                    <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-warning{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <section class="empty-state" aria-live="polite">
+        <h2>No articles available</h2>
+        <p>Add or import articles to build this week's brief.</p>
+      </section>
+    {% endif %}
+  </section>
+
+  <section class="card markdown-preview newsletter-preview">
     <div class="preview-header">
       <h2>Markdown preview</h2>
       <form method="post" action="/newsletter/export">
         <input type="hidden" name="topic" value="{{ topic or '' }}">
-        <button type="submit">Export markdown</button>
+        <button class="button button-secondary" type="submit">Export markdown</button>
       </form>
     </div>
     <pre>{{ markdown_preview }}</pre>

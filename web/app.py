@@ -1,8 +1,10 @@
+import json
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 from urllib.parse import quote, urlencode
 
+from config import RSS_SOURCES_BY_TOPIC, SOURCES
 from fastapi import FastAPI, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,6 +16,7 @@ from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
 BASE_DIR = Path(__file__).resolve().parent
 REPO_ROOT = BASE_DIR.parent
 NEWSLETTER_OUTPUT_DIR = REPO_ROOT / "outputs" / "newsletter"
+KEYWORDS_CONFIG_PATH = REPO_ROOT / "config" / "keywords.json"
 
 app = FastAPI(title="Market Intelligence Agent 2.0")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
@@ -21,10 +24,8 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
 NAVIGATION_ITEMS = [
-    {"label": "Knowledge Explorer", "href": "/articles"},
-    {"label": "Manual Intake", "href": "/intake"},
-    {"label": "Review Queue", "href": "/review"},
-    {"label": "Newsletter Draft", "href": "/newsletter"},
+    {"key": "home", "label": "Home", "href": "/"},
+    {"key": "reference", "label": "Reference", "href": "/reference"},
 ]
 
 INTAKE_TOPIC_OPTIONS = [
@@ -56,21 +57,31 @@ REVIEW_ACTION_STATUS_UPDATES = {
 NEWSLETTER_TOPIC_OPTIONS = INTAKE_TOPIC_OPTIONS
 
 
-@app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "title": "Market Intelligence Agent 2.0",
-            "navigation_items": NAVIGATION_ITEMS,
-            "page_name": None,
-        },
-    )
-
-
 def get_knowledge_repository():
     return JsonKnowledgeRepository()
+
+
+def base_template_context(
+    request: Request,
+    title,
+    active_nav=None,
+    page_title=None,
+    page_subtitle=None,
+    page_action_label=None,
+    page_action_href=None,
+    show_page_header=True,
+):
+    return {
+        "request": request,
+        "title": title,
+        "navigation_items": NAVIGATION_ITEMS,
+        "active_nav": active_nav,
+        "page_title": page_title or title,
+        "page_subtitle": page_subtitle,
+        "page_action_label": page_action_label,
+        "page_action_href": page_action_href,
+        "show_page_header": show_page_header,
+    }
 
 
 def clean_filter(value):
@@ -115,6 +126,227 @@ def with_detail_hrefs(articles):
     return article_list
 
 
+def article_filters(
+    topic=None,
+    keyword=None,
+    review_status=None,
+    newsletter_eligible=None,
+    source=None,
+    article_type=None,
+):
+    return {
+        "topic": clean_filter(topic),
+        "keyword": clean_filter(keyword),
+        "review_status": clean_filter(review_status),
+        "newsletter_eligible": clean_filter(newsletter_eligible),
+        "source": clean_filter(source),
+        "article_type": clean_filter(article_type),
+    }
+
+
+def article_type(article):
+    return article.get("ingestion_type") or article.get("type")
+
+
+def apply_home_filters(articles, filters):
+    filtered_articles = articles
+
+    if filters["source"] is not None:
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article.get("source") == filters["source"]
+        ]
+
+    if filters["article_type"] is not None:
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article_type(article) == filters["article_type"]
+        ]
+
+    return filtered_articles
+
+
+def option_values(articles, field):
+    values = {
+        article.get(field)
+        for article in articles
+        if article.get(field) not in (None, "")
+    }
+    return sorted(values)
+
+
+def type_option_values(articles):
+    values = {
+        article_type(article)
+        for article in articles
+        if article_type(article) not in (None, "")
+    }
+    return sorted(values)
+
+
+def article_score(article):
+    score = article.get("score")
+    if score is None:
+        score = article.get("ranking_score")
+
+    try:
+        return float(score)
+    except (TypeError, ValueError):
+        return -1
+
+
+def brief_signal_articles(articles):
+    candidates = [
+        article
+        for article in articles
+        if article.get("title") or article.get("recommendation")
+    ]
+    return sorted(
+        candidates,
+        key=lambda article: (
+            article_score(article),
+            1 if article.get("recommendation") else 0,
+        ),
+        reverse=True,
+    )[:4]
+
+
+def recommendation_rank(article):
+    recommendation = str(article.get("recommendation") or "").casefold()
+    if recommendation == "core":
+        return 3
+    if recommendation == "useful":
+        return 2
+    return 0
+
+
+def weekly_brief_candidate_articles(topic=None):
+    repository = get_knowledge_repository()
+    articles = repository.list_articles(topic=topic)
+
+    recommended_articles = [
+        article
+        for article in articles
+        if recommendation_rank(article) > 0
+    ]
+    candidates = recommended_articles or articles
+
+    sorted_candidates = sorted(
+        candidates,
+        key=lambda article: (
+            recommendation_rank(article),
+            article_score(article),
+            str(article.get("updated_at") or article.get("created_at") or ""),
+        ),
+        reverse=True,
+    )
+    return with_detail_hrefs(sorted_candidates)
+
+
+def current_week_label(generated_at=None):
+    today = (generated_at or datetime.now()).date()
+    week_start = today.fromordinal(today.toordinal() - today.weekday())
+    week_end = week_start.fromordinal(week_start.toordinal() + 6)
+    return (
+        f"{week_start:%b} {week_start.day} - "
+        f"{week_end:%b} {week_end.day}, {week_end.year}"
+    )
+
+
+def home_articles_context(
+    request: Request,
+    topic=None,
+    keyword=None,
+    review_status=None,
+    newsletter_eligible=None,
+    source=None,
+    article_type_filter=None,
+):
+    filters = article_filters(
+        topic=topic,
+        keyword=keyword,
+        review_status=review_status,
+        newsletter_eligible=newsletter_eligible,
+        source=source,
+        article_type=article_type_filter,
+    )
+    repository = get_knowledge_repository()
+    repository_articles = repository.list_articles(
+        topic=filters["topic"],
+        keyword=filters["keyword"],
+        review_status=filters["review_status"],
+        newsletter_eligible=parse_bool_filter(filters["newsletter_eligible"]),
+    )
+    filtered_articles = apply_home_filters(repository_articles, filters)
+    all_articles = repository.list_articles()
+    topic_counts = {}
+    for article in all_articles:
+        topic_name = article.get("topic")
+        if topic_name:
+            topic_counts[topic_name] = topic_counts.get(topic_name, 0) + 1
+
+    context = base_template_context(
+        request,
+        title="Home",
+        active_nav="home",
+        page_title="Home",
+        page_subtitle="Track this week's market intelligence and articles.",
+        page_action_label="Add Article",
+        page_action_href="/intake",
+    )
+    context.update(
+        {
+            "articles": with_detail_hrefs(filtered_articles),
+            "filters": filters,
+            "topic_options": option_values(all_articles, "topic"),
+            "source_options": option_values(all_articles, "source"),
+            "type_options": type_option_values(all_articles),
+            "brief_signal_articles": with_detail_hrefs(
+                brief_signal_articles(filtered_articles)
+            ),
+            "article_summary": {
+                "total": len(all_articles),
+                "shown": len(filtered_articles),
+                "manual": sum(
+                    1
+                    for article in all_articles
+                    if article_type(article) == "manual"
+                ),
+                "date_range": current_week_label(),
+                "topics": topic_counts,
+            },
+        }
+    )
+    return context
+
+
+@app.get("/", response_class=HTMLResponse)
+async def index(
+    request: Request,
+    topic: Optional[str] = None,
+    keyword: Optional[str] = None,
+    review_status: Optional[str] = None,
+    newsletter_eligible: Optional[str] = Query(default=None),
+    source: Optional[str] = None,
+    article_type_filter: Optional[str] = Query(default=None, alias="type"),
+):
+    return templates.TemplateResponse(
+        request,
+        "index.html",
+        home_articles_context(
+            request,
+            topic=topic,
+            keyword=keyword,
+            review_status=review_status,
+            newsletter_eligible=newsletter_eligible,
+            source=source,
+            article_type_filter=article_type_filter,
+        ),
+    )
+
+
 def intake_context(
     request: Request,
     form=None,
@@ -125,16 +357,23 @@ def intake_context(
     if duplicate_article is not None:
         duplicate_detail_href = article_detail_href(duplicate_article)
 
-    return {
-        "request": request,
-        "title": "Manual Intake",
-        "navigation_items": NAVIGATION_ITEMS,
-        "topic_options": INTAKE_TOPIC_OPTIONS,
-        "form": form or {"url": "", "topic": "", "note": ""},
-        "error": error,
-        "duplicate_article": duplicate_article,
-        "duplicate_detail_href": duplicate_detail_href,
-    }
+    context = base_template_context(
+        request,
+        title="Add Article",
+        page_title="Add Article",
+        page_subtitle="Add a market intelligence article URL for review.",
+        show_page_header=False,
+    )
+    context.update(
+        {
+            "topic_options": INTAKE_TOPIC_OPTIONS,
+            "form": form or {"url": "", "topic": "", "note": ""},
+            "error": error,
+            "duplicate_article": duplicate_article,
+            "duplicate_detail_href": duplicate_detail_href,
+        }
+    )
+    return context
 
 
 def review_queue_url(topic=None, message=None, error=None):
@@ -172,13 +411,7 @@ def normalize_newsletter_topic(topic=None):
 
 
 def newsletter_articles(topic=None):
-    repository = get_knowledge_repository()
-    articles = repository.list_articles(
-        topic=topic,
-        review_status="approved",
-        newsletter_eligible=True,
-    )
-    return with_detail_hrefs(articles)
+    return weekly_brief_candidate_articles(topic=topic)
 
 
 def newsletter_filename_topic(topic=None):
@@ -202,7 +435,7 @@ def newsletter_markdown(articles, topic=None, generated_at=None):
     ).isoformat()
     topic_label = topic or "Any"
     lines = [
-        "# Market Intelligence Newsletter Draft",
+        "# Weekly Brief",
         "",
         f"- topic: {topic_label}",
         f"- generated_at: {generated_timestamp}",
@@ -217,6 +450,8 @@ def newsletter_markdown(articles, topic=None, generated_at=None):
                 "",
                 f"- source: {markdown_value(article.get('source'))}",
                 f"- url: {markdown_value(article.get('url'))}",
+                f"- recommendation: {markdown_value(article.get('recommendation'))}",
+                f"- score: {markdown_value(article.get('score') or article.get('ranking_score'))}",
                 "",
                 f"**Summary:** {markdown_value(article.get('summary'))}",
                 "",
@@ -236,38 +471,99 @@ def newsletter_output_path(topic=None):
     return NEWSLETTER_OUTPUT_DIR / f"newsletter_draft_{filename_topic}.md"
 
 
-@app.get("/articles", response_class=HTMLResponse)
-async def articles(
-    request: Request,
-    topic: Optional[str] = None,
-    keyword: Optional[str] = None,
-    review_status: Optional[str] = None,
-    newsletter_eligible: Optional[str] = Query(default=None),
-):
-    filters = {
-        "topic": clean_filter(topic),
-        "keyword": clean_filter(keyword),
-        "review_status": clean_filter(review_status),
-        "newsletter_eligible": clean_filter(newsletter_eligible),
-    }
-    repository = get_knowledge_repository()
-    article_list = repository.list_articles(
-        topic=filters["topic"],
-        keyword=filters["keyword"],
-        review_status=filters["review_status"],
-        newsletter_eligible=parse_bool_filter(filters["newsletter_eligible"]),
-    )
+def reference_keywords():
+    try:
+        with KEYWORDS_CONFIG_PATH.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+    except (OSError, json.JSONDecodeError):
+        return []
 
-    return templates.TemplateResponse(
+    if not isinstance(data, dict):
+        return []
+
+    keyword_groups = []
+    for topic, keywords in sorted(data.items()):
+        if not isinstance(keywords, list):
+            continue
+
+        clean_keywords = [
+            str(keyword)
+            for keyword in keywords
+            if keyword not in (None, "")
+        ]
+        keyword_groups.append({"topic": str(topic), "keywords": clean_keywords})
+
+    return keyword_groups
+
+
+def reference_sources():
+    sources = []
+    seen = set()
+
+    for topic, topic_sources in RSS_SOURCES_BY_TOPIC.items():
+        for source in topic_sources:
+            if not isinstance(source, dict):
+                continue
+            name = source.get("name") or source.get("url")
+            url = source.get("url")
+            source_type = source.get("type") or source.get("web_mode") or "web"
+            key = (name, topic, source_type, url)
+            if key in seen:
+                continue
+            seen.add(key)
+            sources.append(
+                {
+                    "name": name or "-",
+                    "topic": topic,
+                    "type": source_type,
+                    "url": url,
+                }
+            )
+
+    for source in SOURCES:
+        if not isinstance(source, dict):
+            continue
+        name = source.get("name") or source.get("url")
+        url = source.get("url")
+        key = (name, "General", "web", url)
+        if key in seen:
+            continue
+        seen.add(key)
+        sources.append(
+            {
+                "name": name or "-",
+                "topic": "General",
+                "type": "web",
+                "url": url,
+            }
+        )
+
+    return sources
+
+
+@app.get("/articles", response_class=HTMLResponse)
+async def articles(request: Request):
+    query_string = request.scope.get("query_string", b"").decode("latin-1")
+    redirect_url = f"/?{query_string}" if query_string else "/"
+    return RedirectResponse(url=redirect_url, status_code=307)
+
+
+@app.get("/reference", response_class=HTMLResponse)
+async def reference(request: Request):
+    context = base_template_context(
         request,
-        "articles.html",
-        {
-            "title": "Knowledge Explorer",
-            "navigation_items": NAVIGATION_ITEMS,
-            "articles": with_detail_hrefs(article_list),
-            "filters": filters,
-        },
+        title="Reference",
+        active_nav="reference",
+        page_title="Reference",
+        page_subtitle="View workflow keywords and source links.",
     )
+    context.update(
+        {
+            "keyword_groups": reference_keywords(),
+            "source_links": reference_sources(),
+        }
+    )
+    return templates.TemplateResponse(request, "reference.html", context)
 
 
 @app.get("/newsletter", response_class=HTMLResponse)
@@ -283,11 +579,16 @@ async def newsletter(
         request,
         "newsletter.html",
         {
-            "title": "Newsletter Draft",
-            "navigation_items": NAVIGATION_ITEMS,
+            **base_template_context(
+                request,
+                title="Weekly Brief",
+                page_title="Weekly Brief",
+                page_subtitle="This week's high-signal market intelligence articles.",
+            ),
             "topic_options": NEWSLETTER_TOPIC_OPTIONS,
             "topic": selected_topic,
             "articles": articles,
+            "brief_date_range": current_week_label(),
             "markdown_preview": markdown_preview,
             "output_path": None,
             "message": None,
@@ -311,14 +612,19 @@ async def export_newsletter(
         request,
         "newsletter.html",
         {
-            "title": "Newsletter Draft",
-            "navigation_items": NAVIGATION_ITEMS,
+            **base_template_context(
+                request,
+                title="Weekly Brief",
+                page_title="Weekly Brief",
+                page_subtitle="This week's high-signal market intelligence articles.",
+            ),
             "topic_options": NEWSLETTER_TOPIC_OPTIONS,
             "topic": selected_topic,
             "articles": articles,
+            "brief_date_range": current_week_label(),
             "markdown_preview": markdown_preview,
             "output_path": output_path,
-            "message": "Newsletter draft exported.",
+            "message": "Weekly brief exported.",
         },
     )
 
@@ -336,8 +642,12 @@ async def review_queue(
         request,
         "review_queue.html",
         {
-            "title": "Review Queue",
-            "navigation_items": NAVIGATION_ITEMS,
+            **base_template_context(
+                request,
+                title="Review Queue",
+                page_title="Review Queue",
+                page_subtitle="Manual review tools remain available at /review.",
+            ),
             "articles": review_queue_articles(topic=selected_topic),
             "topic": selected_topic,
             "message": clean_filter(message),
@@ -505,8 +815,12 @@ async def article_detail(
         request,
         "article_detail.html",
         {
-            "title": article.get("title") or "Article Detail",
-            "navigation_items": NAVIGATION_ITEMS,
+            **base_template_context(
+                request,
+                title=article.get("title") or "Article Detail",
+                active_nav="home",
+                page_title=article.get("title") or "Article Detail",
+            ),
             "article": article,
             "detail_href": article_detail_href(article),
             "review_status_options": REVIEW_STATUS_OPTIONS,

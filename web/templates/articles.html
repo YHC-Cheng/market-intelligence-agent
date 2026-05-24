@@ -1,86 +1,9 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <p class="eyebrow">Phase 2.3</p>
-  <h1>Knowledge Explorer</h1>
-
-  <nav class="nav-links compact-nav" aria-label="Main navigation">
-    {% for item in navigation_items %}
-      <a href="{{ item.href }}">{{ item.label }}</a>
-    {% endfor %}
-  </nav>
-
-  <form class="filter-bar" method="get" action="/articles">
-    <label>
-      <span>Topic</span>
-      <input type="search" name="topic" value="{{ filters.topic or '' }}">
-    </label>
-    <label>
-      <span>Keyword</span>
-      <input type="search" name="keyword" value="{{ filters.keyword or '' }}">
-    </label>
-    <label>
-      <span>Review status</span>
-      <input type="search" name="review_status" value="{{ filters.review_status or '' }}">
-    </label>
-    <label>
-      <span>Newsletter</span>
-      <select name="newsletter_eligible">
-        <option value="" {% if not filters.newsletter_eligible %}selected{% endif %}>Any</option>
-        <option value="true" {% if filters.newsletter_eligible == "true" %}selected{% endif %}>Eligible</option>
-        <option value="false" {% if filters.newsletter_eligible == "false" %}selected{% endif %}>Not eligible</option>
-      </select>
-    </label>
-    <button type="submit">Apply</button>
-  </form>
-
-  {% if articles %}
-    <div class="table-wrap">
-      <table class="article-table">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Topic</th>
-            <th scope="col">Source</th>
-            <th scope="col">Score</th>
-            <th scope="col">Review</th>
-            <th scope="col">Newsletter</th>
-            <th scope="col">URL</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for article in articles %}
-            {% set score = article.get("score") %}
-            {% if score is none %}
-              {% set score = article.get("ranking_score") %}
-            {% endif %}
-            <tr>
-              <td>
-                <a href="{{ article.detail_href }}" class="title-link">
-                  {{ article.get("title") or "Untitled" }}
-                </a>
-              </td>
-              <td>{{ article.get("topic") or "-" }}</td>
-              <td>{{ article.get("source") or "-" }}</td>
-              <td>{{ score if score is not none and score != "" else "-" }}</td>
-              <td>{{ article.get("review_status") or "-" }}</td>
-              <td>{{ "Yes" if article.get("newsletter_eligible") else "No" }}</td>
-              <td>
-                {% if article.get("url") %}
-                  <a href="{{ article.get('url') }}" target="_blank" rel="noopener noreferrer">Original</a>
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  {% else %}
-    <section class="empty-state" aria-live="polite">
-      <h2>No articles found</h2>
-      <p>The knowledge repository has no matching articles yet.</p>
-    </section>
-  {% endif %}
+  <section class="card empty-state" aria-live="polite">
+    <h2>Articles moved to Home</h2>
+    <p>The article list now lives on the Home page.</p>
+    <a class="button button-primary" href="/">Open Home</a>
+  </section>
 {% endblock %}

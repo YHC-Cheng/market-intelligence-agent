@@ -28,7 +28,9 @@ def test_intake_page_displays_form(tmp_path, monkeypatch):
     response = client.get("/intake")
 
     assert response.status_code == 200
-    assert "Add article URL" in response.text
+    assert "Add Article" in response.text
+    assert "Article URL" in response.text
+    assert "Cancel" in response.text
     assert 'name="url"' in response.text
     assert 'name="topic"' in response.text
     assert 'name="note"' in response.text
