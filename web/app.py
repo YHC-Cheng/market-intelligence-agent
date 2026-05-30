@@ -60,7 +60,7 @@ ARTICLES_PER_PAGE = 15
 SUMMARY_STATUS_TABS = [
     {"value": "ready", "label": "Ready"},
     {"value": "failed", "label": "Failed"},
-    {"value": "needs_summary", "label": "To-do"},
+    {"value": "to_extract", "label": "To Extract"},
     {"value": "all", "label": "All"},
 ]
 SUMMARY_STATUS_FILTERS = {tab["value"] for tab in SUMMARY_STATUS_TABS}
@@ -123,6 +123,9 @@ def normalize_summary_status_filter(value):
         return DEFAULT_SUMMARY_STATUS_FILTER
 
     normalized_value = normalized_value.casefold()
+    if normalized_value == "needs_summary":
+        return "to_extract"
+
     if normalized_value in SUMMARY_STATUS_FILTERS:
         return normalized_value
 
@@ -175,19 +178,34 @@ def article_type(article):
     return article.get("ingestion_type") or article.get("type")
 
 
-def article_summary_status(article):
-    return article.get("summary_status") or article.get("analysis_status")
+def normalize_summary_status(article):
+    summary_status = str(article.get("summary_status") or "").strip().casefold()
+    if summary_status == "ready":
+        return "ready"
+    if summary_status == "failed":
+        return "failed"
+    if summary_status in {"to_extract", "needs_summary"}:
+        return "to_extract"
+
+    analysis_status = str(article.get("analysis_status") or "").strip().casefold()
+    if analysis_status in {"not_started", "pending"}:
+        return "to_extract"
+
+    return "to_extract"
 
 
 def article_summary_status_bucket(article):
-    summary_status = article_summary_status(article)
-    normalized_status = str(summary_status or "").strip().casefold()
-    if normalized_status == "ready":
-        return "ready"
-    if normalized_status == "failed":
-        return "failed"
+    return normalize_summary_status(article)
 
-    return "needs_summary"
+
+def display_summary_status(article):
+    bucket = article_summary_status_bucket(article)
+    if bucket == "ready":
+        return "Ready"
+    if bucket == "failed":
+        return "Failed"
+
+    return "To Extract"
 
 
 def summary_status_explanation(article):
@@ -221,7 +239,8 @@ def with_home_article_fields(articles):
     article_list = []
     for article in with_detail_hrefs(articles):
         article_copy = dict(article)
-        article_copy["summary_status_display"] = article_summary_status(article_copy)
+        article_copy["summary_status_display"] = display_summary_status(article_copy)
+        article_copy["summary_status_bucket"] = article_summary_status_bucket(article_copy)
         article_copy["updated_date"] = updated_date(article_copy)
         article_list.append(article_copy)
 
@@ -333,11 +352,11 @@ def apply_home_filters(articles, filters):
             for article in filtered_articles
             if article_summary_status_bucket(article) == "failed"
         ]
-    elif filters["summary_status"] == "needs_summary":
+    elif filters["summary_status"] == "to_extract":
         filtered_articles = [
             article
             for article in filtered_articles
-            if article_summary_status_bucket(article) == "needs_summary"
+            if article_summary_status_bucket(article) == "to_extract"
         ]
 
     if filters["recommendation"] is not None:
@@ -1065,7 +1084,8 @@ async def article_detail(
             ),
             "article": article,
             "detail_href": article_detail_href(article),
-            "summary_status_display": article_summary_status(article) or "—",
+            "summary_status_display": display_summary_status(article),
+            "summary_status_bucket": article_summary_status_bucket(article),
             "summary_status_explanation": summary_status_explanation(article),
             "can_generate_summary": can_generate_summary(article),
             "recommendation_options": RECOMMENDATION_OPTIONS,

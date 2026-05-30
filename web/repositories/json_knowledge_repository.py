@@ -90,6 +90,53 @@ class JsonKnowledgeRepository:
 
         return None
 
+    def find_by_normalized_url(self, normalized_url):
+        if not normalized_url:
+            return None
+
+        for key, article in self._iter_articles(self._read_json()):
+            if article.get("normalized_url") == normalized_url:
+                return self._with_runtime_defaults(article, key)
+
+        return None
+
+    def find_by_canonical_url(self, canonical_url):
+        if not canonical_url:
+            return None
+
+        for key, article in self._iter_articles(self._read_json()):
+            if article.get("canonical_url") == canonical_url:
+                return self._with_runtime_defaults(article, key)
+
+        return None
+
+    def update_article(self, article_id, updates):
+        raw_data = self._read_json()
+        found = self._find_article(raw_data, article_id)
+
+        if found is None:
+            return None
+
+        key, article = found
+        article.update(deepcopy(updates or {}))
+        article["updated_at"] = self._now()
+
+        self._replace_article(raw_data, key, article)
+        self._write_json(raw_data)
+        return self._with_runtime_defaults(article, key)
+
+    def delete_article(self, article_id):
+        raw_data = self._read_json()
+        found = self._find_article(raw_data, article_id)
+
+        if found is None:
+            return None
+
+        key, article = found
+        self._delete_article(raw_data, key, article)
+        self._write_json(raw_data)
+        return self._with_runtime_defaults(article, key)
+
     def update_article_review(
         self,
         article_id,
@@ -166,6 +213,7 @@ class JsonKnowledgeRepository:
             "newsletter_status": "not_included",
             "extraction_status": "not_started",
             "analysis_status": "not_started",
+            "summary_status": "to_extract",
             "created_at": now,
             "updated_at": now,
         }
@@ -234,6 +282,17 @@ class JsonKnowledgeRepository:
             return
 
         raw_data[self._storage_key(article)] = article
+
+    def _delete_article(self, raw_data, key, article):
+        if isinstance(raw_data, list):
+            raw_data[:] = [
+                existing_article
+                for existing_article in raw_data
+                if existing_article is not article
+            ]
+            return
+
+        raw_data.pop(key, None)
 
     def _storage_key(self, article):
         return self._article_id(article, article.get("url", ""))

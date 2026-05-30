@@ -102,6 +102,7 @@
         <tbody>
           {% for article in articles %}
             {% set summary_status = article.get("summary_status_display") %}
+            {% set summary_status_bucket = article.get("summary_status_bucket") %}
             <tr>
               <td>
                 {% if article.get("title") %}
@@ -119,7 +120,7 @@
               </td>
               <td>
                 {% if summary_status %}
-                  <span class="badge {% if summary_status in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status in ['pending', 'not_started'] %}badge-todo{% elif summary_status in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
+                  <span class="badge {% if summary_status_bucket == 'ready' %}badge-success{% elif summary_status_bucket == 'to_extract' %}badge-todo{% elif summary_status_bucket == 'failed' %}badge-danger{% else %}badge-secondary{% endif %}">{{ summary_status }}</span>
                 {% else %}
                   —
                 {% endif %}

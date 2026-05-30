@@ -269,8 +269,9 @@ def test_articles_page_renders_summary_status_tabs(tmp_path, monkeypatch):
     assert "Ready" in tabs
     assert 'href="/?summary_status=failed"' in tabs
     assert "Failed" in tabs
-    assert 'href="/?summary_status=needs_summary"' in tabs
-    assert "To-do" in tabs
+    assert 'href="/?summary_status=to_extract"' in tabs
+    assert "To Extract" in tabs
+    assert "To-do" not in tabs
     assert "Needs Summary" not in tabs
     assert 'href="/?summary_status=all"' in tabs
     assert "All" in tabs
@@ -407,6 +408,11 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
                 "title": "Pending intelligence",
                 "analysis_status": "pending",
             },
+            "https://example.com/to-extract": {
+                "url": "https://example.com/to-extract",
+                "title": "To extract intelligence",
+                "summary_status": "to_extract",
+            },
             "https://example.com/failed": {
                 "url": "https://example.com/failed",
                 "title": "Failed intelligence",
@@ -421,6 +427,7 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
     assert response.status_code == 200
     assert "Ready intelligence" in response.text
     assert "Pending intelligence" not in response.text
+    assert "To extract intelligence" not in response.text
     assert "Failed intelligence" not in response.text
 
     response = client.get("/?summary_status=failed")
@@ -429,11 +436,21 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
     assert "Failed intelligence" in response.text
     assert "Ready intelligence" not in response.text
     assert "Pending intelligence" not in response.text
+    assert "To extract intelligence" not in response.text
+
+    response = client.get("/?summary_status=to_extract")
+
+    assert response.status_code == 200
+    assert "Pending intelligence" in response.text
+    assert "To extract intelligence" in response.text
+    assert "Ready intelligence" not in response.text
+    assert "Failed intelligence" not in response.text
 
     response = client.get("/?summary_status=needs_summary")
 
     assert response.status_code == 200
     assert "Pending intelligence" in response.text
+    assert "To extract intelligence" in response.text
     assert "Ready intelligence" not in response.text
     assert "Failed intelligence" not in response.text
 
@@ -442,10 +459,11 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
     assert response.status_code == 200
     assert "Ready intelligence" in response.text
     assert "Pending intelligence" in response.text
+    assert "To extract intelligence" in response.text
     assert "Failed intelligence" in response.text
 
 
-def test_articles_needs_summary_tab_includes_missing_not_started_and_pending(
+def test_articles_to_extract_tab_includes_legacy_unprocessed_statuses(
     tmp_path,
     monkeypatch,
 ):
@@ -466,12 +484,22 @@ def test_articles_needs_summary_tab_includes_missing_not_started_and_pending(
             "not-started": {
                 "id": "not-started",
                 "title": "Not started intelligence",
-                "summary_status": "not_started",
+                "analysis_status": "not_started",
             },
             "pending": {
                 "id": "pending",
                 "title": "Pending status intelligence",
-                "summary_status": "pending",
+                "analysis_status": "pending",
+            },
+            "needs-summary": {
+                "id": "needs-summary",
+                "title": "Needs summary intelligence",
+                "summary_status": "needs_summary",
+            },
+            "to-extract": {
+                "id": "to-extract",
+                "title": "To Extract status intelligence",
+                "summary_status": "to_extract",
             },
             "ready": {
                 "id": "ready",
@@ -482,14 +510,18 @@ def test_articles_needs_summary_tab_includes_missing_not_started_and_pending(
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    response = client.get("/?summary_status=needs_summary")
+    response = client.get("/?summary_status=to_extract")
 
     assert response.status_code == 200
     assert "Missing status intelligence" in response.text
     assert "Empty status intelligence" in response.text
     assert "Not started intelligence" in response.text
     assert "Pending status intelligence" in response.text
+    assert "Needs summary intelligence" in response.text
+    assert "To Extract status intelligence" in response.text
     assert "Ready status intelligence" not in response.text
+    assert "To Extract" in response.text
+    assert "To-do" not in response.text
 
 
 def test_articles_invalid_summary_status_falls_back_safely(
@@ -508,7 +540,7 @@ def test_articles_invalid_summary_status_falls_back_safely(
             "pending": {
                 "id": "pending",
                 "title": "Pending fallback intelligence",
-                "summary_status": "pending",
+                "summary_status": "to_extract",
             },
         },
     )
@@ -862,7 +894,7 @@ def test_article_detail_shows_summary_processing_for_ready_article(
     assert response.status_code == 200
     assert "Summary Processing" in section
     assert "Summary Status" in section
-    assert "ready" in section
+    assert "Ready" in section
     assert "Summary is available for this article." in section
     assert "Generate Summary" not in section
 
@@ -882,12 +914,12 @@ def test_article_detail_shows_generate_summary_for_unready_states(
             "not-started": {
                 "id": "not-started",
                 "title": "Not started article",
-                "summary_status": "not_started",
+                "analysis_status": "not_started",
             },
             "pending": {
                 "id": "pending",
                 "title": "Pending article",
-                "summary_status": "pending",
+                "analysis_status": "pending",
             },
             "failed": {
                 "id": "failed",
@@ -904,6 +936,8 @@ def test_article_detail_shows_generate_summary_for_unready_states(
 
         assert response.status_code == 200
         assert "Generate Summary" in section
+        if article_id != "failed":
+            assert "To Extract" in section
 
     failed_response = client.get("/articles/failed")
     failed_section = detail_section_markup(
@@ -928,7 +962,7 @@ def test_article_summary_placeholder_route_redirects_without_generation(
                 "id": "article-1",
                 "url": "https://example.com/article-1",
                 "title": "Needs summary",
-                "summary_status": "pending",
+                "summary_status": "to_extract",
             }
         },
     )
@@ -942,7 +976,7 @@ def test_article_summary_placeholder_route_redirects_without_generation(
 
     assert response.status_code == 303
     assert response.headers["location"] == "/articles/article-1?summary_requested=1"
-    assert persisted["summary_status"] == "pending"
+    assert persisted["summary_status"] == "to_extract"
     assert "summary" not in persisted
 
     response = client.post("/articles/article-1/summary")

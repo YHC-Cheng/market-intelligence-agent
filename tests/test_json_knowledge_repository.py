@@ -167,7 +167,149 @@ def test_create_manual_article_creates_article(tmp_path):
     assert article["source"] == "manual"
     assert article["ingestion_type"] == "manual"
     assert article["extraction_status"] == "not_started"
+    assert article["summary_status"] == "to_extract"
     assert "https://example.com/manual" in persisted
+
+
+def test_find_by_normalized_url_returns_matching_article(tmp_path):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article",
+                "normalized_url": "https://example.com/article",
+                "title": "Example",
+            }
+        },
+    )
+    repository = JsonKnowledgeRepository(knowledge_path)
+
+    article = repository.find_by_normalized_url("https://example.com/article")
+
+    assert article["id"] == "article-1"
+    assert article["title"] == "Example"
+
+
+def test_find_by_canonical_url_returns_matching_article(tmp_path):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article?ref=feed",
+                "canonical_url": "https://example.com/article",
+                "title": "Example",
+            }
+        },
+    )
+    repository = JsonKnowledgeRepository(knowledge_path)
+
+    article = repository.find_by_canonical_url("https://example.com/article")
+
+    assert article["id"] == "article-1"
+    assert article["title"] == "Example"
+
+
+def test_find_by_url_methods_handle_missing_values_safely(tmp_path):
+    repository = JsonKnowledgeRepository(tmp_path / "missing.json")
+
+    assert repository.find_by_normalized_url("") is None
+    assert repository.find_by_normalized_url("https://example.com/missing") is None
+    assert repository.find_by_canonical_url(None) is None
+    assert repository.find_by_canonical_url("https://example.com/missing") is None
+
+
+def test_update_article_updates_only_target_article(tmp_path):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Original",
+                "summary_status": "to_extract",
+            },
+            "article-2": {
+                "id": "article-2",
+                "title": "Keep me",
+                "summary_status": "to_extract",
+            },
+        },
+    )
+    repository = JsonKnowledgeRepository(knowledge_path)
+
+    article = repository.update_article(
+        "article-1",
+        {"summary_status": "failed", "failure_reason": "fetch_failed"},
+    )
+    persisted = read_json(knowledge_path)
+
+    assert article["summary_status"] == "failed"
+    assert persisted["article-1"]["summary_status"] == "failed"
+    assert persisted["article-1"]["failure_reason"] == "fetch_failed"
+    assert persisted["article-1"]["title"] == "Original"
+    assert "updated_at" in persisted["article-1"]
+    assert persisted["article-2"] == {
+        "id": "article-2",
+        "title": "Keep me",
+        "summary_status": "to_extract",
+    }
+
+
+def test_delete_article_removes_only_target_article(tmp_path):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Delete me",
+            },
+            "article-2": {
+                "id": "article-2",
+                "title": "Keep me",
+            },
+        },
+    )
+    repository = JsonKnowledgeRepository(knowledge_path)
+
+    deleted_article = repository.delete_article("article-1")
+    persisted = read_json(knowledge_path)
+
+    assert deleted_article["id"] == "article-1"
+    assert "article-1" not in persisted
+    assert persisted == {
+        "article-2": {
+            "id": "article-2",
+            "title": "Keep me",
+        }
+    }
+
+
+def test_update_and_delete_article_handle_missing_ids_safely(tmp_path):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Keep me",
+            }
+        },
+    )
+    repository = JsonKnowledgeRepository(knowledge_path)
+
+    assert repository.update_article("missing", {"title": "Nope"}) is None
+    assert repository.delete_article("missing") is None
+    assert read_json(knowledge_path) == {
+        "article-1": {
+            "id": "article-1",
+            "title": "Keep me",
+        }
+    }
 
 
 def test_create_manual_article_detects_duplicate_canonical_url(tmp_path):
