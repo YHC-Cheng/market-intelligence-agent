@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
 
 
@@ -163,12 +165,33 @@ def test_create_manual_article_creates_article(tmp_path):
 
     assert result["duplicate"] is False
     assert article["canonical_url"] == "https://example.com/manual"
+    assert article["normalized_url"] == "https://example.com/manual"
     assert article["title"] == "https://example.com/manual/"
     assert article["source"] == "manual"
+    assert article["source_type"] == "manual"
     assert article["ingestion_type"] == "manual"
     assert article["extraction_status"] == "not_started"
     assert article["summary_status"] == "to_extract"
+    assert article["failure_reason"] is None
+    assert article["failure_message"] is None
     assert "https://example.com/manual" in persisted
+
+
+@pytest.mark.parametrize(
+    ("url", "normalized_url"),
+    [
+        (" HTTPS://Example.com/Article/ ", "https://example.com/Article"),
+        ("https://example.com/article/#section", "https://example.com/article"),
+        (
+            "https://example.com/article/?utm_source=x",
+            "https://example.com/article?utm_source=x",
+        ),
+        ("http://example.com:80/article", "http://example.com/article"),
+        ("https://example.com:443/article", "https://example.com/article"),
+    ],
+)
+def test_normalize_url_applies_phase_3_rules(url, normalized_url):
+    assert JsonKnowledgeRepository.normalize_url(url) == normalized_url
 
 
 def test_find_by_normalized_url_returns_matching_article(tmp_path):
@@ -319,6 +342,7 @@ def test_create_manual_article_detects_duplicate_canonical_url(tmp_path):
         {
             "https://example.com/manual": {
                 "url": "https://example.com/manual",
+                "normalized_url": "https://example.com/manual",
                 "canonical_url": "https://example.com/manual",
                 "title": "Existing",
                 "unknown": "keep",

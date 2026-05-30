@@ -1,5 +1,6 @@
 import json
 
+import pytest
 from fastapi.testclient import TestClient
 
 from web import app as app_module
@@ -118,11 +119,13 @@ def test_intake_post_creates_manual_article(tmp_path, monkeypatch):
     assert "Manual article created." not in response.text
     assert "https://example.com/manual/" in response.text
     assert article["canonical_url"] == "https://example.com/manual"
+    assert article["normalized_url"] == "https://example.com/manual"
     assert article["url"] == "https://example.com/manual/"
     assert article["title"] == "https://example.com/manual/"
     assert article["topic"] == "FinOps"
     assert article["note"] == "Review this source."
     assert article["source"] == "manual"
+    assert article["source_type"] == "manual"
     assert article["ingestion_type"] == "manual"
     assert article["review_status"] == "unreviewed"
     assert article["newsletter_eligible"] is False
@@ -130,6 +133,8 @@ def test_intake_post_creates_manual_article(tmp_path, monkeypatch):
     assert article["extraction_status"] == "not_started"
     assert article["analysis_status"] == "not_started"
     assert article["summary_status"] == "to_extract"
+    assert article["failure_reason"] is None
+    assert article["failure_message"] is None
     assert "created_at" in article
     assert "updated_at" in article
 
@@ -194,7 +199,57 @@ def test_intake_post_empty_url_shows_error_without_creating_article(tmp_path, mo
     assert not knowledge_path.exists()
 
 
-def test_intake_post_invalid_topic_shows_error_without_creating_article(tmp_path, monkeypatch):
+@pytest.mark.parametrize(
+    "url",
+    [
+        "not a url",
+        "ftp://example.com/manual",
+        "example.com/manual",
+    ],
+)
+def test_intake_post_invalid_url_shows_error_without_creating_article(
+    tmp_path,
+    monkeypatch,
+    url,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    client = intake_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/intake",
+        data={"url": url, "topic": "AI", "note": "Invalid URL."},
+    )
+
+    assert response.status_code == 400
+    assert "Enter a valid http or https URL." in response.text
+    assert not knowledge_path.exists()
+
+
+def test_intake_post_missing_topic_shows_error_without_creating_article(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    client = intake_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/intake",
+        data={
+            "url": "https://example.com/manual",
+            "topic": "",
+            "note": "No topic.",
+        },
+    )
+
+    assert response.status_code == 400
+    assert "Choose a topic." in response.text
+    assert not knowledge_path.exists()
+
+
+def test_intake_post_invalid_topic_shows_error_without_creating_article(
+    tmp_path,
+    monkeypatch,
+):
     knowledge_path = tmp_path / "articles_knowledge.json"
     client = intake_client(monkeypatch, knowledge_path)
 
@@ -212,9 +267,68 @@ def test_intake_post_invalid_topic_shows_error_without_creating_article(tmp_path
     assert not knowledge_path.exists()
 
 
-def test_intake_post_duplicate_url_shows_warning_without_creating_second_article(
+@pytest.mark.parametrize(
+    ("url", "normalized_url"),
+    [
+        (" HTTPS://Example.com/Article/ ", "https://example.com/Article"),
+        (
+            "https://example.com/article/#section",
+            "https://example.com/article",
+        ),
+        (
+            "https://example.com/article/?utm_source=x",
+            "https://example.com/article?utm_source=x",
+        ),
+        (
+            "http://example.com:80/article",
+            "http://example.com/article",
+        ),
+        (
+            "https://example.com:443/article",
+            "https://example.com/article",
+        ),
+    ],
+)
+def test_intake_post_normalizes_url_before_creating_article(
     tmp_path,
     monkeypatch,
+    url,
+    normalized_url,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    client = intake_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/intake",
+        data={
+            "url": url,
+            "topic": "AI",
+            "note": "Normalize this.",
+        },
+        follow_redirects=False,
+    )
+    persisted = read_json(knowledge_path)
+    article = persisted[normalized_url]
+
+    assert response.status_code == 303
+    assert article["normalized_url"] == normalized_url
+    assert article["canonical_url"] == normalized_url
+    assert article["summary_status"] == "to_extract"
+    assert len(persisted) == 1
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        " HTTPS://Example.com/manual/ ",
+        "https://example.com/manual/#section",
+        "https://example.com/manual/",
+    ],
+)
+def test_intake_post_duplicate_normalized_url_shows_warning_without_creating_second_article(
+    tmp_path,
+    monkeypatch,
+    url,
 ):
     knowledge_path = tmp_path / "articles_knowledge.json"
     write_json(
@@ -222,6 +336,7 @@ def test_intake_post_duplicate_url_shows_warning_without_creating_second_article
         {
             "https://example.com/manual": {
                 "url": "https://example.com/manual",
+                "normalized_url": "https://example.com/manual",
                 "canonical_url": "https://example.com/manual",
                 "title": "Existing manual article",
                 "topic": "AI",
@@ -234,7 +349,7 @@ def test_intake_post_duplicate_url_shows_warning_without_creating_second_article
     response = client.post(
         "/intake",
         data={
-            "url": " https://example.com/manual/ ",
+            "url": url,
             "topic": "FinOps",
             "note": "Duplicate.",
         },
