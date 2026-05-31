@@ -39,8 +39,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-24",
-    "seen_count": 13,
+    "last_seen": "2026-05-31",
+    "seen_count": 15,
     "content_hash": "e08df0c96acded6666018fcb56e46a598f14f1adb1abd36501850abd4bf7378c",
     "freshness_status": "repeated",
     "summary": "",
@@ -57,7 +57,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:07:51"
+    "updated_at": "2026-05-31T19:11:21"
   },
   "https://www.ecloudvalley.com/": {
     "url": "https://www.ecloudvalley.com/",
@@ -69,8 +69,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-05-24",
-    "seen_count": 9,
+    "last_seen": "2026-05-31",
+    "seen_count": 10,
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
     "freshness_status": "repeated",
     "summary": "",
@@ -87,7 +87,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:07:51"
+    "updated_at": "2026-05-31T19:11:21"
   },
   "https://www.vantage.sh/blog/ai-token-budgeting": {
     "url": "https://www.vantage.sh/blog/ai-token-budgeting",
@@ -99,10 +99,10 @@
     "web_mode": null,
     "published_date": "2026-05-11",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 7,
+    "last_seen": "2026-05-31",
+    "seen_count": 9,
     "content_hash": "5d8466a22f81dde9ca39113840583bf1bdf0f73957bec2d9f4480b73f2852af9",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "This article outlines a framework for managing escalating AI token costs by shifting the focus from raw expenditure to cost allocation and efficiency metrics. It argues that businesses must distinguish between COGS and R&D spend and implement unit-cost analysis to determine whether high token usage reflects waste or high productivity.",
     "key_points": [
       "Differentiate spend between R&D (developer tools) and COGS (customer-facing production) using API keys and metadata tagging.",
@@ -123,7 +123,7 @@
     "problem_solved": "Solves the 'opaque spend' problem where high token usage cannot be distinguished from productive output. It prevents arbitrary flat budgeting that might stifle high-performing developers by shifting the focus to unit costs and ROI per engineer.",
     "reason": "The article is highly relevant to the evolving AI FinOps landscape. It provides an explicit problem-solution framework and concrete examples of efficiency metrics. While it doesn't provide a step-by-step technical tutorial for a specific tool, it offers a clear strategic workflow for resource allocation and cost optimization in the AI era.",
     "tags": [],
-    "updated_at": "2026-05-24T19:07:51"
+    "updated_at": "2026-05-31T19:11:21"
   },
   "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/": {
     "url": "https://aws.amazon.com/blogs/aws/modernize-your-workflows-amazon-workspaces-now-gives-ai-agents-their-own-desktop-preview/",
@@ -171,8 +171,8 @@
     "web_mode": null,
     "published_date": "2026-04-03",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 4,
+    "last_seen": "2026-05-31",
+    "seen_count": 5,
     "content_hash": "f0e348b718f590a721d6f45216ec73f54bfee982ebec93f1fb14e897547af1e9",
     "freshness_status": "old",
     "summary": "",
@@ -189,7 +189,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:01:55"
+    "updated_at": "2026-05-31T19:04:53"
   },
   "https://www.finops.org/insights/ai-for-finops-agentic-use-cases/": {
     "url": "https://www.finops.org/insights/ai-for-finops-agentic-use-cases/",
@@ -201,8 +201,8 @@
     "web_mode": null,
     "published_date": "2026-03-27",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 4,
+    "last_seen": "2026-05-31",
+    "seen_count": 5,
     "content_hash": "de5b406cb6dc4ed0ccc2b380048ee5e1e518211ddc91dbab2ab198ae99062c10",
     "freshness_status": "old",
     "summary": "",
@@ -219,7 +219,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:01:55"
+    "updated_at": "2026-05-31T19:04:53"
   },
   "https://www.finops.org/insights/2026-finops-framework/": {
     "url": "https://www.finops.org/insights/2026-finops-framework/",
@@ -231,8 +231,8 @@
     "web_mode": null,
     "published_date": "2026-03-19",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 4,
+    "last_seen": "2026-05-31",
+    "seen_count": 5,
     "content_hash": "7b964b270d402d9058b8008b5aa1e93e4ff04387c161b1f5bd022e68e28551b7",
     "freshness_status": "old",
     "summary": "",
@@ -249,7 +249,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:01:55"
+    "updated_at": "2026-05-31T19:04:53"
   },
   "https://www.vantage.sh/blog/finops-agent-console": {
     "url": "https://www.vantage.sh/blog/finops-agent-console",
@@ -291,8 +291,8 @@
     "web_mode": null,
     "published_date": "2026-04-17",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 4,
+    "last_seen": "2026-05-31",
+    "seen_count": 5,
     "content_hash": "3089e9441c799312b86eaf554cad4052f6009feb6d082e8041ee51959eff4d9e",
     "freshness_status": "old",
     "summary": "",
@@ -309,7 +309,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:01:55"
+    "updated_at": "2026-05-31T19:04:53"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/track-amazon-bedrock-costs-by-caller-identity-with-iam-based-cost-allocation/": {
     "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/track-amazon-bedrock-costs-by-caller-identity-with-iam-based-cost-allocation/",
@@ -321,8 +321,8 @@
     "web_mode": null,
     "published_date": "2026-04-17",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 4,
+    "last_seen": "2026-05-31",
+    "seen_count": 5,
     "content_hash": "22de182bb68d80c6bc2a9252ac75818fc5632dcd2a1b36efeffdf00eab77a744",
     "freshness_status": "old",
     "summary": "",
@@ -339,7 +339,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:01:55"
+    "updated_at": "2026-05-31T19:04:53"
   },
   "https://cloud.google.com/blog/topics/cost-management": {
     "url": "https://cloud.google.com/blog/topics/cost-management",
@@ -351,8 +351,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 4,
+    "last_seen": "2026-05-31",
+    "seen_count": 5,
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
     "freshness_status": "repeated",
     "summary": "",
@@ -369,7 +369,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:01:55"
+    "updated_at": "2026-05-31T19:04:53"
   },
   "https://www.vantage.sh/blog/snowflake-data-sharing": {
     "url": "https://www.vantage.sh/blog/snowflake-data-sharing",
@@ -381,10 +381,10 @@
     "web_mode": null,
     "published_date": "2026-05-14",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 3,
+    "last_seen": "2026-05-31",
+    "seen_count": 4,
     "content_hash": "96d17c123cbb656f83a735a77b1725b0cf17a7bdf15500b4d999784e892ddf2c",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "Vantage has launched 'Snowflake Data Sharing,' a new feature that allows Enterprise customers to access their consolidated cloud cost and usage data directly within their Snowflake accounts. Utilizing Snowflake Secure Data Sharing, this integration provides managed, read-only SQL access to normalized data across all connected cloud providers, effectively replacing the need for manual CSV exports or custom ETL pipelines.",
     "key_points": [
       "Provides direct SQL access to a canonical 'daily_costs' table containing processed and normalized cost data from all connected providers.",
@@ -405,7 +405,7 @@
     "problem_solved": "Eliminates the requirement for teams to build and maintain custom, brittle ETL pipelines or manual CSV exports to sync frequently changing cloud billing data into external data environments.",
     "reason": "The article is a high-quality product announcement that provides a concrete workflow, identifies a specific enterprise pain point, and details the technical implementation (Snowflake Secure Data Sharing) and limitations. It serves as a strong market signal for how SaaS providers are leveraging warehouse-native data sharing to reduce customer engineering overhead.",
     "tags": [],
-    "updated_at": "2026-05-24T19:07:51"
+    "updated_at": "2026-05-31T19:11:21"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
     "url": "https://openai.com/index/malta-chatgpt-plus-partnership",
@@ -987,10 +987,10 @@
     "web_mode": null,
     "published_date": "2026-05-13",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 3,
+    "last_seen": "2026-05-31",
+    "seen_count": 4,
     "content_hash": "fb52f74d5bbd09c87ea311326183e484b9f875f732b98c8308bcc6817d2cae74",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "",
     "key_points": [],
     "why_it_matters": "",
@@ -1005,7 +1005,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:07:51"
+    "updated_at": "2026-05-31T19:11:21"
   },
   "https://www.vantage.sh/blog/tag-column-resource-reports": {
     "url": "https://www.vantage.sh/blog/tag-column-resource-reports",
@@ -1017,10 +1017,10 @@
     "web_mode": null,
     "published_date": "2026-05-12",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-05-24",
-    "seen_count": 3,
+    "last_seen": "2026-05-31",
+    "seen_count": 4,
     "content_hash": "538703e2b30809275785f4eaa64907efdc34371dd3900fe2cdf375f7758cbb7a",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "",
     "key_points": [],
     "why_it_matters": "",
@@ -1035,7 +1035,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-05-24T19:07:51"
+    "updated_at": "2026-05-31T19:11:21"
   },
   "https://openai.com/index/model-disproves-discrete-geometry-conjecture": {
     "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture",
@@ -1082,10 +1082,10 @@
     "web_mode": null,
     "published_date": "2026-05-20",
     "first_seen": "2026-05-24",
-    "last_seen": "2026-05-24",
-    "seen_count": 1,
+    "last_seen": "2026-05-31",
+    "seen_count": 2,
     "content_hash": "e5b8c3cf117a6fed4f1a92425c19bdbdacc6eef92a837ca9a789ae3d9a55268b",
-    "freshness_status": "new",
+    "freshness_status": "repeated",
     "summary": "AWS has announced its comprehensive agenda for the FinOps X 2026 conference in San Diego, highlighting interactive workshops, keynotes, and sessions focused on new AWS FinOps feature launches and managing the high costs of AI workloads.",
     "key_points": [
       "AWS will introduce new FinOps product capabilities and enhancements aimed at enabling automated cloud analysis and optimization.",
@@ -1105,6 +1105,130 @@
     "problem_solved": "Addressing high cloud spend, lack of governance, and unpredictable costs of modern workloads—particularly GenAI and GPU infrastructures—by sharing frameworks for visibility, optimization, and sustainability.",
     "reason": "This is an event guide rather than a deep technical announcement. While it highly aligns with modern FinOps trends (specifically AI/ML cost management and CUR 2.0 migrations), the specific use cases and problem-solution details are distributed across multiple highlighted sessions to be delivered at the conference.",
     "tags": [],
-    "updated_at": "2026-05-24T19:02:09"
+    "updated_at": "2026-05-31T19:04:53"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-transform-at-1-year-claude-platform-on-aws-ec2-m3-ultra-mac-instances-and-more-may-18-2026/": {
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-aws-transform-at-1-year-claude-platform-on-aws-ec2-m3-ultra-mac-instances-and-more-may-18-2026/",
+    "title": "AWS Weekly Roundup: AWS Transform at 1 year, Claude Platform on AWS, EC2 M3 Ultra Mac instances, and more (May 18, 2026)",
+    "topic": "AI",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-18",
+    "first_seen": "2026-05-24",
+    "last_seen": "2026-05-31",
+    "seen_count": 2,
+    "content_hash": "32617ae83ce4835f287a277bbbc6efeb55f5f8787e710e516192320589a9d517",
+    "freshness_status": "repeated",
+    "summary": "",
+    "key_points": [],
+    "why_it_matters": "",
+    "score": 0,
+    "recommendation": "Exclude",
+    "relevance": 0,
+    "use_case_clarity": 0,
+    "problem_solution_fit": 0,
+    "actionability": 0,
+    "credibility_novelty": 0,
+    "use_case": "",
+    "problem_solved": "",
+    "reason": "",
+    "tags": [],
+    "updated_at": "2026-05-31T18:58:05"
+  },
+  "https://aws.amazon.com/blogs/aws/introducing-the-next-generation-of-amazon-opensearch-serverless-for-building-your-agentic-ai-applications/": {
+    "url": "https://aws.amazon.com/blogs/aws/introducing-the-next-generation-of-amazon-opensearch-serverless-for-building-your-agentic-ai-applications/",
+    "title": "Introducing the next generation of Amazon OpenSearch Serverless for building your agentic AI applications",
+    "topic": "AI",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-28",
+    "first_seen": "2026-05-31",
+    "last_seen": "2026-05-31",
+    "seen_count": 1,
+    "content_hash": "914755c7822a700181ca054aa638974202599138e6851c2cf0c1a9f00bfe942b",
+    "freshness_status": "new",
+    "summary": "{\n  \"summary\": \"AWS has announced the next generation of Amazon OpenSearch Serverless, a fully managed search and vector engine tailored for building agentic AI applications. This update introduces instant resource creation, 20x faster scaling, and the ability to scale to zero when idle, delivering up to 60% cost savings compared to provisioned clusters.\",\n  \"key_points\": [\n    \"Up to 60% cost savings achieved through automatic scaling to zero when idle, eliminating the need to pay for over-provisioned peak capacity.\",\n    \"Accelerated performance with resource creation in seconds and capacity scaling up to 20 times faster than the previous generation.\",\n    \"Native integrations with AI development platforms like Vercel and Kiro, allowing teams to deploy production-ready vector backends in minutes.\",\n    \"Built-in support for full-text and vector search, specifically optimized for agentic workflows, Claude Code, Cursor, and OpenSearch Agent Skills.\"\n  ],\n  \"why_it_matters\": \"For businesses deploying AI agents and advanced RAG architectures, this release dramatically lowers the cost barrier and operational complexity of vector databases. It allows development teams to move from prototype to production faster with minimal infrastructure management, ensuring high performance during traffic spikes while keeping idle costs at zero.\"\n\"\n}",
+    "key_points": [],
+    "why_it_matters": "",
+    "score": 74.7,
+    "recommendation": "Useful",
+    "relevance": 4,
+    "use_case_clarity": 3,
+    "problem_solution_fit": 4,
+    "actionability": 4,
+    "credibility_novelty": 4,
+    "use_case": "Developers creating AI agents requiring instantly scalable search and vector backends integrated with Vercel or Kiro.",
+    "problem_solved": "High idle costs of provisioned databases and slow infrastructure scaling during peak agent workloads.",
+    "reason": "Official AWS release showcasing significant cost reduction and faster scaling, highly relevant for AI database competitor analysis.",
+    "tags": [],
+    "updated_at": "2026-05-31T18:58:21"
+  },
+  "https://www.vantage.sh/blog/build-vs-buy-finops": {
+    "url": "https://www.vantage.sh/blog/build-vs-buy-finops",
+    "title": "Build vs Buy in the Age of AI: Cloud Cost Management Tools",
+    "topic": "ProductObservation",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-05-26",
+    "first_seen": "2026-05-31",
+    "last_seen": "2026-05-31",
+    "seen_count": 2,
+    "content_hash": "86a2b65df90a8e61d2cc3bb629d028af5da871bea42aa1c9a814631ec302310d",
+    "freshness_status": "repeated",
+    "summary": "{\n  \"summary\": \"While AI has lowered the initial barrier to building custom internal tools, the decision to build versus buy cloud cost management software has grown more complex. Organizations must weigh the ease of initial development against significant ongoing challenges, including tracking multi-cloud, SaaS, and AI spend, maintaining data accuracy amidst frequent provider updates, scaling query performance, and implementing advanced automation features.\",\n  \"key_points\": [\n    \"Building in-house is highly viable for simple, small-scale environments with a single cloud provider, minimal security compliance requirements, and a need for highly customized internal taxonomies.\",\n    \"The ongoing maintenance of custom tools often suffers from 'ownership' friction, as competing roadmap priorities and a potential conflict of interest arise when the team reporting the costs is also responsible for building the reporting tool.\",\n    \"Keeping pace with changing billing formats, data accuracy, and advanced features (such as automated remediation, AI agents, and savings plan forecasting) introduces hidden, long-term engineering costs.\",\n    \"Scaling data infrastructure to maintain fast query performance on expanding datasets is a major engineering hurdle that purpose-built platforms solve out of the box.\"\n  ],\n  \"why_it_matters\": \"For business leaders, underestimating the long-term total cost of ownership (TCO) of internal FinOps tools is a common trap. While AI makes building prototypes cheaper, the continuous engineering overhead required to maintain data accuracy, security, and modern automation features means buying specialized third-party solutions remains the most cost-effective and lower-risk strategy for growing enterprises.\"\n.\"\n.\"\n.\"\n.\"\n.\"\n.\"\n.\"\n.\"\n.\"\n  .\"\n}",
+    "key_points": [],
+    "why_it_matters": "",
+    "score": 62.7,
+    "recommendation": "Background",
+    "relevance": 4,
+    "use_case_clarity": 3,
+    "problem_solution_fit": 3,
+    "actionability": 3,
+    "credibility_novelty": 3,
+    "use_case": "Organizations deciding whether to develop a proprietary cloud cost monitoring tool internally or purchase a commercial SaaS FinOps solution.",
+    "problem_solved": "Helps teams weigh the hidden engineering overhead, maintenance, and data accuracy risks of custom tools against purchasing pre-built software.",
+    "reason": "The article offers a practical framework for the build-vs-buy decision in FinOps, though it presents general trade-offs rather than a specific workflow.",
+    "tags": [],
+    "updated_at": "2026-05-31T19:11:21"
+  },
+  "https://www.cloudzero.com/blog/?tag=finops-in-full-bloom": {
+    "url": "https://www.cloudzero.com/blog/?tag=finops-in-full-bloom",
+    "title": "FinOps In Full Bloom",
+    "topic": "ProductObservation",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "published_date": "",
+    "first_seen": "2026-05-31",
+    "last_seen": "2026-05-31",
+    "seen_count": 1,
+    "content_hash": "14dd58007c16a92755ff2718e67043aa71235ece373ce4425c42621fe13c4735",
+    "freshness_status": "new",
+    "summary": "The provided text contains only standard website cookie consent and data privacy disclosures rather than substantive industry analysis on FinOps.",
+    "key_points": [
+      "The text outlines the legal and technical necessity of cookies for website functionality.",
+      "It details the segregation of data tracking for statistical versus marketing purposes.",
+      "The actual content of the 'FinOps In Full Bloom' article was not captured, only the host site's privacy and cookie policy."
+    ],
+    "why_it_matters": "Distinguishing between core analytical content and website boilerplate is crucial for maintaining data quality in automated market intelligence harvesting.",
+    "score": 40.0,
+    "recommendation": "Exclude",
+    "relevance": 2,
+    "use_case_clarity": 2,
+    "problem_solution_fit": 2,
+    "actionability": 2,
+    "credibility_novelty": 2,
+    "use_case": "No actual product use case is described in the provided text.",
+    "problem_solved": "No problem-solution dynamic is presented as the text is a cookie consent policy.",
+    "reason": "The content contains only generic cookie consent boilerplate language rather than the actual article content about FinOps.",
+    "tags": [],
+    "updated_at": "2026-05-31T19:11:31"
   }
 }

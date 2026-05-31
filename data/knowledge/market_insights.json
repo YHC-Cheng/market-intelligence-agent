@@ -60,5 +60,43 @@
     "slide_path": "outputs/slides/slide_draft.md",
     "related_sources": [],
     "created_at": "2026-05-24T19:07:51"
+  },
+  "AI_2026-W22": {
+    "topic": "AI",
+    "week": "2026-W22",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Introducing the next generation of Amazon OpenSearch Serverless for building your agentic AI applications",
+        "url": "https://aws.amazon.com/blogs/aws/introducing-the-next-generation-of-amazon-opensearch-serverless-for-building-your-agentic-ai-applications/",
+        "source": "AWS Blog RSS",
+        "recommendation": "Useful"
+      }
+    ],
+    "created_at": "2026-05-31T18:59:48"
+  },
+  "FinOps_2026-W22": {
+    "topic": "FinOps",
+    "week": "2026-W22",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Build vs Buy in the Age of AI: Cloud Cost Management Tools",
+        "url": "https://www.vantage.sh/blog/build-vs-buy-finops",
+        "source": "Vantage Blog",
+        "recommendation": "Background"
+      }
+    ],
+    "created_at": "2026-05-31T19:06:17"
+  },
+  "ProductObservation_2026-W22": {
+    "topic": "ProductObservation",
+    "week": "2026-W22",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [],
+    "created_at": "2026-05-31T19:11:31"
   }
 }
