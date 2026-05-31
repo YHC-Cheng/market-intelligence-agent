@@ -2,6 +2,7 @@ import json
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -183,16 +184,17 @@ class JsonKnowledgeRepository:
         self._write_json(raw_data)
         return self._with_runtime_defaults(article, key)
 
-    def create_manual_article(self, url, topic, note):
-        canonical_url = self.canonicalize_url(url)
+    def create_manual_article(self, url, topic, note, normalized_url=None):
+        normalized_url = normalized_url or self.normalize_url(url)
+        canonical_url = normalized_url
         raw_data = self._read_json()
 
         for key, article in self._iter_articles(raw_data):
-            existing_canonical_url = article.get("canonical_url")
-            if not existing_canonical_url:
-                existing_canonical_url = self.canonicalize_url(article.get("url", ""))
+            existing_normalized_url = article.get("normalized_url")
+            if not existing_normalized_url:
+                existing_normalized_url = self.canonicalize_url(article.get("url", ""))
 
-            if existing_canonical_url == canonical_url:
+            if existing_normalized_url == normalized_url:
                 return {
                     "article": self._with_runtime_defaults(article, key),
                     "duplicate": True,
@@ -202,10 +204,12 @@ class JsonKnowledgeRepository:
         article = {
             "id": canonical_url,
             "url": url.strip(),
+            "normalized_url": normalized_url,
             "canonical_url": canonical_url,
             "title": url.strip(),
             "topic": topic,
             "source": "manual",
+            "source_type": "manual",
             "note": note,
             "ingestion_type": "manual",
             "review_status": "unreviewed",
@@ -214,6 +218,8 @@ class JsonKnowledgeRepository:
             "extraction_status": "not_started",
             "analysis_status": "not_started",
             "summary_status": "to_extract",
+            "failure_reason": None,
+            "failure_message": None,
             "created_at": now,
             "updated_at": now,
         }
@@ -224,7 +230,52 @@ class JsonKnowledgeRepository:
 
     @staticmethod
     def canonicalize_url(url):
-        return (url or "").strip().rstrip("/")
+        return JsonKnowledgeRepository.normalize_url(url)
+
+    @staticmethod
+    def normalize_url(url):
+        cleaned_url = (url or "").strip()
+        parsed_url = urlsplit(cleaned_url)
+
+        scheme = parsed_url.scheme.lower()
+        hostname = parsed_url.hostname
+        if not scheme or hostname is None:
+            return cleaned_url.rstrip("/")
+
+        host = hostname.lower()
+        try:
+            port = parsed_url.port
+        except ValueError:
+            port = None
+        netloc = host
+        if ":" in host and not host.startswith("["):
+            netloc = f"[{host}]"
+
+        if parsed_url.username:
+            userinfo = parsed_url.username
+            if parsed_url.password:
+                userinfo = f"{userinfo}:{parsed_url.password}"
+            netloc = f"{userinfo}@{netloc}"
+
+        if port and not (
+            (scheme == "http" and port == 80)
+            or (scheme == "https" and port == 443)
+        ):
+            netloc = f"{netloc}:{port}"
+
+        path = parsed_url.path
+        if path != "/":
+            path = path.rstrip("/")
+
+        return urlunsplit(
+            (
+                scheme,
+                netloc,
+                path,
+                parsed_url.query,
+                "",
+            )
+        )
 
     def _read_json(self):
         if not self.knowledge_path.exists():

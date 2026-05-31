@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-from urllib.parse import quote, urlencode
+from urllib.parse import quote, urlencode, urlsplit
 
 from config import RSS_SOURCES_BY_TOPIC, SOURCES
 from fastapi import FastAPI, Form, HTTPException, Query, Request
@@ -597,6 +597,26 @@ def intake_context(
     return context
 
 
+def normalize_manual_article_url(url):
+    cleaned_url = clean_filter(url)
+    if cleaned_url is None:
+        return None, "URL is required."
+
+    try:
+        parsed_url = urlsplit(cleaned_url)
+        parsed_url.port
+    except ValueError:
+        return None, "Enter a valid http or https URL."
+
+    if parsed_url.scheme.lower() not in {"http", "https"}:
+        return None, "Enter a valid http or https URL."
+
+    if not parsed_url.netloc or parsed_url.hostname is None:
+        return None, "Enter a valid http or https URL."
+
+    return JsonKnowledgeRepository.normalize_url(cleaned_url), None
+
+
 def review_queue_url(topic=None, message=None, error=None):
     params = {}
     if topic:
@@ -1005,17 +1025,29 @@ async def create_manual_article(
         "topic": topic,
         "note": note,
     }
-    cleaned_url = clean_filter(url)
+    normalized_url, url_error = normalize_manual_article_url(url)
     cleaned_topic = clean_filter(topic)
 
-    if cleaned_url is None:
+    if url_error is not None:
         return templates.TemplateResponse(
             request,
             "intake.html",
             intake_context(
                 request,
                 form=form,
-                error="URL is required.",
+                error=url_error,
+            ),
+            status_code=400,
+        )
+
+    if cleaned_topic is None:
+        return templates.TemplateResponse(
+            request,
+            "intake.html",
+            intake_context(
+                request,
+                form=form,
+                error="Choose a topic.",
             ),
             status_code=400,
         )
@@ -1033,10 +1065,24 @@ async def create_manual_article(
         )
 
     repository = get_knowledge_repository()
+    duplicate_article = repository.find_by_normalized_url(normalized_url)
+    if duplicate_article is not None:
+        return templates.TemplateResponse(
+            request,
+            "intake.html",
+            intake_context(
+                request,
+                form=form,
+                duplicate_article=duplicate_article,
+            ),
+            status_code=200,
+        )
+
     result = repository.create_manual_article(
-        cleaned_url,
+        clean_filter(url),
         cleaned_topic,
         note.strip(),
+        normalized_url=normalized_url,
     )
     article = result["article"]
 
