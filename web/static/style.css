@@ -943,6 +943,14 @@ textarea.form-control,
   margin-top: 4px;
 }
 
+.workflow-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
 .inline-info-list {
   margin: 0;
 }

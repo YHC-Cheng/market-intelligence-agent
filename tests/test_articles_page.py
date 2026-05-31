@@ -898,6 +898,8 @@ def test_article_detail_shows_summary_processing_for_ready_article(
     assert "Ready" in section
     assert "Summary is available for this article." in section
     assert "Generate Summary" not in section
+    assert "Retry Generate Summary" not in section
+    assert "Delete" not in section
 
 
 def test_article_detail_shows_generate_summary_for_unready_states(
@@ -921,35 +923,19 @@ def test_article_detail_shows_generate_summary_for_unready_states(
                 "id": "pending",
                 "title": "Pending article",
                 "analysis_status": "pending",
-            },
-            "failed": {
-                "id": "failed",
-                "title": "Failed article",
-                "summary_status": "failed",
             }
         },
     )
     client = article_client(monkeypatch, knowledge_path)
 
-    for article_id in ["missing", "not-started", "pending", "failed"]:
+    for article_id in ["missing", "not-started", "pending"]:
         response = client.get(f"/articles/{article_id}")
         section = detail_section_markup(response.text, "Summary Processing")
 
         assert response.status_code == 200
         assert "Generate Summary" in section
-        if article_id != "failed":
-            assert "To Extract" in section
+        assert "To Extract" in section
         assert f'action="/articles/{article_id}/generate-summary"' in section
-
-    failed_response = client.get("/articles/failed")
-    failed_section = detail_section_markup(
-        failed_response.text,
-        "Summary Processing",
-    )
-    assert (
-        "Summary generation failed. You can try generating it again."
-        in failed_section
-    )
 
 
 def test_article_generate_summary_route_redirects_after_processing(
@@ -1037,6 +1023,333 @@ def test_article_generate_summary_route_returns_404_for_missing_article(
 
     assert response.status_code == 404
     assert "Article not found" in response.text
+
+
+def test_retryable_failure_helper_accepts_only_failed_retryable_reasons():
+    retryable_reasons = {
+        "fetch_failed",
+        "http_error",
+        "extraction_failed",
+        "llm_summary_failed",
+        "repository_write_failed",
+        "unknown_error",
+    }
+    non_retryable_reasons = {
+        "duplicate_after_extraction",
+        "content_quality_failed",
+        "missing_url",
+        "invalid_url",
+        "missing_topic",
+        "unsupported_topic",
+        "duplicate_url",
+    }
+
+    for reason in retryable_reasons:
+        assert app_module.is_retryable_failure_reason(reason) is True
+        assert app_module.is_retryable_failure(
+            {"summary_status": "failed", "failure_reason": reason}
+        ) is True
+
+    for reason in non_retryable_reasons:
+        assert app_module.is_retryable_failure_reason(reason) is False
+        assert app_module.is_retryable_failure(
+            {"summary_status": "failed", "failure_reason": reason}
+        ) is False
+
+    assert app_module.is_retryable_failure(
+        {"summary_status": "ready", "failure_reason": "fetch_failed"}
+    ) is False
+    assert app_module.is_retryable_failure(
+        {"summary_status": "to_extract", "failure_reason": "fetch_failed"}
+    ) is False
+
+
+def test_failed_retryable_article_shows_retry_and_delete_controls(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Retry candidate",
+                "summary_status": "failed",
+                "failure_reason": "fetch_failed",
+                "failure_message": "Timed out while fetching.",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+    section = detail_section_markup(response.text, "Summary Processing")
+
+    assert response.status_code == 200
+    assert "Failed" in section
+    assert "fetch_failed" in section
+    assert "Timed out while fetching." in section
+    assert "Retry Generate Summary" in section
+    assert 'action="/articles/article-1/retry-generate-summary"' in section
+    assert "Delete" in section
+    assert 'action="/articles/article-1/delete"' in section
+    assert 'action="/articles/article-1/generate-summary"' not in section
+
+
+def test_failed_non_retryable_article_shows_delete_without_retry(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Delete-only candidate",
+                "summary_status": "failed",
+                "failure_reason": "content_quality_failed",
+                "failure_message": "Extracted content is too short.",
+            }
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/article-1")
+    section = detail_section_markup(response.text, "Summary Processing")
+
+    assert response.status_code == 200
+    assert "content_quality_failed" in section
+    assert "Extracted content is too short." in section
+    assert "Retry Generate Summary" not in section
+    assert "Delete" in section
+    assert 'action="/articles/article-1/delete"' in section
+
+
+def test_retry_generate_summary_route_redirects_after_processing(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "url": "https://example.com/article-1",
+                "title": "Retry candidate",
+                "summary_status": "failed",
+                "failure_reason": "llm_summary_failed",
+                "failure_message": "LLM unavailable.",
+            }
+        },
+    )
+    processed_article_ids = []
+
+    class FakeProcessingService:
+        def process_article(self, article_id):
+            processed_article_ids.append(article_id)
+            repository = JsonKnowledgeRepository(knowledge_path)
+            article = repository.update_article(
+                article_id,
+                {
+                    "summary_status": "ready",
+                    "summary": "Generated after retry.",
+                    "failure_reason": None,
+                    "failure_message": None,
+                },
+            )
+            return ProcessingResult(
+                article_id=article_id,
+                success=True,
+                article=article,
+            )
+
+    monkeypatch.setattr(
+        app_module,
+        "get_article_processing_service",
+        lambda repository=None: FakeProcessingService(),
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1/retry-generate-summary",
+        follow_redirects=False,
+    )
+    persisted = read_json(knowledge_path)["article-1"]
+
+    assert response.status_code == 303
+    assert response.headers["location"] == "/articles/article-1?summary_requested=1"
+    assert processed_article_ids == ["article-1"]
+    assert persisted["summary_status"] == "ready"
+    assert persisted["summary"] == "Generated after retry."
+    assert persisted["failure_reason"] is None
+    assert persisted["failure_message"] is None
+
+
+def test_retry_generate_summary_route_skips_non_retryable_failure(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Non-retry candidate",
+                "summary_status": "failed",
+                "failure_reason": "content_quality_failed",
+            }
+        },
+    )
+    processed_article_ids = []
+
+    class FakeProcessingService:
+        def process_article(self, article_id):
+            processed_article_ids.append(article_id)
+            return ProcessingResult(article_id=article_id, success=True)
+
+    monkeypatch.setattr(
+        app_module,
+        "get_article_processing_service",
+        lambda repository=None: FakeProcessingService(),
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1/retry-generate-summary",
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 303
+    assert response.headers["location"] == "/articles/article-1"
+    assert processed_article_ids == []
+
+
+def test_retry_generate_summary_route_returns_404_for_missing_article(
+    tmp_path,
+    monkeypatch,
+):
+    client = article_client(monkeypatch, tmp_path / "missing_articles.json")
+
+    response = client.post("/articles/missing/retry-generate-summary")
+
+    assert response.status_code == 404
+    assert "Article not found" in response.text
+
+
+def test_delete_article_route_removes_only_selected_article(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "article-1": {
+                "id": "article-1",
+                "title": "Delete me",
+                "summary_status": "failed",
+                "failure_reason": "fetch_failed",
+            },
+            "article-2": {
+                "id": "article-2",
+                "title": "Keep me",
+                "summary_status": "ready",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.post(
+        "/articles/article-1/delete",
+        follow_redirects=False,
+    )
+    persisted = read_json(knowledge_path)
+
+    assert response.status_code == 303
+    assert response.headers["location"] == "/"
+    assert "article-1" not in persisted
+    assert persisted["article-2"]["title"] == "Keep me"
+
+
+def test_delete_article_route_returns_404_for_missing_article(
+    tmp_path,
+    monkeypatch,
+):
+    client = article_client(monkeypatch, tmp_path / "missing_articles.json")
+
+    response = client.post("/articles/missing/delete")
+
+    assert response.status_code == 404
+    assert "Article not found" in response.text
+
+
+def test_duplicate_after_extraction_links_to_existing_article(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "existing": {
+                "id": "existing",
+                "title": "Existing canonical article",
+                "summary_status": "ready",
+            },
+            "duplicate": {
+                "id": "duplicate",
+                "title": "Duplicate candidate",
+                "summary_status": "failed",
+                "failure_reason": "duplicate_after_extraction",
+                "failure_message": "Another article already exists.",
+                "duplicate_of_article_id": "existing",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/duplicate")
+    section = detail_section_markup(response.text, "Summary Processing")
+
+    assert response.status_code == 200
+    assert "duplicate_after_extraction" in section
+    assert "Existing Article" in section
+    assert 'href="/articles/existing"' in section
+    assert "Existing canonical article" in section
+    assert "Retry Generate Summary" not in section
+
+
+def test_missing_duplicate_target_does_not_crash_article_detail(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "duplicate": {
+                "id": "duplicate",
+                "title": "Duplicate candidate",
+                "summary_status": "failed",
+                "failure_reason": "duplicate_after_extraction",
+                "failure_message": "Another article already exists.",
+                "duplicate_of_article_id": "missing-target",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/articles/duplicate")
+    section = detail_section_markup(response.text, "Summary Processing")
+
+    assert response.status_code == 200
+    assert "duplicate_after_extraction" in section
+    assert "Another article already exists." in section
+    assert "Existing Article" not in section
 
 
 def test_article_detail_shows_compact_recommendation_editor_in_header(
