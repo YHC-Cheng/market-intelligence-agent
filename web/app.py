@@ -60,6 +60,7 @@ NEWSLETTER_TOPIC_OPTIONS = INTAKE_TOPIC_OPTIONS
 ARTICLES_PER_PAGE = 15
 SUMMARY_STATUS_TABS = [
     {"value": "ready", "label": "Ready"},
+    {"value": "needs_attention", "label": "Needs Attention"},
     {"value": "failed", "label": "Failed"},
     {"value": "to_extract", "label": "To Extract"},
     {"value": "all", "label": "All"},
@@ -385,6 +386,12 @@ def apply_home_filters(articles, filters):
             for article in filtered_articles
             if article_summary_status_bucket(article) == "to_extract"
         ]
+    elif filters["summary_status"] == "needs_attention":
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article_needs_attention(article)
+        ]
 
     if filters["recommendation"] is not None:
         filtered_articles = [
@@ -452,6 +459,24 @@ def recommendation_rank(article):
 
 def article_has_summary(article):
     return bool(str(article.get("summary") or "").strip())
+
+
+def article_needs_attention(article):
+    summary_status = article_summary_status_bucket(article)
+    if summary_status in {"failed", "to_extract"}:
+        return True
+
+    recommendation = article.get("recommendation")
+    if recommendation is None or str(recommendation).strip() == "":
+        return True
+
+    if recommendation == "Background":
+        return True
+
+    if summary_status == "ready" and not article_has_summary(article):
+        return True
+
+    return False
 
 
 def is_weekly_brief_candidate(article):
@@ -620,9 +645,11 @@ async def index(
     source: Optional[str] = None,
     article_type_filter: Optional[str] = Query(default=None, alias="type"),
     summary_status: Optional[str] = None,
+    status: Optional[str] = None,
     recommendation: Optional[str] = None,
     page: Optional[str] = None,
 ):
+    selected_summary_status = summary_status or status
     return templates.TemplateResponse(
         request,
         "index.html",
@@ -634,7 +661,7 @@ async def index(
             newsletter_eligible=newsletter_eligible,
             source=source,
             article_type_filter=article_type_filter,
-            summary_status=summary_status,
+            summary_status=selected_summary_status,
             recommendation=recommendation,
             page=page,
         ),
