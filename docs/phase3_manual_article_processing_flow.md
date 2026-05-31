@@ -24,15 +24,15 @@ Current passing test baseline:
 
 ```text
 .venv/bin/python -m pytest -q
-94 passed, 1 warning
+143 passed, 1 warning
 ```
 
 Reusable existing components:
 
-- `web/app.py` already has Dashboard, intake, article detail, and newsletter routes.
-- `JsonKnowledgeRepository` can read/write JSON, create manual articles, and perform basic duplicate checks.
+- `web/app.py` has Dashboard, intake, article detail, retry/delete, Needs Attention, and newsletter routes.
+- `JsonKnowledgeRepository` can read/write JSON, create/delete manual articles, update article fields, and perform duplicate checks.
 - `main.py` already contains extraction, LLM summary, ranking, recommendation, and knowledge upsert logic.
-- `article_detail.html` already has a Generate Summary button, currently as a placeholder.
+- `article_detail.html` exposes Generate Summary, Retry Generate Summary, Delete, failure details, and duplicate-after-extraction links.
 
 ## 3. Summary Status Vocabulary
 
@@ -49,7 +49,7 @@ Legacy fallback mapping:
 - `needs_summary` maps to `to_extract`.
 - `analysis_status = not_started` maps to `to_extract`.
 - `analysis_status = pending` maps to `to_extract`.
-- UI label `To-do` should be replaced by `To Extract` in later implementation phases.
+- UI copy uses `To Extract` instead of `To-do`.
 - New manual articles should use `summary_status = "to_extract"`.
 
 ## 4. Manual Input Flow
@@ -230,12 +230,11 @@ Rules:
 
 ## 11. Weekly Brief Selection Logic
 
-Current logic must be replaced in later implementation phases.
-
 Include only:
 
 - `summary_status == ready`
 - `recommendation in {"Core", "Useful"}`
+- non-empty summary
 
 Exclude:
 
@@ -262,7 +261,21 @@ Limits:
 
 Phase 3 does not create Weekly Brief snapshots. `newsletter/current` should use the current repository state.
 
-## 12. JSON Repository Write Policy
+## 12. Needs Attention Filter
+
+Needs Attention is a derived UI filter only. It is not persisted and does not add a new `summary_status`.
+
+An article needs attention if any of these are true:
+
+- `summary_status == failed`
+- `summary_status == to_extract`
+- recommendation is missing or empty
+- recommendation is `Background`
+- `summary_status == ready` but summary is missing or empty
+
+Healthy ready articles with non-empty summaries and recommendation `Core`, `Useful`, or `Exclude` do not need attention.
+
+## 13. JSON Repository Write Policy
 
 The repository is the only JSON write entry point. Route handlers should not directly manipulate JSON files. The processing service should write through repository methods. Repository write failures should be caught and represented as `repository_write_failed` where possible.
 
@@ -278,14 +291,14 @@ Expected repository methods in later PRs:
 
 Limitation: if the JSON repository is completely unwritable, `repository_write_failed` itself may not be persisted.
 
-## 13. Acceptance Criteria
+## 14. Acceptance Criteria
 
 Status vocabulary:
 
 - Phase 3 primary statuses are `to_extract`, `ready`, and `failed`.
 - `needs_summary` is treated as legacy and mapped to `to_extract`.
 - `analysis_status` values `not_started` and `pending` can fallback to `to_extract`.
-- UI copy should use `To Extract` instead of `To-do` in later implementation.
+- UI copy uses `To Extract` instead of `To-do`.
 
 Manual input:
 
@@ -320,3 +333,25 @@ Background handling:
 
 - Manual flow maps Background to Exclude.
 - Background articles do not enter Weekly Brief.
+
+Needs Attention:
+
+- Needs Attention is derived only and is not stored as a formal status.
+- Failed, `to_extract`, missing recommendation, empty recommendation, Background, and ready-without-summary articles are included.
+- Healthy ready articles with `Core`, `Useful`, or `Exclude` and a non-empty summary are excluded.
+
+## 15. Known Limitations and Next Phase
+
+Known limitations:
+
+- Delete is hard delete.
+- Generate Summary runs synchronously in request/response.
+- There is no background queue.
+- There are no Weekly Brief snapshots.
+- There is no email sending.
+- There is no database; the 2.0 workflow remains JSON repository based.
+- Manual workflow exists, but production readiness still depends on final acceptance and usage validation.
+
+Suggested next phase:
+
+- Phase 4 should focus on acceptance hardening, operational safety, or production-readiness decisions before adding larger workflow capabilities.

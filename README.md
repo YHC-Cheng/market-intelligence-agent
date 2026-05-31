@@ -156,9 +156,9 @@ Open:
 http://127.0.0.1:8000
 ```
 
-#### Market Intelligence Agent 2.0 Phase 2 Web UI
+#### Market Intelligence Agent 2.0 Phase 3 Status
 
-Phase 2 provides a local product UI for browsing, filtering, reviewing, and manually organizing the JSON knowledge repository. It is intentionally lightweight and remains separate from the Market Intelligence Agent 1.0 pipeline.
+Phase 3 completes the local manual article workflow for Market Intelligence Agent 2.0. The Web UI remains intentionally lightweight and separate from the Market Intelligence Agent 1.0 pipeline.
 
 Current stack:
 
@@ -168,14 +168,16 @@ Current stack:
 - JSON knowledge repository
 - pytest
 
-Explicit non-goals for Phase 2:
+Explicit non-goals for Phase 3:
 
 - No React
 - No Vite
 - No Tailwind build system
 - No frontend build pipeline
 - No database
-- No article schema migration
+- No background queue
+- No Weekly Brief snapshots
+- No email sending
 - No Market Intelligence Agent 1.0 pipeline changes
 
 Routes:
@@ -191,38 +193,59 @@ Routes:
 | `/reference` | Read-only keywords and source links |
 | `/review` | Internal/manual route, not primary navigation |
 
-Phase 2 completed UI areas:
+Phase 3 completed workflow:
 
-- Dashboard: Weekly Brief summary card, article list, Keyword / Topic / Recommendation filters, Summary Status tabs, pagination, and article title links to detail pages.
-- Article Detail: intelligence content page with Summary Processing, a placeholder Generate Summary button for non-ready or failed articles, manual Recommendation dropdown, Open Original Article button, and Article Information side card.
-- Add Article: `/intake` behaves like a right-side panel from Dashboard and stores URL / Topic / Note as a local workspace article.
-- Weekly Brief: sidebar navigation includes Weekly Brief; `/newsletter` lists briefs; `/newsletter/current` shows the current brief detail; Dashboard Open brief links to `/newsletter/current`.
-- Reference: read-only keywords from `config/keywords.json` and configured source links from `config.py`.
-- UI Polish: Source Han Sans / Noto Sans TC style font stack, softer SaaS admin workspace styling, and more consistent cards, tables, buttons, badges, sidebar, and empty states.
+- Add Article: validates URL/topic, normalizes URL, prevents duplicate normalized URLs before write, and creates manual articles with `summary_status = "to_extract"`.
+- Article Detail: To Extract articles show Generate Summary; Ready articles show summary/recommendation/metadata; Failed articles show failure reason/message, Delete, retry controls when retryable, and duplicate links when available.
+- Generate Summary: `POST /articles/{id}/generate-summary` processes a single article through `ArticleProcessingService`.
+- Retry/Delete: retry reuses the same processing service for retryable failures; delete hard-deletes only the selected article.
+- Weekly Brief: `/newsletter/current` uses current repository state and includes only Ready + Core/Useful + non-empty-summary articles.
+- Needs Attention: a derived dashboard filter for failed, To Extract, missing/empty recommendation, Background, or Ready-without-summary articles.
+
+Status vocabulary:
+
+- `to_extract` -> To Extract
+- `ready` -> Ready
+- `failed` -> Failed
+- `needs_summary`, `analysis_status = not_started`, and `analysis_status = pending` are legacy fallback inputs mapped to To Extract.
+
+Recommendation vocabulary:
+
+- Core
+- Useful
+- Background legacy value, compatible but excluded from Weekly Brief
+- Exclude
 
 Dashboard details:
 
-- Summary Status tabs are `Ready`, `Failed`, `To Extract`, and `All`.
+- Summary Status tabs are `Ready`, `Needs Attention`, `Failed`, `To Extract`, and `All`.
 - Pagination shows 15 articles per page.
 - Article titles link to `/articles/{id}`.
 
 Article Detail details:
 
 - The page is an intelligence content page, not a review console.
-- `Generate Summary` is a Phase 2 placeholder and does not call AI yet.
+- `Generate Summary` calls the backend single-article processing service synchronously.
+- Failed articles show `failure_reason` and `failure_message`.
+- Retry is available only for retryable failure reasons.
+- Delete is currently hard delete.
 - Recommendation can be updated manually as `Core`, `Useful`, or `Exclude`.
 - Summary Processing shows article processing state separately from recommendation value.
 
 Add Article details:
 
 - `/intake` stores manually added URL / Topic / Note records in the local workspace.
-- It does not run extraction or AI summary in Phase 2.
-- Manual summary workflow is planned for Phase 3.
+- It validates URL/topic and prevents duplicate normalized URLs.
+- It does not run extraction or AI summary until the user opens Article Detail and clicks Generate Summary.
 
 Weekly Brief details:
 
-- The current implementation uses existing article data as a display-safe fallback.
-- Formal weekly selection logic and historical brief persistence are planned for a later phase.
+- Includes only `summary_status = ready`, recommendation `Core` or `Useful`, and non-empty summary.
+- Excludes failed, To Extract, Exclude, Background, and missing/empty-summary articles.
+- Sorts by Core before Useful, then `last_processed_at` descending, then `ranking_score` descending.
+- Applies a total maximum of 10 articles and a per-topic maximum of 3 articles.
+- Empty page/export states are safe and do not fallback to ineligible articles.
+- Phase 3 does not create Weekly Brief snapshots.
 
 Reference details:
 
@@ -236,6 +259,7 @@ Important product principles:
 - `Exclude` can still have a summary.
 - Manual articles can exist without a summary.
 - `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts.
+- Needs Attention is derived only and is not a stored status.
 
 Run tests:
 
@@ -243,13 +267,19 @@ Run tests:
 PYTHONPATH=. .venv/bin/pytest -q
 ```
 
-Planned Phase 3 next steps:
+Known Phase 3 limitations:
 
-- Manual Article Summary Flow Spec
-- Manual Article Summary Implementation
-- Weekly Brief Selection Logic Spec
-- Weekly Brief Selection Implementation
-- Needs Attention / exception handling
+- Delete is hard delete.
+- Generate Summary is synchronous request/response.
+- No background queue.
+- No Weekly Brief snapshots.
+- No email sending.
+- No database; 2.0 remains JSON repository based.
+- Manual workflow exists, but production readiness still depends on final acceptance and usage validation.
+
+Suggested next phase:
+
+- Phase 4 should focus on acceptance hardening, operational safety, or production-readiness decisions before adding larger workflow capabilities.
 
 
 ### Validate Sources
@@ -527,7 +557,7 @@ Market Intelligence Agent 2.0 does not replace or modify the 1.0 pipeline in Pha
 
 ## Market Intelligence Agent 2.0 Roadmap
 
-Market Intelligence Agent 2.0 is the Web UI and workflow layer built beside the 1.0 pipeline. It uses FastAPI, Jinja2, static CSS, the JSON knowledge repository, and pytest. Phase 2 does not introduce React, Vite, Tailwind, a frontend build pipeline, a database, article schema migration, or 1.0 pipeline changes.
+Market Intelligence Agent 2.0 is the Web UI and workflow layer built beside the 1.0 pipeline. It uses FastAPI, Jinja2, static CSS, the JSON knowledge repository, and pytest. Phase 3 does not introduce React, Vite, Tailwind, a frontend build pipeline, a database, a queue, email sending, Weekly Brief snapshots, or 1.0 pipeline changes.
 
 ### Completed
 
@@ -666,35 +696,38 @@ Phase 2 product principles:
 - `Exclude` can still have a summary
 - Manual articles can exist without a summary
 - `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts
-- Generate Summary is a placeholder and does not call AI yet
-- Formal manual article summary workflow is planned for Phase 3
+- Generate Summary was still a placeholder in Phase 2; Phase 3 later connected it to backend single-article processing
+- Formal manual article summary workflow was completed in Phase 3
+
+#### Phase 3: Manual Article Workflow
+
+Goal:
+Phase 3 connected manual article intake to the backend processing workflow and made the Dashboard, Article Detail, and Weekly Brief views use the formal article processing vocabulary.
+
+Phase 3 completed sub-phases:
+
+- Phase 3.1: Manual Article Processing Flow Spec
+- Phase 3.2: Status Vocabulary Alignment + Repository Foundation
+- Phase 3.3: Manual Input Validation + URL Normalization + Pre-deduplication
+- Phase 3.4: Single Article Generate Summary Backend Flow
+- Phase 3.5: Retry / Delete Single Article
+- Phase 3.6: Weekly Brief Selection Logic
+- Phase 3.7: Needs Attention Lightweight Filter
+
+Phase 3 current behavior:
+
+- Manual intake validates URL/topic, normalizes URLs, prevents duplicate normalized URLs, and creates `to_extract` articles.
+- Generate Summary processes one article synchronously through `ArticleProcessingService`.
+- Failed articles preserve `failure_reason` and `failure_message`, can be deleted, and can be retried when retryable.
+- Weekly Brief includes only ready + Core/Useful + non-empty-summary articles from the current JSON repository state.
+- Needs Attention is a derived filter only; it is not a persisted article status.
 
 ### Next
 
-#### Phase 3: Backend Workflow Enhancement
+#### Phase 4: Acceptance Hardening and Production Readiness
 
-Planned:
+Recommended focus:
 
-- Phase 3.1: Manual Article Summary Flow Spec
-- Phase 3.2: Manual Article Summary Implementation
-- Phase 3.3: Weekly Brief Selection Logic Spec
-- Phase 3.4: Weekly Brief Selection Implementation
-- Phase 3.5: Needs Attention / exception handling
-
-## Next Development Focus
-
-The next major improvement is Market Intelligence Agent 2.0 Phase 3.
-
-Why it matters:
-
-- Phase 3 builds on the completed 2.0 Phase 1 and Phase 2 UI foundation.
-- Phase 3 will connect manual article intake, summary generation, Weekly Brief selection logic, and Needs Attention workflows.
-- Phase 3 does not replace the Market Intelligence Agent 1.0 pipeline.
-
-Planned improvements:
-
-- Phase 3.1: Manual Article Summary Flow Spec
-- Phase 3.2: Manual Article Summary Implementation
-- Phase 3.3: Weekly Brief Selection Logic Spec
-- Phase 3.4: Weekly Brief Selection Implementation
-- Phase 3.5: Needs Attention / exception handling
+- Run browser-based acceptance checks against representative local data.
+- Decide whether hard delete, synchronous processing, and JSON-only storage are sufficient for continued local use.
+- Define operational guardrails before adding queues, snapshots, email sending, database storage, or production deployment.
