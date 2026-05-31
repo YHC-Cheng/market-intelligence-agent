@@ -268,12 +268,21 @@ def test_articles_page_renders_summary_status_tabs(tmp_path, monkeypatch):
     assert filter_index < tabs_index < table_index
     assert 'href="/?summary_status=ready"' in tabs
     assert "Ready" in tabs
+    assert 'href="/?summary_status=needs_attention"' in tabs
+    assert "Needs Attention" in tabs
     assert 'href="/?summary_status=failed"' in tabs
     assert "Failed" in tabs
     assert 'href="/?summary_status=to_extract"' in tabs
     assert "To Extract" in tabs
     assert "To-do" not in tabs
     assert "Needs Summary" not in tabs
+    assert (
+        tabs.index("Ready")
+        < tabs.index("Needs Attention")
+        < tabs.index("Failed")
+        < tabs.index("To Extract")
+        < tabs.index("All")
+    )
     assert 'href="/?summary_status=all"' in tabs
     assert "All" in tabs
     assert 'class="status-tab is-active"' in tabs
@@ -311,6 +320,40 @@ def test_summary_status_tabs_preserve_existing_filters(tmp_path, monkeypatch):
         'href="/?summary_status=failed&amp;keyword=cloud'
         '&amp;topic=FinOps&amp;recommendation=Core"'
     ) in tabs
+    assert (
+        'href="/?summary_status=needs_attention&amp;keyword=cloud'
+        '&amp;topic=FinOps&amp;recommendation=Core"'
+    ) in tabs
+
+
+def test_article_needs_attention_helper_matches_phase_3_rules():
+    assert app_module.article_needs_attention(
+        {"summary_status": "failed", "recommendation": "Core", "summary": "Done"}
+    ) is True
+    assert app_module.article_needs_attention(
+        {"summary_status": "to_extract", "recommendation": "Core", "summary": "Done"}
+    ) is True
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "summary": "Done"}
+    ) is True
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "recommendation": "", "summary": "Done"}
+    ) is True
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "recommendation": "Background", "summary": "Done"}
+    ) is True
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "recommendation": "Core", "summary": " "}
+    ) is True
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "recommendation": "Core", "summary": "Done"}
+    ) is False
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "recommendation": "Useful", "summary": "Done"}
+    ) is False
+    assert app_module.article_needs_attention(
+        {"summary_status": "ready", "recommendation": "Exclude", "summary": "Done"}
+    ) is False
 
 
 def test_keyword_search_input_does_not_render_search_icon(tmp_path, monkeypatch):
@@ -462,6 +505,141 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
     assert "Pending intelligence" in response.text
     assert "To extract intelligence" in response.text
     assert "Failed intelligence" in response.text
+
+
+def test_articles_page_filters_by_needs_attention_status_alias(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "healthy-core": {
+                "id": "healthy-core",
+                "title": "Healthy Core article",
+                "topic": "AI",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Core",
+            },
+            "healthy-useful": {
+                "id": "healthy-useful",
+                "title": "Healthy Useful article",
+                "topic": "AI",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Useful",
+            },
+            "healthy-exclude": {
+                "id": "healthy-exclude",
+                "title": "Healthy Exclude article",
+                "topic": "FinOps",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Exclude",
+            },
+            "failed": {
+                "id": "failed",
+                "title": "Failed attention article",
+                "topic": "AI",
+                "summary_status": "failed",
+                "summary": "Old summary.",
+                "recommendation": "Core",
+            },
+            "to-extract": {
+                "id": "to-extract",
+                "title": "To Extract attention article",
+                "topic": "FinOps",
+                "summary_status": "to_extract",
+                "recommendation": "Core",
+            },
+            "background": {
+                "id": "background",
+                "title": "Background attention article",
+                "topic": "AI",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Background",
+            },
+            "empty-summary": {
+                "id": "empty-summary",
+                "title": "Empty Summary attention article",
+                "topic": "AI",
+                "summary_status": "ready",
+                "summary": "",
+                "recommendation": "Core",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get("/?status=needs_attention")
+
+    assert response.status_code == 200
+    assert "Failed attention article" in response.text
+    assert "To Extract attention article" in response.text
+    assert "Background attention article" in response.text
+    assert "Empty Summary attention article" in response.text
+    assert "Healthy Core article" not in response.text
+    assert "Healthy Useful article" not in response.text
+    assert "Healthy Exclude article" not in response.text
+
+
+def test_needs_attention_filter_combines_with_existing_filters(
+    tmp_path,
+    monkeypatch,
+):
+    knowledge_path = tmp_path / "articles_knowledge.json"
+    write_json(
+        knowledge_path,
+        {
+            "matching": {
+                "id": "matching",
+                "title": "Cloud Background signal",
+                "topic": "FinOps",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Background",
+            },
+            "wrong-topic": {
+                "id": "wrong-topic",
+                "title": "Cloud Background AI signal",
+                "topic": "AI",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Background",
+            },
+            "wrong-keyword": {
+                "id": "wrong-keyword",
+                "title": "Pricing Background signal",
+                "topic": "FinOps",
+                "summary_status": "ready",
+                "summary": "Complete summary.",
+                "recommendation": "Background",
+            },
+            "wrong-recommendation": {
+                "id": "wrong-recommendation",
+                "title": "Cloud Core missing summary",
+                "topic": "FinOps",
+                "summary_status": "ready",
+                "summary": "",
+                "recommendation": "Core",
+            },
+        },
+    )
+    client = article_client(monkeypatch, knowledge_path)
+
+    response = client.get(
+        "/?summary_status=needs_attention"
+        "&topic=FinOps&keyword=Cloud&recommendation=Background"
+    )
+
+    assert response.status_code == 200
+    assert "Cloud Background signal" in response.text
+    assert "Cloud Background AI signal" not in response.text
+    assert "Pricing Background signal" not in response.text
+    assert "Cloud Core missing summary" not in response.text
 
 
 def test_articles_to_extract_tab_includes_legacy_unprocessed_statuses(
