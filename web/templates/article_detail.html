@@ -12,7 +12,7 @@
   {% endif %}
 
   {% if summary_requested %}
-    <div class="alert alert-success" role="status">Summary generation will be connected in a later phase.</div>
+    <div class="alert alert-success" role="status">Summary generation request processed.</div>
   {% endif %}
 
   {% set score = article.get("score") %}
@@ -81,10 +81,24 @@
             <h2 id="summary-processing-title">Summary Processing</h2>
             <p>{{ summary_status_explanation }}</p>
           </div>
-          {% if can_generate_summary %}
-            <form method="post" action="{{ detail_href }}/generate-summary">
-              <button class="button button-secondary" type="submit">Generate Summary</button>
-            </form>
+          {% if can_generate_summary or summary_status_bucket == "failed" %}
+            <div class="workflow-actions">
+              {% if can_generate_summary %}
+                <form method="post" action="{{ detail_href }}/generate-summary">
+                  <button class="button button-secondary" type="submit">Generate Summary</button>
+                </form>
+              {% endif %}
+              {% if summary_status_bucket == "failed" %}
+                {% if can_retry_summary %}
+                  <form method="post" action="{{ detail_href }}/retry-generate-summary">
+                    <button class="button button-secondary" type="submit">Retry Generate Summary</button>
+                  </form>
+                {% endif %}
+                <form method="post" action="{{ detail_href }}/delete">
+                  <button class="button button-secondary" type="submit">Delete</button>
+                </form>
+              {% endif %}
+            </div>
           {% endif %}
         </div>
         <dl class="info-list inline-info-list">
@@ -92,6 +106,26 @@
             <dt>Summary Status</dt>
             <dd>{{ summary_status_display }}</dd>
           </div>
+          {% if summary_status_bucket == "failed" %}
+            <div>
+              <dt>Failure Reason</dt>
+              <dd>{{ article.get("failure_reason") or "—" }}</dd>
+            </div>
+            <div>
+              <dt>Failure Message</dt>
+              <dd>{{ article.get("failure_message") or "—" }}</dd>
+            </div>
+            {% if article.get("failure_reason") == "duplicate_after_extraction" and duplicate_detail_href %}
+              <div>
+                <dt>Existing Article</dt>
+                <dd>
+                  <a href="{{ duplicate_detail_href }}">
+                    {{ duplicate_article.get("title") or duplicate_article.get("url") or duplicate_article.get("id") }}
+                  </a>
+                </dd>
+              </div>
+            {% endif %}
+          {% endif %}
         </dl>
       </section>
 

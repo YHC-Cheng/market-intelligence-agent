@@ -67,6 +67,14 @@ SUMMARY_STATUS_TABS = [
 SUMMARY_STATUS_FILTERS = {tab["value"] for tab in SUMMARY_STATUS_TABS}
 DEFAULT_SUMMARY_STATUS_FILTER = "ready"
 RECOMMENDATION_OPTIONS = ["Core", "Useful", "Exclude"]
+RETRYABLE_FAILURE_REASONS = {
+    "fetch_failed",
+    "http_error",
+    "extraction_failed",
+    "llm_summary_failed",
+    "repository_write_failed",
+    "unknown_error",
+}
 
 
 def get_knowledge_repository():
@@ -224,7 +232,18 @@ def summary_status_explanation(article):
 
 
 def can_generate_summary(article):
-    return article_summary_status_bucket(article) != "ready"
+    return article_summary_status_bucket(article) == "to_extract"
+
+
+def is_retryable_failure_reason(failure_reason):
+    return failure_reason in RETRYABLE_FAILURE_REASONS
+
+
+def is_retryable_failure(article):
+    if article_summary_status_bucket(article) != "failed":
+        return False
+
+    return is_retryable_failure_reason(article.get("failure_reason"))
 
 
 def updated_date(article):
@@ -1123,6 +1142,14 @@ async def article_detail(
     if article is None:
         raise HTTPException(status_code=404, detail="Article not found")
 
+    duplicate_article = None
+    duplicate_detail_href = None
+    duplicate_article_id = article.get("duplicate_of_article_id")
+    if duplicate_article_id:
+        duplicate_article = repository.get_article(duplicate_article_id)
+        if duplicate_article is not None:
+            duplicate_detail_href = article_detail_href(duplicate_article)
+
     return templates.TemplateResponse(
         request,
         "article_detail.html",
@@ -1139,6 +1166,9 @@ async def article_detail(
             "summary_status_bucket": article_summary_status_bucket(article),
             "summary_status_explanation": summary_status_explanation(article),
             "can_generate_summary": can_generate_summary(article),
+            "can_retry_summary": is_retryable_failure(article),
+            "duplicate_article": duplicate_article,
+            "duplicate_detail_href": duplicate_detail_href,
             "recommendation_options": RECOMMENDATION_OPTIONS,
             "saved": saved == "1",
             "created": created == "1",
@@ -1169,6 +1199,54 @@ async def generate_article_summary(article_id: str):
 @app.post("/articles/{article_id:path}/summary", response_class=HTMLResponse)
 async def request_article_summary(article_id: str):
     return await generate_article_summary(article_id)
+
+
+@app.post(
+    "/articles/{article_id:path}/retry-generate-summary",
+    response_class=HTMLResponse,
+)
+async def retry_article_summary(article_id: str):
+    repository = get_knowledge_repository()
+    article = repository.get_article(article_id)
+
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    if not is_retryable_failure(article):
+        return RedirectResponse(
+            url=article_detail_href(article),
+            status_code=303,
+        )
+
+    service = get_article_processing_service(repository)
+    result = service.process_article(article_id)
+
+    if result.not_found:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    article = result.article or repository.get_article(article_id)
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    return RedirectResponse(
+        url=f"{article_detail_href(article)}?summary_requested=1",
+        status_code=303,
+    )
+
+
+@app.post("/articles/{article_id:path}/delete", response_class=HTMLResponse)
+async def delete_article(article_id: str):
+    repository = get_knowledge_repository()
+    article = repository.get_article(article_id)
+
+    if article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    deleted_article = repository.delete_article(article_id)
+    if deleted_article is None:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    return RedirectResponse(url="/", status_code=303)
 
 
 @app.post("/articles/{article_id:path}", response_class=HTMLResponse)
