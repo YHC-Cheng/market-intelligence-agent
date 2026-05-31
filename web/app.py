@@ -67,6 +67,9 @@ SUMMARY_STATUS_TABS = [
 SUMMARY_STATUS_FILTERS = {tab["value"] for tab in SUMMARY_STATUS_TABS}
 DEFAULT_SUMMARY_STATUS_FILTER = "ready"
 RECOMMENDATION_OPTIONS = ["Core", "Useful", "Exclude"]
+WEEKLY_BRIEF_RECOMMENDATIONS = {"Core", "Useful"}
+WEEKLY_BRIEF_TOTAL_LIMIT = 10
+WEEKLY_BRIEF_TOPIC_LIMIT = 3
 RETRYABLE_FAILURE_REASONS = {
     "fetch_failed",
     "http_error",
@@ -439,35 +442,85 @@ def brief_signal_articles(articles):
 
 
 def recommendation_rank(article):
-    recommendation = str(article.get("recommendation") or "").casefold()
-    if recommendation == "core":
+    recommendation = article.get("recommendation")
+    if recommendation == "Core":
         return 3
-    if recommendation == "useful":
+    if recommendation == "Useful":
         return 2
     return 0
+
+
+def article_has_summary(article):
+    return bool(str(article.get("summary") or "").strip())
+
+
+def is_weekly_brief_candidate(article):
+    return (
+        article_summary_status_bucket(article) == "ready"
+        and article.get("recommendation") in WEEKLY_BRIEF_RECOMMENDATIONS
+        and article_has_summary(article)
+    )
+
+
+def article_processed_timestamp(article):
+    processed_at = article.get("last_processed_at")
+    if processed_at in (None, ""):
+        return 0.0
+
+    try:
+        return datetime.fromisoformat(
+            str(processed_at).replace("Z", "+00:00"),
+        ).timestamp()
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def article_ranking_score(article):
+    try:
+        return float(article.get("ranking_score"))
+    except (TypeError, ValueError):
+        return -1
+
+
+def weekly_brief_sort_key(article):
+    return (
+        recommendation_rank(article),
+        article_processed_timestamp(article),
+        article_ranking_score(article),
+    )
 
 
 def weekly_brief_candidate_articles(topic=None):
     repository = get_knowledge_repository()
     articles = repository.list_articles(topic=topic)
 
-    recommended_articles = [
+    eligible_articles = [
         article
         for article in articles
-        if recommendation_rank(article) > 0
+        if is_weekly_brief_candidate(article)
     ]
-    candidates = recommended_articles or articles
 
     sorted_candidates = sorted(
-        candidates,
-        key=lambda article: (
-            recommendation_rank(article),
-            article_score(article),
-            str(article.get("updated_at") or article.get("created_at") or ""),
-        ),
+        eligible_articles,
+        key=weekly_brief_sort_key,
         reverse=True,
     )
-    return with_detail_hrefs(sorted_candidates)
+
+    limited_candidates = []
+    topic_counts = {}
+    for article in sorted_candidates:
+        topic_name = article.get("topic") or ""
+        topic_count = topic_counts.get(topic_name, 0)
+        if topic_count >= WEEKLY_BRIEF_TOPIC_LIMIT:
+            continue
+
+        limited_candidates.append(article)
+        topic_counts[topic_name] = topic_count + 1
+
+        if len(limited_candidates) >= WEEKLY_BRIEF_TOTAL_LIMIT:
+            break
+
+    return with_detail_hrefs(limited_candidates)
 
 
 def current_week_label(generated_at=None):
@@ -707,6 +760,14 @@ def newsletter_markdown(articles, topic=None, generated_at=None):
         f"- article_count: {len(articles)}",
         "",
     ]
+
+    if not articles:
+        lines.extend(
+            [
+                "No high-signal articles available for this week yet.",
+                "",
+            ]
+        )
 
     for index, article in enumerate(articles, start=1):
         lines.extend(
