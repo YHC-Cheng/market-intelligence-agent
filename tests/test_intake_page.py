@@ -129,8 +129,15 @@ def test_intake_post_creates_manual_article(tmp_path, monkeypatch):
     assert article["newsletter_status"] == "not_included"
     assert article["extraction_status"] == "not_started"
     assert article["analysis_status"] == "not_started"
+    assert article["summary_status"] == "to_extract"
     assert "created_at" in article
     assert "updated_at" in article
+
+    articles_response = client.get("/?summary_status=to_extract")
+
+    assert articles_response.status_code == 200
+    assert "https://example.com/manual/" in articles_response.text
+    assert "To Extract" in articles_response.text
 
 
 def test_intake_post_redirects_without_crashing(tmp_path, monkeypatch):

@@ -202,7 +202,7 @@ Phase 2 completed UI areas:
 
 Dashboard details:
 
-- Summary Status tabs are `Ready`, `Failed`, `To-do`, and `All`.
+- Summary Status tabs are `Ready`, `Failed`, `To Extract`, and `All`.
 - Pagination shows 15 articles per page.
 - Article titles link to `/articles/{id}`.
 

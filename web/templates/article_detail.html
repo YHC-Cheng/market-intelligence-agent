@@ -32,17 +32,12 @@
   {% elif article_type %}
     {% set article_type_display = article_type|replace("_", " ")|title %}
   {% endif %}
-  {% set summary_status = article.get("summary_status") or article.get("analysis_status") %}
-  {% if not summary_status and article.get("summary") %}
-    {% set summary_status = "ready" %}
-  {% endif %}
-
   <div class="article-hero">
     <div class="metadata-row" aria-label="Article metadata">
       {% if article.get("topic") %}
         <span class="badge badge-outline">{{ article.get("topic") }}</span>
       {% endif %}
-      <span class="badge {% if summary_status_display in ['completed', 'ready', 'success'] %}badge-success{% elif summary_status_display in ['pending', 'not_started'] %}badge-todo{% elif summary_status_display in ['failed', 'error'] %}badge-danger{% else %}badge-secondary{% endif %}">
+      <span class="badge {% if summary_status_bucket == 'ready' %}badge-success{% elif summary_status_bucket == 'to_extract' %}badge-todo{% elif summary_status_bucket == 'failed' %}badge-danger{% else %}badge-secondary{% endif %}">
         Summary Status: {{ summary_status_display }}
       </span>
       {% if source_display %}
