@@ -82,7 +82,7 @@
             <p>{{ summary_status_explanation }}</p>
           </div>
           {% if can_generate_summary %}
-            <form method="post" action="{{ detail_href }}/summary">
+            <form method="post" action="{{ detail_href }}/generate-summary">
               <button class="button button-secondary" type="submit">Generate Summary</button>
             </form>
           {% endif %}

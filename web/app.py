@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
+from web.services.article_processing import ArticleProcessingService
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -70,6 +71,10 @@ RECOMMENDATION_OPTIONS = ["Core", "Useful", "Exclude"]
 
 def get_knowledge_repository():
     return JsonKnowledgeRepository()
+
+
+def get_article_processing_service(repository=None):
+    return ArticleProcessingService(repository or get_knowledge_repository())
 
 
 def base_template_context(
@@ -1142,11 +1147,16 @@ async def article_detail(
     )
 
 
-@app.post("/articles/{article_id:path}/summary", response_class=HTMLResponse)
-async def request_article_summary(article_id: str):
+@app.post("/articles/{article_id:path}/generate-summary", response_class=HTMLResponse)
+async def generate_article_summary(article_id: str):
     repository = get_knowledge_repository()
-    article = repository.get_article(article_id)
+    service = get_article_processing_service(repository)
+    result = service.process_article(article_id)
 
+    if result.not_found:
+        raise HTTPException(status_code=404, detail="Article not found")
+
+    article = result.article or repository.get_article(article_id)
     if article is None:
         raise HTTPException(status_code=404, detail="Article not found")
 
@@ -1154,6 +1164,11 @@ async def request_article_summary(article_id: str):
         url=f"{article_detail_href(article)}?summary_requested=1",
         status_code=303,
     )
+
+
+@app.post("/articles/{article_id:path}/summary", response_class=HTMLResponse)
+async def request_article_summary(article_id: str):
+    return await generate_article_summary(article_id)
 
 
 @app.post("/articles/{article_id:path}", response_class=HTMLResponse)

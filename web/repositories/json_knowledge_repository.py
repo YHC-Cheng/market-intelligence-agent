@@ -247,6 +247,7 @@ class JsonKnowledgeRepository:
             port = parsed_url.port
         except ValueError:
             port = None
+
         netloc = host
         if ":" in host and not host.startswith("["):
             netloc = f"[{host}]"
@@ -267,15 +268,7 @@ class JsonKnowledgeRepository:
         if path != "/":
             path = path.rstrip("/")
 
-        return urlunsplit(
-            (
-                scheme,
-                netloc,
-                path,
-                parsed_url.query,
-                "",
-            )
-        )
+        return urlunsplit((scheme, netloc, path, parsed_url.query, ""))
 
     def _read_json(self):
         if not self.knowledge_path.exists():

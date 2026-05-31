@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 
 from web import app as app_module
 from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
+from web.services.article_processing import ProcessingResult
 
 
 def write_json(path, data):
@@ -938,6 +939,7 @@ def test_article_detail_shows_generate_summary_for_unready_states(
         assert "Generate Summary" in section
         if article_id != "failed":
             assert "To Extract" in section
+        assert f'action="/articles/{article_id}/generate-summary"' in section
 
     failed_response = client.get("/articles/failed")
     failed_section = detail_section_markup(
@@ -950,7 +952,7 @@ def test_article_detail_shows_generate_summary_for_unready_states(
     )
 
 
-def test_article_summary_placeholder_route_redirects_without_generation(
+def test_article_generate_summary_route_redirects_after_processing(
     tmp_path,
     monkeypatch,
 ):
@@ -966,24 +968,75 @@ def test_article_summary_placeholder_route_redirects_without_generation(
             }
         },
     )
+    processed_article_ids = []
+
+    class FakeProcessingService:
+        def process_article(self, article_id):
+            processed_article_ids.append(article_id)
+            repository = JsonKnowledgeRepository(knowledge_path)
+            article = repository.update_article(
+                article_id,
+                {
+                    "summary_status": "ready",
+                    "summary": "Generated summary.",
+                    "analysis": {"signal": "useful"},
+                    "recommendation": "Core",
+                    "ranking_score": 91,
+                    "failure_reason": None,
+                    "failure_message": None,
+                    "last_processed_at": "2026-05-31T10:00:00",
+                },
+            )
+            return ProcessingResult(
+                article_id=article_id,
+                success=True,
+                article=article,
+            )
+
+    def service_factory(repository=None):
+        return FakeProcessingService()
+
+    monkeypatch.setattr(
+        app_module,
+        "get_article_processing_service",
+        service_factory,
+    )
     client = article_client(monkeypatch, knowledge_path)
 
     response = client.post(
-        "/articles/article-1/summary",
+        "/articles/article-1/generate-summary",
         follow_redirects=False,
     )
     persisted = read_json(knowledge_path)["article-1"]
 
     assert response.status_code == 303
     assert response.headers["location"] == "/articles/article-1?summary_requested=1"
-    assert persisted["summary_status"] == "to_extract"
-    assert "summary" not in persisted
+    assert processed_article_ids == ["article-1"]
+    assert persisted["summary_status"] == "ready"
+    assert persisted["summary"] == "Generated summary."
+    assert persisted["analysis"] == {"signal": "useful"}
+    assert persisted["recommendation"] == "Core"
+    assert persisted["ranking_score"] == 91
+    assert persisted["failure_reason"] is None
+    assert persisted["failure_message"] is None
+    assert persisted["last_processed_at"] == "2026-05-31T10:00:00"
 
-    response = client.post("/articles/article-1/summary")
+    response = client.post("/articles/article-1/generate-summary")
 
     assert response.status_code == 200
-    assert "Summary generation will be connected in a later phase." in response.text
-    assert "Summary generated" not in response.text
+    assert "Generated summary." in response.text
+
+
+def test_article_generate_summary_route_returns_404_for_missing_article(
+    tmp_path,
+    monkeypatch,
+):
+    client = article_client(monkeypatch, tmp_path / "missing_articles.json")
+
+    response = client.post("/articles/missing/generate-summary")
+
+    assert response.status_code == 404
+    assert "Article not found" in response.text
 
 
 def test_article_detail_shows_compact_recommendation_editor_in_header(
