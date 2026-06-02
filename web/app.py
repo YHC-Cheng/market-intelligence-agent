@@ -63,6 +63,7 @@ SUMMARY_STATUS_TABS = [
     {"value": "needs_attention", "label": "Needs Attention"},
     {"value": "failed", "label": "Failed"},
     {"value": "to_extract", "label": "To Extract"},
+    {"value": "skipped", "label": "Skipped"},
     {"value": "all", "label": "All"},
 ]
 SUMMARY_STATUS_FILTERS = {tab["value"] for tab in SUMMARY_STATUS_TABS}
@@ -203,6 +204,20 @@ def normalize_summary_status(article):
         return "failed"
     if summary_status in {"to_extract", "needs_summary"}:
         return "to_extract"
+    if summary_status in {"skipped", "not_selected", "metadata_only", "archived"}:
+        return "skipped"
+
+    if article_has_summary(article):
+        return "ready"
+
+    if article_is_failed(article):
+        return "failed"
+
+    if article_is_skipped_metadata(article):
+        return "skipped"
+
+    if article_is_manual(article):
+        return "to_extract"
 
     analysis_status = str(article.get("analysis_status") or "").strip().casefold()
     if analysis_status in {"not_started", "pending"}:
@@ -221,6 +236,8 @@ def display_summary_status(article):
         return "Ready"
     if bucket == "failed":
         return "Failed"
+    if bucket == "skipped":
+        return "Skipped"
 
     return "To Extract"
 
@@ -231,6 +248,8 @@ def summary_status_explanation(article):
         return "Summary is available for this article."
     if bucket == "failed":
         return "Summary generation failed. You can try generating it again."
+    if bucket == "skipped":
+        return "This pipeline article was not selected for summary generation."
 
     return "This article has not been summarized yet."
 
@@ -386,6 +405,12 @@ def apply_home_filters(articles, filters):
             for article in filtered_articles
             if article_summary_status_bucket(article) == "to_extract"
         ]
+    elif filters["summary_status"] == "skipped":
+        filtered_articles = [
+            article
+            for article in filtered_articles
+            if article_summary_status_bucket(article) == "skipped"
+        ]
     elif filters["summary_status"] == "needs_attention":
         filtered_articles = [
             article
@@ -461,8 +486,55 @@ def article_has_summary(article):
     return bool(str(article.get("summary") or "").strip())
 
 
+def article_is_manual(article):
+    return (
+        article.get("source") == "manual"
+        or article.get("source_type") == "manual"
+        or article.get("ingestion_type") == "manual"
+    )
+
+
+def article_is_failed(article):
+    extraction_status = str(
+        article.get("extraction_status") or ""
+    ).strip().casefold()
+    analysis_status = str(article.get("analysis_status") or "").strip().casefold()
+    if extraction_status in {"failed", "error"}:
+        return True
+    if analysis_status in {"failed", "error"}:
+        return True
+
+    return bool(article.get("failure_reason"))
+
+
+def article_is_skipped_metadata(article):
+    freshness_status = str(
+        article.get("freshness_status") or ""
+    ).strip().casefold()
+    if freshness_status in {"old", "repeated"}:
+        return True
+
+    if str(article.get("llm_status") or "").strip().casefold() in {
+        "skipped",
+        "not_selected",
+    }:
+        return True
+
+    if str(article.get("processing_status") or "").strip().casefold() in {
+        "skipped",
+        "not_selected",
+        "metadata_only",
+    }:
+        return True
+
+    return False
+
+
 def article_needs_attention(article):
     summary_status = article_summary_status_bucket(article)
+    if summary_status == "skipped":
+        return False
+
     if summary_status in {"failed", "to_extract"}:
         return True
 

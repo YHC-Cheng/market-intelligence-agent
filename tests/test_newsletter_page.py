@@ -182,6 +182,7 @@ def test_newsletter_selection_uses_phase_3_include_and_exclude_rules(
             "ready-core": {
                 "id": "ready-core",
                 "title": "Ready Core included",
+                "topic": "AI",
                 "summary_status": "ready",
                 "summary": "Core summary.",
                 "recommendation": "Core",
@@ -189,8 +190,23 @@ def test_newsletter_selection_uses_phase_3_include_and_exclude_rules(
             "ready-useful": {
                 "id": "ready-useful",
                 "title": "Ready Useful included",
+                "topic": "FinOps",
                 "summary_status": "ready",
                 "summary": "Useful summary.",
+                "recommendation": "Useful",
+            },
+            "legacy-core": {
+                "id": "legacy-core",
+                "title": "Legacy Core included",
+                "topic": "ProductObservation",
+                "summary": "Legacy Core summary.",
+                "recommendation": "Core",
+            },
+            "legacy-useful": {
+                "id": "legacy-useful",
+                "title": "Legacy Useful included",
+                "topic": "Security",
+                "summary": "Legacy Useful summary.",
                 "recommendation": "Useful",
             },
             "failed-core": {
@@ -234,6 +250,11 @@ def test_newsletter_selection_uses_phase_3_include_and_exclude_rules(
                 "summary": "   ",
                 "recommendation": "Useful",
             },
+            "legacy-missing-summary": {
+                "id": "legacy-missing-summary",
+                "title": "Legacy Missing Summary excluded",
+                "recommendation": "Core",
+            },
         },
     )
     client = newsletter_client(monkeypatch, knowledge_path, tmp_path / "newsletter")
@@ -243,13 +264,16 @@ def test_newsletter_selection_uses_phase_3_include_and_exclude_rules(
     assert response.status_code == 200
     assert "Ready Core included" in response.text
     assert "Ready Useful included" in response.text
+    assert "Legacy Core included" in response.text
+    assert "Legacy Useful included" in response.text
     assert "Failed Core excluded" not in response.text
     assert "To Extract Core excluded" not in response.text
     assert "Ready Exclude excluded" not in response.text
     assert "Ready Background excluded" not in response.text
     assert "Missing Summary excluded" not in response.text
     assert "Empty Summary excluded" not in response.text
-    assert "- article_count: 2" in response.text
+    assert "Legacy Missing Summary excluded" not in response.text
+    assert "- article_count: 4" in response.text
 
 
 def test_newsletter_selection_sorts_by_recommendation_processed_time_and_score(

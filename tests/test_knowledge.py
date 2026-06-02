@@ -79,9 +79,76 @@ class KnowledgeHelperTest(unittest.TestCase):
 
         entry = knowledge["https://example.com/article"]
         self.assertEqual(entry["summary"], "A useful article.")
+        self.assertEqual(entry["summary_status"], "ready")
         self.assertEqual(entry["score"], 88)
         self.assertEqual(entry["seen_count"], 2)
         self.assertEqual(entry["freshness_status"], "repeated")
+
+    def test_upsert_article_knowledge_marks_metadata_only_articles_skipped(self):
+        article = {
+            "title": "Old article",
+            "url": "https://example.com/old",
+            "source": "Example",
+            "topic": "FinOps",
+            "freshness_status": "old",
+        }
+
+        knowledge = upsert_article_knowledge(article, {}, {}, {})
+
+        entry = knowledge["https://example.com/old"]
+        self.assertEqual(entry["summary_status"], "skipped")
+        self.assertEqual(entry["summary"], "")
+
+    def test_upsert_article_knowledge_marks_old_to_extract_article_skipped(self):
+        article = {
+            "title": "Old article",
+            "url": "https://example.com/old",
+            "source": "Example",
+            "topic": "FinOps",
+            "freshness_status": "old",
+        }
+        existing = {
+            "https://example.com/old": {
+                "url": "https://example.com/old",
+                "summary_status": "to_extract",
+            }
+        }
+
+        knowledge = upsert_article_knowledge(article, {}, {}, existing)
+
+        entry = knowledge["https://example.com/old"]
+        self.assertEqual(entry["summary_status"], "skipped")
+
+    def test_upsert_article_knowledge_marks_summary_errors_failed(self):
+        article = {
+            "title": "LLM error article",
+            "url": "https://example.com/error",
+            "source": "Example",
+            "topic": "AI",
+        }
+        summary = {
+            "summary": "",
+            "error": "quota exceeded",
+        }
+
+        knowledge = upsert_article_knowledge(article, summary, {}, {})
+
+        entry = knowledge["https://example.com/error"]
+        self.assertEqual(entry["summary_status"], "failed")
+        self.assertEqual(entry["failure_reason"], "quota exceeded")
+
+    def test_upsert_article_knowledge_marks_manual_without_summary_to_extract(self):
+        article = {
+            "title": "Manual article",
+            "url": "https://example.com/manual",
+            "source_type": "manual",
+            "topic": "AI",
+        }
+
+        knowledge = upsert_article_knowledge(article, {}, {}, {})
+
+        entry = knowledge["https://example.com/manual"]
+        self.assertEqual(entry["summary_status"], "to_extract")
 
     def test_update_market_insights_excludes_exclude_sources(self):
         ranked_articles = [
