@@ -253,7 +253,7 @@ Important product principles:
 Run tests:
 
 ```bash
-PYTHONPATH=. .venv/bin/pytest -q
+.venv/bin/python -m pytest -q
 ```
 
 Planned Phase 3 next steps:
@@ -538,172 +538,150 @@ Market Intelligence Agent 2.0 does not replace or modify the 1.0 pipeline in Pha
 - Phase 8.5: Output quality checks
 - Phase 8.6: Knowledge / history persistence
 
-## Market Intelligence Agent 2.0 Roadmap
+## Market Intelligence Agent 2.0 Completed Progress
 
-Market Intelligence Agent 2.0 is the Web UI and workflow layer built beside the 1.0 pipeline. It uses FastAPI, Jinja2, static CSS, the JSON knowledge repository, and pytest. Phase 2 does not introduce React, Vite, Tailwind, a frontend build pipeline, a database, article schema migration, or 1.0 pipeline changes.
+### Phase 1: Web UI Foundation
 
-### Completed
+Goal: Let users access Market Intelligence Agent 2.0 through a browser instead of only CLI, GitHub Actions artifacts, or local output folders.
 
-#### Phase 1: Web UI MVP and JSON Repository Foundation
+Key features:
 
-Goal:
-Phase 1 established a lightweight browser-based UI beside the existing Market Intelligence Agent 1.0 pipeline. It allowed users to browse knowledge articles, view article details, manually add articles, update article state, review pending articles, and generate a newsletter markdown draft.
+- FastAPI + Jinja2 Web UI foundation
+- Dashboard, Article, Intake, Newsletter routes
+- 2.0 introduced as a side-by-side Web UI without rewriting the 1.0 pipeline
 
-Important Phase 1 constraints:
+### Phase 2: Web Workspace UI
 
-- Did not modify the 1.0 pipeline
-- Did not add a database
-- Did not introduce React
-- Did not add formal deployment
-- Did not send emails
-- Did not add new LLM processing workflows
+Goal: Turn 2.0 from basic page prototypes into a workspace for browsing, filtering, and reviewing articles and references.
 
-Phase 1 completed sub-phases:
+Key features:
 
-- Phase 1.1: Simple HTML UI Skeleton
-  - Added FastAPI + Jinja2 Web UI
-  - Added `web/app.py`
-  - Added `layout.html` / `index.html`
-  - Added `style.css`
-  - Created basic navigation and placeholder pages:
-    - `/articles`
-    - `/intake`
-    - `/review`
-    - `/newsletter`
-- Phase 1.2: JSON Knowledge Repository
-  - Added `JsonKnowledgeRepository`
-  - Supported reading `data/knowledge/articles_knowledge.json`
-  - Supported `list_articles`
-  - Supported `get_article`
-  - Supported `update_article_review`
-  - Supported `create_manual_article`
-  - Preserved unknown fields when writing back JSON
-  - Used `tmp_path` in tests to avoid polluting production knowledge JSON
-- Phase 1.3: Knowledge Explorer
-  - Added article listing page
-  - Displayed knowledge articles from JSON
-  - Supported topic filter
-  - Supported keyword search
-  - Supported `review_status` filter
-  - Supported `newsletter_eligible` filter
-  - Added `tests/test_articles_page.py`
-- Phase 1.4: Article Detail + Review Form
-  - Added `/articles/{article_id}`
-  - Article title links opened detail page
-  - Displayed article metadata and intelligence fields
-  - Added review form
-  - Supported updating:
-    - `review_status`
-    - `newsletter_eligible`
-    - `review_note`
-  - Wrote updates back to JSON knowledge repository
-- Phase 1.5: Manual Intake
-  - Added `/intake` page
-  - Form fields:
-    - URL
-    - topic
-    - note
-  - Supported canonical URL duplicate check
-  - Created manual article records
-  - Manual article defaults included:
-    - `ingestion_type = manual`
-    - `review_status = unreviewed`
-    - `newsletter_eligible = false`
-    - `newsletter_status = not_included`
-    - `extraction_status = not_started`
-    - `analysis_status = not_started`
-  - Manual article creation did not run extraction or AI summary
-- Phase 1.6: Review Queue
-  - Added `/review` page
-  - Displayed articles with `review_status`:
-    - `unreviewed`
-    - `needs_fix`
-    - `duplicate`
-  - Supported topic filter
-  - Added quick actions:
-    - approve
-    - reject
-    - mark duplicate
-    - toggle newsletter eligible
-  - Added `tests/test_review_queue.py`
-  - Note: Phase 2 later weakens this review-console model because `review_status` is not the core 2.0 product workflow
-- Phase 1.7: Newsletter Draft
-  - Added `/newsletter` page
-  - Built newsletter markdown preview
-  - Supported topic selection:
-    - Any
-    - AI
-    - FinOps
-    - ProductObservation
-  - Selected articles using:
-    - `review_status = approved`
-    - `newsletter_eligible = true`
-  - Exported markdown to `outputs/newsletter/newsletter_draft_{topic_or_all}.md`
-  - Did not send email
-  - Did not modify `newsletter_status`
-  - Added `tests/test_newsletter_page.py`
-  - Note: Phase 2 later repositions this as Weekly Brief
+- Dashboard article list and filters
+- Article Detail and recommendation controls
+- Weekly Brief UI, Reference page, Add Article entry
 
-#### Phase 2: SaaS Admin Web UI and Workflow Controls
+### Phase 3: Manual Article Workflow
 
-Goal:
-Phase 2 refined the 2.0 Web UI from a basic MVP into a more product-like SaaS admin workspace. It shifted the product direction away from `review_status` / `newsletter_eligible` as the main workflow and toward Dashboard, Summary Status, Recommendation, Weekly Brief, and Reference.
+Goal: Let users manually add articles, process single articles, manage failed states, and generate eligible Weekly Brief output.
 
-Phase 2 completed sub-phases:
+Key features:
 
-- Phase 2.1: UI audit and information architecture
-- Phase 2.2: Shared SaaS admin UI shell
-- Phase 2.3: Dashboard / Articles workspace
-- Phase 2.4: Add Article side panel
-- Phase 2.5: Weekly Brief list and detail pages
-- Phase 2.6: Reference page
-- Phase 2.7: Article workflow controls
-- Phase 2.8: UI polish
-- Phase 2.9: Documentation update
+- Manual intake validation, URL normalization, and deduplication
+- Generate Summary, Retry, and Delete single-article workflow
+- Weekly Brief selection, Needs Attention filter, Skipped status, and pipeline-to-UI status alignment
 
-Phase 2 current routes:
+Current 2.0 status:
 
-- `/` — Dashboard
-- `/articles` — Redirects to `/`
-- `/articles/{id}` — Article Detail
-- `/intake` — Add Article side panel
-- `/newsletter` — Weekly Brief list
-- `/newsletter/current` — Current Weekly Brief detail
-- `/reference` — Read-only keywords and source links
-- `/review` — Internal/manual route, not primary navigation
+- 2.0 can now function as a manual article workflow workspace.
+- 2.0 has not yet replaced 1.0 because Weekly Reports are not persisted, pipeline runs are not visible in the Web UI, sources/keywords are not editable from the UI, and full pipeline orchestration is still handled by 1.0 CLI / GitHub Actions.
 
-2.0 product principles:
+Local test command:
 
-- Summary Status = article processing state
-- Recommendation = article value judgment
-- `Exclude` can still have a summary
-- Manual articles can exist without a summary
-- `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts
-- Generate Summary runs the single-article processing service from Article Detail.
-- Pipeline metadata that was not selected for LLM processing should not look like manual To Extract work.
+```bash
+.venv/bin/python -m pytest -q
+```
 
-### Next
+## Market Intelligence Agent 2.0 Remaining Roadmap
 
-#### Phase 3.8: Pipeline-to-UI Status Alignment
+### Phase 4: Weekly Report Persistence
 
-Current focus:
+Goal: Let weekly market analysis reports be saved, reviewed, and re-exported.
 
-- Treat legacy summarized articles as Ready.
-- Keep old, repeated, skipped, and metadata-only pipeline records out of To Extract and Needs Attention.
-- Include legacy summarized Core / Useful articles in Weekly Brief selection.
+Subphases:
 
-## Next Development Focus
+- 4.1 Weekly Report Snapshot Schema
+- 4.2 Weekly Report Snapshot Writer
+- 4.3 Report History List
+- 4.4 Report Detail Page
+- 4.5 Report Re-export
+- 4.6 Manual Report Override
 
-The next major improvement is Market Intelligence Agent 2.0 Phase 3.8.
+### Phase 5: Pipeline Run Visibility
 
-Why it matters:
+Goal: Let users view daily pipeline execution results and quality status in the Web UI.
 
-- Phase 3.8 reduces confusion between crawler collection and AI summary generation.
-- Phase 3.8 aligns 1.0 pipeline outputs with the 2.0 UI status model.
-- Phase 3.8 does not replace the Market Intelligence Agent 1.0 pipeline.
+Subphases:
 
-Planned improvements:
+- 5.1 Run Repository / Output Index Adapter
+- 5.2 Run History Page
+- 5.3 Run Detail Page
+- 5.4 Output Files Visibility
+- 5.5 Quality Warnings / Failure Summary
+- 5.6 Daily Processing Summary Card
 
-- Pipeline-to-UI status normalization.
-- Dashboard skipped metadata visibility.
-- Weekly Brief legacy summary compatibility.
+### Phase 6: Daily Automation Integration
+
+Goal: Let the system run daily data collection and article processing, while the Web UI understands daily processing status.
+
+Subphases:
+
+- 6.1 Daily Run Schedule Confirmation
+- 6.2 GitHub Actions / CLI Run Guidance
+- 6.3 Run Lock / Duplicate Prevention
+- 6.4 Daily Run Output Persistence
+- 6.5 Latest Run Status Sync
+- 6.6 Failure Notification / Needs Attention Entry
+
+### Phase 7: Report-first Web Experience
+
+Goal: Let users see this week's market report, daily processing status, and high-value articles immediately when entering the Web UI.
+
+Subphases:
+
+- 7.1 Home Dashboard IA Redesign
+- 7.2 This Week Report Card
+- 7.3 Latest Daily Run Status Card
+- 7.4 High-signal Articles Section
+- 7.5 Needs Attention Section Refinement
+- 7.6 Manual Intake UX Refinement
+
+### Phase 8: Source / Keyword Management
+
+Goal: Move source, topic, and keyword management from config-driven operation toward Web UI management.
+
+Subphases:
+
+- 8.1 Topic / Keyword Read-only Enhancement
+- 8.2 Keyword Management MVP
+- 8.3 Source Management MVP
+- 8.4 Source Health
+- 8.5 Keyword Effectiveness
+
+### Phase 9: Pipeline Operations and Reliability
+
+Goal: Keep daily processing and weekly report generation reliable, traceable, retryable, and manually recoverable when failures happen.
+
+Subphases:
+
+- 9.1 Pipeline-level Needs Attention Workspace
+- 9.2 Retry / Reprocess Policy
+- 9.3 Run Failure Recovery
+- 9.4 Source Failure Handling
+- 9.5 LLM Failure / Rate Limit Handling
+- 9.6 Report Generation Failure Handling
+
+### Phase 10: Native Pipeline Orchestration
+
+Goal: Let 2.0 natively orchestrate the full pipeline instead of mainly relying on 1.0 CLI / GitHub Actions.
+
+Subphases:
+
+- 10.1 Pipeline Module Boundary Audit
+- 10.2 Source Collection Service
+- 10.3 Extraction Service
+- 10.4 LLM Summary Service
+- 10.5 Ranking Service
+- 10.6 Knowledge Writer
+- 10.7 Run Tracking Service
+- 10.8 Web-triggered Pipeline Run
+
+### Phase 11: 2.0 Official Replacement
+
+Goal: Make Market Intelligence Agent 2.0 the primary workflow interface, while 1.0 becomes legacy CLI, fallback pipeline, and reusable modules.
+
+Subphases:
+
+- 11.1 Replacement Readiness Check
+- 11.2 README / Docs Update
+- 11.3 1.0 Legacy Positioning
+- 11.4 Final Acceptance
