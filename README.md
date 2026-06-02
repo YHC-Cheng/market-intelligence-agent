@@ -191,10 +191,10 @@ Routes:
 | `/reference` | Read-only keywords and source links |
 | `/review` | Internal/manual route, not primary navigation |
 
-Phase 2 completed UI areas:
+Current 2.0 UI areas:
 
 - Dashboard: Weekly Brief summary card, article list, Keyword / Topic / Recommendation filters, Summary Status tabs, pagination, and article title links to detail pages.
-- Article Detail: intelligence content page with Summary Processing, a placeholder Generate Summary button for non-ready or failed articles, manual Recommendation dropdown, Open Original Article button, and Article Information side card.
+- Article Detail: intelligence content page with Summary Processing, Generate Summary / Retry actions for actionable articles, manual Recommendation dropdown, Open Original Article button, and Article Information side card.
 - Add Article: `/intake` behaves like a right-side panel from Dashboard and stores URL / Topic / Note as a local workspace article.
 - Weekly Brief: sidebar navigation includes Weekly Brief; `/newsletter` lists briefs; `/newsletter/current` shows the current brief detail; Dashboard Open brief links to `/newsletter/current`.
 - Reference: read-only keywords from `config/keywords.json` and configured source links from `config.py`.
@@ -202,27 +202,40 @@ Phase 2 completed UI areas:
 
 Dashboard details:
 
-- Summary Status tabs are `Ready`, `Failed`, `To Extract`, and `All`.
+- Summary Status tabs are `Ready`, `Needs Attention`, `Failed`, `To Extract`, `Skipped`, and `All`.
 - Pagination shows 15 articles per page.
 - Article titles link to `/articles/{id}`.
 
 Article Detail details:
 
 - The page is an intelligence content page, not a review console.
-- `Generate Summary` is a Phase 2 placeholder and does not call AI yet.
+- `Generate Summary` runs the single-article processing service for actionable workspace articles.
 - Recommendation can be updated manually as `Core`, `Useful`, or `Exclude`.
 - Summary Processing shows article processing state separately from recommendation value.
+
+#### Pipeline-to-UI Status Alignment
+
+Crawler collection does not mean every article receives an AI summary. The 1.0
+pipeline may collect article metadata, skip old or repeated articles, skip
+articles beyond the LLM article limit, or preserve metadata-only records for
+history tracking.
+
+The 2.0 UI derives article status so the Dashboard can distinguish summarized
+articles, actionable manual extraction work, skipped pipeline metadata,
+old/repeated articles, and failed processing attempts. Legacy articles with a
+non-empty summary are treated as `Ready` even if they do not have an explicit
+`summary_status` field.
 
 Add Article details:
 
 - `/intake` stores manually added URL / Topic / Note records in the local workspace.
-- It does not run extraction or AI summary in Phase 2.
-- Manual summary workflow is planned for Phase 3.
+- It does not run extraction or AI summary during form submission.
+- Manual summary generation runs from the Article Detail page.
 
 Weekly Brief details:
 
-- The current implementation uses existing article data as a display-safe fallback.
-- Formal weekly selection logic and historical brief persistence are planned for a later phase.
+- The current implementation selects only high-signal articles with summary content and `Core` / `Useful` recommendation.
+- Historical Weekly Brief snapshots are not implemented yet.
 
 Reference details:
 
@@ -659,42 +672,38 @@ Phase 2 current routes:
 - `/reference` — Read-only keywords and source links
 - `/review` — Internal/manual route, not primary navigation
 
-Phase 2 product principles:
+2.0 product principles:
 
 - Summary Status = article processing state
 - Recommendation = article value judgment
 - `Exclude` can still have a summary
 - Manual articles can exist without a summary
 - `review_status` and `newsletter_eligible` are legacy/internal metadata, not primary UI concepts
-- Generate Summary is a placeholder and does not call AI yet
-- Formal manual article summary workflow is planned for Phase 3
+- Generate Summary runs the single-article processing service from Article Detail.
+- Pipeline metadata that was not selected for LLM processing should not look like manual To Extract work.
 
 ### Next
 
-#### Phase 3: Backend Workflow Enhancement
+#### Phase 3.8: Pipeline-to-UI Status Alignment
 
-Planned:
+Current focus:
 
-- Phase 3.1: Manual Article Summary Flow Spec
-- Phase 3.2: Manual Article Summary Implementation
-- Phase 3.3: Weekly Brief Selection Logic Spec
-- Phase 3.4: Weekly Brief Selection Implementation
-- Phase 3.5: Needs Attention / exception handling
+- Treat legacy summarized articles as Ready.
+- Keep old, repeated, skipped, and metadata-only pipeline records out of To Extract and Needs Attention.
+- Include legacy summarized Core / Useful articles in Weekly Brief selection.
 
 ## Next Development Focus
 
-The next major improvement is Market Intelligence Agent 2.0 Phase 3.
+The next major improvement is Market Intelligence Agent 2.0 Phase 3.8.
 
 Why it matters:
 
-- Phase 3 builds on the completed 2.0 Phase 1 and Phase 2 UI foundation.
-- Phase 3 will connect manual article intake, summary generation, Weekly Brief selection logic, and Needs Attention workflows.
-- Phase 3 does not replace the Market Intelligence Agent 1.0 pipeline.
+- Phase 3.8 reduces confusion between crawler collection and AI summary generation.
+- Phase 3.8 aligns 1.0 pipeline outputs with the 2.0 UI status model.
+- Phase 3.8 does not replace the Market Intelligence Agent 1.0 pipeline.
 
 Planned improvements:
 
-- Phase 3.1: Manual Article Summary Flow Spec
-- Phase 3.2: Manual Article Summary Implementation
-- Phase 3.3: Weekly Brief Selection Logic Spec
-- Phase 3.4: Weekly Brief Selection Implementation
-- Phase 3.5: Needs Attention / exception handling
+- Pipeline-to-UI status normalization.
+- Dashboard skipped metadata visibility.
+- Weekly Brief legacy summary compatibility.

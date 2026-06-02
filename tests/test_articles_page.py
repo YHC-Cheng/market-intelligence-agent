@@ -274,6 +274,8 @@ def test_articles_page_renders_summary_status_tabs(tmp_path, monkeypatch):
     assert "Failed" in tabs
     assert 'href="/?summary_status=to_extract"' in tabs
     assert "To Extract" in tabs
+    assert 'href="/?summary_status=skipped"' in tabs
+    assert "Skipped" in tabs
     assert "To-do" not in tabs
     assert "Needs Summary" not in tabs
     assert (
@@ -281,6 +283,7 @@ def test_articles_page_renders_summary_status_tabs(tmp_path, monkeypatch):
         < tabs.index("Needs Attention")
         < tabs.index("Failed")
         < tabs.index("To Extract")
+        < tabs.index("Skipped")
         < tabs.index("All")
     )
     assert 'href="/?summary_status=all"' in tabs
@@ -353,6 +356,12 @@ def test_article_needs_attention_helper_matches_phase_3_rules():
     ) is False
     assert app_module.article_needs_attention(
         {"summary_status": "ready", "recommendation": "Exclude", "summary": "Done"}
+    ) is False
+    assert app_module.article_needs_attention(
+        {"freshness_status": "old", "recommendation": "Core"}
+    ) is False
+    assert app_module.article_needs_attention(
+        {"summary_status": "skipped", "recommendation": "Core"}
     ) is False
 
 
@@ -447,6 +456,11 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
                 "summary": "A complete summary.",
                 "summary_status": "ready",
             },
+            "https://example.com/legacy-ready": {
+                "url": "https://example.com/legacy-ready",
+                "title": "Legacy ready intelligence",
+                "summary": "A complete legacy summary.",
+            },
             "https://example.com/pending": {
                 "url": "https://example.com/pending",
                 "title": "Pending intelligence",
@@ -462,6 +476,11 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
                 "title": "Failed intelligence",
                 "summary_status": "failed",
             },
+            "https://example.com/skipped": {
+                "url": "https://example.com/skipped",
+                "title": "Skipped intelligence",
+                "freshness_status": "old",
+            },
         },
     )
     client = article_client(monkeypatch, knowledge_path)
@@ -470,17 +489,21 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
 
     assert response.status_code == 200
     assert "Ready intelligence" in response.text
+    assert "Legacy ready intelligence" in response.text
     assert "Pending intelligence" not in response.text
     assert "To extract intelligence" not in response.text
     assert "Failed intelligence" not in response.text
+    assert "Skipped intelligence" not in response.text
 
     response = client.get("/?summary_status=failed")
 
     assert response.status_code == 200
     assert "Failed intelligence" in response.text
     assert "Ready intelligence" not in response.text
+    assert "Legacy ready intelligence" not in response.text
     assert "Pending intelligence" not in response.text
     assert "To extract intelligence" not in response.text
+    assert "Skipped intelligence" not in response.text
 
     response = client.get("/?summary_status=to_extract")
 
@@ -488,7 +511,9 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
     assert "Pending intelligence" in response.text
     assert "To extract intelligence" in response.text
     assert "Ready intelligence" not in response.text
+    assert "Legacy ready intelligence" not in response.text
     assert "Failed intelligence" not in response.text
+    assert "Skipped intelligence" not in response.text
 
     response = client.get("/?summary_status=needs_summary")
 
@@ -496,15 +521,29 @@ def test_articles_page_filters_by_summary_status(tmp_path, monkeypatch):
     assert "Pending intelligence" in response.text
     assert "To extract intelligence" in response.text
     assert "Ready intelligence" not in response.text
+    assert "Legacy ready intelligence" not in response.text
+    assert "Failed intelligence" not in response.text
+    assert "Skipped intelligence" not in response.text
+
+    response = client.get("/?summary_status=skipped")
+
+    assert response.status_code == 200
+    assert "Skipped intelligence" in response.text
+    assert "Ready intelligence" not in response.text
+    assert "Legacy ready intelligence" not in response.text
+    assert "Pending intelligence" not in response.text
+    assert "To extract intelligence" not in response.text
     assert "Failed intelligence" not in response.text
 
     response = client.get("/?summary_status=all")
 
     assert response.status_code == 200
     assert "Ready intelligence" in response.text
+    assert "Legacy ready intelligence" in response.text
     assert "Pending intelligence" in response.text
     assert "To extract intelligence" in response.text
     assert "Failed intelligence" in response.text
+    assert "Skipped intelligence" in response.text
 
 
 def test_articles_page_filters_by_needs_attention_status_alias(
@@ -570,6 +609,20 @@ def test_articles_page_filters_by_needs_attention_status_alias(
                 "summary": "",
                 "recommendation": "Core",
             },
+            "old-metadata": {
+                "id": "old-metadata",
+                "title": "Old Metadata quiet article",
+                "topic": "AI",
+                "freshness_status": "old",
+                "recommendation": "Core",
+            },
+            "skipped-metadata": {
+                "id": "skipped-metadata",
+                "title": "Skipped Metadata quiet article",
+                "topic": "AI",
+                "summary_status": "skipped",
+                "recommendation": "Core",
+            },
         },
     )
     client = article_client(monkeypatch, knowledge_path)
@@ -581,6 +634,8 @@ def test_articles_page_filters_by_needs_attention_status_alias(
     assert "To Extract attention article" in response.text
     assert "Background attention article" in response.text
     assert "Empty Summary attention article" in response.text
+    assert "Old Metadata quiet article" not in response.text
+    assert "Skipped Metadata quiet article" not in response.text
     assert "Healthy Core article" not in response.text
     assert "Healthy Useful article" not in response.text
     assert "Healthy Exclude article" not in response.text
@@ -642,7 +697,7 @@ def test_needs_attention_filter_combines_with_existing_filters(
     assert "Cloud Core missing summary" not in response.text
 
 
-def test_articles_to_extract_tab_includes_legacy_unprocessed_statuses(
+def test_articles_to_extract_tab_excludes_legacy_metadata_only_articles(
     tmp_path,
     monkeypatch,
 ):
@@ -659,6 +714,21 @@ def test_articles_to_extract_tab_includes_legacy_unprocessed_statuses(
                 "id": "empty",
                 "title": "Empty status intelligence",
                 "summary_status": "",
+            },
+            "old": {
+                "id": "old",
+                "title": "Old metadata intelligence",
+                "freshness_status": "old",
+            },
+            "repeated": {
+                "id": "repeated",
+                "title": "Repeated metadata intelligence",
+                "freshness_status": "repeated",
+            },
+            "manual": {
+                "id": "manual",
+                "title": "Manual missing summary intelligence",
+                "source_type": "manual",
             },
             "not-started": {
                 "id": "not-started",
@@ -692,8 +762,11 @@ def test_articles_to_extract_tab_includes_legacy_unprocessed_statuses(
     response = client.get("/?summary_status=to_extract")
 
     assert response.status_code == 200
-    assert "Missing status intelligence" in response.text
+    assert "Missing status intelligence" not in response.text
     assert "Empty status intelligence" in response.text
+    assert "Old metadata intelligence" not in response.text
+    assert "Repeated metadata intelligence" not in response.text
+    assert "Manual missing summary intelligence" in response.text
     assert "Not started intelligence" in response.text
     assert "Pending status intelligence" in response.text
     assert "Needs summary intelligence" in response.text
@@ -701,6 +774,15 @@ def test_articles_to_extract_tab_includes_legacy_unprocessed_statuses(
     assert "Ready status intelligence" not in response.text
     assert "To Extract" in response.text
     assert "To-do" not in response.text
+
+    response = client.get("/?summary_status=skipped")
+
+    assert response.status_code == 200
+    assert "Empty status intelligence" not in response.text
+    assert "Old metadata intelligence" in response.text
+    assert "Repeated metadata intelligence" in response.text
+    assert "Manual missing summary intelligence" not in response.text
+    assert "Missing status intelligence" not in response.text
 
 
 def test_articles_invalid_summary_status_falls_back_safely(

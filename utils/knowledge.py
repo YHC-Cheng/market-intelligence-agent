@@ -7,6 +7,7 @@ KNOWLEDGE_DIR = Path("data/knowledge")
 ARTICLES_KNOWLEDGE_FILE = KNOWLEDGE_DIR / "articles_knowledge.json"
 MARKET_INSIGHTS_FILE = KNOWLEDGE_DIR / "market_insights.json"
 SOURCE_INDEX_FILE = KNOWLEDGE_DIR / "source_index.json"
+FRESHNESS_METADATA_ONLY_STATUSES = {"old", "repeated"}
 
 
 def get_now_string() -> str:
@@ -73,6 +74,70 @@ def get_ranking_field(ranking_result: dict, field: str, default):
     return ranking_result.get(field, default)
 
 
+def has_text(value) -> bool:
+    return bool(str(value or "").strip())
+
+
+def derive_summary_status(
+    article: dict,
+    summary_result: dict,
+    existing: dict,
+) -> str:
+    explicit_status = str(article.get("summary_status") or "").strip()
+    if explicit_status:
+        return explicit_status
+
+    ai_summary = summary_result or {}
+    if ai_summary.get("error") or article.get("failure_reason"):
+        return "failed"
+
+    if has_text(ai_summary.get("summary")):
+        return "ready"
+
+    if has_text(existing.get("summary")):
+        return "ready"
+
+    if article.get("freshness_status") in FRESHNESS_METADATA_ONLY_STATUSES:
+        return "skipped"
+
+    existing_status = str(existing.get("summary_status") or "").strip()
+    if existing_status:
+        return existing_status
+
+    if (
+        article.get("source") == "manual"
+        or article.get("source_type") == "manual"
+        or article.get("ingestion_type") == "manual"
+    ):
+        return "to_extract"
+
+    return "skipped"
+
+
+def derive_failure_reason(article: dict, summary_result: dict, existing: dict):
+    ai_summary = summary_result or {}
+    if ai_summary.get("error"):
+        return ai_summary.get("error")
+    if article.get("failure_reason"):
+        return article.get("failure_reason")
+    if has_text(ai_summary.get("summary")):
+        return None
+
+    return existing.get("failure_reason")
+
+
+def derive_failure_message(article: dict, summary_result: dict, existing: dict):
+    ai_summary = summary_result or {}
+    if article.get("failure_message"):
+        return article.get("failure_message")
+    if ai_summary.get("error"):
+        return ai_summary.get("error")
+    if has_text(ai_summary.get("summary")):
+        return None
+
+    return existing.get("failure_message")
+
+
 def upsert_article_knowledge(
     article: dict,
     summary_result: dict,
@@ -130,6 +195,9 @@ def upsert_article_knowledge(
             "why_it_matters",
             existing.get("why_it_matters", "")
         ),
+        "summary_status": derive_summary_status(article, ai_summary, existing),
+        "failure_reason": derive_failure_reason(article, ai_summary, existing),
+        "failure_message": derive_failure_message(article, ai_summary, existing),
         "score": article.get("score", existing.get("score", 0)),
         "recommendation": article.get(
             "recommendation",
