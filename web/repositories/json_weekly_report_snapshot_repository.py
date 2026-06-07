@@ -77,6 +77,14 @@ class JsonWeeklyReportSnapshotRepository:
         self._write_json(snapshots)
         return deepcopy(snapshot_dict)
 
+    def update_manual_override(self, snapshot_id, manual_override):
+        snapshot = self.get_snapshot(snapshot_id)
+        if snapshot is None:
+            return None
+
+        snapshot["manual_override"] = deepcopy(manual_override)
+        return self.save_snapshot(snapshot)
+
     def load_snapshots(self):
         if not self.snapshot_path.exists():
             return []

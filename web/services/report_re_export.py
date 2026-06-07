@@ -15,12 +15,18 @@ def build_report_re_export_markdown(snapshot, content_reader=None):
         snapshot,
         content_reader,
     )
-    title = markdown_value(snapshot.get("title") or "Weekly Report")
+    manual_override = normalize_manual_override(snapshot.get("manual_override"))
+    title = markdown_value(
+        manual_override.get("title")
+        if manual_override.get("enabled") and manual_override.get("title")
+        else snapshot.get("title") or "Weekly Report"
+    )
     lines = [
         f"# {title}",
         "",
         "## Report Metadata",
         "",
+        f"- title: {markdown_value(snapshot.get('title'))}",
         f"- topic: {markdown_value(snapshot.get('topic'))}",
         f"- run_id: {markdown_value(snapshot.get('run_id'))}",
         f"- snapshot_id: {markdown_value(snapshot.get('snapshot_id'))}",
@@ -47,6 +53,14 @@ def build_report_re_export_markdown(snapshot, content_reader=None):
         lines.extend([f"- {markdown_value(warning)}" for warning in warnings])
     else:
         lines.append("No warnings")
+
+    if manual_override.get("enabled") and manual_override.get("summary"):
+        lines.extend([
+            "",
+            "## Manual Override Notes",
+            "",
+            manual_override.get("summary").rstrip(),
+        ])
 
     lines.extend([
         "",
@@ -120,3 +134,20 @@ def markdown_value(value):
         return "-"
 
     return str(value)
+
+
+def normalize_manual_override(manual_override):
+    if isinstance(manual_override, dict):
+        return {
+            "enabled": bool(manual_override.get("enabled")),
+            "title": manual_override.get("title"),
+            "summary": manual_override.get("summary"),
+            "updated_at": manual_override.get("updated_at"),
+        }
+
+    return {
+        "enabled": bool(manual_override),
+        "title": None,
+        "summary": None,
+        "updated_at": None,
+    }

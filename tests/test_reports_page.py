@@ -13,6 +13,10 @@ def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def read_json(path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def write_text(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -66,6 +70,7 @@ def snapshot(
     warnings=None,
     source_run=None,
     files=None,
+    manual_override=False,
 ):
     if warnings is None:
         warnings = ["Review source coverage."]
@@ -92,7 +97,7 @@ def snapshot(
         "useful_article_count": 2,
         "excluded_article_count": 0,
         "files": files,
-        "manual_override": False,
+        "manual_override": manual_override,
     }
 
 
@@ -308,6 +313,74 @@ def test_report_detail_page_displays_snapshot_metadata(tmp_path, monkeypatch):
     assert 'href="/reports">Back to Reports</a>' in response.text
 
 
+def test_report_detail_page_displays_manual_override_form(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-override",
+                "Override Form Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.get("/reports/run-override")
+
+    assert response.status_code == 200
+    assert "Manual Override" in response.text
+    assert "disabled" in response.text
+    assert 'name="override_title"' in response.text
+    assert 'name="override_summary"' in response.text
+    assert "Save Override" in response.text
+    assert "Clear Override" in response.text
+    assert 'action="/reports/run-override/manual-override"' in response.text
+    assert (
+        'action="/reports/run-override/manual-override/clear"'
+        in response.text
+    )
+
+
+def test_report_detail_page_displays_existing_manual_override(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-override",
+                "Original Snapshot",
+                "AI",
+                "2026-05-16T09:03:00",
+                manual_override={
+                    "enabled": True,
+                    "title": "Edited Snapshot Title",
+                    "summary": "Editor's note for this report.",
+                    "updated_at": "2026-05-17T10:00:00",
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.get("/reports/run-override")
+
+    assert response.status_code == 200
+    assert "enabled" in response.text
+    assert "Edited Snapshot Title" in response.text
+    assert "Editor&#39;s note for this report." in response.text
+    assert "2026-05-17T10:00:00" in response.text
+    assert "Enabled" in response.text
+
+
 def test_report_detail_page_shows_no_warnings_empty_source_and_no_files(
     tmp_path,
     monkeypatch,
@@ -420,6 +493,133 @@ def test_report_detail_page_missing_snapshot_returns_404(tmp_path, monkeypatch):
     assert response.status_code == 404
 
 
+def test_save_manual_override_updates_snapshot_without_duplicate(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-override",
+                "Original Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.post(
+        "/reports/run-override/manual-override",
+        data={
+            "override_title": " Edited Export Title ",
+            "override_summary": " Editor note. ",
+        },
+        follow_redirects=False,
+    )
+    snapshots = read_json(snapshot_path)
+    manual_override = snapshots[0]["manual_override"]
+
+    assert response.status_code == 303
+    assert response.headers["location"] == "/reports/run-override"
+    assert len(snapshots) == 1
+    assert snapshots[0]["title"] == "Original Snapshot"
+    assert manual_override["enabled"] is True
+    assert manual_override["title"] == "Edited Export Title"
+    assert manual_override["summary"] == "Editor note."
+    assert manual_override["updated_at"]
+
+
+def test_save_manual_override_empty_strings_are_stored_as_null(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-override",
+                "Original Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.post(
+        "/reports/run-override/manual-override",
+        data={"override_title": " ", "override_summary": ""},
+        follow_redirects=False,
+    )
+    manual_override = read_json(snapshot_path)[0]["manual_override"]
+
+    assert response.status_code == 303
+    assert manual_override["enabled"] is True
+    assert manual_override["title"] is None
+    assert manual_override["summary"] is None
+    assert manual_override["updated_at"]
+
+
+def test_clear_manual_override_resets_override(tmp_path, monkeypatch):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-override",
+                "Original Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                manual_override={
+                    "enabled": True,
+                    "title": "Edited Export Title",
+                    "summary": "Editor note.",
+                    "updated_at": "2026-05-17T10:00:00",
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.post(
+        "/reports/run-override/manual-override/clear",
+        follow_redirects=False,
+    )
+    manual_override = read_json(snapshot_path)[0]["manual_override"]
+
+    assert response.status_code == 303
+    assert response.headers["location"] == "/reports/run-override"
+    assert manual_override == {
+        "enabled": False,
+        "title": None,
+        "summary": None,
+        "updated_at": None,
+    }
+
+
+def test_manual_override_routes_missing_snapshot_return_404(
+    tmp_path,
+    monkeypatch,
+):
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "missing_weekly_report_snapshots.json",
+    )
+
+    save_response = client.post(
+        "/reports/missing/manual-override",
+        data={"override_title": "Title", "override_summary": "Summary"},
+    )
+    clear_response = client.post("/reports/missing/manual-override/clear")
+
+    assert save_response.status_code == 404
+    assert clear_response.status_code == 404
+
+
 def test_report_re_export_download_returns_markdown_with_metadata(
     tmp_path,
     monkeypatch,
@@ -476,6 +676,92 @@ def test_report_re_export_download_returns_markdown_with_metadata(
     assert "Use this in export." in markdown
     assert "## Output Files" in markdown
     assert "### copy_ready_report" in markdown
+
+
+def test_report_re_export_uses_manual_override_title_and_notes(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-export" / "copy_ready_report.md"
+    write_text(report_path, "Original report content.\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "Original Snapshot Title",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                manual_override={
+                    "enabled": True,
+                    "title": "Executive Edited Title",
+                    "summary": "Use this framing for leadership.",
+                    "updated_at": "2026-05-17T10:00:00",
+                },
+                files={
+                    "copy_ready_report": {
+                        "path": str(report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-export/re-export/download")
+    markdown = response.text
+
+    assert response.status_code == 200
+    assert markdown.startswith("# Executive Edited Title\n")
+    assert "- title: Original Snapshot Title" in markdown
+    assert "## Manual Override Notes" in markdown
+    assert "Use this framing for leadership." in markdown
+    assert "Original report content." in markdown
+
+
+def test_report_re_export_without_enabled_override_keeps_original_title(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-export" / "copy_ready_report.md"
+    write_text(report_path, "Original report content.\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "Original Snapshot Title",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                manual_override={
+                    "enabled": False,
+                    "title": "Should Not Be Used",
+                    "summary": "Should not be included.",
+                    "updated_at": None,
+                },
+                files={
+                    "copy_ready_report": {
+                        "path": str(report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-export/re-export/download")
+    markdown = response.text
+
+    assert response.status_code == 200
+    assert markdown.startswith("# Original Snapshot Title\n")
+    assert "Should Not Be Used" not in markdown
+    assert "Manual Override Notes" not in markdown
 
 
 def test_report_re_export_without_warnings_shows_no_warnings(
