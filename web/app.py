@@ -1019,7 +1019,15 @@ async def reference(request: Request):
 @app.get("/reports", response_class=HTMLResponse)
 async def reports(request: Request):
     repository = get_report_snapshot_repository()
-    snapshots = repository.list_snapshots(report_type="weekly")
+    snapshots = [
+        {
+            **snapshot,
+            "detail_href": (
+                f"/reports/{quote(str(snapshot.get('snapshot_id', '')), safe='')}"
+            ),
+        }
+        for snapshot in repository.list_snapshots(report_type="weekly")
+    ]
 
     return templates.TemplateResponse(
         request,
@@ -1033,6 +1041,30 @@ async def reports(request: Request):
                 page_subtitle="Browse saved weekly report snapshots.",
             ),
             "snapshots": snapshots,
+        },
+    )
+
+
+@app.get("/reports/{snapshot_id}", response_class=HTMLResponse)
+async def report_detail(request: Request, snapshot_id: str):
+    repository = get_report_snapshot_repository()
+    snapshot = repository.get_snapshot(snapshot_id)
+
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail="Report snapshot not found")
+
+    return templates.TemplateResponse(
+        request,
+        "report_detail.html",
+        {
+            **base_template_context(
+                request,
+                title=snapshot.get("title") or "Report Detail",
+                active_nav="reports",
+                page_title=snapshot.get("title") or "Report Detail",
+                page_subtitle="Weekly report snapshot metadata.",
+            ),
+            "snapshot": snapshot,
         },
     )
 

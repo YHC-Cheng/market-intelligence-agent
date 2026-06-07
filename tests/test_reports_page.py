@@ -45,7 +45,17 @@ def snapshot(
     generated_at,
     quality_status="pass",
     quality_score=90,
+    warnings=None,
+    source_run=None,
+    files=None,
 ):
+    if warnings is None:
+        warnings = ["Review source coverage."]
+    if source_run is None:
+        source_run = {"run_id": snapshot_id}
+    if files is None:
+        files = {}
+
     return {
         "snapshot_id": snapshot_id,
         "run_id": snapshot_id,
@@ -57,13 +67,13 @@ def snapshot(
         "status": "pass",
         "quality_status": quality_status,
         "quality_score": quality_score,
-        "warnings": ["Review source coverage."],
-        "source_run": {"run_id": snapshot_id},
+        "warnings": warnings,
+        "source_run": source_run,
         "article_count": 3,
         "core_article_count": 1,
         "useful_article_count": 2,
         "excluded_article_count": 0,
-        "files": {},
+        "files": files,
         "manual_override": False,
     }
 
@@ -99,6 +109,7 @@ def test_reports_page_displays_saved_snapshots(tmp_path, monkeypatch):
     assert "85" in response.text
     assert "3" in response.text
     assert "View Detail" in response.text
+    assert 'href="/reports/run-1"' in response.text
 
 
 def test_reports_page_empty_state(tmp_path, monkeypatch):
@@ -148,3 +159,133 @@ def test_reports_page_sorts_snapshots_newest_first(tmp_path, monkeypatch):
 
     assert table_body.index("Newer Snapshot") < table_body.index("Middle Snapshot")
     assert table_body.index("Middle Snapshot") < table_body.index("Older Snapshot")
+
+
+def test_report_detail_page_displays_snapshot_metadata(tmp_path, monkeypatch):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-1",
+                "FinOps Weekly Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                quality_status="warning",
+                quality_score=85,
+                source_run={
+                    "run_id": "run-1",
+                    "run_mode": "weekly",
+                    "run_summary_path": "outputs/runs/run-1/run_summary.json",
+                },
+                files={
+                    "market_analysis_report": {
+                        "path": "outputs/runs/run-1/market_analysis_report.md",
+                        "status": "available",
+                    },
+                    "slide_draft": {
+                        "path": "outputs/runs/run-1/slide_draft.md",
+                        "status": "missing",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.get("/reports/run-1")
+
+    assert response.status_code == 200
+    assert "FinOps Weekly Snapshot" in response.text
+    assert "FinOps" in response.text
+    assert "run-1" in response.text
+    assert "warning" in response.text
+    assert "85" in response.text
+    assert "Review source coverage." in response.text
+    assert "Source Run Metadata" in response.text
+    assert "run_summary_path" not in response.text
+    assert "Run Summary Path" in response.text
+    assert "outputs/runs/run-1/run_summary.json" in response.text
+    assert "Manual Override" in response.text
+    assert "Not enabled" in response.text
+    assert 'href="/reports">Back to Reports</a>' in response.text
+
+
+def test_report_detail_page_shows_no_warnings_empty_source_and_no_files(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-empty",
+                "AI Weekly Snapshot",
+                "AI",
+                "2026-05-16T09:03:00",
+                warnings=[],
+                source_run={},
+                files={},
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.get("/reports/run-empty")
+
+    assert response.status_code == 200
+    assert "No warnings" in response.text
+    assert "No source run metadata" in response.text
+    assert "No output files recorded" in response.text
+
+
+def test_report_detail_page_displays_available_and_missing_output_files(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "copy_ready_report": {
+                        "path": "outputs/runs/run-files/copy_ready_report.md",
+                        "status": "available",
+                    },
+                    "slide_draft": {
+                        "path": "outputs/runs/run-files/slide_draft.md",
+                        "status": "missing",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.get("/reports/run-files")
+
+    assert response.status_code == 200
+    assert "Copy Ready Report" in response.text
+    assert "copy_ready_report" in response.text
+    assert "outputs/runs/run-files/copy_ready_report.md" in response.text
+    assert "available" in response.text
+    assert "Slide Draft" in response.text
+    assert "outputs/runs/run-files/slide_draft.md" in response.text
+    assert "missing" in response.text
+
+
+def test_report_detail_page_missing_snapshot_returns_404(tmp_path, monkeypatch):
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "missing_weekly_report_snapshots.json",
+    )
+
+    response = client.get("/reports/missing-snapshot")
+
+    assert response.status_code == 404
