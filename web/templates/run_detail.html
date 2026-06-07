@@ -120,20 +120,16 @@
                   <th scope="col">Output</th>
                   <th scope="col">Path</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {% for key, output in run_outputs.items() %}
-                  {% if output is mapping %}
-                    {% set output_path = output.get("path") or output.get("file_path") or output.get("value") %}
-                    {% set output_status = output.get("status") or output.get("available") %}
-                  {% else %}
-                    {% set output_path = output %}
-                    {% set output_status = None %}
-                  {% endif %}
+                {% for key, file in run_outputs.items() %}
+                  {% set output_path = file.get("path") %}
+                  {% set output_status = file.get("status") or "recorded" %}
                   <tr>
                     <td>
-                      <strong>{{ key|replace("_", " ")|title }}</strong>
+                      <strong>{{ file.get("label") or key|replace("_", " ")|title }}</strong>
                       <span class="output-path">{{ key }}</span>
                     </td>
                     <td>
@@ -144,8 +140,14 @@
                       {% endif %}
                     </td>
                     <td>
-                      {% if output_status is not none %}
+                      <span class="badge {% if output_status == 'available' %}badge-success{% elif output_status == 'missing' %}badge-danger{% else %}badge-secondary{% endif %}">
                         {{ output_status }}
+                      </span>
+                    </td>
+                    <td>
+                      {% if file.get("view_href") and file.get("download_href") %}
+                        <a class="button button-secondary button-sm" href="{{ file.get('view_href') }}">View</a>
+                        <a class="button button-secondary button-sm" href="{{ file.get('download_href') }}">Download</a>
                       {% else %}
                         &mdash;
                       {% endif %}
