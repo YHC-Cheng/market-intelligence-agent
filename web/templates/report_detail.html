@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <p class="back-link"><a href="/reports">Back to Reports</a></p>
+
+  {% set status = snapshot.get("status") or "unknown" %}
+  {% set quality_status = snapshot.get("quality_status") or "unknown" %}
+
+  <div class="article-hero">
+    <div class="metadata-row" aria-label="Report metadata">
+      {% if snapshot.get("topic") %}
+        <span class="badge badge-outline">{{ snapshot.get("topic") }}</span>
+      {% endif %}
+      <span class="badge {% if status == 'pass' %}badge-success{% elif status == 'fail' %}badge-danger{% else %}badge-secondary{% endif %}">
+        Status: {{ status }}
+      </span>
+      <span class="badge {% if quality_status == 'pass' %}badge-success{% elif quality_status == 'warning' %}badge-warning{% elif quality_status == 'fail' %}badge-danger{% else %}badge-secondary{% endif %}">
+        Quality: {{ quality_status }}
+      </span>
+      {% if snapshot.get("quality_score") is not none %}
+        <span>Score {{ snapshot.get("quality_score") }}</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="detail-layout">
+    <div class="detail-main">
+      <section class="detail-section" aria-labelledby="snapshot-counts-title">
+        <h2 id="snapshot-counts-title">Article Counts</h2>
+        <dl class="info-list inline-info-list">
+          <div>
+            <dt>Total Articles</dt>
+            <dd>{{ snapshot.get("article_count", 0) }}</dd>
+          </div>
+          <div>
+            <dt>Core Articles</dt>
+            <dd>{{ snapshot.get("core_article_count", 0) }}</dd>
+          </div>
+          <div>
+            <dt>Useful Articles</dt>
+            <dd>{{ snapshot.get("useful_article_count", 0) }}</dd>
+          </div>
+          <div>
+            <dt>Excluded Articles</dt>
+            <dd>{{ snapshot.get("excluded_article_count", 0) }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="detail-section" aria-labelledby="warnings-title">
+        <h2 id="warnings-title">Warnings</h2>
+        {% set warnings = snapshot.get("warnings", []) %}
+        {% if warnings %}
+          <ul class="brief-list">
+            {% for warning in warnings %}
+              <li>{{ warning }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No warnings</p>
+        {% endif %}
+      </section>
+
+      <section class="detail-section" aria-labelledby="source-run-title">
+        <h2 id="source-run-title">Source Run Metadata</h2>
+        {% set source_run = snapshot.get("source_run", {}) %}
+        {% if source_run %}
+          <dl class="info-list inline-info-list">
+            {% for key, value in source_run.items() %}
+              <div>
+                <dt>{{ key|replace("_", " ")|title }}</dt>
+                <dd>{{ value if value is not none and value != "" else "—" }}</dd>
+              </div>
+            {% endfor %}
+          </dl>
+        {% else %}
+          <p>No source run metadata</p>
+        {% endif %}
+      </section>
+
+      <section class="detail-section" aria-labelledby="output-files-title">
+        <h2 id="output-files-title">Output Files</h2>
+        {% set files = snapshot.get("files", {}) %}
+        {% if files %}
+          <div class="table-wrap">
+            <table class="data-table report-files-table">
+              <thead>
+                <tr>
+                  <th scope="col">File</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Path</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for key, file in files.items() %}
+                  {% set file_status = file.get("status") or "unknown" %}
+                  <tr>
+                    <td>
+                      <strong>{{ key|replace("_", " ")|title }}</strong>
+                      <span class="output-path">{{ key }}</span>
+                    </td>
+                    <td>
+                      <span class="badge {% if file_status == 'available' %}badge-success{% elif file_status == 'missing' %}badge-danger{% else %}badge-secondary{% endif %}">
+                        {{ file_status }}
+                      </span>
+                    </td>
+                    <td>
+                      {% if file.get("path") %}
+                        <span class="output-path">{{ file.get("path") }}</span>
+                      {% else %}
+                        &mdash;
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p>No output files recorded</p>
+        {% endif %}
+      </section>
+    </div>
+
+    <aside class="article-info-card" aria-labelledby="report-info-title">
+      <h2 id="report-info-title">Report Information</h2>
+      <dl class="info-list">
+        <div>
+          <dt>Title</dt>
+          <dd>{{ snapshot.get("title") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Topic</dt>
+          <dd>{{ snapshot.get("topic") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Run ID</dt>
+          <dd>{{ snapshot.get("run_id") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Snapshot ID</dt>
+          <dd>{{ snapshot.get("snapshot_id") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Report Type</dt>
+          <dd>{{ snapshot.get("report_type") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{{ status }}</dd>
+        </div>
+        <div>
+          <dt>Quality Status</dt>
+          <dd>{{ quality_status }}</dd>
+        </div>
+        <div>
+          <dt>Quality Score</dt>
+          <dd>
+            {% if snapshot.get("quality_score") is not none %}
+              {{ snapshot.get("quality_score") }}
+            {% else %}
+              &mdash;
+            {% endif %}
+          </dd>
+        </div>
+        <div>
+          <dt>Generated At</dt>
+          <dd>{{ snapshot.get("generated_at") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Created At</dt>
+          <dd>{{ snapshot.get("created_at") or "—" }}</dd>
+        </div>
+        <div>
+          <dt>Manual Override</dt>
+          <dd>{{ "Enabled" if snapshot.get("manual_override") else "Not enabled" }}</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+{% endblock %}

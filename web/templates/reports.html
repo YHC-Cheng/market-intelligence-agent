@@ -68,7 +68,7 @@
                 <td>{{ snapshot.get("article_count", 0) }}</td>
                 <td>{{ warning_count }}</td>
                 <td>
-                  <span class="button button-secondary button-sm is-disabled" aria-disabled="true">View Detail</span>
+                  <a class="button button-secondary button-sm" href="{{ snapshot.get('detail_href') }}">View Detail</a>
                 </td>
               </tr>
             {% endfor %}
