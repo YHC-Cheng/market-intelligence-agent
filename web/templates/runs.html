@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  {% if runs %}
+    <section class="card table-card" aria-labelledby="runs-title">
+      <div class="section-header">
+        <div>
+          <h2 id="runs-title">Pipeline runs</h2>
+          <p>Execution records written by the market intelligence pipeline.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table run-history-table">
+          <thead>
+            <tr>
+              <th scope="col">Run ID</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Mode</th>
+              <th scope="col">Generated</th>
+              <th scope="col">Workflow</th>
+              <th scope="col">Quality</th>
+              <th scope="col">Score</th>
+              <th scope="col">Warnings</th>
+              <th scope="col">Errors</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for run in runs %}
+              {% set workflow_status = run.get("workflow_status") or "unknown" %}
+              {% set quality_status = run.get("quality_status") or "unknown" %}
+              {% set warning_count = run.get("warnings", [])|length %}
+              {% set error_count = run.get("errors", [])|length %}
+              <tr>
+                <td>
+                  <span class="title-link">{{ run.get("run_id") or "unknown" }}</span>
+                </td>
+                <td>
+                  <span class="badge badge-outline">{{ run.get("topic") or "unknown" }}</span>
+                </td>
+                <td>{{ run.get("run_mode") or "unknown" }}</td>
+                <td>{{ run.get("generated_at") or run.get("created_at") or "N/A" }}</td>
+                <td>
+                  <span class="badge {% if workflow_status == 'pass' %}badge-success{% elif workflow_status == 'fail' %}badge-danger{% else %}badge-secondary{% endif %}">
+                    {{ workflow_status }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge {% if quality_status == 'pass' %}badge-success{% elif quality_status == 'warning' %}badge-warning{% elif quality_status == 'fail' %}badge-danger{% else %}badge-secondary{% endif %}">
+                    {{ quality_status }}
+                  </span>
+                </td>
+                <td>
+                  {% if run.get("quality_score") is not none %}
+                    {{ run.get("quality_score") }}
+                  {% else %}
+                    N/A
+                  {% endif %}
+                </td>
+                <td>{{ warning_count }}</td>
+                <td>{{ error_count }}</td>
+                <td>
+                  <span class="button button-secondary button-sm is-disabled" aria-disabled="true">
+                    View Detail
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  {% else %}
+    <section class="card empty-state" aria-live="polite">
+      <h2>No pipeline runs found.</h2>
+      <p>Run the pipeline locally or make sure outputs/runs exists.</p>
+    </section>
+  {% endif %}
+{% endblock %}
