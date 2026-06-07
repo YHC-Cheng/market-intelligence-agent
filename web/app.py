@@ -16,6 +16,9 @@ from web.repositories.json_weekly_report_snapshot_repository import (
 )
 from web.repositories.pipeline_run_repository import PipelineRunRepository
 from web.services.article_processing import ArticleProcessingService
+from web.services.pipeline_run_collection_summary import (
+    build_pipeline_run_collection_summary,
+)
 from web.services.pipeline_run_quality_summary import (
     build_pipeline_run_quality_summary,
 )
@@ -1180,13 +1183,15 @@ def get_run_output_file_or_404(run_id, file_key):
 @app.get("/runs", response_class=HTMLResponse)
 async def runs(request: Request):
     repository = get_pipeline_run_repository()
+    raw_runs = repository.list_runs()
     pipeline_runs = [
         {
             **pipeline_run,
             "detail_href": run_detail_href(pipeline_run.get("run_id", "")),
         }
-        for pipeline_run in repository.list_runs()
+        for pipeline_run in raw_runs
     ]
+    pipeline_summary = build_pipeline_run_collection_summary(pipeline_runs)
 
     return templates.TemplateResponse(
         request,
@@ -1202,6 +1207,7 @@ async def runs(request: Request):
                 ),
             ),
             "runs": pipeline_runs,
+            "pipeline_summary": pipeline_summary,
         },
     )
 

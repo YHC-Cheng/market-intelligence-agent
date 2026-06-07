@@ -1,6 +1,61 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  <section class="card table-card" aria-labelledby="pipeline-summary-title">
+    <div class="section-header">
+      <div>
+        <h2 id="pipeline-summary-title">Pipeline Summary</h2>
+        <p>Recent run health based on local pipeline output records.</p>
+      </div>
+    </div>
+    <dl class="info-list inline-info-list">
+      <div>
+        <dt>Latest Run</dt>
+        <dd>
+          {% if pipeline_summary.latest_run %}
+            {{ pipeline_summary.latest_run.get("run_id") or "unknown" }}
+          {% else %}
+            &mdash;
+          {% endif %}
+        </dd>
+      </div>
+      <div>
+        <dt>Total Runs</dt>
+        <dd>{{ pipeline_summary.total_runs }}</dd>
+      </div>
+      <div>
+        <dt>Failed Runs</dt>
+        <dd>{{ pipeline_summary.failed_count }}</dd>
+      </div>
+      <div>
+        <dt>Runs Needing Attention</dt>
+        <dd>{{ pipeline_summary.needs_attention_count }}</dd>
+      </div>
+      <div>
+        <dt>Healthy Runs</dt>
+        <dd>{{ pipeline_summary.healthy_count }}</dd>
+      </div>
+      <div>
+        <dt>Unknown Runs</dt>
+        <dd>{{ pipeline_summary.unknown_count }}</dd>
+      </div>
+      <div>
+        <dt>Average Quality Score</dt>
+        <dd>
+          {% if pipeline_summary.average_quality_score is not none %}
+            {{ pipeline_summary.average_quality_score }}
+          {% else %}
+            &mdash;
+          {% endif %}
+        </dd>
+      </div>
+      <div>
+        <dt>Missing Outputs</dt>
+        <dd>{{ pipeline_summary.missing_output_count }}</dd>
+      </div>
+    </dl>
+  </section>
+
   {% if runs %}
     <section class="card table-card" aria-labelledby="runs-title">
       <div class="section-header">

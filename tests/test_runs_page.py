@@ -87,6 +87,13 @@ def detail_body(response_text):
     return response_text[start:]
 
 
+def summary_value(response_text, label):
+    label_start = response_text.index(f"<dt>{label}</dt>")
+    value_start = response_text.index("<dd>", label_start) + len("<dd>")
+    value_end = response_text.index("</dd>", value_start)
+    return " ".join(response_text[value_start:value_end].split())
+
+
 def write_text(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
@@ -127,6 +134,90 @@ def test_runs_page_displays_pipeline_runs(tmp_path, monkeypatch):
     assert 'aria-disabled="true"' not in response.text
 
 
+def test_runs_page_displays_pipeline_summary(tmp_path, monkeypatch):
+    runs = [
+        pipeline_run(
+            run_id="newest-healthy-run",
+            workflow_status="pass",
+            quality_status="pass",
+            quality_score=90,
+            warnings=[],
+            errors=[],
+        ),
+        pipeline_run(
+            run_id="failed-run",
+            workflow_status="fail",
+            quality_status="warning",
+            quality_score=50,
+            warnings=[],
+            errors=[],
+        ),
+        pipeline_run(
+            run_id="attention-run",
+            workflow_status="pass",
+            quality_status="warning",
+            quality_score="not-numeric",
+            warnings=["Limited coverage."],
+            errors=[],
+        ),
+    ]
+    runs[0]["run_outputs"] = {}
+    runs[1]["run_outputs"] = {}
+    runs[2]["run_outputs"] = {
+        "slide_draft": {
+            "path": "outputs/runs/attention-run/slide_draft.md",
+            "status": "missing",
+        }
+    }
+    client = runs_client(monkeypatch, runs)
+
+    response = client.get("/runs")
+
+    assert response.status_code == 200
+    assert "Pipeline Summary" in response.text
+    assert "Latest Run" in response.text
+    assert "newest-healthy-run" in response.text
+    assert "Total Runs" in response.text
+    assert "Failed Runs" in response.text
+    assert "Runs Needing Attention" in response.text
+    assert "Healthy Runs" in response.text
+    assert "Unknown Runs" in response.text
+    assert "Average Quality Score" in response.text
+    assert "Missing Outputs" in response.text
+    assert summary_value(response.text, "Latest Run") == "newest-healthy-run"
+    assert summary_value(response.text, "Total Runs") == "3"
+    assert summary_value(response.text, "Failed Runs") == "1"
+    assert summary_value(response.text, "Runs Needing Attention") == "1"
+    assert summary_value(response.text, "Healthy Runs") == "1"
+    assert summary_value(response.text, "Unknown Runs") == "0"
+    assert summary_value(response.text, "Missing Outputs") == "1"
+    assert summary_value(response.text, "Average Quality Score") == "70.0"
+    assert "70.0" in response.text
+
+
+def test_runs_page_pipeline_summary_displays_unknown_count(
+    tmp_path,
+    monkeypatch,
+):
+    run = pipeline_run(
+        run_id="unknown-run",
+        workflow_status="unknown",
+        quality_status="unknown",
+        quality_score=None,
+        warnings=[],
+        errors=[],
+    )
+    run["run_outputs"] = {}
+    client = runs_client(monkeypatch, [run])
+
+    response = client.get("/runs")
+
+    assert response.status_code == 200
+    assert "Unknown Runs" in response.text
+    assert "unknown-run" in response.text
+    assert summary_value(response.text, "Unknown Runs") == "1"
+
+
 def test_runs_page_view_detail_link_is_url_encoded(tmp_path, monkeypatch):
     client = runs_client(
         monkeypatch,
@@ -145,6 +236,13 @@ def test_runs_page_empty_state(tmp_path, monkeypatch):
     response = client.get("/runs")
 
     assert response.status_code == 200
+    assert "Pipeline Summary" in response.text
+    assert "Total Runs" in response.text
+    assert "Latest Run" in response.text
+    assert "Average Quality Score" in response.text
+    assert summary_value(response.text, "Total Runs") == "0"
+    assert summary_value(response.text, "Latest Run") == "&mdash;"
+    assert summary_value(response.text, "Average Quality Score") == "&mdash;"
     assert "No pipeline runs found." in response.text
     assert "Run the pipeline locally or make sure outputs/runs exists." in response.text
     assert "run-history-table" not in response.text
