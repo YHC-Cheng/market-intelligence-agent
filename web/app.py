@@ -1031,10 +1031,29 @@ async def reference(request: Request):
     return templates.TemplateResponse(request, "reference.html", context)
 
 
+def run_detail_href(run_id):
+    return f"/runs/{quote(str(run_id), safe='')}"
+
+
+def get_pipeline_run_or_404(run_id):
+    run = get_pipeline_run_repository().get_run(run_id)
+
+    if run is None:
+        raise HTTPException(status_code=404, detail="Pipeline run not found")
+
+    return run
+
+
 @app.get("/runs", response_class=HTMLResponse)
 async def runs(request: Request):
     repository = get_pipeline_run_repository()
-    pipeline_runs = repository.list_runs()
+    pipeline_runs = [
+        {
+            **pipeline_run,
+            "detail_href": run_detail_href(pipeline_run.get("run_id", "")),
+        }
+        for pipeline_run in repository.list_runs()
+    ]
 
     return templates.TemplateResponse(
         request,
@@ -1050,6 +1069,26 @@ async def runs(request: Request):
                 ),
             ),
             "runs": pipeline_runs,
+        },
+    )
+
+
+@app.get("/runs/{run_id}", response_class=HTMLResponse)
+async def run_detail(request: Request, run_id: str):
+    pipeline_run = get_pipeline_run_or_404(run_id)
+
+    return templates.TemplateResponse(
+        request,
+        "run_detail.html",
+        {
+            **base_template_context(
+                request,
+                title=f"{pipeline_run.get('run_id') or 'Pipeline Run'}",
+                active_nav="runs",
+                page_title="Run Detail",
+                page_subtitle="Inspect pipeline execution metadata.",
+            ),
+            "run": pipeline_run,
         },
     )
 
