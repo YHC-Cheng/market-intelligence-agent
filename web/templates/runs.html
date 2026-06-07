@@ -61,9 +61,7 @@
                 <td>{{ warning_count }}</td>
                 <td>{{ error_count }}</td>
                 <td>
-                  <span class="button button-secondary button-sm is-disabled" aria-disabled="true">
-                    View Detail
-                  </span>
+                  <a class="button button-secondary button-sm" href="{{ run.get('detail_href') }}">View Detail</a>
                 </td>
               </tr>
             {% endfor %}
