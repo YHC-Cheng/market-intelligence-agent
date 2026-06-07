@@ -14,6 +14,7 @@ from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
 from web.repositories.json_weekly_report_snapshot_repository import (
     JsonWeeklyReportSnapshotRepository,
 )
+from web.repositories.pipeline_run_repository import PipelineRunRepository
 from web.services.article_processing import ArticleProcessingService
 from web.services.report_re_export import build_report_re_export_markdown
 from web.services.weekly_report_snapshot_writer import WeeklyReportSnapshotWriter
@@ -33,6 +34,7 @@ templates = Jinja2Templates(directory=BASE_DIR / "templates")
 NAVIGATION_ITEMS = [
     {"key": "home", "label": "Dashboard", "href": "/"},
     {"key": "newsletter", "label": "Weekly Brief", "href": "/newsletter"},
+    {"key": "runs", "label": "Runs", "href": "/runs"},
     {"key": "reports", "label": "Reports", "href": "/reports"},
     {"key": "reference", "label": "Reference", "href": "/reference"},
 ]
@@ -95,6 +97,10 @@ def get_knowledge_repository():
 
 def get_report_snapshot_repository():
     return JsonWeeklyReportSnapshotRepository()
+
+
+def get_pipeline_run_repository():
+    return PipelineRunRepository()
 
 
 def get_report_snapshot_writer():
@@ -1023,6 +1029,29 @@ async def reference(request: Request):
         }
     )
     return templates.TemplateResponse(request, "reference.html", context)
+
+
+@app.get("/runs", response_class=HTMLResponse)
+async def runs(request: Request):
+    repository = get_pipeline_run_repository()
+    pipeline_runs = repository.list_runs()
+
+    return templates.TemplateResponse(
+        request,
+        "runs.html",
+        {
+            **base_template_context(
+                request,
+                title="Pipeline Runs",
+                active_nav="runs",
+                page_title="Run History",
+                page_subtitle=(
+                    "Browse pipeline execution records from local outputs."
+                ),
+            ),
+            "runs": pipeline_runs,
+        },
+    )
 
 
 @app.get("/reports", response_class=HTMLResponse)
