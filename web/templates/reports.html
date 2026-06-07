@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  {% if snapshots %}
+    <section class="card table-card" aria-labelledby="reports-title">
+      <div class="section-header">
+        <div>
+          <h2 id="reports-title">Saved reports</h2>
+          <p>Weekly report snapshots saved from completed runs.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table report-history-table">
+          <thead>
+            <tr>
+              <th scope="col">Report</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Generated</th>
+              <th scope="col">Status</th>
+              <th scope="col">Quality</th>
+              <th scope="col">Score</th>
+              <th scope="col">Articles</th>
+              <th scope="col">Warnings</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for snapshot in snapshots %}
+              {% set quality_status = snapshot.get("quality_status") or "unknown" %}
+              {% set status = snapshot.get("status") or "unknown" %}
+              {% set warning_count = snapshot.get("warnings", [])|length %}
+              <tr>
+                <td>
+                  <span class="title-link">{{ snapshot.get("title") or "Untitled report" }}</span>
+                </td>
+                <td>
+                  {% if snapshot.get("topic") %}
+                    <span class="badge badge-outline">{{ snapshot.get("topic") }}</span>
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>
+                  {% if snapshot.get("generated_at") or snapshot.get("created_at") %}
+                    {{ snapshot.get("generated_at") or snapshot.get("created_at") }}
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="badge {% if status == 'pass' %}badge-success{% elif status == 'fail' %}badge-danger{% else %}badge-secondary{% endif %}">
+                    {{ status }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge {% if quality_status == 'pass' %}badge-success{% elif quality_status == 'warning' %}badge-warning{% elif quality_status == 'fail' %}badge-danger{% else %}badge-secondary{% endif %}">
+                    {{ quality_status }}
+                  </span>
+                </td>
+                <td>
+                  {% if snapshot.get("quality_score") is not none %}
+                    {{ snapshot.get("quality_score") }}
+                  {% else %}
+                    &mdash;
+                  {% endif %}
+                </td>
+                <td>{{ snapshot.get("article_count", 0) }}</td>
+                <td>{{ warning_count }}</td>
+                <td>
+                  <span class="button button-secondary button-sm is-disabled" aria-disabled="true">View Detail</span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  {% else %}
+    <section class="card empty-state" aria-live="polite">
+      <h2>No saved reports yet</h2>
+      <p>Weekly report snapshots will appear here after they are written to the JSON repository.</p>
+    </section>
+  {% endif %}
+{% endblock %}
