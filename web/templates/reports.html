@@ -1,6 +1,31 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  <section class="card table-card" aria-labelledby="report-actions-title">
+    <div class="section-header">
+      <div>
+        <h2 id="report-actions-title">Snapshot backfill</h2>
+        <p>Convert existing run outputs into saved weekly report snapshots.</p>
+      </div>
+      <form method="post" action="/reports/backfill">
+        <button class="button button-secondary" type="submit">Backfill Reports</button>
+      </form>
+    </div>
+  </section>
+
+  {% if backfill_result %}
+    <div class="alert {% if backfill_result.error_count > 0 %}alert-warning{% else %}alert-success{% endif %}" role="status">
+      Backfill complete:
+      scanned {{ backfill_result.scanned_count }},
+      created or updated {{ backfill_result.created_or_updated_count }},
+      skipped {{ backfill_result.skipped_count }},
+      errors {{ backfill_result.error_count }}.
+      {% if backfill_result.error_count > 0 %}
+        Some runs could not be backfilled. Check run outputs before retrying.
+      {% endif %}
+    </div>
+  {% endif %}
+
   {% if snapshots %}
     <section class="card table-card" aria-labelledby="reports-title">
       <div class="section-header">

@@ -16,6 +16,7 @@ from web.repositories.json_weekly_report_snapshot_repository import (
 )
 from web.services.article_processing import ArticleProcessingService
 from web.services.report_re_export import build_report_re_export_markdown
+from web.services.weekly_report_snapshot_writer import WeeklyReportSnapshotWriter
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -94,6 +95,12 @@ def get_knowledge_repository():
 
 def get_report_snapshot_repository():
     return JsonWeeklyReportSnapshotRepository()
+
+
+def get_report_snapshot_writer():
+    return WeeklyReportSnapshotWriter(
+        repository=get_report_snapshot_repository(),
+    )
 
 
 def get_article_processing_service(repository=None):
@@ -1019,7 +1026,13 @@ async def reference(request: Request):
 
 
 @app.get("/reports", response_class=HTMLResponse)
-async def reports(request: Request):
+async def reports(
+    request: Request,
+    backfill_scanned_count: Optional[int] = None,
+    backfill_created_or_updated_count: Optional[int] = None,
+    backfill_skipped_count: Optional[int] = None,
+    backfill_error_count: Optional[int] = None,
+):
     repository = get_report_snapshot_repository()
     snapshots = [
         {
@@ -1043,7 +1056,48 @@ async def reports(request: Request):
                 page_subtitle="Browse saved weekly report snapshots.",
             ),
             "snapshots": snapshots,
+            "backfill_result": report_backfill_result_context(
+                backfill_scanned_count,
+                backfill_created_or_updated_count,
+                backfill_skipped_count,
+                backfill_error_count,
+            ),
         },
+    )
+
+
+def report_backfill_result_context(
+    scanned_count=None,
+    created_or_updated_count=None,
+    skipped_count=None,
+    error_count=None,
+):
+    if scanned_count is None:
+        return None
+
+    return {
+        "scanned_count": scanned_count or 0,
+        "created_or_updated_count": created_or_updated_count or 0,
+        "skipped_count": skipped_count or 0,
+        "error_count": error_count or 0,
+    }
+
+
+@app.post("/reports/backfill")
+async def backfill_reports():
+    result = get_report_snapshot_writer().backfill_snapshots_from_runs()
+    params = {
+        "backfill_scanned_count": result.get("scanned_count", 0),
+        "backfill_created_or_updated_count": result.get(
+            "created_or_updated_count",
+            0,
+        ),
+        "backfill_skipped_count": result.get("skipped_count", 0),
+        "backfill_error_count": result.get("error_count", 0),
+    }
+    return RedirectResponse(
+        url=f"/reports?{urlencode(params)}",
+        status_code=303,
     )
 
 

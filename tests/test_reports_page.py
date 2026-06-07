@@ -33,6 +33,16 @@ def reports_client(monkeypatch, snapshot_path, output_root=None):
     return TestClient(app_module.app)
 
 
+class FakeSnapshotWriter:
+    def __init__(self, result):
+        self.result = result
+        self.backfill_called = False
+
+    def backfill_snapshots_from_runs(self):
+        self.backfill_called = True
+        return self.result
+
+
 def report_table_body(response_text):
     start = response_text.index('<table class="data-table report-history-table">')
     body_start = response_text.index("<tbody>", start)
@@ -116,6 +126,9 @@ def test_reports_page_displays_saved_snapshots(tmp_path, monkeypatch):
     assert "warning" in response.text
     assert "85" in response.text
     assert "3" in response.text
+    assert "Backfill Reports" in response.text
+    assert 'action="/reports/backfill"' in response.text
+    assert 'method="post"' in response.text
     assert "View Detail" in response.text
     assert 'href="/reports/run-1"' in response.text
 
@@ -132,7 +145,83 @@ def test_reports_page_empty_state(tmp_path, monkeypatch):
     assert "<h1>Report History</h1>" in response.text
     assert "No saved reports yet" in response.text
     assert "Weekly report snapshots will appear here" in response.text
+    assert "Backfill Reports" in response.text
     assert "report-history-table" not in response.text
+
+
+def test_reports_backfill_post_calls_writer_and_redirects(
+    tmp_path,
+    monkeypatch,
+):
+    writer = FakeSnapshotWriter({
+        "scanned_count": 3,
+        "created_or_updated_count": 2,
+        "skipped_count": 1,
+        "error_count": 0,
+        "errors": [],
+    })
+    monkeypatch.setattr(
+        app_module,
+        "get_report_snapshot_writer",
+        lambda: writer,
+    )
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "weekly_report_snapshots.json",
+    )
+
+    response = client.post("/reports/backfill", follow_redirects=False)
+
+    assert writer.backfill_called is True
+    assert response.status_code == 303
+    assert response.headers["location"] == (
+        "/reports?backfill_scanned_count=3"
+        "&backfill_created_or_updated_count=2"
+        "&backfill_skipped_count=1"
+        "&backfill_error_count=0"
+    )
+
+
+def test_reports_page_displays_backfill_result_message(tmp_path, monkeypatch):
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "weekly_report_snapshots.json",
+    )
+
+    response = client.get(
+        "/reports?backfill_scanned_count=3"
+        "&backfill_created_or_updated_count=2"
+        "&backfill_skipped_count=1"
+        "&backfill_error_count=0"
+    )
+
+    assert response.status_code == 200
+    assert "Backfill complete:" in response.text
+    assert "scanned 3" in response.text
+    assert "created or updated 2" in response.text
+    assert "skipped 1" in response.text
+    assert "errors 0" in response.text
+    assert "Some runs could not be backfilled" not in response.text
+
+
+def test_reports_page_displays_backfill_error_warning(tmp_path, monkeypatch):
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "weekly_report_snapshots.json",
+    )
+
+    response = client.get(
+        "/reports?backfill_scanned_count=4"
+        "&backfill_created_or_updated_count=1"
+        "&backfill_skipped_count=1"
+        "&backfill_error_count=2"
+    )
+
+    assert response.status_code == 200
+    assert "Backfill complete:" in response.text
+    assert "errors 2" in response.text
+    assert "Some runs could not be backfilled" in response.text
+    assert "alert-warning" in response.text
 
 
 def test_reports_page_sorts_snapshots_newest_first(tmp_path, monkeypatch):
