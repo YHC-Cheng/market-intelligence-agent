@@ -181,6 +181,122 @@ def test_run_detail_page_displays_run_metadata(tmp_path, monkeypatch):
     assert "85" in response.text
 
 
+def test_run_detail_page_quality_summary_displays_healthy_assessment(
+    tmp_path,
+    monkeypatch,
+):
+    run = pipeline_run(
+        workflow_status="pass",
+        quality_status="pass",
+        quality_score=96,
+        warnings=[],
+        errors=[],
+    )
+    run["run_outputs"] = {
+        "market_analysis_report": {
+            "path": "outputs/runs/healthy-run/market_analysis_report.md",
+            "status": "available",
+        }
+    }
+    client = runs_client(monkeypatch, [run])
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert "Quality Summary" in response.text
+    assert "Overall Assessment" in response.text
+    assert "Healthy" in response.text
+    assert "Warnings Count" in response.text
+    assert "Errors Count" in response.text
+    assert "Missing Outputs Count" in response.text
+    assert "96" in response.text
+
+
+def test_run_detail_page_quality_summary_displays_failed_assessment_for_errors(
+    tmp_path,
+    monkeypatch,
+):
+    run = pipeline_run(
+        workflow_status="pass",
+        quality_status="pass",
+        warnings=[],
+        errors=["Workflow failed late."],
+    )
+    run["run_outputs"] = {}
+    client = runs_client(monkeypatch, [run])
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert "Failed" in response.text
+    assert "Workflow failed late." in response.text
+
+
+def test_run_detail_page_quality_summary_displays_failed_for_workflow_fail(
+    tmp_path,
+    monkeypatch,
+):
+    run = pipeline_run(
+        workflow_status="fail",
+        quality_status="warning",
+        warnings=[],
+        errors=[],
+    )
+    run["run_outputs"] = {}
+    client = runs_client(monkeypatch, [run])
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert "Failed" in response.text
+
+
+def test_run_detail_page_quality_summary_displays_needs_attention(
+    tmp_path,
+    monkeypatch,
+):
+    run = pipeline_run(
+        workflow_status="pass",
+        quality_status="warning",
+        warnings=["Limited coverage."],
+        errors=[],
+    )
+    run["run_outputs"] = {
+        "slide_draft": {
+            "path": "outputs/runs/run-1/slide_draft.md",
+            "status": "missing",
+        }
+    }
+    client = runs_client(monkeypatch, [run])
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert "Needs Attention" in response.text
+    assert "Limited coverage." in response.text
+    assert "Slide Draft" in response.text
+    assert "slide_draft.md" in response.text
+
+
+def test_run_detail_page_quality_summary_displays_unknown_assessment(
+    tmp_path,
+    monkeypatch,
+):
+    run = pipeline_run(
+        workflow_status="unknown",
+        quality_status="unknown",
+        warnings=[],
+        errors=[],
+    )
+    run["run_outputs"] = {}
+    client = runs_client(monkeypatch, [run])
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert "Unknown" in response.text
+
+
 def test_run_detail_page_displays_metrics_warnings_errors_and_outputs(
     tmp_path,
     monkeypatch,
@@ -223,6 +339,8 @@ def test_run_detail_page_displays_metrics_warnings_errors_and_outputs(
     assert "Slide Draft" in body
     assert "slide_draft.md" in body
     assert "missing" in body
+    assert "Failure Summary" in body
+    assert "Missing Outputs" in body
 
 
 def test_run_detail_page_displays_output_file_actions_for_available_file(
@@ -298,6 +416,7 @@ def test_run_detail_page_displays_empty_warning_error_metric_and_output_states(
     assert "No warnings" in response.text
     assert "No errors" in response.text
     assert "No metrics recorded" in response.text
+    assert "No missing output files" in response.text
     assert "No output files recorded" in response.text
     assert "&mdash;" in response.text
 

@@ -5,6 +5,7 @@
 
   {% set workflow_status = run.get("workflow_status") or "unknown" %}
   {% set quality_status = run.get("quality_status") or "unknown" %}
+  {% set assessment = quality_summary.get("overall_assessment") or "Unknown" %}
 
   <div class="article-hero">
     <div class="metadata-row" aria-label="Run metadata">
@@ -20,6 +21,50 @@
 
   <div class="detail-layout">
     <div class="detail-main">
+      <section class="detail-section" aria-labelledby="quality-summary-title">
+        <h2 id="quality-summary-title">Quality Summary</h2>
+        <dl class="info-list inline-info-list">
+          <div>
+            <dt>Overall Assessment</dt>
+            <dd>
+              <span class="badge {% if assessment == 'Healthy' %}badge-success{% elif assessment == 'Needs Attention' %}badge-warning{% elif assessment == 'Failed' %}badge-danger{% else %}badge-secondary{% endif %}">
+                {{ assessment }}
+              </span>
+            </dd>
+          </div>
+          <div>
+            <dt>Workflow Status</dt>
+            <dd>{{ quality_summary.get("workflow_status") or "unknown" }}</dd>
+          </div>
+          <div>
+            <dt>Quality Status</dt>
+            <dd>{{ quality_summary.get("quality_status") or "unknown" }}</dd>
+          </div>
+          <div>
+            <dt>Quality Score</dt>
+            <dd>
+              {% if quality_summary.get("quality_score") is not none %}
+                {{ quality_summary.get("quality_score") }}
+              {% else %}
+                &mdash;
+              {% endif %}
+            </dd>
+          </div>
+          <div>
+            <dt>Warnings Count</dt>
+            <dd>{{ quality_summary.get("warning_count", 0) }}</dd>
+          </div>
+          <div>
+            <dt>Errors Count</dt>
+            <dd>{{ quality_summary.get("error_count", 0) }}</dd>
+          </div>
+          <div>
+            <dt>Missing Outputs Count</dt>
+            <dd>{{ quality_summary.get("missing_output_count", 0) }}</dd>
+          </div>
+        </dl>
+      </section>
+
       <section class="detail-section" aria-labelledby="run-metadata-title">
         <h2 id="run-metadata-title">Run Metadata</h2>
         <dl class="info-list inline-info-list">
@@ -81,9 +126,23 @@
         {% endif %}
       </section>
 
-      <section class="detail-section" aria-labelledby="run-warnings-title">
-        <h2 id="run-warnings-title">Warnings</h2>
-        {% set warnings = run.get("warnings", []) %}
+      <section class="detail-section" aria-labelledby="failure-summary-title">
+        <h2 id="failure-summary-title">Failure Summary</h2>
+
+        <h3>Errors</h3>
+        {% set errors = quality_summary.get("errors", []) %}
+        {% if errors %}
+          <ul class="brief-list">
+            {% for error in errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No errors</p>
+        {% endif %}
+
+        <h3>Warnings</h3>
+        {% set warnings = quality_summary.get("warnings", []) %}
         {% if warnings %}
           <ul class="brief-list">
             {% for warning in warnings %}
@@ -93,19 +152,41 @@
         {% else %}
           <p>No warnings</p>
         {% endif %}
-      </section>
 
-      <section class="detail-section" aria-labelledby="run-errors-title">
-        <h2 id="run-errors-title">Errors</h2>
-        {% set errors = run.get("errors", []) %}
-        {% if errors %}
-          <ul class="brief-list">
-            {% for error in errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
+        <h3>Missing Outputs</h3>
+        {% set missing_outputs = quality_summary.get("missing_outputs", []) %}
+        {% if missing_outputs %}
+          <div class="table-wrap">
+            <table class="data-table missing-outputs-table">
+              <thead>
+                <tr>
+                  <th scope="col">Output</th>
+                  <th scope="col">Path</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for output in missing_outputs %}
+                  <tr>
+                    <td>
+                      <strong>{{ output.get("label") or output.get("key") }}</strong>
+                      <span class="output-path">{{ output.get("key") }}</span>
+                    </td>
+                    <td>
+                      {% if output.get("path") %}
+                        <span class="output-path">{{ output.get("path") }}</span>
+                      {% else %}
+                        &mdash;
+                      {% endif %}
+                    </td>
+                    <td>{{ output.get("status") or "unknown" }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         {% else %}
-          <p>No errors</p>
+          <p>No missing output files</p>
         {% endif %}
       </section>
 

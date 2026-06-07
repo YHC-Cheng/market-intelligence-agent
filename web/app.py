@@ -16,6 +16,9 @@ from web.repositories.json_weekly_report_snapshot_repository import (
 )
 from web.repositories.pipeline_run_repository import PipelineRunRepository
 from web.services.article_processing import ArticleProcessingService
+from web.services.pipeline_run_quality_summary import (
+    build_pipeline_run_quality_summary,
+)
 from web.services.report_re_export import build_report_re_export_markdown
 from web.services.weekly_report_snapshot_writer import WeeklyReportSnapshotWriter
 
@@ -1206,6 +1209,7 @@ async def runs(request: Request):
 @app.get("/runs/{run_id}", response_class=HTMLResponse)
 async def run_detail(request: Request, run_id: str):
     pipeline_run = with_run_output_file_actions(get_pipeline_run_or_404(run_id))
+    quality_summary = build_pipeline_run_quality_summary(pipeline_run)
 
     return templates.TemplateResponse(
         request,
@@ -1219,6 +1223,7 @@ async def run_detail(request: Request, run_id: str):
                 page_subtitle="Inspect pipeline execution metadata.",
             ),
             "run": pipeline_run,
+            "quality_summary": quality_summary,
         },
     )
 
