@@ -6,7 +6,7 @@ from urllib.parse import quote, urlencode, urlsplit
 
 from config import RSS_SOURCES_BY_TOPIC, SOURCES
 from fastapi import FastAPI, Form, HTTPException, Query, Request
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -15,6 +15,7 @@ from web.repositories.json_weekly_report_snapshot_repository import (
     JsonWeeklyReportSnapshotRepository,
 )
 from web.services.article_processing import ArticleProcessingService
+from web.services.report_re_export import build_report_re_export_markdown
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -1061,6 +1062,13 @@ def report_file_href(snapshot_id, file_key, download=False):
     return href
 
 
+def report_re_export_href(snapshot_id):
+    return (
+        f"/reports/{quote(str(snapshot_id), safe='')}"
+        "/re-export/download"
+    )
+
+
 def with_report_file_actions(snapshot):
     snapshot_copy = dict(snapshot)
     snapshot_id = snapshot_copy.get("snapshot_id", "")
@@ -1141,6 +1149,20 @@ def get_report_file_or_404(snapshot_id, file_key):
     return snapshot, file_metadata, file_path
 
 
+def read_report_file_content_for_re_export(snapshot, file_key):
+    file_metadata = get_report_file_metadata_or_404(snapshot, file_key)
+    file_path = resolve_report_output_file_path_or_404(file_metadata)
+    return file_path.read_text(encoding="utf-8", errors="replace")
+
+
+def report_export_filename(snapshot_id):
+    cleaned = "".join(
+        character if character.isalnum() or character in {"-", "_", "."} else "_"
+        for character in str(snapshot_id)
+    )
+    return f"report_export_{cleaned or 'snapshot'}.md"
+
+
 @app.get("/reports/{snapshot_id}", response_class=HTMLResponse)
 async def report_detail(request: Request, snapshot_id: str):
     snapshot = with_report_file_actions(get_report_snapshot_or_404(snapshot_id))
@@ -1157,6 +1179,9 @@ async def report_detail(request: Request, snapshot_id: str):
                 page_subtitle="Weekly report snapshot metadata.",
             ),
             "snapshot": snapshot,
+            "re_export_href": report_re_export_href(
+                snapshot.get("snapshot_id", snapshot_id)
+            ),
         },
     )
 
@@ -1202,6 +1227,26 @@ async def download_report_file(snapshot_id: str, file_key: str):
         path=file_path,
         filename=file_path.name,
         media_type="text/markdown",
+    )
+
+
+@app.get("/reports/{snapshot_id}/re-export/download")
+async def download_report_re_export(snapshot_id: str):
+    snapshot = get_report_snapshot_or_404(snapshot_id)
+    markdown = build_report_re_export_markdown(
+        snapshot,
+        content_reader=read_report_file_content_for_re_export,
+    )
+
+    return Response(
+        content=markdown,
+        media_type="text/markdown",
+        headers={
+            "Content-Disposition": (
+                "attachment; "
+                f'filename="{report_export_filename(snapshot_id)}"'
+            ),
+        },
     )
 
 

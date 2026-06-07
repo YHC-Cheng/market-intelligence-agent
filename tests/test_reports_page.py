@@ -295,6 +295,31 @@ def test_report_detail_page_displays_available_and_missing_output_files(
     assert ">Missing</span>" in response.text
 
 
+def test_report_detail_page_displays_re_export_download_action(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "Exportable Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path)
+
+    response = client.get("/reports/run-export")
+
+    assert response.status_code == 200
+    assert "Download Re-export" in response.text
+    assert 'href="/reports/run-export/re-export/download"' in response.text
+
+
 def test_report_detail_page_missing_snapshot_returns_404(tmp_path, monkeypatch):
     client = reports_client(
         monkeypatch,
@@ -302,6 +327,272 @@ def test_report_detail_page_missing_snapshot_returns_404(tmp_path, monkeypatch):
     )
 
     response = client.get("/reports/missing-snapshot")
+
+    assert response.status_code == 404
+
+
+def test_report_re_export_download_returns_markdown_with_metadata(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-export" / "copy_ready_report.md"
+    write_text(report_path, "# Copy Ready Content\n\nUse this in export.\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "FinOps Weekly Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                quality_status="warning",
+                quality_score=85,
+                warnings=["Review source coverage."],
+                source_run={
+                    "run_id": "run-export",
+                    "run_mode": "weekly",
+                },
+                files={
+                    "copy_ready_report": {
+                        "path": str(report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-export/re-export/download")
+    markdown = response.text
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/markdown")
+    assert "attachment" in response.headers["content-disposition"]
+    assert "report_export_run-export.md" in response.headers["content-disposition"]
+    assert "# FinOps Weekly Snapshot" in markdown
+    assert "## Report Metadata" in markdown
+    assert "- topic: FinOps" in markdown
+    assert "- run_id: run-export" in markdown
+    assert "- quality_status: warning" in markdown
+    assert "- quality_score: 85" in markdown
+    assert "## Quality Warnings" in markdown
+    assert "- Review source coverage." in markdown
+    assert "## Source Run Metadata" in markdown
+    assert "- run_mode: weekly" in markdown
+    assert "Source file: copy_ready_report" in markdown
+    assert "# Copy Ready Content" in markdown
+    assert "Use this in export." in markdown
+    assert "## Output Files" in markdown
+    assert "### copy_ready_report" in markdown
+
+
+def test_report_re_export_without_warnings_shows_no_warnings(
+    tmp_path,
+    monkeypatch,
+):
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-no-warnings",
+                "Quiet Snapshot",
+                "AI",
+                "2026-05-16T09:03:00",
+                warnings=[],
+                files={},
+            )
+        ],
+    )
+    client = reports_client(
+        monkeypatch,
+        snapshot_path,
+        output_root=tmp_path / "outputs" / "runs",
+    )
+
+    response = client.get("/reports/run-no-warnings/re-export/download")
+
+    assert response.status_code == 200
+    assert "## Quality Warnings" in response.text
+    assert "No warnings" in response.text
+
+
+def test_report_re_export_prioritizes_copy_ready_report(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    copy_ready_path = output_root / "run-export" / "copy_ready_report.md"
+    market_report_path = output_root / "run-export" / "market_analysis_report.md"
+    write_text(copy_ready_path, "COPY READY CONTENT\n")
+    write_text(market_report_path, "MARKET ANALYSIS CONTENT\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "Priority Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "copy_ready_report": {
+                        "path": str(copy_ready_path),
+                        "status": "available",
+                    },
+                    "market_analysis_report": {
+                        "path": str(market_report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-export/re-export/download")
+
+    assert response.status_code == 200
+    assert "Source file: copy_ready_report" in response.text
+    assert "COPY READY CONTENT" in response.text
+    assert "MARKET ANALYSIS CONTENT" not in response.text
+
+
+def test_report_re_export_falls_back_to_market_analysis_report(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    copy_ready_path = output_root / "run-export" / "missing_copy_ready_report.md"
+    market_report_path = output_root / "run-export" / "market_analysis_report.md"
+    write_text(market_report_path, "MARKET ANALYSIS FALLBACK\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "Fallback Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "copy_ready_report": {
+                        "path": str(copy_ready_path),
+                        "status": "available",
+                    },
+                    "market_analysis_report": {
+                        "path": str(market_report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-export/re-export/download")
+
+    assert response.status_code == 200
+    assert "Source file: market_analysis_report" in response.text
+    assert "MARKET ANALYSIS FALLBACK" in response.text
+
+
+def test_report_re_export_metadata_only_when_no_content_source_available(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-empty-export",
+                "Metadata Only Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "copy_ready_report": {
+                        "path": str(
+                            output_root
+                            / "run-empty-export"
+                            / "missing_copy_ready_report.md"
+                        ),
+                        "status": "available",
+                    },
+                    "market_analysis_report": {
+                        "path": str(
+                            output_root
+                            / "run-empty-export"
+                            / "missing_market_analysis_report.md"
+                        ),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-empty-export/re-export/download")
+
+    assert response.status_code == 200
+    assert "# Metadata Only Snapshot" in response.text
+    assert "No report content file was available for re-export." in response.text
+
+
+def test_report_re_export_unsafe_path_is_not_read_and_falls_back(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    unsafe_path = tmp_path / "outside.md"
+    market_report_path = output_root / "run-export" / "market_analysis_report.md"
+    write_text(unsafe_path, "DO NOT READ THIS\n")
+    write_text(market_report_path, "SAFE MARKET CONTENT\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-export",
+                "Safe Fallback Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "copy_ready_report": {
+                        "path": str(unsafe_path),
+                        "status": "available",
+                    },
+                    "market_analysis_report": {
+                        "path": str(market_report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-export/re-export/download")
+
+    assert response.status_code == 200
+    assert "DO NOT READ THIS" not in response.text
+    assert "Source file: market_analysis_report" in response.text
+    assert "SAFE MARKET CONTENT" in response.text
+
+
+def test_report_re_export_missing_snapshot_returns_404(tmp_path, monkeypatch):
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "missing_weekly_report_snapshots.json",
+        output_root=tmp_path / "outputs" / "runs",
+    )
+
+    response = client.get("/reports/missing/re-export/download")
 
     assert response.status_code == 404
 
