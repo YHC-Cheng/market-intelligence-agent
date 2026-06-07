@@ -6,7 +6,7 @@ from urllib.parse import quote, urlencode, urlsplit
 
 from config import RSS_SOURCES_BY_TOPIC, SOURCES
 from fastapi import FastAPI, Form, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent
 REPO_ROOT = BASE_DIR.parent
 NEWSLETTER_OUTPUT_DIR = REPO_ROOT / "outputs" / "newsletter"
 KEYWORDS_CONFIG_PATH = REPO_ROOT / "config" / "keywords.json"
+REPORT_OUTPUT_FILES_ROOT = REPO_ROOT / "outputs" / "runs"
 
 app = FastAPI(title="Market Intelligence Agent 2.0")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
@@ -1045,13 +1046,104 @@ async def reports(request: Request):
     )
 
 
-@app.get("/reports/{snapshot_id}", response_class=HTMLResponse)
-async def report_detail(request: Request, snapshot_id: str):
+def report_file_label(file_key):
+    return str(file_key).replace("_", " ").title()
+
+
+def report_file_href(snapshot_id, file_key, download=False):
+    href = (
+        f"/reports/{quote(str(snapshot_id), safe='')}"
+        f"/files/{quote(str(file_key), safe='')}"
+    )
+    if download:
+        return f"{href}/download"
+
+    return href
+
+
+def with_report_file_actions(snapshot):
+    snapshot_copy = dict(snapshot)
+    snapshot_id = snapshot_copy.get("snapshot_id", "")
+    files = {}
+
+    for file_key, file_metadata in (snapshot_copy.get("files") or {}).items():
+        file_copy = dict(file_metadata) if isinstance(file_metadata, dict) else {}
+        file_copy["label"] = report_file_label(file_key)
+
+        if file_copy.get("status") == "available":
+            file_copy["view_href"] = report_file_href(snapshot_id, file_key)
+            file_copy["download_href"] = report_file_href(
+                snapshot_id,
+                file_key,
+                download=True,
+            )
+
+        files[file_key] = file_copy
+
+    snapshot_copy["files"] = files
+    return snapshot_copy
+
+
+def get_report_snapshot_or_404(snapshot_id):
     repository = get_report_snapshot_repository()
     snapshot = repository.get_snapshot(snapshot_id)
 
     if snapshot is None:
         raise HTTPException(status_code=404, detail="Report snapshot not found")
+
+    return snapshot
+
+
+def get_report_file_metadata_or_404(snapshot, file_key):
+    files = snapshot.get("files") or {}
+    file_metadata = files.get(file_key)
+
+    if not isinstance(file_metadata, dict):
+        raise HTTPException(status_code=404, detail="Report file not found")
+
+    if file_metadata.get("status") != "available":
+        raise HTTPException(status_code=404, detail="Report file is not available")
+
+    return file_metadata
+
+
+def resolve_report_output_file_path_or_404(file_metadata):
+    file_path = file_metadata.get("path")
+    if not file_path:
+        raise HTTPException(status_code=404, detail="Report file path not found")
+
+    candidate_path = Path(file_path)
+    if not candidate_path.is_absolute():
+        candidate_path = REPO_ROOT / candidate_path
+
+    try:
+        resolved_path = candidate_path.resolve(strict=False)
+        allowed_root = REPORT_OUTPUT_FILES_ROOT.resolve(strict=False)
+    except (OSError, RuntimeError):
+        raise HTTPException(status_code=404, detail="Report file not found")
+
+    try:
+        resolved_path.relative_to(allowed_root)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Report file not found")
+
+    if not resolved_path.exists() or not resolved_path.is_file():
+        raise HTTPException(status_code=404, detail="Report file not found")
+
+    return resolved_path
+
+
+def get_report_file_or_404(snapshot_id, file_key):
+    snapshot = get_report_snapshot_or_404(snapshot_id)
+    file_metadata = get_report_file_metadata_or_404(snapshot, file_key)
+    file_path = resolve_report_output_file_path_or_404(file_metadata)
+
+    return snapshot, file_metadata, file_path
+
+
+@app.get("/reports/{snapshot_id}", response_class=HTMLResponse)
+async def report_detail(request: Request, snapshot_id: str):
+    snapshot = with_report_file_actions(get_report_snapshot_or_404(snapshot_id))
 
     return templates.TemplateResponse(
         request,
@@ -1066,6 +1158,50 @@ async def report_detail(request: Request, snapshot_id: str):
             ),
             "snapshot": snapshot,
         },
+    )
+
+
+@app.get("/reports/{snapshot_id}/files/{file_key}", response_class=HTMLResponse)
+async def report_file(request: Request, snapshot_id: str, file_key: str):
+    snapshot, file_metadata, file_path = get_report_file_or_404(
+        snapshot_id,
+        file_key,
+    )
+    file_content = file_path.read_text(encoding="utf-8", errors="replace")
+
+    return templates.TemplateResponse(
+        request,
+        "report_file.html",
+        {
+            **base_template_context(
+                request,
+                title=f"{report_file_label(file_key)} - Report File",
+                active_nav="reports",
+                page_title=report_file_label(file_key),
+                page_subtitle="Saved weekly report output file.",
+            ),
+            "snapshot": snapshot,
+            "file_key": file_key,
+            "file_label": report_file_label(file_key),
+            "file_metadata": file_metadata,
+            "file_content": file_content,
+            "download_href": report_file_href(
+                snapshot.get("snapshot_id", snapshot_id),
+                file_key,
+                download=True,
+            ),
+        },
+    )
+
+
+@app.get("/reports/{snapshot_id}/files/{file_key}/download")
+async def download_report_file(snapshot_id: str, file_key: str):
+    _, _, file_path = get_report_file_or_404(snapshot_id, file_key)
+
+    return FileResponse(
+        path=file_path,
+        filename=file_path.name,
+        media_type="text/markdown",
     )
 
 

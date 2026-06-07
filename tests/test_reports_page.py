@@ -13,7 +13,12 @@ def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def reports_client(monkeypatch, snapshot_path):
+def write_text(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def reports_client(monkeypatch, snapshot_path, output_root=None):
     def repository_factory():
         return JsonWeeklyReportSnapshotRepository(snapshot_path)
 
@@ -22,6 +27,9 @@ def reports_client(monkeypatch, snapshot_path):
         "get_report_snapshot_repository",
         repository_factory,
     )
+    if output_root is not None:
+        monkeypatch.setattr(app_module, "REPORT_OUTPUT_FILES_ROOT", output_root)
+
     return TestClient(app_module.app)
 
 
@@ -278,6 +286,13 @@ def test_report_detail_page_displays_available_and_missing_output_files(
     assert "Slide Draft" in response.text
     assert "outputs/runs/run-files/slide_draft.md" in response.text
     assert "missing" in response.text
+    assert 'href="/reports/run-files/files/copy_ready_report"' in response.text
+    assert (
+        'href="/reports/run-files/files/copy_ready_report/download"'
+        in response.text
+    )
+    assert 'href="/reports/run-files/files/slide_draft"' not in response.text
+    assert ">Missing</span>" in response.text
 
 
 def test_report_detail_page_missing_snapshot_returns_404(tmp_path, monkeypatch):
@@ -289,3 +304,202 @@ def test_report_detail_page_missing_snapshot_returns_404(tmp_path, monkeypatch):
     response = client.get("/reports/missing-snapshot")
 
     assert response.status_code == 404
+
+
+def test_report_file_view_displays_existing_markdown_content(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-files" / "market_analysis_report.md"
+    write_text(report_path, "# Market Report\n\nA useful weekly signal.\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "market_analysis_report": {
+                        "path": str(report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-files/files/market_analysis_report")
+
+    assert response.status_code == 200
+    assert "Output File Snapshot" in response.text
+    assert "Market Analysis Report" in response.text
+    assert "market_analysis_report" in response.text
+    assert str(report_path) in response.text
+    assert "# Market Report" in response.text
+    assert "A useful weekly signal." in response.text
+    assert 'href="/reports/run-files">Back to Report</a>' in response.text
+    assert 'href="/reports/run-files/files/market_analysis_report/download"' in response.text
+
+
+def test_report_file_download_returns_existing_file(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-files" / "copy_ready_report.md"
+    write_text(report_path, "# Copy Ready\n\nDownload me.\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "copy_ready_report": {
+                        "path": str(report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-files/files/copy_ready_report/download")
+
+    assert response.status_code == 200
+    assert response.content == b"# Copy Ready\n\nDownload me.\n"
+    assert "attachment" in response.headers["content-disposition"]
+    assert "copy_ready_report.md" in response.headers["content-disposition"]
+
+
+def test_report_file_view_missing_snapshot_returns_404(tmp_path, monkeypatch):
+    client = reports_client(
+        monkeypatch,
+        tmp_path / "missing_weekly_report_snapshots.json",
+        output_root=tmp_path / "outputs" / "runs",
+    )
+
+    response = client.get("/reports/missing/files/market_analysis_report")
+
+    assert response.status_code == 404
+
+
+def test_report_file_view_missing_file_key_returns_404(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs" / "runs"
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={},
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-files/files/missing_key")
+
+    assert response.status_code == 404
+
+
+def test_report_file_view_missing_status_returns_404(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-files" / "slide_draft.md"
+    write_text(report_path, "# Slide Draft\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "slide_draft": {
+                        "path": str(report_path),
+                        "status": "missing",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-files/files/slide_draft")
+
+    assert response.status_code == 404
+
+
+def test_report_file_view_missing_physical_file_returns_404(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    report_path = output_root / "run-files" / "missing_report.md"
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "market_analysis_report": {
+                        "path": str(report_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-files/files/market_analysis_report")
+
+    assert response.status_code == 404
+
+
+def test_report_file_view_rejects_path_outside_outputs_runs(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs" / "runs"
+    secret_path = tmp_path / "outside.md"
+    write_text(secret_path, "Do not read me.\n")
+    snapshot_path = tmp_path / "weekly_report_snapshots.json"
+    write_json(
+        snapshot_path,
+        [
+            snapshot(
+                "run-files",
+                "Output File Snapshot",
+                "FinOps",
+                "2026-05-16T09:03:00",
+                files={
+                    "market_analysis_report": {
+                        "path": str(secret_path),
+                        "status": "available",
+                    },
+                },
+            )
+        ],
+    )
+    client = reports_client(monkeypatch, snapshot_path, output_root=output_root)
+
+    response = client.get("/reports/run-files/files/market_analysis_report")
+
+    assert response.status_code == 404
+    assert "Do not read me." not in response.text

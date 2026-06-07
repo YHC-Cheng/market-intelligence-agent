@@ -89,6 +89,7 @@
                   <th scope="col">File</th>
                   <th scope="col">Status</th>
                   <th scope="col">Path</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -96,7 +97,7 @@
                   {% set file_status = file.get("status") or "unknown" %}
                   <tr>
                     <td>
-                      <strong>{{ key|replace("_", " ")|title }}</strong>
+                      <strong>{{ file.get("label") or key|replace("_", " ")|title }}</strong>
                       <span class="output-path">{{ key }}</span>
                     </td>
                     <td>
@@ -107,6 +108,16 @@
                     <td>
                       {% if file.get("path") %}
                         <span class="output-path">{{ file.get("path") }}</span>
+                      {% else %}
+                        &mdash;
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if file_status == "available" and file.get("view_href") and file.get("download_href") %}
+                        <a class="button button-secondary button-sm" href="{{ file.get('view_href') }}">View</a>
+                        <a class="button button-secondary button-sm" href="{{ file.get('download_href') }}">Download</a>
+                      {% elif file_status == "missing" %}
+                        <span class="badge badge-danger">Missing</span>
                       {% else %}
                         &mdash;
                       {% endif %}
