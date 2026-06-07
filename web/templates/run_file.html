@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <p class="back-link">
+    <a href="{{ back_to_run_href }}">Back to Run</a>
+  </p>
+
+  <section class="detail-section" aria-labelledby="run-file-title">
+    <div class="section-header">
+      <div>
+        <h2 id="run-file-title">{{ file_label }}</h2>
+        <p>{{ run.get("run_id") or "unknown" }}</p>
+      </div>
+      <a class="button button-secondary" href="{{ download_href }}">Download</a>
+    </div>
+
+    <dl class="info-list inline-info-list">
+      <div>
+        <dt>File Key</dt>
+        <dd>{{ file_key }}</dd>
+      </div>
+      <div>
+        <dt>File Path</dt>
+        <dd>{{ file_metadata.get("path") or "N/A" }}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>{{ file_metadata.get("status") or "recorded" }}</dd>
+      </div>
+    </dl>
+
+    <pre class="report-file-content">{{ file_content }}</pre>
+  </section>
+{% endblock %}

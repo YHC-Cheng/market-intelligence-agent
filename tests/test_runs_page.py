@@ -17,13 +17,23 @@ class FakePipelineRunRepository:
 
         return None
 
+    def get_run_outputs(self, run_id):
+        run = self.get_run(run_id)
+        if run is None:
+            return {}
 
-def runs_client(monkeypatch, runs):
+        return run.get("run_outputs") or {}
+
+
+def runs_client(monkeypatch, runs, output_root=None):
     monkeypatch.setattr(
         app_module,
         "get_pipeline_run_repository",
         lambda: FakePipelineRunRepository(runs),
     )
+    if output_root is not None:
+        monkeypatch.setattr(app_module, "RUN_OUTPUT_FILES_ROOT", output_root)
+
     return TestClient(app_module.app)
 
 
@@ -75,6 +85,11 @@ def pipeline_run(
 def detail_body(response_text):
     start = response_text.index('<div class="detail-layout">')
     return response_text[start:]
+
+
+def write_text(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
 
 
 def test_runs_page_displays_pipeline_runs(tmp_path, monkeypatch):
@@ -210,6 +225,60 @@ def test_run_detail_page_displays_metrics_warnings_errors_and_outputs(
     assert "missing" in body
 
 
+def test_run_detail_page_displays_output_file_actions_for_available_file(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs"
+    report_path = (
+        output_root
+        / "runs"
+        / "2026-05-23_1347_manual_FinOps"
+        / "market_analysis_report.md"
+    )
+    write_text(report_path, "# Market report\n")
+    run = pipeline_run()
+    run["run_outputs"] = {
+        "market_analysis_report": str(report_path),
+    }
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert 'href="/runs/2026-05-23_1347_manual_FinOps/files/market_analysis_report"' in response.text
+    assert (
+        'href="/runs/2026-05-23_1347_manual_FinOps/files/'
+        'market_analysis_report/download"'
+    ) in response.text
+
+
+def test_run_detail_page_does_not_show_actions_for_missing_output(
+    tmp_path,
+    monkeypatch,
+):
+    output_root = tmp_path / "outputs"
+    run = pipeline_run()
+    run["run_outputs"] = {
+        "slide_draft": {
+            "path": str(
+                output_root
+                / "runs"
+                / "2026-05-23_1347_manual_FinOps"
+                / "slide_draft.md"
+            ),
+            "status": "missing",
+        },
+    }
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get("/runs/2026-05-23_1347_manual_FinOps")
+
+    assert response.status_code == 200
+    assert "slide_draft.md" in response.text
+    assert 'files/slide_draft' not in response.text
+
+
 def test_run_detail_page_displays_empty_warning_error_metric_and_output_states(
     tmp_path,
     monkeypatch,
@@ -239,3 +308,120 @@ def test_run_detail_page_missing_run_returns_404(tmp_path, monkeypatch):
     response = client.get("/runs/missing-run")
 
     assert response.status_code == 404
+
+
+def test_run_file_view_displays_existing_text_content(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs"
+    report_path = (
+        output_root
+        / "runs"
+        / "2026-05-23_1347_manual_FinOps"
+        / "market_analysis_report.md"
+    )
+    write_text(report_path, "# Market Analysis\n\nPlain markdown content.")
+    run = pipeline_run()
+    run["run_outputs"] = {
+        "market_analysis_report": str(report_path),
+    }
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get(
+        "/runs/2026-05-23_1347_manual_FinOps/files/market_analysis_report"
+    )
+
+    assert response.status_code == 200
+    assert "Market Analysis Report" in response.text
+    assert "market_analysis_report" in response.text
+    assert str(report_path) in response.text
+    assert "# Market Analysis" in response.text
+    assert "Plain markdown content." in response.text
+    assert (
+        'href="/runs/2026-05-23_1347_manual_FinOps/files/'
+        'market_analysis_report/download"'
+    ) in response.text
+    assert 'href="/runs/2026-05-23_1347_manual_FinOps">Back to Run</a>' in response.text
+
+
+def test_run_file_download_returns_existing_file(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs"
+    report_path = (
+        output_root
+        / "runs"
+        / "2026-05-23_1347_manual_FinOps"
+        / "copy_ready_report.md"
+    )
+    write_text(report_path, "# Copy ready\n")
+    run = pipeline_run()
+    run["run_outputs"] = {
+        "copy_ready_report": str(report_path),
+    }
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get(
+        "/runs/2026-05-23_1347_manual_FinOps/files/copy_ready_report/download"
+    )
+
+    assert response.status_code == 200
+    assert response.content == b"# Copy ready\n"
+    assert 'filename="copy_ready_report.md"' in response.headers[
+        "content-disposition"
+    ]
+
+
+def test_run_file_view_missing_run_returns_404(tmp_path, monkeypatch):
+    client = runs_client(monkeypatch, [], output_root=tmp_path / "outputs")
+
+    response = client.get("/runs/missing-run/files/market_analysis_report")
+
+    assert response.status_code == 404
+
+
+def test_run_file_view_missing_file_key_returns_404(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs"
+    run = pipeline_run()
+    run["run_outputs"] = {}
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get(
+        "/runs/2026-05-23_1347_manual_FinOps/files/missing_key"
+    )
+
+    assert response.status_code == 404
+
+
+def test_run_file_view_missing_physical_file_returns_404(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs"
+    run = pipeline_run()
+    run["run_outputs"] = {
+        "market_analysis_report": str(
+            output_root
+            / "runs"
+            / "2026-05-23_1347_manual_FinOps"
+            / "missing_report.md"
+        ),
+    }
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get(
+        "/runs/2026-05-23_1347_manual_FinOps/files/market_analysis_report"
+    )
+
+    assert response.status_code == 404
+
+
+def test_run_file_view_rejects_unsafe_path(tmp_path, monkeypatch):
+    output_root = tmp_path / "outputs"
+    unsafe_path = tmp_path / "secret.md"
+    write_text(unsafe_path, "Do not read this.")
+    run = pipeline_run()
+    run["run_outputs"] = {
+        "market_analysis_report": str(unsafe_path),
+    }
+    client = runs_client(monkeypatch, [run], output_root=output_root)
+
+    response = client.get(
+        "/runs/2026-05-23_1347_manual_FinOps/files/market_analysis_report"
+    )
+
+    assert response.status_code == 404
+    assert "Do not read this." not in response.text

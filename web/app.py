@@ -25,6 +25,7 @@ REPO_ROOT = BASE_DIR.parent
 NEWSLETTER_OUTPUT_DIR = REPO_ROOT / "outputs" / "newsletter"
 KEYWORDS_CONFIG_PATH = REPO_ROOT / "config" / "keywords.json"
 REPORT_OUTPUT_FILES_ROOT = REPO_ROOT / "outputs" / "runs"
+RUN_OUTPUT_FILES_ROOT = REPO_ROOT / "outputs"
 
 app = FastAPI(title="Market Intelligence Agent 2.0")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
@@ -1035,6 +1036,21 @@ def run_detail_href(run_id):
     return f"/runs/{quote(str(run_id), safe='')}"
 
 
+def run_file_label(file_key):
+    return str(file_key).replace("_", " ").title()
+
+
+def run_file_href(run_id, file_key, download=False):
+    href = (
+        f"/runs/{quote(str(run_id), safe='')}"
+        f"/files/{quote(str(file_key), safe='')}"
+    )
+    if download:
+        return f"{href}/download"
+
+    return href
+
+
 def get_pipeline_run_or_404(run_id):
     run = get_pipeline_run_repository().get_run(run_id)
 
@@ -1042,6 +1058,120 @@ def get_pipeline_run_or_404(run_id):
         raise HTTPException(status_code=404, detail="Pipeline run not found")
 
     return run
+
+
+def run_output_file_metadata(file_key, output):
+    if isinstance(output, dict):
+        file_metadata = dict(output)
+        file_path = (
+            file_metadata.get("path")
+            or file_metadata.get("file_path")
+            or file_metadata.get("value")
+        )
+    else:
+        file_metadata = {}
+        file_path = output
+
+    file_metadata["key"] = file_key
+    file_metadata["label"] = run_file_label(file_key)
+    file_metadata["path"] = str(file_path) if file_path else None
+    file_metadata["status"] = run_output_display_status(file_metadata)
+    return file_metadata
+
+
+def run_output_display_status(file_metadata):
+    status = file_metadata.get("status")
+    if status:
+        return str(status)
+
+    available = file_metadata.get("available")
+    if isinstance(available, bool):
+        return "available" if available else "missing"
+
+    return "recorded" if file_metadata.get("path") else "missing"
+
+
+def run_output_is_marked_missing(file_metadata):
+    status = str(file_metadata.get("status") or "").casefold()
+    if status in {"missing", "unavailable", "not_available", "not available"}:
+        return True
+
+    if file_metadata.get("available") is False:
+        return True
+
+    return False
+
+
+def resolve_run_output_file_path(file_metadata):
+    file_path = file_metadata.get("path")
+    if not file_path or run_output_is_marked_missing(file_metadata):
+        return None
+
+    candidate_path = Path(file_path)
+    if not candidate_path.is_absolute():
+        candidate_path = REPO_ROOT / candidate_path
+
+    try:
+        resolved_path = candidate_path.resolve(strict=False)
+        allowed_root = RUN_OUTPUT_FILES_ROOT.resolve(strict=False)
+    except (OSError, RuntimeError):
+        return None
+
+    try:
+        resolved_path.relative_to(allowed_root)
+    except ValueError:
+        return None
+
+    if not resolved_path.exists() or not resolved_path.is_file():
+        return None
+
+    return resolved_path
+
+
+def resolve_run_output_file_path_or_404(file_metadata):
+    file_path = resolve_run_output_file_path(file_metadata)
+    if file_path is None:
+        raise HTTPException(status_code=404, detail="Run output file not found")
+
+    return file_path
+
+
+def with_run_output_file_actions(run):
+    run_copy = dict(run)
+    run_id = run_copy.get("run_id", "")
+    outputs = {}
+
+    for file_key, output in (run_copy.get("run_outputs") or {}).items():
+        file_metadata = run_output_file_metadata(file_key, output)
+
+        if resolve_run_output_file_path(file_metadata) is not None:
+            file_metadata["view_href"] = run_file_href(run_id, file_key)
+            file_metadata["download_href"] = run_file_href(
+                run_id,
+                file_key,
+                download=True,
+            )
+
+        outputs[file_key] = file_metadata
+
+    run_copy["run_outputs"] = outputs
+    return run_copy
+
+
+def get_run_output_metadata_or_404(run_id, file_key):
+    get_pipeline_run_or_404(run_id)
+    outputs = get_pipeline_run_repository().get_run_outputs(run_id)
+
+    if file_key not in outputs:
+        raise HTTPException(status_code=404, detail="Run output file not found")
+
+    return run_output_file_metadata(file_key, outputs[file_key])
+
+
+def get_run_output_file_or_404(run_id, file_key):
+    file_metadata = get_run_output_metadata_or_404(run_id, file_key)
+    file_path = resolve_run_output_file_path_or_404(file_metadata)
+    return file_metadata, file_path
 
 
 @app.get("/runs", response_class=HTMLResponse)
@@ -1075,7 +1205,7 @@ async def runs(request: Request):
 
 @app.get("/runs/{run_id}", response_class=HTMLResponse)
 async def run_detail(request: Request, run_id: str):
-    pipeline_run = get_pipeline_run_or_404(run_id)
+    pipeline_run = with_run_output_file_actions(get_pipeline_run_or_404(run_id))
 
     return templates.TemplateResponse(
         request,
@@ -1090,6 +1220,49 @@ async def run_detail(request: Request, run_id: str):
             ),
             "run": pipeline_run,
         },
+    )
+
+
+@app.get("/runs/{run_id}/files/{file_key}", response_class=HTMLResponse)
+async def run_file(request: Request, run_id: str, file_key: str):
+    pipeline_run = get_pipeline_run_or_404(run_id)
+    file_metadata, file_path = get_run_output_file_or_404(run_id, file_key)
+    file_content = file_path.read_text(encoding="utf-8", errors="replace")
+
+    return templates.TemplateResponse(
+        request,
+        "run_file.html",
+        {
+            **base_template_context(
+                request,
+                title=f"{run_file_label(file_key)} - Run File",
+                active_nav="runs",
+                page_title=run_file_label(file_key),
+                page_subtitle="Saved pipeline run output file.",
+            ),
+            "run": pipeline_run,
+            "file_key": file_key,
+            "file_label": run_file_label(file_key),
+            "file_metadata": file_metadata,
+            "file_content": file_content,
+            "back_to_run_href": run_detail_href(pipeline_run.get("run_id", run_id)),
+            "download_href": run_file_href(
+                pipeline_run.get("run_id", run_id),
+                file_key,
+                download=True,
+            ),
+        },
+    )
+
+
+@app.get("/runs/{run_id}/files/{file_key}/download")
+async def download_run_file(run_id: str, file_key: str):
+    _, file_path = get_run_output_file_or_404(run_id, file_key)
+
+    return FileResponse(
+        path=file_path,
+        filename=file_path.name,
+        media_type="application/octet-stream",
     )
 
 
