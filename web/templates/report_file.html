@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <p class="back-link">
+    <a href="/reports/{{ snapshot.get('snapshot_id') }}">Back to Report</a>
+  </p>
+
+  <section class="detail-section" aria-labelledby="report-file-title">
+    <div class="section-heading compact-heading">
+      <div>
+        <h2 id="report-file-title">{{ file_label }}</h2>
+        <p>{{ snapshot.get("title") or "Untitled report" }}</p>
+      </div>
+      <a class="button button-secondary" href="{{ download_href }}">Download</a>
+    </div>
+
+    <dl class="info-list inline-info-list">
+      <div>
+        <dt>File Key</dt>
+        <dd>{{ file_key }}</dd>
+      </div>
+      <div>
+        <dt>File Path</dt>
+        <dd>{{ file_metadata.get("path") or "—" }}</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="detail-section" aria-labelledby="file-content-title">
+    <h2 id="file-content-title">File Content</h2>
+    <pre class="file-content-block">{{ file_content }}</pre>
+  </section>
+{% endblock %}

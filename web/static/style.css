@@ -715,6 +715,20 @@ textarea.form-control,
   overflow-wrap: anywhere;
 }
 
+.file-content-block {
+  overflow-x: auto;
+  margin: 14px 0 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  color: #344054;
+  background: #f8fafc;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
 .empty-state {
   padding: 30px;
 }
