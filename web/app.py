@@ -11,6 +11,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from web.repositories.json_knowledge_repository import JsonKnowledgeRepository
+from web.repositories.json_weekly_report_snapshot_repository import (
+    JsonWeeklyReportSnapshotRepository,
+)
 from web.services.article_processing import ArticleProcessingService
 
 
@@ -27,6 +30,7 @@ templates = Jinja2Templates(directory=BASE_DIR / "templates")
 NAVIGATION_ITEMS = [
     {"key": "home", "label": "Dashboard", "href": "/"},
     {"key": "newsletter", "label": "Weekly Brief", "href": "/newsletter"},
+    {"key": "reports", "label": "Reports", "href": "/reports"},
     {"key": "reference", "label": "Reference", "href": "/reference"},
 ]
 
@@ -84,6 +88,10 @@ RETRYABLE_FAILURE_REASONS = {
 
 def get_knowledge_repository():
     return JsonKnowledgeRepository()
+
+
+def get_report_snapshot_repository():
+    return JsonWeeklyReportSnapshotRepository()
 
 
 def get_article_processing_service(repository=None):
@@ -1006,6 +1014,27 @@ async def reference(request: Request):
         }
     )
     return templates.TemplateResponse(request, "reference.html", context)
+
+
+@app.get("/reports", response_class=HTMLResponse)
+async def reports(request: Request):
+    repository = get_report_snapshot_repository()
+    snapshots = repository.list_snapshots(report_type="weekly")
+
+    return templates.TemplateResponse(
+        request,
+        "reports.html",
+        {
+            **base_template_context(
+                request,
+                title="Reports",
+                active_nav="reports",
+                page_title="Report History",
+                page_subtitle="Browse saved weekly report snapshots.",
+            ),
+            "snapshots": snapshots,
+        },
+    )
 
 
 @app.get("/newsletter", response_class=HTMLResponse)
