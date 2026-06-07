@@ -98,5 +98,50 @@
     "slide_path": "outputs/slides/slide_draft.md",
     "related_sources": [],
     "created_at": "2026-05-31T19:11:31"
+  },
+  "AI_2026-W23": {
+    "topic": "AI",
+    "week": "2026-W23",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Developers & PractitionersConnecting AI agents with unstructured data using Google Cloud Storage MCP ServersBy Himanshu Kohli • 5-minute read",
+        "url": "https://cloud.google.com/blog/topics/developers-practitioners/build-ai-agents-faster-with-gcs-google-cloud-storage-mcp-server",
+        "source": "Google Cloud Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-07T19:02:22"
+  },
+  "FinOps_2026-W23": {
+    "topic": "FinOps",
+    "week": "2026-W23",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Building an Integrated FinOps Practice: Tim Wright’s FinOps Evolution at Nationwide",
+        "url": "https://www.finops.org/insights/integrated-finops-practice-nationwide/",
+        "source": "FinOps Foundation Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-07T19:08:40"
+  },
+  "ProductObservation_2026-W23": {
+    "topic": "ProductObservation",
+    "week": "2026-W23",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Shipped: Audit your CloudZero users without a support ticket",
+        "url": "https://www.cloudzero.com/blog/shipped-audit-cloudzero-users/",
+        "source": "CloudZero Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-07T19:14:41"
   }
 }
