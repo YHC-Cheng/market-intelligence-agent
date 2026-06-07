@@ -1156,6 +1156,56 @@ def get_report_snapshot_or_404(snapshot_id):
     return snapshot
 
 
+def normalize_manual_override(manual_override):
+    if isinstance(manual_override, dict):
+        return {
+            "enabled": bool(manual_override.get("enabled")),
+            "title": manual_override.get("title"),
+            "summary": manual_override.get("summary"),
+            "updated_at": manual_override.get("updated_at"),
+        }
+
+    return {
+        "enabled": bool(manual_override),
+        "title": None,
+        "summary": None,
+        "updated_at": None,
+    }
+
+
+def manual_override_payload(title, summary):
+    clean_title = (title or "").strip() or None
+    clean_summary = (summary or "").strip() or None
+    return {
+        "enabled": True,
+        "title": clean_title,
+        "summary": clean_summary,
+        "updated_at": datetime.now().replace(microsecond=0).isoformat(),
+    }
+
+
+def cleared_manual_override_payload():
+    return {
+        "enabled": False,
+        "title": None,
+        "summary": None,
+        "updated_at": None,
+    }
+
+
+def update_report_manual_override_or_404(snapshot_id, manual_override):
+    repository = get_report_snapshot_repository()
+    updated_snapshot = repository.update_manual_override(
+        snapshot_id,
+        manual_override,
+    )
+
+    if updated_snapshot is None:
+        raise HTTPException(status_code=404, detail="Report snapshot not found")
+
+    return updated_snapshot
+
+
 def get_report_file_metadata_or_404(snapshot, file_key):
     files = snapshot.get("files") or {}
     file_metadata = files.get(file_key)
@@ -1220,6 +1270,7 @@ def report_export_filename(snapshot_id):
 @app.get("/reports/{snapshot_id}", response_class=HTMLResponse)
 async def report_detail(request: Request, snapshot_id: str):
     snapshot = with_report_file_actions(get_report_snapshot_or_404(snapshot_id))
+    manual_override = normalize_manual_override(snapshot.get("manual_override"))
 
     return templates.TemplateResponse(
         request,
@@ -1233,10 +1284,47 @@ async def report_detail(request: Request, snapshot_id: str):
                 page_subtitle="Weekly report snapshot metadata.",
             ),
             "snapshot": snapshot,
+            "manual_override": manual_override,
+            "manual_override_save_href": (
+                f"/reports/{quote(str(snapshot.get('snapshot_id', snapshot_id)), safe='')}"
+                "/manual-override"
+            ),
+            "manual_override_clear_href": (
+                f"/reports/{quote(str(snapshot.get('snapshot_id', snapshot_id)), safe='')}"
+                "/manual-override/clear"
+            ),
             "re_export_href": report_re_export_href(
                 snapshot.get("snapshot_id", snapshot_id)
             ),
         },
+    )
+
+
+@app.post("/reports/{snapshot_id}/manual-override")
+async def save_report_manual_override(
+    snapshot_id: str,
+    override_title: str = Form(default=""),
+    override_summary: str = Form(default=""),
+):
+    update_report_manual_override_or_404(
+        snapshot_id,
+        manual_override_payload(override_title, override_summary),
+    )
+    return RedirectResponse(
+        url=f"/reports/{quote(str(snapshot_id), safe='')}",
+        status_code=303,
+    )
+
+
+@app.post("/reports/{snapshot_id}/manual-override/clear")
+async def clear_report_manual_override(snapshot_id: str):
+    update_report_manual_override_or_404(
+        snapshot_id,
+        cleared_manual_override_payload(),
+    )
+    return RedirectResponse(
+        url=f"/reports/{quote(str(snapshot_id), safe='')}",
+        status_code=303,
     )
 
 

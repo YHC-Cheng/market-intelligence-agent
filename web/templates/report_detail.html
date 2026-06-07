@@ -79,6 +79,61 @@
         {% endif %}
       </section>
 
+      <section class="detail-section" aria-labelledby="manual-override-title">
+        <div class="section-heading compact-heading">
+          <div>
+            <h2 id="manual-override-title">Manual Override</h2>
+            <p>Update the exported title and editor note without changing original output files.</p>
+          </div>
+        </div>
+
+        <dl class="info-list inline-info-list">
+          <div>
+            <dt>Status</dt>
+            <dd>{{ "enabled" if manual_override.enabled else "disabled" }}</dd>
+          </div>
+          <div>
+            <dt>Override Title</dt>
+            <dd>{{ manual_override.title or "—" }}</dd>
+          </div>
+          <div>
+            <dt>Override Summary</dt>
+            <dd>{{ manual_override.summary or "—" }}</dd>
+          </div>
+          <div>
+            <dt>Updated At</dt>
+            <dd>{{ manual_override.updated_at or "—" }}</dd>
+          </div>
+        </dl>
+
+        <form class="intake-form" method="post" action="{{ manual_override_save_href }}">
+          <div class="field-group">
+            <label for="override-title">Override Title</label>
+            <input
+              id="override-title"
+              class="form-control"
+              type="text"
+              name="override_title"
+              value="{{ manual_override.title or '' }}"
+            >
+          </div>
+          <div class="field-group">
+            <label for="override-summary">Override Summary / Editor Note</label>
+            <textarea
+              id="override-summary"
+              class="form-control"
+              name="override_summary"
+              rows="5"
+            >{{ manual_override.summary or '' }}</textarea>
+          </div>
+          <button class="button button-secondary" type="submit">Save Override</button>
+        </form>
+
+        <form class="intake-form" method="post" action="{{ manual_override_clear_href }}">
+          <button class="button button-secondary" type="submit">Clear Override</button>
+        </form>
+      </section>
+
       <section class="detail-section" aria-labelledby="output-files-title">
         <h2 id="output-files-title">Output Files</h2>
         {% set files = snapshot.get("files", {}) %}
@@ -185,7 +240,7 @@
         </div>
         <div>
           <dt>Manual Override</dt>
-          <dd>{{ "Enabled" if snapshot.get("manual_override") else "Not enabled" }}</dd>
+          <dd>{{ "Enabled" if manual_override.enabled else "Not enabled" }}</dd>
         </div>
       </dl>
     </aside>
