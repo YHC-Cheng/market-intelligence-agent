@@ -143,5 +143,50 @@
       }
     ],
     "created_at": "2026-06-07T19:14:41"
+  },
+  "AI_2026-W24": {
+    "topic": "AI",
+    "week": "2026-W24",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Anthropic Claude Fable 5 on AWS: Mythos-class capabilities with built-in safeguards now available",
+        "url": "https://aws.amazon.com/blogs/aws/anthropic-claude-fable-5-on-aws-mythos-class-capabilities-with-built-in-safeguards-now-available/",
+        "source": "AWS Blog RSS",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-14T19:03:46"
+  },
+  "FinOps_2026-W24": {
+    "topic": "FinOps",
+    "week": "2026-W24",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Announcing the public preview of AWS FinOps Agent",
+        "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/",
+        "source": "AWS Cloud Financial Management Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-14T19:11:50"
+  },
+  "ProductObservation_2026-W24": {
+    "topic": "ProductObservation",
+    "week": "2026-W24",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Vantage Launches Canvas: An AI-Enabled Business Intelligence Dashboard",
+        "url": "https://www.vantage.sh/blog/canvas",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-14T19:17:52"
   }
 }
