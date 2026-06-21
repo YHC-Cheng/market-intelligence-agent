@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-06-14",
-    "content_hash": "9e335f63e9af2fbba20ac5271b78eede8ff1b052cab0c8c06c67c24cb9cd1c23",
-    "seen_count": 19,
+    "last_seen": "2026-06-21",
+    "content_hash": "b09dfc5b73004b35a35613bdbeab1b049d003cfd3f144804ec6b51d5c24b0fe6",
+    "seen_count": 21,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 12,
+    "seen_count": 13,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
-    "seen_count": 7,
+    "seen_count": 8,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -474,9 +474,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-14",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "e0d8495a6acbd6c7b62f49cca0f828d94bc74a042d94892b7219f9fd502ba819",
-    "seen_count": 6,
+    "seen_count": 7,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/simplified-provider-filtering": {
@@ -489,9 +489,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-13",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "da8e32cb216894f2b03944fa3aef9ed52fa0a79edaa10f59de0d6d797a28d958",
-    "seen_count": 6,
+    "seen_count": 7,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/tag-column-resource-reports": {
@@ -744,9 +744,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-06-14",
-    "content_hash": "e61e330fcec1f71190bfd6555e0fc49eb8432df49b962ff2c49934373ff2febc",
-    "seen_count": 3,
+    "last_seen": "2026-06-21",
+    "content_hash": "083deafd0c6edae351621b7e0d8a83042b5a54c0a4305494ead208ffaaac8ceb",
+    "seen_count": 4,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/series-h": {
@@ -894,9 +894,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-26",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "86a2b65df90a8e61d2cc3bb629d028af5da871bea42aa1c9a814631ec302310d",
-    "seen_count": 6,
+    "seen_count": 8,
     "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/?tag=finops-in-full-bloom": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "8029812ffb21246e0ae1258cc29fc3dc5302e2998a853c441cb6e4bcb943ca42",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -954,9 +954,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-06-14",
-    "content_hash": "179e647c968b0730ef9be6cae9de453be7b42696f3a54f8aaac857626b495790",
-    "seen_count": 2,
+    "last_seen": "2026-06-21",
+    "content_hash": "8b6179b247d3df2567b612dc7eff0f812c73a37eeaaee0fc851445cd710e7764",
+    "seen_count": 3,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/election-safeguards-update": {
@@ -1074,10 +1074,10 @@
     "topic": "AI",
     "published_date": "2026-06-02",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "38d5e673e61e339a7f1eb1fd8cb62bdff23407f120d167be4a29dd6252e4ad01",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/": {
     "title": "Announcing Microsoft Discovery general availability and Microsoft Discovery app preview",
@@ -1089,10 +1089,10 @@
     "topic": "AI",
     "published_date": "2026-06-02",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "4c5a2569729cf435b6d1d6fff737b001fc09f006e3dce8f6b2e0097c9c54161e",
-    "seen_count": 2,
-    "last_freshness_status": "updated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/": {
     "title": "Microsoft Build 2026: Building agentic apps with Microsoft Fabric and Microsoft Databases",
@@ -1134,10 +1134,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-04",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "2887859f3f7923946fa003987989a8f13365e235aca9ec66504796041070c9bd",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/shipped-audit-cloudzero-users/": {
     "title": "Shipped: Audit your CloudZero users without a support ticket",
@@ -1239,10 +1239,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
-    "content_hash": "4e04b6d3e282f2e7f2be324d09aa9c74c174909b108a2f6145daab77986f2ea3",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-06-21",
+    "content_hash": "6506bc4a1fb7bd8189e2bf67bd92885d3e6d82b145d01d8bf87b9c74b2a05a1d",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/identity-security/powering-the-next-era-of-confidential-ai": {
     "title": "Powering the next era of Confidential AI",
@@ -1269,10 +1269,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "a08d8a4dcf0d1fc674b0228f25e295117dfe5ae8f3aa0cb58f7294d88da5f760",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws/now-available-amazon-ec2-m9g-and-m9gd-instances-powered-by-new-aws-graviton5-processors/": {
     "title": "Now available: Amazon EC2 M9g and M9gd instances powered by new AWS Graviton5 processors",
@@ -1314,10 +1314,10 @@
     "topic": "AI",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "427c0b484390d76929d88fce5b71a36c28c6f925a60f98427a05cafc9015fb95",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-x-2026-day-2-keynote/": {
     "title": "FinOps X 2026 Day 2 Keynote: From Alerts to Agents",
@@ -1329,10 +1329,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
-    "content_hash": "aa6841b9c2db0728055501bf2ea014bab9b780990a324cc7a57536f16a492fc8",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-06-21",
+    "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
     "title": "Introducing FOCUS 1.4: Invoice Reconciliation, Commitment Details, and Specification Maturity",
@@ -1344,10 +1344,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "c23df30d827f34eb1e5a0102c37426d65269cf6b60ec23cd6287e9d63ad23543",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
     "title": "FinOps X 2026 Day 1 Keynote: The Wild West of AI, Token Economics and the Evolving Role of FinOps",
@@ -1359,10 +1359,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "22adf750fc31a77319c1508b9d353461759bd7ec029e937d58243dd737ff4f01",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/": {
     "title": "Announcing the public preview of AWS FinOps Agent",
@@ -1374,10 +1374,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "048d2e79c34ea9d7a27be8abb8cc7be7350d75cc7faa42426a0d52be96a738d7",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/introducing-target-coverage-in-savings-plans-purchase-analyzer/": {
     "title": "Introducing Target Coverage in Savings Plans Purchase Analyzer",
@@ -1404,8 +1404,128 @@
     "topic": "ProductObservation",
     "published_date": "2026-06-08",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-14",
+    "last_seen": "2026-06-21",
     "content_hash": "f46ba9f6d1f33470c852a0e9ed938588669ff312e7a7fa23cb58c5ce75b49d5d",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/diagnose-rare-childhood-diseases": {
+    "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
+    "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-18",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "9fd1c7d000c428e0214abbb0a68fe822d3a5423e94688e47b0ee0abc53c268e0",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/ai-chemist-improves-reaction": {
+    "title": "A near-autonomous AI chemist improves a challenging reaction in medicinal chemistry",
+    "url": "https://openai.com/index/ai-chemist-improves-reaction",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-17",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "a11d242e36ea5b36ab71b8821899bd34d4dc2ab1f6e6e87592e5ef6df7df6ad5",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/inside-google-cloud/london-summit-2026-uk-leads-agentic-enterprise-ai-infrastructure-data-cloud": {
+    "title": "From AI potential to agentic reality: Driving the UK’s next chapter",
+    "url": "https://cloud.google.com/blog/topics/inside-google-cloud/london-summit-2026-uk-leads-agentic-enterprise-ai-infrastructure-data-cloud",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "63ce71f19483cc03e4b3bab3e73fcf3f0c3e5bab34a8f903f9344ae72c83ff65",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-the-4-lessons-that-guided-ai-threat-defense": {
+    "title": "Security & IdentityCloud CISO Perspectives: The 4 lessons that guided AI Threat DefenseBy Chris Betz • 10-minute read",
+    "url": "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-the-4-lessons-that-guided-ai-threat-defense",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "5f490e4c43a53ac7a097defa2b42a802aa2c049dc00682d16fb0e6cb1df3e647",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/introducing-amazon-bedrock-managed-knowledge-base-for-faster-more-accurate-enterprise-ai-applications/": {
+    "title": "Introducing Amazon Bedrock Managed Knowledge Base for faster, more accurate enterprise AI applications",
+    "url": "https://aws.amazon.com/blogs/aws/introducing-amazon-bedrock-managed-knowledge-base-for-faster-more-accurate-enterprise-ai-applications/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-17",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "b40f26f9742ee35e3135bdab231353216a52b520d260d9d47da0948664d6bc8b",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/announcing-web-search-on-amazon-bedrock-agentcore-ground-your-ai-agents-in-current-accurate-web-knowledge/": {
+    "title": "Announcing Web Search on Amazon Bedrock AgentCore: Ground your AI agents in current, accurate web knowledge",
+    "url": "https://aws.amazon.com/blogs/aws/announcing-web-search-on-amazon-bedrock-agentcore-ground-your-ai-agents-in-current-accurate-web-knowledge/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-17",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "e6e20233d7d135b1f174b10b9b992e6cf9f81ea1473939aa9db96eb5197d917a",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/agent-mcp-connectors": {
+    "title": "Vantage Launches MCP Connectors for the FinOps Agent",
+    "url": "https://www.vantage.sh/blog/agent-mcp-connectors",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-06-18",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "fd9979f63a21b37eae0b4602ae80fd02f8f54f8b45634b6cc26b26e5d77d814f",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://www.cloudzero.com/blog/ai-cost-optimization/": {
+    "title": "AI cost optimization in 2026: what AI actually costs and how to cut it",
+    "url": "https://www.cloudzero.com/blog/ai-cost-optimization/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-06-21",
+    "last_seen": "2026-06-21",
+    "content_hash": "c6608a036f37b24d4588e2c1df54b3bb38d344a5183eed0b7b9fa9a42ca9565e",
     "seen_count": 1,
     "last_freshness_status": "new"
   }

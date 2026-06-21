@@ -188,5 +188,50 @@
       }
     ],
     "created_at": "2026-06-14T19:17:52"
+  },
+  "AI_2026-W25": {
+    "topic": "AI",
+    "week": "2026-W25",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Introducing Amazon Bedrock Managed Knowledge Base for faster, more accurate enterprise AI applications",
+        "url": "https://aws.amazon.com/blogs/aws/introducing-amazon-bedrock-managed-knowledge-base-for-faster-more-accurate-enterprise-ai-applications/",
+        "source": "AWS Blog RSS",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-21T19:09:27"
+  },
+  "FinOps_2026-W25": {
+    "topic": "FinOps",
+    "week": "2026-W25",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Vantage Launches MCP Connectors for the FinOps Agent",
+        "url": "https://www.vantage.sh/blog/agent-mcp-connectors",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-21T19:15:30"
+  },
+  "ProductObservation_2026-W25": {
+    "topic": "ProductObservation",
+    "week": "2026-W25",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "AI cost optimization in 2026: what AI actually costs and how to cut it",
+        "url": "https://www.cloudzero.com/blog/ai-cost-optimization/",
+        "source": "CloudZero Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-21T19:21:23"
   }
 }
