@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "b09dfc5b73004b35a35613bdbeab1b049d003cfd3f144804ec6b51d5c24b0fe6",
-    "seen_count": 21,
+    "seen_count": 23,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 13,
+    "seen_count": 14,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
-    "seen_count": 8,
+    "seen_count": 9,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -744,9 +744,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-06-21",
-    "content_hash": "083deafd0c6edae351621b7e0d8a83042b5a54c0a4305494ead208ffaaac8ceb",
-    "seen_count": 4,
+    "last_seen": "2026-06-28",
+    "content_hash": "db753cafb036b261ae1c7ab72421ef6217d1b308169cd9a88d79313663331da7",
+    "seen_count": 5,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/series-h": {
@@ -894,9 +894,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-05-26",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "86a2b65df90a8e61d2cc3bb629d028af5da871bea42aa1c9a814631ec302310d",
-    "seen_count": 8,
+    "seen_count": 10,
     "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/?tag=finops-in-full-bloom": {
@@ -909,10 +909,10 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-06-21",
-    "content_hash": "8029812ffb21246e0ae1258cc29fc3dc5302e2998a853c441cb6e4bcb943ca42",
-    "seen_count": 4,
-    "last_freshness_status": "repeated"
+    "last_seen": "2026-06-28",
+    "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
+    "seen_count": 5,
+    "last_freshness_status": "updated"
   },
   "https://openai.com/index/endava-frontiers": {
     "title": "How Endava is redesigning software delivery around AI agents",
@@ -1134,9 +1134,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-04",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "2887859f3f7923946fa003987989a8f13365e235aca9ec66504796041070c9bd",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/shipped-audit-cloudzero-users/": {
@@ -1239,9 +1239,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
-    "content_hash": "6506bc4a1fb7bd8189e2bf67bd92885d3e6d82b145d01d8bf87b9c74b2a05a1d",
-    "seen_count": 2,
+    "last_seen": "2026-06-28",
+    "content_hash": "483f5b06eb1e7ba9f8d387a0cfb5e08bf0206801c7494527399e6e504a58bb4e",
+    "seen_count": 3,
     "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/identity-security/powering-the-next-era-of-confidential-ai": {
@@ -1269,9 +1269,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "a08d8a4dcf0d1fc674b0228f25e295117dfe5ae8f3aa0cb58f7294d88da5f760",
-    "seen_count": 2,
+    "seen_count": 3,
     "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws/now-available-amazon-ec2-m9g-and-m9gd-instances-powered-by-new-aws-graviton5-processors/": {
@@ -1314,10 +1314,10 @@
     "topic": "AI",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "427c0b484390d76929d88fce5b71a36c28c6f925a60f98427a05cafc9015fb95",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-2-keynote/": {
     "title": "FinOps X 2026 Day 2 Keynote: From Alerts to Agents",
@@ -1329,10 +1329,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 2,
-    "last_freshness_status": "updated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
     "title": "Introducing FOCUS 1.4: Invoice Reconciliation, Commitment Details, and Specification Maturity",
@@ -1344,10 +1344,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "c23df30d827f34eb1e5a0102c37426d65269cf6b60ec23cd6287e9d63ad23543",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
     "title": "FinOps X 2026 Day 1 Keynote: The Wild West of AI, Token Economics and the Evolving Role of FinOps",
@@ -1359,10 +1359,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "22adf750fc31a77319c1508b9d353461759bd7ec029e937d58243dd737ff4f01",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/": {
     "title": "Announcing the public preview of AWS FinOps Agent",
@@ -1374,10 +1374,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "048d2e79c34ea9d7a27be8abb8cc7be7350d75cc7faa42426a0d52be96a738d7",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/introducing-target-coverage-in-savings-plans-purchase-analyzer/": {
     "title": "Introducing Target Coverage in Savings Plans Purchase Analyzer",
@@ -1404,10 +1404,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-06-08",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "f46ba9f6d1f33470c852a0e9ed938588669ff312e7a7fa23cb58c5ce75b49d5d",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://openai.com/index/diagnose-rare-childhood-diseases": {
     "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
@@ -1509,9 +1509,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-06-18",
     "first_seen": "2026-06-21",
-    "last_seen": "2026-06-21",
+    "last_seen": "2026-06-28",
     "content_hash": "fd9979f63a21b37eae0b4602ae80fd02f8f54f8b45634b6cc26b26e5d77d814f",
-    "seen_count": 2,
+    "seen_count": 4,
     "last_freshness_status": "repeated"
   },
   "https://www.cloudzero.com/blog/ai-cost-optimization/": {
@@ -1526,6 +1526,141 @@
     "first_seen": "2026-06-21",
     "last_seen": "2026-06-21",
     "content_hash": "c6608a036f37b24d4588e2c1df54b3bb38d344a5183eed0b7b9fa9a42ca9565e",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/openai-broadcom-jalapeno-inference-chip": {
+    "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
+    "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-24",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "3c6e4ea3583d0e9ed53c10791d3a7cd8e67c3b3a93d16cbf913a70b0f57ad8ca",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/helping-build-shared-standards-for-advanced-ai": {
+    "title": "Helping build shared standards for advanced AI",
+    "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-23",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "f5990bd94baa6b626c6db9a7e53f239b4b376f313e6848560642e6084132ea91",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/introducing-claude-tag": {
+    "title": "ProductJun 23, 2026Introducing Claude TagClaude Tag is a new way for teams to work with Claude.",
+    "url": "https://www.anthropic.com/news/introducing-claude-tag",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "193155b1b56818f4a7047a5ba2d9b1e2d8ccda0dd6de1c6b7c5ee0c5b20c63f5",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/identity-security/verifiable-trust-in-the-ai-era-whats-new-in-confidential-computing": {
+    "title": "Verifiable, private AI: Google Cloud expands Confidential Computing frontiers",
+    "url": "https://cloud.google.com/blog/products/identity-security/verifiable-trust-in-the-ai-era-whats-new-in-confidential-computing",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "60c90312f4c74f651ab3dcb81f87321947db486da9031df484e9ad8577c9b7b4",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/from-insight-to-action-the-next-phase-of-agentic-cloud-operations/": {
+    "title": "From insight to action: The next phase of agentic cloud operations",
+    "url": "https://azure.microsoft.com/en-us/blog/from-insight-to-action-the-next-phase-of-agentic-cloud-operations/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-06-23",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "2edab87417dae79b5e0af3bd0d83a5d77a7317c99b96abe4dde6d4ba5afc04aa",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/temporal-cloud-billing": {
+    "title": "Vantage Updates Temporal Cloud Integration to Use the Cloud Billing API",
+    "url": "https://www.vantage.sh/blog/temporal-cloud-billing",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-06-25",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "0b78fc7ea01358ed3373f12e426f9b8f2465c5dd97b901246079963488e120a6",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/programmatic-savings-plans-management-with-aws-cli-and-sdk/": {
+    "title": "Programmatic Savings Plans Management with AWS CLI and SDK",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/programmatic-savings-plans-management-with-aws-cli-and-sdk/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-06-24",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "39412c4d322c516c93bd3d9703027eb4f0100c946412cd122ccbdd5dcb56fdde",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/msp-sum-case-statement-billing-rules": {
+    "title": "Vantage Launches SUM and CASE Statement Billing Rules",
+    "url": "https://www.vantage.sh/blog/msp-sum-case-statement-billing-rules",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-06-24",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "7ff9de1d1b29dd4c8341ebcd8e1c13d264e052fda428c61041bafc7fa8bf545b",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.cloudzero.com/blog/shipped-anthropic-enterprise-connector/": {
+    "title": "Shipped: See who’s really spending your Claude budget",
+    "url": "https://www.cloudzero.com/blog/shipped-anthropic-enterprise-connector/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-06-28",
+    "last_seen": "2026-06-28",
+    "content_hash": "8977c53134cb29e30271be44ff46fe724c5092e4241b915772424cd1199d30de",
     "seen_count": 1,
     "last_freshness_status": "new"
   }

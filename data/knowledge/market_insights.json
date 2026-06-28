@@ -233,5 +233,50 @@
       }
     ],
     "created_at": "2026-06-21T19:21:23"
+  },
+  "AI_2026-W26": {
+    "topic": "AI",
+    "week": "2026-W26",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "OpenAI and Broadcom unveil LLM-optimized inference chip",
+        "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+        "source": "OpenAI News RSS",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-28T19:03:39"
+  },
+  "FinOps_2026-W26": {
+    "topic": "FinOps",
+    "week": "2026-W26",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Vantage Updates Temporal Cloud Integration to Use the Cloud Billing API",
+        "url": "https://www.vantage.sh/blog/temporal-cloud-billing",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-28T19:16:09"
+  },
+  "ProductObservation_2026-W26": {
+    "topic": "ProductObservation",
+    "week": "2026-W26",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Vantage Launches SUM and CASE Statement Billing Rules",
+        "url": "https://www.vantage.sh/blog/msp-sum-case-statement-billing-rules",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-06-28T19:24:24"
   }
 }
