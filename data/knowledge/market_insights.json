@@ -278,5 +278,43 @@
       }
     ],
     "created_at": "2026-06-28T19:24:24"
+  },
+  "AI_2026-W27": {
+    "topic": "AI",
+    "week": "2026-W27",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "AI & Machine LearningBuild agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP serverBy Colby Hawker • 5-minute read",
+        "url": "https://cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server",
+        "source": "Google Cloud Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-05T18:58:52"
+  },
+  "FinOps_2026-W27": {
+    "topic": "FinOps",
+    "week": "2026-W27",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [],
+    "created_at": "2026-07-05T19:04:07"
+  },
+  "ProductObservation_2026-W27": {
+    "topic": "ProductObservation",
+    "week": "2026-W27",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Vantage Launches Support for Claude Enterprise Costs",
+        "url": "https://www.vantage.sh/blog/anthropic-analytics",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-05T19:10:51"
   }
 }
