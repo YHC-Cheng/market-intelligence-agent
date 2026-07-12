@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-07-05",
-    "content_hash": "b09dfc5b73004b35a35613bdbeab1b049d003cfd3f144804ec6b51d5c24b0fe6",
-    "seen_count": 25,
+    "last_seen": "2026-07-12",
+    "content_hash": "893b66df46d5b7ad264f1396cfafc351043f1515896d554a5b8576f3751a7607",
+    "seen_count": 27,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 15,
+    "seen_count": 16,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
-    "seen_count": 10,
+    "seen_count": 11,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
-    "seen_count": 6,
+    "seen_count": 7,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -1134,9 +1134,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-04",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "2887859f3f7923946fa003987989a8f13365e235aca9ec66504796041070c9bd",
-    "seen_count": 5,
+    "seen_count": 6,
     "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/shipped-audit-cloudzero-users/": {
@@ -1329,9 +1329,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 4,
+    "seen_count": 5,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
@@ -1344,9 +1344,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "c23df30d827f34eb1e5a0102c37426d65269cf6b60ec23cd6287e9d63ad23543",
-    "seen_count": 4,
+    "seen_count": 5,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
@@ -1359,9 +1359,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "22adf750fc31a77319c1508b9d353461759bd7ec029e937d58243dd737ff4f01",
-    "seen_count": 4,
+    "seen_count": 5,
     "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/": {
@@ -1614,10 +1614,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-06-25",
     "first_seen": "2026-06-28",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "0b78fc7ea01358ed3373f12e426f9b8f2465c5dd97b901246079963488e120a6",
-    "seen_count": 4,
-    "last_freshness_status": "repeated"
+    "seen_count": 6,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/programmatic-savings-plans-management-with-aws-cli-and-sdk/": {
     "title": "Programmatic Savings Plans Management with AWS CLI and SDK",
@@ -1629,10 +1629,10 @@
     "topic": "FinOps",
     "published_date": "2026-06-24",
     "first_seen": "2026-06-28",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "39412c4d322c516c93bd3d9703027eb4f0100c946412cd122ccbdd5dcb56fdde",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/msp-sum-case-statement-billing-rules": {
     "title": "Vantage Launches SUM and CASE Statement Billing Rules",
@@ -1680,7 +1680,7 @@
     "last_freshness_status": "new"
   },
   "https://www.anthropic.com/news/redeploying-fable-5": {
-    "title": "Redeploying Fable 5AnnouncementsJun 30, 2026Fable 5 returns globally July 1. We're also proposing an industry-wide framework for scoring jailbreak severity, together with Amazon, Microsoft, Google, and other Glasswing partners.",
+    "title": "AnnouncementsJun 30, 2026Redeploying Fable 5Fable 5 returns globally July 1. We're also proposing an industry-wide framework for scoring jailbreak severity, together with Amazon, Microsoft, Google, and other Glasswing partners.",
     "url": "https://www.anthropic.com/news/redeploying-fable-5",
     "source": "Anthropic News / Blog",
     "source_category": "official_ai",
@@ -1689,10 +1689,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
-    "content_hash": "e48fba7912ac39ffa391c9752106162e12f7a9d4423a482ff8520a01c56110b1",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-07-12",
+    "content_hash": "c5ccbe949ac7de561433ab3a2de766c0f231fb5ef3088bca9a9a647893dc109c",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/claude-sonnet-5": {
     "title": "ProductJun 30, 2026Introducing Claude Sonnet 5Sonnet 5 delivers frontier performance across coding, agents, and professional work at scale.",
@@ -1704,10 +1704,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
-    "content_hash": "93e4f7163193112de735304f8bf7024d5d8199a9b80bb28e553d006885ce2041",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-07-12",
+    "content_hash": "270bc17033f947d8d1bebf5a686010aa6ae1bcf705a41b7b6d577386c3895618",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/claude-science-ai-workbench": {
     "title": "AnnouncementsJun 30, 2026Claude Science, an AI workbench for scientists, is now availableClaude Science is a customizable app that integrates the tools and packages researchers most often use, produces auditable artifacts, and provides flexible access to computing resources.",
@@ -1719,10 +1719,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
-    "content_hash": "634244a712943a7b9c2c06083dc198dfd589ba424177b50aac6d82a845ae9858",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-07-12",
+    "content_hash": "04bcbc86988fccee08e11adb7b3932294d99f0abde3821f6c77954b6a8900d07",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/fable-safeguards-jailbreak-framework": {
     "title": "Jul 2, 2026AnnouncementsMore details on Fable 5’s cyber safeguards and our jailbreak framework",
@@ -1740,7 +1740,7 @@
     "last_freshness_status": "new"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/nano-banana-2-lite-and-gemini-omni-flash-available": {
-    "title": "Bringing speed and strong cost performance to the market with Gemini Omni Flash and Nano Banana 2 Lite",
+    "title": "AI & Machine LearningBringing speed and strong cost performance to the market with Gemini Omni Flash and Nano Banana 2 LiteBy Michael Gerstenhaber • 5-minute read",
     "url": "https://cloud.google.com/blog/products/ai-machine-learning/nano-banana-2-lite-and-gemini-omni-flash-available",
     "source": "Google Cloud Blog",
     "source_category": "cloud_provider",
@@ -1749,10 +1749,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "87d4f51e11a0162776192ea4db29833e112c603e3c115884fb642714aef3bf5b",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server": {
     "title": "AI & Machine LearningBuild agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP serverBy Colby Hawker • 5-minute read",
@@ -1809,10 +1809,10 @@
     "topic": "AI",
     "published_date": "2026-06-30",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "4d3b93696e3771356e7d278b9d02a94de2e9911f64616b1ac8b60c88dc1ad660",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-agentic-cx-designer-for-amazon-connect-customer-ec2-ami-watermarks-open-governance-for-mysql-and-more-june-29-2026/": {
     "title": "AWS Weekly Roundup: Agentic CX designer for Amazon Connect Customer, EC2 AMI Watermarks, Open Governance for MySQL, and more (June 29, 2026)",
@@ -1839,10 +1839,10 @@
     "topic": "AI",
     "published_date": "2026-07-02",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "1f2cb5a826e3c78df2c1494d0fffbb63c5ce445066e9d4feaf7c258494c01e19",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/claude-in-microsoft-foundry-is-now-generally-available/": {
     "title": "Claude in Microsoft Foundry is now generally available",
@@ -1869,8 +1869,188 @@
     "topic": "ProductObservation",
     "published_date": "2026-07-02",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-05",
+    "last_seen": "2026-07-12",
     "content_hash": "e51d7d1bccbeb532b38f89339fe966d10dad01ad33884b288526bbafd33663bd",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/deutsche-telekom": {
+    "title": "How Deutsche Telekom is rewiring telecommunications with AI",
+    "url": "https://openai.com/index/deutsche-telekom",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-10",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "7dcee2e9315d16db438fd18fe262f4a20d8d05efebe761e7863c00f77dc2a4c6",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot": {
+    "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
+    "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-09",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "0a5caa3c07cf246fbf9079efcd7d99491c9896bb5a330a44d0f69ff671ff2551",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/hard-questions": {
+    "title": "Inviting hard questionsAnnouncementsJul 9, 2026We’re asking the public for their hardest questions about AI, and committing to show our work as we address them.",
+    "url": "https://www.anthropic.com/news/hard-questions",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "785ca27b66741a023dcebfae03c18ca5f46340cb96b03127d8aad65ac61a8284",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/ust-claude": {
+    "title": "Jul 9, 2026Case StudyUST is bringing Claude to physical AI",
+    "url": "https://www.anthropic.com/news/ust-claude",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "71aeba6e5cba7821ed8b17693f39e7c0f33ebabb3d15561ab8cc9fcdb8b967ef",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/alphaevolve-is-available-for-everyone": {
+    "title": "AI & Machine LearningSolve harder problems with AlphaEvolve, now available to everyone on Google CloudBy Anant Nawalgaria • 12-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/alphaevolve-is-available-for-everyone",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "d0d3cf684800a73db78fef98dd5ebf8178c9b123b4e0350a8c84e88ab77d7196",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/developers-practitioners/announcing-claude-apps-gateway-for-google-cloud": {
+    "title": "Developers & PractitionersGet started with the Claude apps gateway for Google CloudBy Roy Arsan • 6-minute read",
+    "url": "https://cloud.google.com/blog/topics/developers-practitioners/announcing-claude-apps-gateway-for-google-cloud",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "90de410c6417709c9b98f41d706e4f63f4b6fedb7fe63afe69fc75d9445bb307",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-run-sandboxes-are-in-public-preview": {
+    "title": "Developers & PractitionersSafely run AI-generated code in Cloud Run sandboxesBy Ryan Pei • 4-minute read",
+    "url": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-run-sandboxes-are-in-public-preview",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "867b994e8f6dc79ce92dc9fe31b7a41ade462c05c512f96e9c9ace8d87dce79a",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-claude-sonnet-5-on-aws-amazon-workspaces-for-ai-agents-aws-service-availability-updates-and-more-july-6-2026/": {
+    "title": "AWS Weekly Roundup: Claude Sonnet 5 on AWS, Amazon WorkSpaces for AI agents, AWS service availability updates, and more (July 6, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-claude-sonnet-5-on-aws-amazon-workspaces-for-ai-agents-aws-service-availability-updates-and-more-july-6-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-06",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "ff97460654248c88533c30569424163535739ae28c93340ef7bb513ea09b17cf",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/snowflake-business-metrics": {
+    "title": "Vantage Launches Native Snowflake Imports for Business Metrics",
+    "url": "https://www.vantage.sh/blog/snowflake-business-metrics",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-07-09",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "c10f5e0538aa2a741408e0b1d3af4fecfc62a2e3cfe8e388f41a7cff0271273d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/elevenlabs-cost-management": {
+    "title": "Vantage Launches Support for ElevenLabs Costs",
+    "url": "https://www.vantage.sh/blog/elevenlabs-cost-management",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-07-08",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "57f1b75acedaaa3f450289242a4a9dc6de187efdf82874ef3570cd343033ecdf",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/metronome": {
+    "title": "Metronome and Vantage Partner to Help Companies Align Usage, Cost, and Revenue",
+    "url": "https://www.vantage.sh/blog/metronome",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-07-07",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "3b41cb7263635971ee38c5ee23f15241694cf87a466ee2aa00ef4ea3449aac05",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.cloudzero.com/blog/shipped-your-cloudzero-your-personalization-rules/": {
+    "title": "Shipped: Your CloudZero, your personalization rules",
+    "url": "https://www.cloudzero.com/blog/shipped-your-cloudzero-your-personalization-rules/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-07-12",
+    "last_seen": "2026-07-12",
+    "content_hash": "18cb054ccfbf3892f0f454e2f911a6e9806c94730ca21cfefb5e120168dd153d",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
