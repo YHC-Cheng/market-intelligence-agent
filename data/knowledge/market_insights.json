@@ -354,5 +354,50 @@
       }
     ],
     "created_at": "2026-07-12T18:57:59"
+  },
+  "AI_2026-W29": {
+    "topic": "AI",
+    "week": "2026-W29",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "AI & Machine LearningGoogle is a Leader and positioned furthest in Vision and highest in Execution in the 2026 Gartner® Magic Quadrant™ for Conversational AI PlatformsBy Ali Rana • 5-minute read",
+        "url": "https://cloud.google.com/blog/products/ai-machine-learning/google-is-a-leader-in-the-gartner-magic-quadrant-for-conversational-ai",
+        "source": "Google Cloud Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-19T18:44:30"
+  },
+  "FinOps_2026-W29": {
+    "topic": "FinOps",
+    "week": "2026-W29",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Which AI tool for which FinOps Use Case?",
+        "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/which-ai-tool-for-which-finops-use-case/",
+        "source": "AWS Cloud Financial Management Blog",
+        "recommendation": "Background"
+      }
+    ],
+    "created_at": "2026-07-19T18:50:32"
+  },
+  "ProductObservation_2026-W29": {
+    "topic": "ProductObservation",
+    "week": "2026-W29",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Vantage Launches Enhanced Customizations for Dashboards",
+        "url": "https://www.vantage.sh/blog/enhanced-dashboard-customization",
+        "source": "Vantage Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-19T18:56:23"
   }
 }

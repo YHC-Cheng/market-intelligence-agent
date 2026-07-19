@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "893b66df46d5b7ad264f1396cfafc351043f1515896d554a5b8576f3751a7607",
-    "seen_count": 27,
+    "seen_count": 29,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 16,
+    "seen_count": 17,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "becef13a0bd0f60066dfd8ad648970f5725a940833d68b8c6a2a4f21b1dd2572",
-    "seen_count": 11,
+    "seen_count": 12,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
-    "seen_count": 7,
+    "seen_count": 8,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -1134,9 +1134,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-04",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "2887859f3f7923946fa003987989a8f13365e235aca9ec66504796041070c9bd",
-    "seen_count": 6,
+    "seen_count": 7,
     "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/shipped-audit-cloudzero-users/": {
@@ -1329,9 +1329,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 5,
+    "seen_count": 6,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
@@ -1344,9 +1344,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "c23df30d827f34eb1e5a0102c37426d65269cf6b60ec23cd6287e9d63ad23543",
-    "seen_count": 5,
+    "seen_count": 6,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
@@ -1359,9 +1359,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "22adf750fc31a77319c1508b9d353461759bd7ec029e937d58243dd737ff4f01",
-    "seen_count": 5,
+    "seen_count": 6,
     "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/": {
@@ -1629,9 +1629,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-24",
     "first_seen": "2026-06-28",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "39412c4d322c516c93bd3d9703027eb4f0100c946412cd122ccbdd5dcb56fdde",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/msp-sum-case-statement-billing-rules": {
@@ -1689,10 +1689,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "c5ccbe949ac7de561433ab3a2de766c0f231fb5ef3088bca9a9a647893dc109c",
-    "seen_count": 2,
-    "last_freshness_status": "updated"
+    "seen_count": 3,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/claude-sonnet-5": {
     "title": "ProductJun 30, 2026Introducing Claude Sonnet 5Sonnet 5 delivers frontier performance across coding, agents, and professional work at scale.",
@@ -1704,10 +1704,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "270bc17033f947d8d1bebf5a686010aa6ae1bcf705a41b7b6d577386c3895618",
-    "seen_count": 2,
-    "last_freshness_status": "updated"
+    "seen_count": 3,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/claude-science-ai-workbench": {
     "title": "AnnouncementsJun 30, 2026Claude Science, an AI workbench for scientists, is now availableClaude Science is a customizable app that integrates the tools and packages researchers most often use, produces auditable artifacts, and provides flexible access to computing resources.",
@@ -1719,10 +1719,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "04bcbc86988fccee08e11adb7b3932294d99f0abde3821f6c77954b6a8900d07",
-    "seen_count": 2,
-    "last_freshness_status": "updated"
+    "seen_count": 3,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/fable-safeguards-jailbreak-framework": {
     "title": "Jul 2, 2026AnnouncementsMore details on Fable 5’s cyber safeguards and our jailbreak framework",
@@ -1839,10 +1839,10 @@
     "topic": "AI",
     "published_date": "2026-07-02",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "1f2cb5a826e3c78df2c1494d0fffbb63c5ce445066e9d4feaf7c258494c01e19",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://azure.microsoft.com/en-us/blog/claude-in-microsoft-foundry-is-now-generally-available/": {
     "title": "Claude in Microsoft Foundry is now generally available",
@@ -1914,10 +1914,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-07-12",
-    "content_hash": "785ca27b66741a023dcebfae03c18ca5f46340cb96b03127d8aad65ac61a8284",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-07-19",
+    "content_hash": "ca691b3559edc1b57686114b459566f2d98127d930b727bcf9bb6bc85a363662",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/ust-claude": {
     "title": "Jul 9, 2026Case StudyUST is bringing Claude to physical AI",
@@ -1944,10 +1944,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-07-12",
-    "content_hash": "d0d3cf684800a73db78fef98dd5ebf8178c9b123b4e0350a8c84e88ab77d7196",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-07-19",
+    "content_hash": "691567f1c90c96314a0cef53856a34c2afa7bd01fe744b2369333dbcc778ff0b",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/topics/developers-practitioners/announcing-claude-apps-gateway-for-google-cloud": {
     "title": "Developers & PractitionersGet started with the Claude apps gateway for Google CloudBy Roy Arsan • 6-minute read",
@@ -1989,10 +1989,10 @@
     "topic": "AI",
     "published_date": "2026-07-06",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "ff97460654248c88533c30569424163535739ae28c93340ef7bb513ea09b17cf",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/snowflake-business-metrics": {
     "title": "Vantage Launches Native Snowflake Imports for Business Metrics",
@@ -2004,10 +2004,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-07-09",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "c10f5e0538aa2a741408e0b1d3af4fecfc62a2e3cfe8e388f41a7cff0271273d",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/elevenlabs-cost-management": {
     "title": "Vantage Launches Support for ElevenLabs Costs",
@@ -2019,10 +2019,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-07-08",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "57f1b75acedaaa3f450289242a4a9dc6de187efdf82874ef3570cd343033ecdf",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/metronome": {
     "title": "Metronome and Vantage Partner to Help Companies Align Usage, Cost, and Revenue",
@@ -2034,10 +2034,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-07-07",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-07-12",
+    "last_seen": "2026-07-19",
     "content_hash": "3b41cb7263635971ee38c5ee23f15241694cf87a466ee2aa00ef4ea3449aac05",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.cloudzero.com/blog/shipped-your-cloudzero-your-personalization-rules/": {
     "title": "Shipped: Your CloudZero, your personalization rules",
@@ -2051,6 +2051,201 @@
     "first_seen": "2026-07-12",
     "last_seen": "2026-07-12",
     "content_hash": "18cb054ccfbf3892f0f454e2f911a6e9806c94730ca21cfefb5e120168dd153d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/a-scorecard-for-the-ai-age": {
+    "title": "A scorecard for the AI age",
+    "url": "https://openai.com/index/a-scorecard-for-the-ai-age",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-17",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "c828b28e1ac0866f7b17c8648a1029ce340e9ca1fc41450dfe99cc0347c75ee8",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/why-teens-deserve-access-safe-ai": {
+    "title": "Why teens deserve access to safe AI",
+    "url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-16",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "9119ba0077dfaec65623be9bcf4c7f2d323723da73cc14ae670c532e7dbd2518",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/cars24": {
+    "title": "How Cars24 scales conversations and builds faster with OpenAI",
+    "url": "https://openai.com/index/cars24",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-16",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "9b31f9ebada6d83db22f14fab0b73ebd416cba3de882460ac5faa89bf79fe529",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action": {
+    "title": "The US is advancing AI safety through state and federal action",
+    "url": "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-15",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "5eb43c0ce796c4751e73782aee0b51401a0267f0f5344184581c3079fdeafca3",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/claude-for-teachers": {
+    "title": "Jul 14, 2026ProductIntroducing Claude for Teachers",
+    "url": "https://www.anthropic.com/news/claude-for-teachers",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "357cee2c3edd8bbb3809a4295c4d6bf7cafa115b6de399329947493f3e710146",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/13-demos-on-gemini-enterprise-agent-platform": {
+    "title": "13 hands-on demos to build on Gemini Enterprise Agent Platform",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/13-demos-on-gemini-enterprise-agent-platform",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "a10c381544e008770f3e748c9c7a5edfeeef1aeb9d22bccd9521edb8606f988d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/google-is-a-leader-in-the-gartner-magic-quadrant-for-conversational-ai": {
+    "title": "AI & Machine LearningGoogle is a Leader and positioned furthest in Vision and highest in Execution in the 2026 Gartner® Magic Quadrant™ for Conversational AI PlatformsBy Ali Rana • 5-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/google-is-a-leader-in-the-gartner-magic-quadrant-for-conversational-ai",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "dd147179154f61fd4aa7a16adda6d58f66b853bccc61e917ceda22e05a845cb7",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/google-named-a-leader-in-idc-marketscape": {
+    "title": "AI & Machine LearningGoogle named a Leader in the 2026 IDC MarketScape for Worldwide Foundation Model SoftwareBy Michael Gerstenhaber • 3-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/google-named-a-leader-in-idc-marketscape",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "e7bedf6fffcb6535b95ad8ae0f3ec92e8e361d8570b041d679787afc75de1f54",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/developers-practitioners/why-ai-apps-fail-in-production": {
+    "title": "Developers & PractitionersWhy AI apps fail in production (And how Google solved it)By Stephanie Wong • 4-minute read",
+    "url": "https://cloud.google.com/blog/topics/developers-practitioners/why-ai-apps-fail-in-production",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "02a0a2794870c2f9bbe208715b109fa86a9b01bf493df039722601f89d3dede1",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/frontier-models-and-production-agents-advancing-microsoft-foundry-for-the-agentic-era/": {
+    "title": "Frontier models and production agents: Advancing Microsoft Foundry for the agentic era",
+    "url": "https://azure.microsoft.com/en-us/blog/frontier-models-and-production-agents-advancing-microsoft-foundry-for-the-agentic-era/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-07-09",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "341acafc393a91bc4175ae4f563eac53a6640a82aa91b53038b7077192c2e476",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/which-ai-tool-for-which-finops-use-case/": {
+    "title": "Which AI tool for which FinOps Use Case?",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/which-ai-tool-for-which-finops-use-case/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-07-13",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "8bf969123e176c0bde0afbfb90ee885228d4d904d493a2047e85c34dd48923f9",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/modal-cost-management": {
+    "title": "Vantage Launches Support for Modal Costs",
+    "url": "https://www.vantage.sh/blog/modal-cost-management",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-07-16",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "2e943dacea35506b0b5af974c7a38bf848ea4ac0d15ca3f513cbea18508e1e35",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/enhanced-dashboard-customization": {
+    "title": "Vantage Launches Enhanced Customizations for Dashboards",
+    "url": "https://www.vantage.sh/blog/enhanced-dashboard-customization",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-07-14",
+    "first_seen": "2026-07-19",
+    "last_seen": "2026-07-19",
+    "content_hash": "898fd04f31890313a60826ab43ddbda6ef26550dfb9cf5edf77b4f4c1e80b205",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
