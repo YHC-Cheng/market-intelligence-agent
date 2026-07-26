@@ -399,5 +399,50 @@
       }
     ],
     "created_at": "2026-07-19T18:56:23"
+  },
+  "AI_2026-W30": {
+    "topic": "AI",
+    "week": "2026-W30",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Containers & KubernetesMinimize idle accelerators: Native RL job interleaving with co-operative time-slicing in llm-dBy Poonam Lamba • 8-minute read",
+        "url": "https://cloud.google.com/blog/products/containers-kubernetes/introducing-co-operative-time-slicing-for-rl-in-llm-d",
+        "source": "Google Cloud Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-26T18:48:50"
+  },
+  "FinOps_2026-W30": {
+    "topic": "FinOps",
+    "week": "2026-W30",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "Automating Multi-Cloud Cost Management at Scale: A2A’s FinOps Platform Powered by AWS",
+        "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/automating-multi-cloud-cost-management-at-scale-a2as-finops-platform-powered-by-aws/",
+        "source": "AWS Cloud Financial Management Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-26T18:55:01"
+  },
+  "ProductObservation_2026-W30": {
+    "topic": "ProductObservation",
+    "week": "2026-W30",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [
+      {
+        "title": "AI cost management software: a 2026 buyer’s guide to evaluating and choosing the right platform",
+        "url": "https://www.cloudzero.com/blog/ai-cost-management-software/",
+        "source": "CloudZero Blog",
+        "recommendation": "Core"
+      }
+    ],
+    "created_at": "2026-07-26T19:01:12"
   }
 }
