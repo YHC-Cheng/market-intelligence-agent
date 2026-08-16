@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "184b93ec48f3066e255716cfc4c1456b95267a599b657be073993b420ac15596",
-    "seen_count": 35,
+    "seen_count": 37,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 20,
+    "seen_count": 21,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "8aeccf49eed768b358c2679d7eb09d3f4f742900be7903266003ac28551fdc62",
-    "seen_count": 15,
+    "seen_count": 16,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
-    "seen_count": 11,
+    "seen_count": 12,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -1134,9 +1134,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-04",
     "first_seen": "2026-06-07",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "2887859f3f7923946fa003987989a8f13365e235aca9ec66504796041070c9bd",
-    "seen_count": 10,
+    "seen_count": 11,
     "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/shipped-audit-cloudzero-users/": {
@@ -1329,9 +1329,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 9,
+    "seen_count": 10,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
@@ -1344,9 +1344,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "4293b38ef0e825cb54bb61b55bae83b7c7b338427064d0da09fb83d1dcbc2b2c",
-    "seen_count": 9,
+    "seen_count": 10,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
@@ -1359,9 +1359,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "22adf750fc31a77319c1508b9d353461759bd7ec029e937d58243dd737ff4f01",
-    "seen_count": 9,
+    "seen_count": 10,
     "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/": {
@@ -1689,9 +1689,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-08-09",
-    "content_hash": "7c5b4b3eb0b4fd6fc23dc13e7642afb9e3609c663cb644f0e63cb3c1d8f9d647",
-    "seen_count": 6,
+    "last_seen": "2026-08-16",
+    "content_hash": "367966be84abc6a1ca678d0f473f33e1650356352f09dd824727cc92077f50ba",
+    "seen_count": 7,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/claude-sonnet-5": {
@@ -1704,9 +1704,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-08-09",
-    "content_hash": "40745baa838524a27f69c9b14a351cd2801cdc45551c7de778d61ca7b442b5ec",
-    "seen_count": 6,
+    "last_seen": "2026-08-16",
+    "content_hash": "823be3afc452bf5b0190bae1011e44d3b9473d4e5fa6836ab1faf83622d3ba69",
+    "seen_count": 7,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/claude-science-ai-workbench": {
@@ -1914,9 +1914,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-08-09",
-    "content_hash": "8c7b54a578d29ddab7634072dc017fa01b747ef678498827819abe4fb485e698",
-    "seen_count": 5,
+    "last_seen": "2026-08-16",
+    "content_hash": "ca691b3559edc1b57686114b459566f2d98127d930b727bcf9bb6bc85a363662",
+    "seen_count": 6,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/ust-claude": {
@@ -2304,9 +2304,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-26",
-    "last_seen": "2026-08-09",
-    "content_hash": "f4f3c4288a157879ddb02df82df2e8af80216ac56c44f892973957ace5744766",
-    "seen_count": 3,
+    "last_seen": "2026-08-16",
+    "content_hash": "c80f2960fbdcf13017dfe0a02cf9b8f759e8ee23707eba40beb4ae739c455d07",
+    "seen_count": 4,
     "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/data-analytics/okf-v0-2-adds-trust-signals": {
@@ -2394,9 +2394,9 @@
     "topic": "FinOps",
     "published_date": "2026-07-24",
     "first_seen": "2026-07-26",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "de371e2f1446de37ef5130bfdab91561d50c1b194d24395e0cc1b9109ac27d25",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/state-of-cloud-and-ai-cost-management-2026": {
@@ -2544,10 +2544,10 @@
     "topic": "AI",
     "published_date": "2026-07-27",
     "first_seen": "2026-08-02",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "f1279911c32371dbb05b15b2b768d229c4b8a076172430c323713192a07671ad",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://azure.microsoft.com/en-us/blog/what-customers-value-most-in-microsoft-databases-from-reliability-to-ai-readiness/": {
     "title": "What customers value most in Microsoft Databases—from reliability to AI readiness",
@@ -2559,10 +2559,10 @@
     "topic": "AI",
     "published_date": "2026-07-27",
     "first_seen": "2026-08-02",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "ca9cbf45577bb7bf298936de35bdda1f7a348f374ecc77337b21c312bd386500",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/scenario-model-forecasting": {
     "title": "Vantage Launches Scenario Model Forecasting",
@@ -2589,10 +2589,10 @@
     "topic": "FinOps",
     "published_date": "2026-07-30",
     "first_seen": "2026-08-02",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "77a0d02aecf1c3f477af5e4e3bfdb978e13d96183ffaa485c5873504d063ef87",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/how-make-runs-ai-cost-observability": {
     "title": "How Make.com Built AI Cost Observability That Engineers Actually Use",
@@ -2604,10 +2604,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-07-30",
     "first_seen": "2026-08-02",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "ef270d9b8f75060a4ad84d985f45138b17ef525574d494f0cc97e0f1fbdb4904",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/count-display-cost-reports": {
     "title": "Vantage Launches Count Display Type for Cost Reports",
@@ -2664,10 +2664,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "a64729a771cf48e0e2ed56803384680d51959c8682d727c7b7e340a6522600db",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/topics/hybrid-cloud/state-of-ai-infrastructure-report-on-hybrid-cloud-and-gdc": {
     "title": "Hybrid & MulticloudDigital sovereignty in the age of AI: You don’t have to choose between control and innovationBy Ankur Mehrotra • 1-minute read",
@@ -2694,10 +2694,10 @@
     "topic": "AI",
     "published_date": "2026-08-06",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "aa3f27f8c48a2bc2c4585d09380e8733949fa49f06eacf13a2079d43951cb79c",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/microsoft-named-a-leader-in-the-2026-gartner-magic-quadrant-for-ai-augmented-code-modernization-tools/": {
     "title": "Microsoft named a Leader in the 2026 Gartner® Magic Quadrant™ for AI-Augmented Code Modernization Tools",
@@ -2709,10 +2709,10 @@
     "topic": "AI",
     "published_date": "2026-08-06",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "4014c032bb599066f1062ca1b94eaf686bde750fdcc9c436da63e746f1a82477",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/setting-ai-budget/": {
     "title": "Who sets the AI budget?",
@@ -2724,10 +2724,10 @@
     "topic": "FinOps",
     "published_date": "2026-08-05",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "5b85d3d4ed9bfa72ef70bba35daa462851f59785ca2f9104f9366ff5bed9fe48",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/kubernetes-network-cost-attribution": {
     "title": "Vantage Launches Kubernetes Network Cost Attribution",
@@ -2739,10 +2739,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-08-06",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "e28e6383ef9ba3f349db7f4a5f128a9cfa0e47ff9efa6bafd8bac975b36c7ec4",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/cloudflare-cost-management": {
     "title": "Vantage Launches Cloudflare Self-Serve Support",
@@ -2754,9 +2754,114 @@
     "topic": "ProductObservation",
     "published_date": "2026-08-03",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-09",
+    "last_seen": "2026-08-16",
     "content_hash": "c199e28d9780d71b66dfb08b52184a2256da2ce87cd2dda8d063ed23086ecdca",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/dali-rajic-chief-revenue-officer": {
+    "title": "OpenAI appoints Dali Rajic as Chief Revenue Officer",
+    "url": "https://openai.com/index/dali-rajic-chief-revenue-officer",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-13",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "e284e30b3d3cf6726d78ebe7041c355ce969f9650b2dfe5cdde6e169f0d0a95e",
     "seen_count": 1,
     "last_freshness_status": "new"
+  },
+  "https://openai.com/index/how-enterprises-put-ai-to-work": {
+    "title": "From assistance to execution: How enterprises put AI to work",
+    "url": "https://openai.com/index/how-enterprises-put-ai-to-work",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-12",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "9bc72d086078d62747d95792d9a7c54de05a6b393208f708007033583864064c",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/ringcentral": {
+    "title": "How RingCentral builds AI-native work from engineering to ops",
+    "url": "https://openai.com/index/ringcentral",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-12",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "a791e8e13299fe0f2024d6c59d39783051236192fc6a09b8816922be375b8967",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/claude-text-watermark": {
+    "title": "Aug 14, 2026AnnouncementsHow Claude’s text watermark works",
+    "url": "https://www.anthropic.com/news/claude-text-watermark",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "ebcacf9599d9ac059b83cfad97ceb5fd344f454e7ad00858173eab5ec36b6fbe",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/google-named-a-leader-in-the-forrester-wave-ai-platforms": {
+    "title": "AI & Machine LearningGoogle named a Leader in The Forrester Wave™: AI Platforms, Q3 2026By Jamie de Guerre • 3-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/google-named-a-leader-in-the-forrester-wave-ai-platforms",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "cb4985edff838f82f5ba4ef6b8a5d36b375add6ea671c62b993b6c89b969a740",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/developers-practitioners/announcing-developer-device-platform-on-google-cloud": {
+    "title": "Developers & PractitionersIntroducing the Developer Device Platform for agentic mobile app developmentBy Derek Bekebrede • 3-minute read",
+    "url": "https://cloud.google.com/blog/topics/developers-practitioners/announcing-developer-device-platform-on-google-cloud",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "b2480b12429e13b07df5b82736c67be59145e3428bf238c383d68b72f525273f",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/how-to-manage-ai-budgets-tokenmaxxing": {
+    "title": "How to Manage AI Budgets in the Age of Tokenmaxxing",
+    "url": "https://www.vantage.sh/blog/how-to-manage-ai-budgets-tokenmaxxing",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-08-13",
+    "first_seen": "2026-08-16",
+    "last_seen": "2026-08-16",
+    "content_hash": "e9fb578369a3bd60c5909ebd967189ae4a586ced8f46cd6b7934a2421cc76105",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   }
 }
