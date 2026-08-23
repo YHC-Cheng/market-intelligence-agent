@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-08-16",
-    "content_hash": "184b93ec48f3066e255716cfc4c1456b95267a599b657be073993b420ac15596",
-    "seen_count": 37,
+    "last_seen": "2026-08-23",
+    "content_hash": "57570d5519cf48cebf52aad69d65f783fd7ed7bf3c14eb0c8f8b23e42cf58792",
+    "seen_count": 39,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 21,
+    "seen_count": 22,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "8aeccf49eed768b358c2679d7eb09d3f4f742900be7903266003ac28551fdc62",
-    "seen_count": 16,
+    "seen_count": 17,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
-    "seen_count": 12,
+    "seen_count": 13,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -1329,9 +1329,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 10,
+    "seen_count": 11,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
@@ -1344,9 +1344,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "4293b38ef0e825cb54bb61b55bae83b7c7b338427064d0da09fb83d1dcbc2b2c",
-    "seen_count": 10,
+    "seen_count": 11,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
@@ -1359,9 +1359,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-09",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "22adf750fc31a77319c1508b9d353461759bd7ec029e937d58243dd737ff4f01",
-    "seen_count": 10,
+    "seen_count": 11,
     "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/aws-finops-agent-is-now-public-preview/": {
@@ -1689,10 +1689,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "367966be84abc6a1ca678d0f473f33e1650356352f09dd824727cc92077f50ba",
-    "seen_count": 7,
-    "last_freshness_status": "updated"
+    "seen_count": 8,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/claude-sonnet-5": {
     "title": "ProductJun 30, 2026Introducing Claude Sonnet 5Sonnet 5 delivers frontier performance across coding, agents, and professional work at scale.",
@@ -1704,10 +1704,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-05",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "823be3afc452bf5b0190bae1011e44d3b9473d4e5fa6836ab1faf83622d3ba69",
-    "seen_count": 7,
-    "last_freshness_status": "updated"
+    "seen_count": 8,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/claude-science-ai-workbench": {
     "title": "AnnouncementsJun 30, 2026Claude Science, an AI workbench for scientists, is now availableClaude Science is a customizable app that integrates the tools and packages researchers most often use, produces auditable artifacts, and provides flexible access to computing resources.",
@@ -1914,10 +1914,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-12",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "ca691b3559edc1b57686114b459566f2d98127d930b727bcf9bb6bc85a363662",
-    "seen_count": 6,
-    "last_freshness_status": "updated"
+    "seen_count": 7,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/ust-claude": {
     "title": "Jul 9, 2026Case StudyUST is bringing Claude to physical AI",
@@ -2304,10 +2304,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-26",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "c80f2960fbdcf13017dfe0a02cf9b8f759e8ee23707eba40beb4ae739c455d07",
-    "seen_count": 4,
-    "last_freshness_status": "updated"
+    "seen_count": 5,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/products/data-analytics/okf-v0-2-adds-trust-signals": {
     "title": "Open Knowledge format v0.2 tackles agentic trust",
@@ -2394,9 +2394,9 @@
     "topic": "FinOps",
     "published_date": "2026-07-24",
     "first_seen": "2026-07-26",
-    "last_seen": "2026-08-16",
-    "content_hash": "de371e2f1446de37ef5130bfdab91561d50c1b194d24395e0cc1b9109ac27d25",
-    "seen_count": 4,
+    "last_seen": "2026-08-23",
+    "content_hash": "ae8f4b5217e16437fa966743de4f9b65f0199222eb507ca3fef47edd8ebcb0d4",
+    "seen_count": 5,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/state-of-cloud-and-ai-cost-management-2026": {
@@ -2559,9 +2559,9 @@
     "topic": "AI",
     "published_date": "2026-07-27",
     "first_seen": "2026-08-02",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "ca9cbf45577bb7bf298936de35bdda1f7a348f374ecc77337b21c312bd386500",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/scenario-model-forecasting": {
@@ -2589,9 +2589,9 @@
     "topic": "FinOps",
     "published_date": "2026-07-30",
     "first_seen": "2026-08-02",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "77a0d02aecf1c3f477af5e4e3bfdb978e13d96183ffaa485c5873504d063ef87",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/how-make-runs-ai-cost-observability": {
@@ -2694,10 +2694,10 @@
     "topic": "AI",
     "published_date": "2026-08-06",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-16",
-    "content_hash": "aa3f27f8c48a2bc2c4585d09380e8733949fa49f06eacf13a2079d43951cb79c",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "last_seen": "2026-08-23",
+    "content_hash": "65eb1522521edcec2e05fd5c281052fd7e18fbd03852222e3afd7badcd279a95",
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://azure.microsoft.com/en-us/blog/microsoft-named-a-leader-in-the-2026-gartner-magic-quadrant-for-ai-augmented-code-modernization-tools/": {
     "title": "Microsoft named a Leader in the 2026 Gartner® Magic Quadrant™ for AI-Augmented Code Modernization Tools",
@@ -2709,10 +2709,10 @@
     "topic": "AI",
     "published_date": "2026-08-06",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "4014c032bb599066f1062ca1b94eaf686bde750fdcc9c436da63e746f1a82477",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/setting-ai-budget/": {
     "title": "Who sets the AI budget?",
@@ -2724,10 +2724,10 @@
     "topic": "FinOps",
     "published_date": "2026-08-05",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "5b85d3d4ed9bfa72ef70bba35daa462851f59785ca2f9104f9366ff5bed9fe48",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/kubernetes-network-cost-attribution": {
     "title": "Vantage Launches Kubernetes Network Cost Attribution",
@@ -2814,10 +2814,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-16",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "ebcacf9599d9ac059b83cfad97ceb5fd344f454e7ad00858173eab5ec36b6fbe",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/google-named-a-leader-in-the-forrester-wave-ai-platforms": {
     "title": "AI & Machine LearningGoogle named a Leader in The Forrester Wave™: AI Platforms, Q3 2026By Jamie de Guerre • 3-minute read",
@@ -2829,10 +2829,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-16",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "cb4985edff838f82f5ba4ef6b8a5d36b375add6ea671c62b993b6c89b969a740",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/topics/developers-practitioners/announcing-developer-device-platform-on-google-cloud": {
     "title": "Developers & PractitionersIntroducing the Developer Device Platform for agentic mobile app developmentBy Derek Bekebrede • 3-minute read",
@@ -2859,9 +2859,189 @@
     "topic": "ProductObservation",
     "published_date": "2026-08-13",
     "first_seen": "2026-08-16",
-    "last_seen": "2026-08-16",
+    "last_seen": "2026-08-23",
     "content_hash": "e9fb578369a3bd60c5909ebd967189ae4a586ced8f46cd6b7934a2421cc76105",
+    "seen_count": 4,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/introducing-ai-futures": {
+    "title": "Introducing AI Futures",
+    "url": "https://openai.com/index/introducing-ai-futures",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-20",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "5987400f25e366b1206a8d6b02c83afb87e51f8a137ecc960eb378a600b6ebc2",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/how-agents-can-delegate-better": {
+    "title": "AI & Machine LearningHow agents can delegate betterBy Nenad Tomasev • 5-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/how-agents-can-delegate-better",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "65d95b8980096dd3d8aae23debe449d73784b7665ccb9fa55e8dfbc658c38098",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/financial-services/building-operational-resilience-with-agentic-ai-in-financial-services": {
+    "title": "Financial ServicesBuilding operational resilience with agentic AI in financial servicesBy Pankaj Ojha • 5-minute read",
+    "url": "https://cloud.google.com/blog/topics/financial-services/building-operational-resilience-with-agentic-ai-in-financial-services",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "6e9a76b23e03604a062657b8baeb369115101b1e079ef4851e8800e216dfcee5",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/identity-security/pqc-in-plaintext-google-clouds-post-quantum-cryptography-roadmap": {
+    "title": "Security & IdentityPQC in Plaintext: Google Cloud’s post-quantum cryptography roadmapBy Jai Haridas • 14-minute read",
+    "url": "https://cloud.google.com/blog/products/identity-security/pqc-in-plaintext-google-clouds-post-quantum-cryptography-roadmap",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "50428fb18e104d5052df5ea2898b1d3d3883e697fbebb4e0b034147b1b5887c9",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-glue-6-0-now-available-with-30-lower-price-and-full-apache-iceberg-v3-support/": {
+    "title": "AWS Glue 6.0 now available with 30% lower price and full Apache Iceberg v3 support",
+    "url": "https://aws.amazon.com/blogs/aws/aws-glue-6-0-now-available-with-30-lower-price-and-full-apache-iceberg-v3-support/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-21",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "a9e9b928a99267c3b8ff7a3631e3bfa2bbef0ac4ef0657cbdac3012e51ee6e84",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-ec2-application-status-checks-iam-role-manager-openai-daybreak-on-bedrock-and-more-august-17-2026/": {
+    "title": "AWS Weekly Roundup: EC2 application status checks, IAM role manager, OpenAI Daybreak on Bedrock, and more (August 17, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-ec2-application-status-checks-iam-role-manager-openai-daybreak-on-bedrock-and-more-august-17-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-17",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "1dfcccac9d6af1e67b1392c5f4ee2fed8409501eeb5906b3bb1dfb6db7f26b7f",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.finops.org/insights/agentic-finops-adoption/": {
+    "title": "Agentic FinOps: Why Adoption is Slower Than the Conversation",
+    "url": "https://www.finops.org/insights/agentic-finops-adoption/",
+    "source": "FinOps Foundation Blog",
+    "source_category": "industry_foundation",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-08-18",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "ca94146cffb68fb4486dc783c22f5efa6f6df64eb1cc55258b2872057d5ed5f5",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/token-cost-allocation-specification": {
+    "title": "Vantage Launches the Token Cost Allocation Specification",
+    "url": "https://www.vantage.sh/blog/token-cost-allocation-specification",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-08-20",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "b91a5657fe38415d95d7bd4348a01ab5a47eb3c61ac347a851e54f8198130864",
     "seen_count": 2,
     "last_freshness_status": "repeated"
+  },
+  "https://www.vantage.sh/blog/fireworks-ai-cost-management": {
+    "title": "Vantage Launches Support for Fireworks AI Costs",
+    "url": "https://www.vantage.sh/blog/fireworks-ai-cost-management",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-08-19",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "6c3238cc9602b5bb8f33c0c377bf6005b04611261b7c09e4426f02c02792ca8d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/multi-dimensional-business-metrics": {
+    "title": "Vantage Launches Multi-Dimensional Business Metrics",
+    "url": "https://www.vantage.sh/blog/multi-dimensional-business-metrics",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-08-18",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "c8ef42abe3b8ed0b80210232d70ac3c4eff7e65b6e511101d13beb965572df93",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.cloudzero.com/blog/ai-cost-governance/": {
+    "title": "AI cost governance: policies to control AI spend",
+    "url": "https://www.cloudzero.com/blog/ai-cost-governance/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "f6b74e3b5bfee29d2e8a84a2c254ebf73a0887026ac0c9263ce0e7e0a2f2e38a",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.cloudzero.com/blog/token-budgets/": {
+    "title": "Token budgets: capping AI agent and LLM spend",
+    "url": "https://www.cloudzero.com/blog/token-budgets/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-08-23",
+    "last_seen": "2026-08-23",
+    "content_hash": "ea72203deeba76358f4826db6a85ac7cf6193d71312b70dffe953e306e0aaded",
+    "seen_count": 1,
+    "last_freshness_status": "new"
   }
 }
