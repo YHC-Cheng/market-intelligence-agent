@@ -9,7 +9,7 @@
       "ProductObservation",
       "FinOps"
     ],
-    "last_checked": "2026-08-23T18:20:06",
+    "last_checked": "2026-08-30T20:18:19",
     "status": "active",
     "last_entries_count": 5
   },
@@ -22,7 +22,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-08-23T18:20:06",
+    "last_checked": "2026-08-30T20:18:19",
     "status": "listing",
     "last_entries_count": 5
   },
@@ -36,7 +36,7 @@
       "ProductObservation",
       "FinOps"
     ],
-    "last_checked": "2026-08-23T18:20:06",
+    "last_checked": "2026-08-30T20:18:19",
     "status": "static",
     "last_entries_count": 1
   },
@@ -49,7 +49,7 @@
     "topics": [
       "ProductObservation"
     ],
-    "last_checked": "2026-08-23T18:20:06",
+    "last_checked": "2026-08-30T20:18:19",
     "status": "static",
     "last_entries_count": 1
   },
@@ -62,7 +62,7 @@
     "topics": [
       "FinOps"
     ],
-    "last_checked": "2026-08-23T18:14:50",
+    "last_checked": "2026-08-30T20:13:01",
     "status": "active",
     "last_entries_count": 5
   },
@@ -75,7 +75,7 @@
     "topics": [
       "FinOps"
     ],
-    "last_checked": "2026-08-23T18:14:50",
+    "last_checked": "2026-08-30T20:13:01",
     "status": "active",
     "last_entries_count": 5
   },
@@ -88,7 +88,7 @@
     "topics": [
       "FinOps"
     ],
-    "last_checked": "2026-08-23T18:14:50",
+    "last_checked": "2026-08-30T20:13:01",
     "status": "static",
     "last_entries_count": 1
   },
@@ -101,7 +101,7 @@
     "topics": [
       "AI"
     ],
-    "last_checked": "2026-08-23T18:09:35",
+    "last_checked": "2026-08-30T20:07:54",
     "status": "active",
     "last_entries_count": 5
   },
@@ -114,7 +114,7 @@
     "topics": [
       "AI"
     ],
-    "last_checked": "2026-08-23T18:09:35",
+    "last_checked": "2026-08-30T20:07:54",
     "status": "listing",
     "last_entries_count": 5
   },
@@ -127,7 +127,7 @@
     "topics": [
       "AI"
     ],
-    "last_checked": "2026-08-23T18:09:35",
+    "last_checked": "2026-08-30T20:07:54",
     "status": "listing",
     "last_entries_count": 5
   },
@@ -140,7 +140,7 @@
     "topics": [
       "AI"
     ],
-    "last_checked": "2026-08-23T18:09:35",
+    "last_checked": "2026-08-30T20:07:54",
     "status": "active",
     "last_entries_count": 5
   },
@@ -153,7 +153,7 @@
     "topics": [
       "AI"
     ],
-    "last_checked": "2026-08-23T18:09:35",
+    "last_checked": "2026-08-30T20:07:54",
     "status": "active",
     "last_entries_count": 5
   }
