@@ -564,5 +564,29 @@
     "slide_path": "outputs/slides/slide_draft.md",
     "related_sources": [],
     "created_at": "2026-08-30T20:18:21"
+  },
+  "AI_2026-W36": {
+    "topic": "AI",
+    "week": "2026-W36",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [],
+    "created_at": "2026-09-06T19:38:39"
+  },
+  "FinOps_2026-W36": {
+    "topic": "FinOps",
+    "week": "2026-W36",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [],
+    "created_at": "2026-09-06T19:43:57"
+  },
+  "ProductObservation_2026-W36": {
+    "topic": "ProductObservation",
+    "week": "2026-W36",
+    "report_path": "outputs/reports/market_analysis_report.md",
+    "slide_path": "outputs/slides/slide_draft.md",
+    "related_sources": [],
+    "created_at": "2026-09-06T19:49:03"
   }
 }

@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-08-30",
-    "content_hash": "d2c1414032b5025356611ef0cf15ca634557afe298a284a9e705afd24afb22ef",
-    "seen_count": 41,
+    "last_seen": "2026-09-06",
+    "content_hash": "555769b715d0e373b6d3f9801700f24fa278e7a3991778a4c587a81ada358797",
+    "seen_count": 43,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 23,
+    "seen_count": 24,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,10 +159,10 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "7a77ed9721f96e868b52f69bcc2d2bfe99c360c927e611ced9f16ab24aa08327",
-    "seen_count": 18,
-    "last_freshness_status": "updated"
+    "seen_count": 19,
+    "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
     "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
-    "seen_count": 14,
+    "seen_count": 15,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -1329,9 +1329,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 12,
+    "seen_count": 13,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
@@ -1344,9 +1344,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "4293b38ef0e825cb54bb61b55bae83b7c7b338427064d0da09fb83d1dcbc2b2c",
-    "seen_count": 12,
+    "seen_count": 13,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/finops-x-2026-day-1-keynote/": {
@@ -2304,9 +2304,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-07-26",
-    "last_seen": "2026-08-30",
-    "content_hash": "0973e2d2060de63e810fbf72668cb8f907a0a5f8f73c3c0007d5fb763df9619f",
-    "seen_count": 6,
+    "last_seen": "2026-09-06",
+    "content_hash": "485c7a9e2013988de5036fe3b963cc6834cf1c0ffab108f83f38e87246047729",
+    "seen_count": 7,
     "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/data-analytics/okf-v0-2-adds-trust-signals": {
@@ -2724,9 +2724,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-05",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "5b85d3d4ed9bfa72ef70bba35daa462851f59785ca2f9104f9366ff5bed9fe48",
-    "seen_count": 4,
+    "seen_count": 5,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/kubernetes-network-cost-attribution": {
@@ -2814,9 +2814,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-16",
-    "last_seen": "2026-08-30",
-    "content_hash": "7008e2d9415c795072202e64c516476e081aaed271c3521d8ded2abf926814f9",
-    "seen_count": 3,
+    "last_seen": "2026-09-06",
+    "content_hash": "7b65dbc19c833cfe5217261226ea5c5bfd960eeac3e1e63625b691f78d27e3c0",
+    "seen_count": 4,
     "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/google-named-a-leader-in-the-forrester-wave-ai-platforms": {
@@ -2934,10 +2934,10 @@
     "topic": "AI",
     "published_date": "2026-08-21",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "a9e9b928a99267c3b8ff7a3631e3bfa2bbef0ac4ef0657cbdac3012e51ee6e84",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-ec2-application-status-checks-iam-role-manager-openai-daybreak-on-bedrock-and-more-august-17-2026/": {
     "title": "AWS Weekly Roundup: EC2 application status checks, IAM role manager, OpenAI Daybreak on Bedrock, and more (August 17, 2026)",
@@ -2964,10 +2964,10 @@
     "topic": "FinOps",
     "published_date": "2026-08-18",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "ca94146cffb68fb4486dc783c22f5efa6f6df64eb1cc55258b2872057d5ed5f5",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/token-cost-allocation-specification": {
     "title": "Vantage Launches the Token Cost Allocation Specification",
@@ -2979,10 +2979,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-08-20",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "b91a5657fe38415d95d7bd4348a01ab5a47eb3c61ac347a851e54f8198130864",
-    "seen_count": 4,
-    "last_freshness_status": "repeated"
+    "seen_count": 6,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/fireworks-ai-cost-management": {
     "title": "Vantage Launches Support for Fireworks AI Costs",
@@ -3105,7 +3105,7 @@
     "last_freshness_status": "new"
   },
   "https://www.anthropic.com/news/model-hardware-standard-research-preview": {
-    "title": "Previewing the Model Hardware StandardAnnouncementsAug 27, 2026We’re opening a research preview of the Model Hardware Standard (MHS), a shared specification for AI agents to safely operate physical devices, to a first group of scientific research labs and advanced manufacturers.",
+    "title": "AnnouncementsAug 27, 2026Previewing the Model Hardware StandardWe’re opening a research preview of the Model Hardware Standard (MHS), a shared specification for AI agents to safely operate physical devices, to a first group of scientific research labs and advanced manufacturers.",
     "url": "https://www.anthropic.com/news/model-hardware-standard-research-preview",
     "source": "Anthropic News / Blog",
     "source_category": "official_ai",
@@ -3114,13 +3114,13 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
-    "content_hash": "303f119e8c883d3f6353a3b22643bf60248c1791452a046be883b87859642e7e",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-09-06",
+    "content_hash": "6d59f691f759af865f2a175a6839260dcf224d1733e745663a57da99cdd25433",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-for-legal": {
-    "title": "Now introducing Gemini Enterprise for Legal",
+    "title": "AI & Machine LearningNow introducing Gemini Enterprise for LegalBy Thomas Kurian • 9-minute read",
     "url": "https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-for-legal",
     "source": "Google Cloud Blog",
     "source_category": "cloud_provider",
@@ -3129,10 +3129,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "0502407a52ca48758df23a651f56dd01ca7ec5cf5f5ee13798c973d34642c339",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/flexible-billing-and-cost-controls-for-agents-on-google-cloud": {
     "title": "AI & Machine LearningFinOps for the AI era: New flexible billing and cost controls for agentsBy Michael Gerstenhaber • 9-minute read",
@@ -3144,10 +3144,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
-    "content_hash": "1aa4a3fa7ed4b6dabf44974cc5a3b5e0475663c68d9ff225e517c5ff7c6ebd75",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-09-06",
+    "content_hash": "d34f3be5836224eee6ba765cb08d403809ab3d864659dc12eabd4a3b6250f5b2",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-for-financial-services": {
     "title": "AI & Machine LearningNow introducing Gemini Enterprise for Financial ServicesBy Thomas Kurian • 8-minute read",
@@ -3159,10 +3159,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "7a495b2870958d45e82f2337853756a6e9ab454239a996f1e4eac8b1a6111fce",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/expanding-google-antigravity-for-enterprise-customers": {
     "title": "AI & Machine LearningExpanding Google Antigravity for enterprise customersBy Scott Densmore • 6-minute read",
@@ -3189,10 +3189,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "4c78ce314d005f4e238cec4f9e62cd39c18b58c92d156f667a81bf54e060da1e",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-tokenomics-fit-together/": {
     "title": "FinOps and Tokenomics: How do they fit together?",
@@ -3204,10 +3204,10 @@
     "topic": "FinOps",
     "published_date": "2026-08-25",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "4711957057a02d54a93eecb47031dc28a3a8f315705216b05eb2a6dd7ae85664",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/linear-notion-github-mcp": {
     "title": "Vantage Expands MCP Connectors with Linear, Notion, and GitHub",
@@ -3219,10 +3219,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-08-27",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "0e554d2fd3e09fb2b1456936715c1dc437918f61d8f1b908c5b6ec1981dc1602",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/spacexai-cost-management": {
     "title": "Vantage Launches Support for SpaceXAI Costs",
@@ -3234,8 +3234,173 @@
     "topic": "ProductObservation",
     "published_date": "2026-08-26",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-08-30",
+    "last_seen": "2026-09-06",
     "content_hash": "ea96f6d2cdd85ba1058c64113892ac1153a55234cdc4f22492847b9727853bd5",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/research-acceleration-view-inside-openai": {
+    "title": "Research acceleration: The view inside OpenAI",
+    "url": "https://openai.com/index/research-acceleration-view-inside-openai",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-06",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "300f6e726b5bbacec9b02615affb3dbd531f80381bb32088a286056bea048c72",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/serverless/introducing-cloud-run-instances": {
+    "title": "Deploy personal AI agents with Cloud Run instances",
+    "url": "https://cloud.google.com/blog/products/serverless/introducing-cloud-run-instances",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "62f5404d2ff05ff1b0f6932014f88b7a27347103ec94fb0877d0949bae051f29",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/amazon-ec2-r9g-and-r9gd-instances-powered-by-aws-graviton5-processors-are-now-generally-available/": {
+    "title": "Amazon EC2 R9g and R9gd instances powered by AWS Graviton5 processors are now generally available",
+    "url": "https://aws.amazon.com/blogs/aws/amazon-ec2-r9g-and-r9gd-instances-powered-by-aws-graviton5-processors-are-now-generally-available/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-31",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "7f9634635c38f1d00e11463f605339befbd580ddd27c024284fbab59082c7366",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-welcome-ducklabs-to-the-team-agentic-resource-discovery-ard-and-more-august-31-2026/": {
+    "title": "AWS Weekly Roundup: Welcome DuckLabs to the team, Agentic Resource Discovery (ARD), and more (August 31, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-welcome-ducklabs-to-the-team-agentic-resource-discovery-ard-and-more-august-31-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-08-31",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "db8955305916c8e9f51a2d78dfc800a4ce475c20269699effb73edfbc01fccd2",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/enterprise-ai-transformation-relies-on-the-end-to-end-platform-azure-was-built-for-this-moment/": {
+    "title": "Enterprise AI transformation relies on the end-to-end platform: Azure was built for this moment",
+    "url": "https://azure.microsoft.com/en-us/blog/enterprise-ai-transformation-relies-on-the-end-to-end-platform-azure-was-built-for-this-moment/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-03",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "a8d30c2db30a9b9dc6c1ec6b9cb1500a4da1eb20ff655c1346920cddc2cff14d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/gpt-6-astra-frontier-intelligence-for-work-now-available-in-microsoft-foundry/": {
+    "title": "GPT-6 Astra: Frontier intelligence for work, now available in Microsoft Foundry",
+    "url": "https://azure.microsoft.com/en-us/blog/gpt-6-astra-frontier-intelligence-for-work-now-available-in-microsoft-foundry/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-03",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "b2408a5aed701475b52d9129c7ffb06028a05a365b2b1410cf29dd01dbb511ab",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-context-engineering-for-enterprise-ai-agents/": {
+    "title": "The Economics of Agent Optimization: Context engineering for enterprise AI agents",
+    "url": "https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-context-engineering-for-enterprise-ai-agents/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-02",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "f8bf28ea5a66cace36d9816201d443e8bb1862070185f1155ee9286734d0d30e",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/flexible-budget-periods": {
+    "title": "Vantage Launches Flexible Budget Periods",
+    "url": "https://www.vantage.sh/blog/flexible-budget-periods",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-09-01",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "bf1fbacd9011916e2f1a81f51dfb3549b7a62f17990ebfa48cdd3aefe99f8302",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/how-to-programmatically-manage-account-access-with-aws-budgets-alerts/": {
+    "title": "How to programmatically manage account access with AWS Budgets alerts",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/how-to-programmatically-manage-account-access-with-aws-budgets-alerts/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-09-01",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "be5b160501b855a121b22856e8bccf22669cadacf2ec51960db437faa68dfa5e",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/cloudflare-ai-gateway-token-allocation": {
+    "title": "Vantage Launches Token Allocation Support for Cloudflare AI Gateway",
+    "url": "https://www.vantage.sh/blog/cloudflare-ai-gateway-token-allocation",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-09-03",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "88c0864a5cd0f445a9d43521c0b87f6857555f25483398bb71a14eeff0887aa4",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.cloudzero.com/blog/ai-cost-calculator/": {
+    "title": "AI cost calculator: estimate your total spend",
+    "url": "https://www.cloudzero.com/blog/ai-cost-calculator/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-09-06",
+    "last_seen": "2026-09-06",
+    "content_hash": "62ec0e94ecb897bc6c4c97ff4055ee70f0bfd29f880ef5a7c5e49f2820a7df06",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
