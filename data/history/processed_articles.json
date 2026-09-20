@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-09-13",
-    "content_hash": "555769b715d0e373b6d3f9801700f24fa278e7a3991778a4c587a81ada358797",
-    "seen_count": 45,
+    "last_seen": "2026-09-20",
+    "content_hash": "bef55e2d9d2b95c7081a008ea1b8f4be04c46714c0f1e0933884e6da56a1a0a5",
+    "seen_count": 47,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 25,
+    "seen_count": 26,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "7a77ed9721f96e868b52f69bcc2d2bfe99c360c927e611ced9f16ab24aa08327",
-    "seen_count": 20,
+    "seen_count": 21,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "f79cc9704b13da98e64f1b533a2fda326d551bde849e4541c8d69ea49da83b0c",
-    "seen_count": 16,
+    "seen_count": 17,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -1329,9 +1329,9 @@
     "topic": "FinOps",
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
-    "seen_count": 14,
+    "seen_count": 15,
     "last_freshness_status": "old"
   },
   "https://www.finops.org/insights/introducing-focus-1-4/": {
@@ -2724,9 +2724,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-05",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "5b85d3d4ed9bfa72ef70bba35daa462851f59785ca2f9104f9366ff5bed9fe48",
-    "seen_count": 6,
+    "seen_count": 7,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/kubernetes-network-cost-attribution": {
@@ -2964,9 +2964,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-18",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "ca94146cffb68fb4486dc783c22f5efa6f6df64eb1cc55258b2872057d5ed5f5",
-    "seen_count": 4,
+    "seen_count": 5,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/token-cost-allocation-specification": {
@@ -3144,9 +3144,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "d34f3be5836224eee6ba765cb08d403809ab3d864659dc12eabd4a3b6250f5b2",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-for-financial-services": {
@@ -3204,9 +3204,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-25",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "4711957057a02d54a93eecb47031dc28a3a8f315705216b05eb2a6dd7ae85664",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/linear-notion-github-mcp": {
@@ -3369,10 +3369,10 @@
     "topic": "FinOps",
     "published_date": "2026-09-01",
     "first_seen": "2026-09-06",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "be5b160501b855a121b22856e8bccf22669cadacf2ec51960db437faa68dfa5e",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/cloudflare-ai-gateway-token-allocation": {
     "title": "Vantage Launches Token Allocation Support for Cloudflare AI Gateway",
@@ -3429,13 +3429,13 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
-    "content_hash": "73376242d348f849dae6ac50c4d25938aa75bf831bd1106d30363dc6efb70211",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-09-20",
+    "content_hash": "58ee741a4e06217a43e11a0c66041001e9348339e7ef33aea46138997edfd1ea",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/google-is-a-leader-in-2026-gartner-magic-quadrant-for-enterprise-ai-assistants": {
-    "title": "Google is a Leader in the 2026 Gartner® Magic Quadrant™ for Enterprise AI Assistants",
+    "title": "AI & Machine LearningGoogle is a Leader in the 2026 Gartner® Magic Quadrant™ for Enterprise AI AssistantsBy Peder Ulander • 5-minute read",
     "url": "https://cloud.google.com/blog/products/ai-machine-learning/google-is-a-leader-in-2026-gartner-magic-quadrant-for-enterprise-ai-assistants",
     "source": "Google Cloud Blog",
     "source_category": "cloud_provider",
@@ -3444,10 +3444,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "aff913afc9922c099886d066feea94242bf38b0c0cbeef1173320bc752ddbbe9",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/topics/developers-practitioners/announcing-the-google-gen-ai-sdk-for-kotlin-10-idiomatic-multiplatform-access-to-gemini": {
     "title": "Developers & PractitionersAnnouncing the Google Gen AI SDK for Kotlin 1.0: Idiomatic multiplatform access to GeminiBy Guillaume Laforge • 4-minute read",
@@ -3489,10 +3489,10 @@
     "topic": "AI",
     "published_date": "2026-09-10",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "5f81264b97ec1486e5b93f8050ff884f0e6f05fb6c57803a64ecd59c80e61a99",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-how-ai-agent-governance-controls-cost-and-proves-roi/": {
     "title": "The Economics of Agent Optimization: How AI agent governance controls cost and proves ROI",
@@ -3504,10 +3504,10 @@
     "topic": "AI",
     "published_date": "2026-09-10",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "1a258db4a50410900b10ad9451e00087b6a5966def5a35e25cc6b3c197530d45",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/automation-and-trust-in-finops/": {
     "title": "How AWS thinks about FinOps Automation and Trust",
@@ -3519,10 +3519,10 @@
     "topic": "FinOps",
     "published_date": "2026-09-10",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "6c3965110993603892149f5511408e43df7c31fe3443392792d932f7bfaa1fd4",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/codex-cost-management": {
     "title": "Vantage Launches Support for OpenAI Codex Costs",
@@ -3534,10 +3534,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-09-10",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "21487bebe066530ad21b110f5c2acf5d6a937e70d8be734f2daa3c1a57fbf91c",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/managed-ai-tags": {
     "title": "Vantage Launches Managed AI Tags for Normalized AI Costs",
@@ -3549,8 +3549,158 @@
     "topic": "ProductObservation",
     "published_date": "2026-09-08",
     "first_seen": "2026-09-13",
-    "last_seen": "2026-09-13",
+    "last_seen": "2026-09-20",
     "content_hash": "8eb6813775d4475d0f12e5758235cced4be32b54a51003b712c8af0f942e4eef",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life": {
+    "title": "Helping older adults use AI in everyday life",
+    "url": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-16",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "267bfc79e5d02a0a015352ca9e7156e6513614e22fc6f761131d89684f8039e9",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/reimagining-advertising-with-ai": {
+    "title": "Reimagining advertising with AI",
+    "url": "https://openai.com/index/reimagining-advertising-with-ai",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-16",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "0daa76958c7ca7db834c61ebedb04cc3aea5437a199acc37c8051c35b636a3aa",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/developers-practitioners/introducing-the-google-cloud-developer-plugin-for-ai-coding-agents": {
+    "title": "Developers & PractitionersIntroducing the Google Cloud Developer Plugin for AI Coding AgentsBy Jonathan Lee • 5-minute read",
+    "url": "https://cloud.google.com/blog/topics/developers-practitioners/introducing-the-google-cloud-developer-plugin-for-ai-coding-agents",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "fd51c3e57638981fb112e18d9939cff11b6abf1eae6a4871b26eb95d6675a0ee",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/new-low-cost-burstable-amazon-ec2-t8i-instances-are-generally-available/": {
+    "title": "New low-cost burstable Amazon EC2 T8i instances are generally available",
+    "url": "https://aws.amazon.com/blogs/aws/new-low-cost-burstable-amazon-ec2-t8i-instances-are-generally-available/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-17",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "07676667db9acfa18fb0fc1063c35996812f98d4600ec09bee7c8aff108933d4",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-openai-gpt-6-astra-on-amazon-bedrock-amazon-quick-desktop-ga-kiro-for-students-and-more-september-14-2026/": {
+    "title": "AWS Weekly Roundup: OpenAI GPT-6 Astra on Amazon Bedrock, Amazon Quick desktop GA, Kiro for students, and more (September 14, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-openai-gpt-6-astra-on-amazon-bedrock-amazon-quick-desktop-ga-kiro-for-students-and-more-september-14-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-09-14",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "d3c395578a6d25700c4fa711b2396834da8b986f643d0b48d2bd0ea071c20d38",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/how-to-scale-cost-optimization-across-1000s-of-accounts-with-a-finops-eba/": {
+    "title": "How To Scale Cost Optimization Across 1,000s of Accounts with a FinOps EBA",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/how-to-scale-cost-optimization-across-1000s-of-accounts-with-a-finops-eba/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-09-18",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "ae2282d0063444b7837f671d07ed799170ffd34b288e189c7d413cd212d59b61",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/implementing-proportional-reserved-instance-and-savings-plans-chargeback-with-aws-billing-conductor/": {
+    "title": "Implementing Proportional Reserved Instance and Savings Plans Chargeback with AWS Billing Conductor",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/implementing-proportional-reserved-instance-and-savings-plans-chargeback-with-aws-billing-conductor/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-09-18",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "ee52c477ab97f9388c72f7d1974e76bc827b9ebbb07dc96ab7ac5818389f2353",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/gcp-bigquery-clickhouse-business-metrics": {
+    "title": "Vantage Launches Native Business Metrics Imports for GCP BigQuery and ClickHouse",
+    "url": "https://www.vantage.sh/blog/gcp-bigquery-clickhouse-business-metrics",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-09-17",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "a7b5df10cce82d33bdbecf88a88b09d83e21f7e47b366d4444a801b8bd21d686",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/digitalocean-cost-management": {
+    "title": "Vantage Launches Support for DigitalOcean Costs",
+    "url": "https://www.vantage.sh/blog/digitalocean-cost-management",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-09-16",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "fd305b73a2dbf2174ef3dd7080c50f10f9cb913b0ca02f98b0e563354ff3d006",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/aws-bedrock-token-allocation": {
+    "title": "Vantage Launches Token Allocation Support for AWS Bedrock",
+    "url": "https://www.vantage.sh/blog/aws-bedrock-token-allocation",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-09-15",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-09-20",
+    "content_hash": "06a73d7d00302285aba6142e0bccc3bb459b0aa821fbbcad89c24d69027ff6b5",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
