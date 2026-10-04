@@ -39,9 +39,9 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-09-27",
-    "seen_count": 49,
-    "content_hash": "c19fc1d05921ff41f4af2dc09abdfcbefd9b5de12ae4553277c2611b8a314143",
+    "last_seen": "2026-10-04",
+    "seen_count": 51,
+    "content_hash": "e8759779ba9c0141ba3bf930b949b73b960df20dc5985ffce483f28a4eee5bdd",
     "freshness_status": "repeated",
     "summary": "This resource from IBM highlights key insights and educational sessions focused on emerging technologies, specifically addressing how organizations can scale AI with future-proof architectures, leverage AI pair programming to improve developer productivity, and prepare for the quantum computing revolution.",
     "key_points": [
@@ -64,7 +64,7 @@
     "problem_solved": "None",
     "reason": "The content of the article is generic boilerplate marketing text, discussing quantum computing and AI pair programming. Despite the title, it contains no information regarding IBM Cloudability, Apptio, or FinOps.",
     "tags": [],
-    "updated_at": "2026-09-27T20:39:53"
+    "updated_at": "2026-10-04T20:41:29"
   },
   "https://www.ecloudvalley.com/": {
     "url": "https://www.ecloudvalley.com/",
@@ -76,8 +76,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-09-27",
-    "seen_count": 27,
+    "last_seen": "2026-10-04",
+    "seen_count": 28,
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
     "freshness_status": "repeated",
     "summary": "",
@@ -97,7 +97,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:39:53"
+    "updated_at": "2026-10-04T20:41:29"
   },
   "https://www.vantage.sh/blog/ai-token-budgeting": {
     "url": "https://www.vantage.sh/blog/ai-token-budgeting",
@@ -376,8 +376,8 @@
     "web_mode": "static",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-09-27",
-    "seen_count": 22,
+    "last_seen": "2026-10-04",
+    "seen_count": 23,
     "content_hash": "7a77ed9721f96e868b52f69bcc2d2bfe99c360c927e611ced9f16ab24aa08327",
     "freshness_status": "repeated",
     "summary": "",
@@ -397,7 +397,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://www.vantage.sh/blog/snowflake-data-sharing": {
     "url": "https://www.vantage.sh/blog/snowflake-data-sharing",
@@ -1958,8 +1958,8 @@
     "web_mode": null,
     "published_date": "2026-06-10",
     "first_seen": "2026-06-14",
-    "last_seen": "2026-09-27",
-    "seen_count": 16,
+    "last_seen": "2026-10-04",
+    "seen_count": 17,
     "content_hash": "7b7ff942f1b8aa6857e40c264e9362ba46e3983f7d8b8059ca4689784ea7bd06",
     "freshness_status": "old",
     "summary": "",
@@ -1979,7 +1979,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://www.vantage.sh/blog/temporal-cloud-billing": {
     "url": "https://www.vantage.sh/blog/temporal-cloud-billing",
@@ -3192,8 +3192,8 @@
     "web_mode": null,
     "published_date": "2026-08-05",
     "first_seen": "2026-08-09",
-    "last_seen": "2026-09-27",
-    "seen_count": 8,
+    "last_seen": "2026-10-04",
+    "seen_count": 9,
     "content_hash": "5b85d3d4ed9bfa72ef70bba35daa462851f59785ca2f9104f9366ff5bed9fe48",
     "freshness_status": "old",
     "summary": "",
@@ -3213,7 +3213,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://www.vantage.sh/blog/how-to-manage-ai-budgets-tokenmaxxing": {
     "url": "https://www.vantage.sh/blog/how-to-manage-ai-budgets-tokenmaxxing",
@@ -3555,8 +3555,8 @@
     "web_mode": null,
     "published_date": "2026-08-18",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-09-27",
-    "seen_count": 6,
+    "last_seen": "2026-10-04",
+    "seen_count": 7,
     "content_hash": "ca94146cffb68fb4486dc783c22f5efa6f6df64eb1cc55258b2872057d5ed5f5",
     "freshness_status": "old",
     "summary": "",
@@ -3576,7 +3576,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://www.vantage.sh/blog/fireworks-ai-cost-management": {
     "url": "https://www.vantage.sh/blog/fireworks-ai-cost-management",
@@ -3753,8 +3753,8 @@
     "web_mode": null,
     "published_date": "2026-08-25",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-09-27",
-    "seen_count": 5,
+    "last_seen": "2026-10-04",
+    "seen_count": 6,
     "content_hash": "4711957057a02d54a93eecb47031dc28a3a8f315705216b05eb2a6dd7ae85664",
     "freshness_status": "old",
     "summary": "",
@@ -3774,7 +3774,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://www.vantage.sh/blog/flexible-budget-periods": {
     "url": "https://www.vantage.sh/blog/flexible-budget-periods",
@@ -4314,10 +4314,10 @@
     "web_mode": null,
     "published_date": "2026-09-18",
     "first_seen": "2026-09-20",
-    "last_seen": "2026-09-27",
-    "seen_count": 2,
+    "last_seen": "2026-10-04",
+    "seen_count": 3,
     "content_hash": "ae2282d0063444b7837f671d07ed799170ffd34b288e189c7d413cd212d59b61",
-    "freshness_status": "repeated",
+    "freshness_status": "old",
     "summary": "",
     "key_points": [],
     "why_it_matters": "",
@@ -4335,7 +4335,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/implementing-proportional-reserved-instance-and-savings-plans-chargeback-with-aws-billing-conductor/": {
     "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/implementing-proportional-reserved-instance-and-savings-plans-chargeback-with-aws-billing-conductor/",
@@ -4347,10 +4347,10 @@
     "web_mode": null,
     "published_date": "2026-09-18",
     "first_seen": "2026-09-20",
-    "last_seen": "2026-09-27",
-    "seen_count": 2,
-    "content_hash": "ee52c477ab97f9388c72f7d1974e76bc827b9ebbb07dc96ab7ac5818389f2353",
-    "freshness_status": "repeated",
+    "last_seen": "2026-10-04",
+    "seen_count": 3,
+    "content_hash": "424dc8285ce6bac751e0c8590f7785b5f120c23f496192b2d9c996c019f17423",
+    "freshness_status": "old",
     "summary": "",
     "key_points": [],
     "why_it_matters": "",
@@ -4368,7 +4368,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:34:48"
+    "updated_at": "2026-10-04T20:36:22"
   },
   "https://www.vantage.sh/blog/usage-budgets": {
     "url": "https://www.vantage.sh/blog/usage-budgets",
@@ -4380,8 +4380,8 @@
     "web_mode": null,
     "published_date": "2026-09-22",
     "first_seen": "2026-09-27",
-    "last_seen": "2026-09-27",
-    "seen_count": 2,
+    "last_seen": "2026-10-04",
+    "seen_count": 4,
     "content_hash": "da881209bdf95d9ce9e2f680b4220ffcabc9c309fe178960f600c9153a5d72df",
     "freshness_status": "repeated",
     "summary": "",
@@ -4401,7 +4401,7 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:39:53"
+    "updated_at": "2026-10-04T20:41:29"
   },
   "https://www.vantage.sh/blog/digitalocean-cost-management": {
     "url": "https://www.vantage.sh/blog/digitalocean-cost-management",
@@ -4413,9 +4413,42 @@
     "web_mode": null,
     "published_date": "2026-09-16",
     "first_seen": "2026-09-20",
-    "last_seen": "2026-09-27",
+    "last_seen": "2026-10-04",
+    "seen_count": 3,
+    "content_hash": "8e205338d0a6a3f36d98d10670996166ca2b3bc2304dddf7058dc70b8c2e0fcc",
+    "freshness_status": "old",
+    "summary": "",
+    "key_points": [],
+    "why_it_matters": "",
+    "summary_status": "skipped",
+    "failure_reason": null,
+    "failure_message": null,
+    "score": 0,
+    "recommendation": "Exclude",
+    "relevance": 0,
+    "use_case_clarity": 0,
+    "problem_solution_fit": 0,
+    "actionability": 0,
+    "credibility_novelty": 0,
+    "use_case": "",
+    "problem_solved": "",
+    "reason": "",
+    "tags": [],
+    "updated_at": "2026-10-04T20:41:29"
+  },
+  "https://www.vantage.sh/blog/kubernetes-nvidia-mig-gpu-cost-allocation": {
+    "url": "https://www.vantage.sh/blog/kubernetes-nvidia-mig-gpu-cost-allocation",
+    "title": "Vantage Launches Fractional GPU Cost Allocation Support Leveraging NVIDIA MIG",
+    "topic": "ProductObservation",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-10-01",
+    "first_seen": "2026-10-04",
+    "last_seen": "2026-10-04",
     "seen_count": 2,
-    "content_hash": "fd305b73a2dbf2174ef3dd7080c50f10f9cb913b0ca02f98b0e563354ff3d006",
+    "content_hash": "1c9ac61cc34cc2a755a1caa0c26b233eb9b2f1dfda890b7c1f0a591e2af6eb67",
     "freshness_status": "repeated",
     "summary": "",
     "key_points": [],
@@ -4434,6 +4467,39 @@
     "problem_solved": "",
     "reason": "",
     "tags": [],
-    "updated_at": "2026-09-27T20:39:53"
+    "updated_at": "2026-10-04T20:41:29"
+  },
+  "https://www.vantage.sh/blog/gcp-bigquery-clickhouse-business-metrics": {
+    "url": "https://www.vantage.sh/blog/gcp-bigquery-clickhouse-business-metrics",
+    "title": "Vantage Launches Native Business Metrics Imports for GCP BigQuery and ClickHouse",
+    "topic": "ProductObservation",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "published_date": "2026-09-17",
+    "first_seen": "2026-09-20",
+    "last_seen": "2026-10-04",
+    "seen_count": 3,
+    "content_hash": "e93a8af9d13fb77886dd1f93e1105ee065f91ebc1ddcbc0a8af7099283716a5a",
+    "freshness_status": "old",
+    "summary": "",
+    "key_points": [],
+    "why_it_matters": "",
+    "summary_status": "skipped",
+    "failure_reason": null,
+    "failure_message": null,
+    "score": 0,
+    "recommendation": "Exclude",
+    "relevance": 0,
+    "use_case_clarity": 0,
+    "problem_solution_fit": 0,
+    "actionability": 0,
+    "credibility_novelty": 0,
+    "use_case": "",
+    "problem_solved": "",
+    "reason": "",
+    "tags": [],
+    "updated_at": "2026-10-04T20:41:29"
   }
 }
