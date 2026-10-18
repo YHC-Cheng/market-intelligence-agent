@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "e8759779ba9c0141ba3bf930b949b73b960df20dc5985ffce483f28a4eee5bdd",
-    "seen_count": 53,
+    "seen_count": 55,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 29,
+    "seen_count": 30,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,9 +159,9 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "7a77ed9721f96e868b52f69bcc2d2bfe99c360c927e611ced9f16ab24aa08327",
-    "seen_count": 24,
+    "seen_count": 25,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "ccc95ec119e94c530a140ff2420c459cb2f5bf410616c1353e5e2fe52e00114e",
-    "seen_count": 20,
+    "seen_count": 21,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -2964,9 +2964,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-18",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "ca94146cffb68fb4486dc783c22f5efa6f6df64eb1cc55258b2872057d5ed5f5",
-    "seen_count": 8,
+    "seen_count": 9,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/token-cost-allocation-specification": {
@@ -3204,9 +3204,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-25",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "4711957057a02d54a93eecb47031dc28a3a8f315705216b05eb2a6dd7ae85664",
-    "seen_count": 7,
+    "seen_count": 8,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/linear-notion-github-mcp": {
@@ -3999,10 +3999,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-01",
     "first_seen": "2026-10-04",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "1c9ac61cc34cc2a755a1caa0c26b233eb9b2f1dfda890b7c1f0a591e2af6eb67",
-    "seen_count": 4,
-    "last_freshness_status": "repeated"
+    "seen_count": 6,
+    "last_freshness_status": "old"
   },
   "https://www.cloudzero.com/blog/ai-cost-allocation/": {
     "title": "AI cost allocation: how to attribute AI spend by team, product, and customer",
@@ -4104,10 +4104,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
-    "content_hash": "18b8727faaec0219f7203e41766d87897b9af1d9a9ab0aca6f5a21f96ab8445c",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-10-18",
+    "content_hash": "76ada085241298cbda822611ab6d4122f38f41dd8c29348b9d2192419e6e6a83",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/anthropic-cyber-mission": {
     "title": "Oct 8, 2026AnnouncementsIntroducing the Anthropic Cyber Mission",
@@ -4125,7 +4125,7 @@
     "last_freshness_status": "new"
   },
   "https://cloud.google.com/blog/products/ai-machine-learning/welcome-to-gemini-at-work-2026": {
-    "title": "Welcome to Gemini at Work 2026: Introducing the Gemini agent",
+    "title": "AI & Machine LearningWelcome to Gemini at Work 2026: Introducing the Gemini agentBy Thomas Kurian • 29-minute read",
     "url": "https://cloud.google.com/blog/products/ai-machine-learning/welcome-to-gemini-at-work-2026",
     "source": "Google Cloud Blog",
     "source_category": "cloud_provider",
@@ -4134,10 +4134,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "3624a6786a8d57be60bcbb9255a7ce97bbfcd6a8aa35467049b9295d738a7e23",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://cloud.google.com/blog/topics/startups/how-to-grow-your-small-business-using-google-gemini": {
     "title": "StartupsEmpowering SMBs to do more with GeminiBy Sharon Prosser • 7-minute read",
@@ -4194,10 +4194,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "bdb24d98577bfca7569016b1ab6b066a7e40d1c6ef1a7b629a1c943acecee941",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-amazon-bedrock-managed-agents-powered-by-openai-q3-service-availability-updates-kiro-workflows-and-more-october-5-2026/": {
     "title": "AWS Weekly Roundup: Amazon Bedrock Managed Agents powered by OpenAI, Q3 service availability updates, Kiro workflows, and more (October 5, 2026)",
@@ -4209,10 +4209,10 @@
     "topic": "AI",
     "published_date": "2026-10-05",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "9db0fe99977c44c224cfef4b70d93dc7c4be3e9515163be3271ab998ab492ec6",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/ai-transformation-across-the-infrastructure-lifecycle-from-supply-chain-to-fleet-operations/": {
     "title": "AI transformation across the infrastructure lifecycle: From supply chain to fleet operations",
@@ -4224,10 +4224,10 @@
     "topic": "AI",
     "published_date": "2026-10-07",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "8a6f861a82635a61defe218966b1eca9b1f2ce178dbf17aa9f73e5399d9a4cb8",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/microsoft-named-a-leader-in-the-2026-gartner-magic-quadrant-for-global-industrial-aiot-platforms/": {
     "title": "Microsoft named a Leader in the 2026 Gartner® Magic Quadrant™ for Global Industrial AIoT Platforms",
@@ -4284,10 +4284,10 @@
     "topic": "FinOps",
     "published_date": "2026-10-06",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "e88d98f97b3b4780895f001d792c99d5dfd3249f1b1aca11b181777e8d577368",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/litellm-token-allocation": {
     "title": "Vantage Launches Token Allocation Support for LiteLLM",
@@ -4299,10 +4299,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-08",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-11",
+    "last_seen": "2026-10-18",
     "content_hash": "6bd5e1a79ba9a545f1c3ecaa51961bd75d00d49694a28ee32fcadf0789a878cb",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.cloudzero.com/blog/shipped-ai-signals-month-end-forecast/": {
     "title": "Shipped: Project this month’s AI cost before the invoice closes",
@@ -4316,6 +4316,186 @@
     "first_seen": "2026-10-11",
     "last_seen": "2026-10-11",
     "content_hash": "951ce4d0b09d238af22840ed660a520b916b925f1bdc9d99f332b475b1161b3e",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/itau-generative-ai": {
+    "title": "How Itaú is building generative AI for its entire customer base",
+    "url": "https://openai.com/index/itau-generative-ai",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-16",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "a86b087b49a6bf78ddcadb021046ea3278860b55029c42af5a7b6e7761587bc4",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/benefit-street-partners": {
+    "title": "Benefit Street Partners answers questions faster with Codex",
+    "url": "https://openai.com/index/benefit-street-partners",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-16",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "55895eea6f3eed0e4e861584f189f071427ec6dc5802cb8af10da4da0c0ec02d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/singapore-office-opening": {
+    "title": "Oct 14, 2026AnnouncementsAnthropic opens Singapore office and signs MOU with the Government of Singapore",
+    "url": "https://www.anthropic.com/news/singapore-office-opening",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "64648ec8535811ae874d0405277861aa8d7373d45f3cc65fc0f9fcd4ff491492",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/gemini-4-argon-available-on-google-cloud": {
+    "title": "Gemini 4 Argon available on Google Cloud, built to help solve your business’ hardest problems",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/gemini-4-argon-available-on-google-cloud",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "2ff43ca7ac8c76df7aee72c36fa02bb64d69de39458343e0b91eeda111470e62",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/startups/what-the-gemini-agent-means-for-startups": {
+    "title": "Small and Medium BusinessesWhat the Gemini agent means for startupsBy Darren Mowry • 6-minute read",
+    "url": "https://cloud.google.com/blog/topics/startups/what-the-gemini-agent-means-for-startups",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "e8342433121d10e9c8b0c8e50f46adbd3e097e5b2a5d665c1b8a883049107617",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/amazon-s3-vercel-marketplace-v0/": {
+    "title": "Amazon S3 is now available on the Vercel Marketplace and v0 by Vercel",
+    "url": "https://aws.amazon.com/blogs/aws/amazon-s3-vercel-marketplace-v0/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-14",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "4a8be5da31ce6fe80c0b7fa91008de2aa9d06d06b7a7f1f4bcc6b6d283058439",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-prime-day-2026-by-the-numbers-claude-haiku-5-5-amazon-nova-2-5-sonic-and-more-october-13-2026/": {
+    "title": "AWS Weekly Roundup: Prime Day 2026 by the numbers, Claude Haiku 5.5, Amazon Nova 2.5 Sonic, and more (October 13, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-prime-day-2026-by-the-numbers-claude-haiku-5-5-amazon-nova-2-5-sonic-and-more-october-13-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-13",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "c5b16d198be0aed71b226d6301ac790d2723b34f49569a6c1a395a6c121e4ef9",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/deep-dive-into-azure-maia-300-architecture/": {
+    "title": "Deep dive into Azure Maia 300 architecture",
+    "url": "https://azure.microsoft.com/en-us/blog/deep-dive-into-azure-maia-300-architecture/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-12",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "67853448ac71f0432626fe2df49422f10b7964a02c08c605ebd3f2fec857ea4a",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/azure-gcp-financial-commitment-reports": {
+    "title": "Vantage Launches Support for Azure and GCP Financial Commitment Reports",
+    "url": "https://www.vantage.sh/blog/azure-gcp-financial-commitment-reports",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-10-14",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "d9d6548e37e75d160465c895974ba3db13771083eab69d90bfdd483844630d04",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/strengthening-finops-culture-in-the-age-of-ai/": {
+    "title": "Strengthening FinOps Culture in the Age of AI",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/strengthening-finops-culture-in-the-age-of-ai/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-10-18",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "fac473bfe13fcba504467b62a530eed72278557d730c88ac5578a5fd3b8bb1f8",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/kpi-dashboard-widgets": {
+    "title": "Vantage Launches KPI Widgets: Highlight Key Metrics on Dashboards",
+    "url": "https://www.vantage.sh/blog/kpi-dashboard-widgets",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-10-15",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "e419d963f7055905348b093194188c7b48eb9bf2704509f23eb804089d257961",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/openrouter-cost-management": {
+    "title": "Vantage Launches Support for OpenRouter Costs",
+    "url": "https://www.vantage.sh/blog/openrouter-cost-management",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-10-13",
+    "first_seen": "2026-10-18",
+    "last_seen": "2026-10-18",
+    "content_hash": "9e17360d12eb99f2a9aeae31826696b7591b47d32594fb2fcf2d9fbf2063a293",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
