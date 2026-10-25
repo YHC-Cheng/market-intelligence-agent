@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-10-18",
-    "content_hash": "e8759779ba9c0141ba3bf930b949b73b960df20dc5985ffce483f28a4eee5bdd",
-    "seen_count": 55,
+    "last_seen": "2026-10-25",
+    "content_hash": "062c63b696a67ad87be24a373c69597807928847b7245a270150acf82fc3ab5e",
+    "seen_count": 57,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 30,
+    "seen_count": 31,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,10 +159,10 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "7a77ed9721f96e868b52f69bcc2d2bfe99c360c927e611ced9f16ab24aa08327",
-    "seen_count": 25,
-    "last_freshness_status": "repeated"
+    "seen_count": 26,
+    "last_freshness_status": "unknown"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
     "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "ccc95ec119e94c530a140ff2420c459cb2f5bf410616c1353e5e2fe52e00114e",
-    "seen_count": 21,
+    "seen_count": 22,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -2964,9 +2964,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-18",
     "first_seen": "2026-08-23",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "ca94146cffb68fb4486dc783c22f5efa6f6df64eb1cc55258b2872057d5ed5f5",
-    "seen_count": 9,
+    "seen_count": 10,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/token-cost-allocation-specification": {
@@ -3204,9 +3204,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-25",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "4711957057a02d54a93eecb47031dc28a3a8f315705216b05eb2a6dd7ae85664",
-    "seen_count": 8,
+    "seen_count": 9,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/linear-notion-github-mcp": {
@@ -4095,7 +4095,7 @@
     "last_freshness_status": "new"
   },
   "https://www.anthropic.com/news/cyber-verification-program": {
-    "title": "Expanding the Cyber Verification ProgramAnnouncementsOct 6, 2026We’re launching a new, expanded version of our Cyber Verification Program, which makes advanced cyber capabilities and reduced blocking classifiers available to qualifying security professionals.",
+    "title": "Expanding the Cyber Verification ProgramWe’re launching a new, expanded version of our Cyber Verification Program, which makes advanced cyber capabilities and reduced blocking classifiers available to qualifying security professionals.",
     "url": "https://www.anthropic.com/news/cyber-verification-program",
     "source": "Anthropic News / Blog",
     "source_category": "official_ai",
@@ -4104,9 +4104,9 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-18",
-    "content_hash": "76ada085241298cbda822611ab6d4122f38f41dd8c29348b9d2192419e6e6a83",
-    "seen_count": 2,
+    "last_seen": "2026-10-25",
+    "content_hash": "c3f051139f93c64f5524706f4db8f6dc299e7df10b7c4ba682862f3c5b984152",
+    "seen_count": 3,
     "last_freshness_status": "updated"
   },
   "https://www.anthropic.com/news/anthropic-cyber-mission": {
@@ -4284,10 +4284,10 @@
     "topic": "FinOps",
     "published_date": "2026-10-06",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "e88d98f97b3b4780895f001d792c99d5dfd3249f1b1aca11b181777e8d577368",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/litellm-token-allocation": {
     "title": "Vantage Launches Token Allocation Support for LiteLLM",
@@ -4404,10 +4404,10 @@
     "topic": "AI",
     "published_date": "2026-10-14",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-18",
-    "content_hash": "4a8be5da31ce6fe80c0b7fa91008de2aa9d06d06b7a7f1f4bcc6b6d283058439",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-10-25",
+    "content_hash": "3d5edd542baa467474d866bd090c87bb0a01d3f2cfa732b9b4a25805b09c9a9f",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-prime-day-2026-by-the-numbers-claude-haiku-5-5-amazon-nova-2-5-sonic-and-more-october-13-2026/": {
     "title": "AWS Weekly Roundup: Prime Day 2026 by the numbers, Claude Haiku 5.5, Amazon Nova 2.5 Sonic, and more (October 13, 2026)",
@@ -4419,10 +4419,10 @@
     "topic": "AI",
     "published_date": "2026-10-13",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-18",
-    "content_hash": "c5b16d198be0aed71b226d6301ac790d2723b34f49569a6c1a395a6c121e4ef9",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "last_seen": "2026-10-25",
+    "content_hash": "e8e768869312c817b9fbf8ae190cdcaefc9a2019f1f21103957b73ae31d4acee",
+    "seen_count": 2,
+    "last_freshness_status": "updated"
   },
   "https://azure.microsoft.com/en-us/blog/deep-dive-into-azure-maia-300-architecture/": {
     "title": "Deep dive into Azure Maia 300 architecture",
@@ -4449,9 +4449,9 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-14",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "d9d6548e37e75d160465c895974ba3db13771083eab69d90bfdd483844630d04",
-    "seen_count": 2,
+    "seen_count": 4,
     "last_freshness_status": "repeated"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/strengthening-finops-culture-in-the-age-of-ai/": {
@@ -4464,10 +4464,10 @@
     "topic": "FinOps",
     "published_date": "2026-10-18",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "fac473bfe13fcba504467b62a530eed72278557d730c88ac5578a5fd3b8bb1f8",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/kpi-dashboard-widgets": {
     "title": "Vantage Launches KPI Widgets: Highlight Key Metrics on Dashboards",
@@ -4479,10 +4479,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-15",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "e419d963f7055905348b093194188c7b48eb9bf2704509f23eb804089d257961",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/openrouter-cost-management": {
     "title": "Vantage Launches Support for OpenRouter Costs",
@@ -4494,8 +4494,173 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-13",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-18",
+    "last_seen": "2026-10-25",
     "content_hash": "9e17360d12eb99f2a9aeae31826696b7591b47d32594fb2fcf2d9fbf2063a293",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/securing-our-frontier-model-training-environment": {
+    "title": "Securing our frontier model training environment",
+    "url": "https://openai.com/index/securing-our-frontier-model-training-environment",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-23",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/openai-nask-ai-safety-security-partnership": {
+    "title": "OpenAI and Poland’s NASK partner to advance AI safety and security",
+    "url": "https://openai.com/index/openai-nask-ai-safety-security-partnership",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-23",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/forward-deployed-engineering-means": {
+    "title": "What FDE means at OpenAI",
+    "url": "https://openai.com/index/forward-deployed-engineering-means",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-22",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/public-benefit-fund": {
+    "title": "Investing in the public benefitWe’re committing a portion of Anthropic’s shares to the Anthropic Public Benefit Fund, a new entity with a structure that increases the stake as the company grows.",
+    "url": "https://www.anthropic.com/news/public-benefit-fund",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "7b4586999e1f24434fbcd2b29288779433e38476600eb3fcfe12d88e38510eb7",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": {
+    "title": "Donating Agent Skills to the Agentic AI Foundation",
+    "url": "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "8d6794b1f18e3915c33592c277e5225518acc0709ca9e53cacba61cfb0aa6fce",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": {
+    "title": "Physicist Christopher Stubbs joins Anthropic's Long-Term Benefit Trust",
+    "url": "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "e4246456f7f5e2284d885bc7c72eccc2aa0766ae11ac372a1649245b7d592c28",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-continuum-for-code-vulnerabilities-is-now-generally-available/": {
+    "title": "AWS Continuum for code vulnerabilities is now generally available",
+    "url": "https://aws.amazon.com/blogs/aws/aws-continuum-for-code-vulnerabilities-is-now-generally-available/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-22",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "674ff4b2344625e08011264ad64adf9bc6febb1ca8f3a92b8704f119339416ed",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/designing-for-sovereign-ai-a-shared-foundation-from-edge-to-cloud/": {
+    "title": "Designing for sovereign AI: A shared foundation from edge to cloud",
+    "url": "https://azure.microsoft.com/en-us/blog/designing-for-sovereign-ai-a-shared-foundation-from-edge-to-cloud/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-19",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "246e79178dead5381f4a8e3beb52389992534e91a8b38d400d01143144f8e258",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/evolving-the-cloud-native-foundation-for-the-next-generation-of-ai/": {
+    "title": "Evolving the cloud-native foundation for the next generation of AI",
+    "url": "https://azure.microsoft.com/en-us/blog/evolving-the-cloud-native-foundation-for-the-next-generation-of-ai/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-15",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "d82ad8ce83d54e246be0831babd5adc7fbcd4834cfb717b46450b965bd651de2",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/data-access-policies": {
+    "title": "Vantage Launches Data Access Policies",
+    "url": "https://www.vantage.sh/blog/data-access-policies",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-10-22",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "bc84f1a1115f6e0784c73dac30cf08511e18c3befd67f164a9ae6938f4f5357c",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/ramp": {
+    "title": "Vantage Now Integrates with Ramp",
+    "url": "https://www.vantage.sh/blog/ramp",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-10-20",
+    "first_seen": "2026-10-25",
+    "last_seen": "2026-10-25",
+    "content_hash": "ae0f0a83a45cc4998721545f8c352277b42669cfb69521c2ad4d30c759e36ed1",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
