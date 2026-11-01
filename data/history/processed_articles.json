@@ -24,9 +24,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-10-25",
-    "content_hash": "062c63b696a67ad87be24a373c69597807928847b7245a270150acf82fc3ab5e",
-    "seen_count": 57,
+    "last_seen": "2026-11-01",
+    "content_hash": "768cae440a1dbc3c700c68698e67f745140b23b770662f308a0fab0c37d09cb5",
+    "seen_count": 59,
     "last_freshness_status": "repeated"
   },
   "https://www.ecloudvalley.com/": {
@@ -39,9 +39,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-14",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "ec7fdda8b14abfc79796a8937f11fd96c1935fb9b16697b8439c5083dedd2099",
-    "seen_count": 31,
+    "seen_count": 32,
     "last_freshness_status": "repeated"
   },
   "https://www.finops.org/insights/finops-for-data-center-focus/": {
@@ -159,10 +159,10 @@
     "topic": "FinOps",
     "published_date": "",
     "first_seen": "2026-05-17",
-    "last_seen": "2026-10-25",
-    "content_hash": "7a77ed9721f96e868b52f69bcc2d2bfe99c360c927e611ced9f16ab24aa08327",
-    "seen_count": 26,
-    "last_freshness_status": "unknown"
+    "last_seen": "2026-11-01",
+    "content_hash": "39e5d020bf710437ae987a5a5f4ea09a6143530fc47ab65ace9e7691c9c2f696",
+    "seen_count": 27,
+    "last_freshness_status": "updated"
   },
   "https://openai.com/index/malta-chatgpt-plus-partnership": {
     "title": "OpenAI and Malta partner to bring ChatGPT Plus to all citizens",
@@ -909,9 +909,9 @@
     "topic": "ProductObservation",
     "published_date": "",
     "first_seen": "2026-05-31",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "ccc95ec119e94c530a140ff2420c459cb2f5bf410616c1353e5e2fe52e00114e",
-    "seen_count": 22,
+    "seen_count": 23,
     "last_freshness_status": "repeated"
   },
   "https://openai.com/index/endava-frontiers": {
@@ -3204,9 +3204,9 @@
     "topic": "FinOps",
     "published_date": "2026-08-25",
     "first_seen": "2026-08-30",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "4711957057a02d54a93eecb47031dc28a3a8f315705216b05eb2a6dd7ae85664",
-    "seen_count": 9,
+    "seen_count": 10,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/linear-notion-github-mcp": {
@@ -4284,9 +4284,9 @@
     "topic": "FinOps",
     "published_date": "2026-10-06",
     "first_seen": "2026-10-11",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "e88d98f97b3b4780895f001d792c99d5dfd3249f1b1aca11b181777e8d577368",
-    "seen_count": 3,
+    "seen_count": 4,
     "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/litellm-token-allocation": {
@@ -4404,10 +4404,10 @@
     "topic": "AI",
     "published_date": "2026-10-14",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "3d5edd542baa467474d866bd090c87bb0a01d3f2cfa732b9b4a25805b09c9a9f",
-    "seen_count": 2,
-    "last_freshness_status": "updated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-prime-day-2026-by-the-numbers-claude-haiku-5-5-amazon-nova-2-5-sonic-and-more-october-13-2026/": {
     "title": "AWS Weekly Roundup: Prime Day 2026 by the numbers, Claude Haiku 5.5, Amazon Nova 2.5 Sonic, and more (October 13, 2026)",
@@ -4449,10 +4449,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-14",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "d9d6548e37e75d160465c895974ba3db13771083eab69d90bfdd483844630d04",
-    "seen_count": 4,
-    "last_freshness_status": "repeated"
+    "seen_count": 6,
+    "last_freshness_status": "old"
   },
   "https://aws.amazon.com/blogs/aws-cloud-financial-management/strengthening-finops-culture-in-the-age-of-ai/": {
     "title": "Strengthening FinOps Culture in the Age of AI",
@@ -4464,10 +4464,10 @@
     "topic": "FinOps",
     "published_date": "2026-10-18",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "fac473bfe13fcba504467b62a530eed72278557d730c88ac5578a5fd3b8bb1f8",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/kpi-dashboard-widgets": {
     "title": "Vantage Launches KPI Widgets: Highlight Key Metrics on Dashboards",
@@ -4479,10 +4479,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-15",
     "first_seen": "2026-10-18",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "e419d963f7055905348b093194188c7b48eb9bf2704509f23eb804089d257961",
-    "seen_count": 2,
-    "last_freshness_status": "repeated"
+    "seen_count": 3,
+    "last_freshness_status": "old"
   },
   "https://www.vantage.sh/blog/openrouter-cost-management": {
     "title": "Vantage Launches Support for OpenRouter Costs",
@@ -4554,10 +4554,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-10-25",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "7b4586999e1f24434fbcd2b29288779433e38476600eb3fcfe12d88e38510eb7",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation": {
     "title": "Donating Agent Skills to the Agentic AI Foundation",
@@ -4569,10 +4569,10 @@
     "topic": "AI",
     "published_date": "",
     "first_seen": "2026-10-25",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "8d6794b1f18e3915c33592c277e5225518acc0709ca9e53cacba61cfb0aa6fce",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.anthropic.com/news/christopher-stubbs-joins-long-term-benefit-trust": {
     "title": "Physicist Christopher Stubbs joins Anthropic's Long-Term Benefit Trust",
@@ -4599,10 +4599,10 @@
     "topic": "AI",
     "published_date": "2026-10-22",
     "first_seen": "2026-10-25",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "674ff4b2344625e08011264ad64adf9bc6febb1ca8f3a92b8704f119339416ed",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/designing-for-sovereign-ai-a-shared-foundation-from-edge-to-cloud/": {
     "title": "Designing for sovereign AI: A shared foundation from edge to cloud",
@@ -4614,10 +4614,10 @@
     "topic": "AI",
     "published_date": "2026-10-19",
     "first_seen": "2026-10-25",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "246e79178dead5381f4a8e3beb52389992534e91a8b38d400d01143144f8e258",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://azure.microsoft.com/en-us/blog/evolving-the-cloud-native-foundation-for-the-next-generation-of-ai/": {
     "title": "Evolving the cloud-native foundation for the next generation of AI",
@@ -4644,10 +4644,10 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-22",
     "first_seen": "2026-10-25",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "bc84f1a1115f6e0784c73dac30cf08511e18c3befd67f164a9ae6938f4f5357c",
-    "seen_count": 1,
-    "last_freshness_status": "new"
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
   },
   "https://www.vantage.sh/blog/ramp": {
     "title": "Vantage Now Integrates with Ramp",
@@ -4659,8 +4659,248 @@
     "topic": "ProductObservation",
     "published_date": "2026-10-20",
     "first_seen": "2026-10-25",
-    "last_seen": "2026-10-25",
+    "last_seen": "2026-11-01",
     "content_hash": "ae0f0a83a45cc4998721545f8c352277b42669cfb69521c2ad4d30c759e36ed1",
+    "seen_count": 2,
+    "last_freshness_status": "repeated"
+  },
+  "https://openai.com/index/helping-websites-express-ai-training-preferences": {
+    "title": "Making it easier for websites to express AI training preferences",
+    "url": "https://openai.com/index/helping-websites-express-ai-training-preferences",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-30",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/fair-use-benefits-everyone": {
+    "title": "Fair use benefits everyone",
+    "url": "https://openai.com/index/fair-use-benefits-everyone",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-30",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://openai.com/index/updated-model-spec": {
+    "title": "An updated Model Spec for more capable and beneficial AI",
+    "url": "https://openai.com/index/updated-model-spec",
+    "source": "OpenAI News RSS",
+    "source_category": "official_ai",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-29",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/s1-sec": {
+    "title": "Anthropic files S-1 with the SEC for proposed initial public offeringToday, Anthropic, PBC filed a registration statement on Form S-1 with the U.S. Securities and Exchange Commission relating to its proposed initial public offering of its Class A common stock.",
+    "url": "https://www.anthropic.com/news/s1-sec",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "40b191135a1697653f30083fcf972a9d81475a2517eeae0277fa1e86cad8d08a",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions": {
+    "title": "AI for Science expands to foundations and research institutions",
+    "url": "https://www.anthropic.com/news/ai-for-science-expands-foundations-research-institutions",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "624b77d71767935108b78c50b2e0e80d3bcbecd925947911f5c1cd0e74b70746",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.anthropic.com/news/expanding-partnership-gsa": {
+    "title": "Expanding our partnership with GSA to bring Claude to all levels of government",
+    "url": "https://www.anthropic.com/news/expanding-partnership-gsa",
+    "source": "Anthropic News / Blog",
+    "source_category": "official_ai",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "18ab71192a977d3722a7ffa847893cadaa07680c23114eb292b9b84c84b39939",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/training-certifications/new-gemini-courses-for-financial-services-and-legal-teams": {
+    "title": "New Gemini courses for financial services and legal teams",
+    "url": "https://cloud.google.com/blog/topics/training-certifications/new-gemini-courses-for-financial-services-and-legal-teams",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "95ac2625f75e51938cf41869795399c9605c7fc01a8f497e1d4b1939824952d7",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/topics/cost-management/google-cloud-spend-caps-now-generally-available": {
+    "title": "Cost ManagementInnovate on your own business terms: Google Cloud spend caps now generally availableBy Shruthi Nambi • 4-minute read",
+    "url": "https://cloud.google.com/blog/topics/cost-management/google-cloud-spend-caps-now-generally-available",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "af57125769193138ed91cd852af622ddf0d79976b2d6e605a690189b8075b7d7",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://cloud.google.com/blog/products/ai-machine-learning/gemini-robotics-embodied-reasoning-2-is-now-available-on-google-cloud": {
+    "title": "AI & Machine LearningGemini Robotics Embodied Reasoning 2 is now available on Google CloudBy Carolina Parada • 6-minute read",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning/gemini-robotics-embodied-reasoning-2-is-now-available-on-google-cloud",
+    "source": "Google Cloud Blog",
+    "source_category": "cloud_provider",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "AI",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "7cacf05fd7ebdc188905fe3db657c4d045e42ca8280de144baf4d9d7f1c1daa7",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-amazon-polly-generative-engine-torchneuron-for-trainium-and-more-october-26-2026/": {
+    "title": "AWS Weekly Roundup: Amazon Polly Generative engine, TorchNeuron for Trainium, and more (October 26, 2026)",
+    "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-amazon-polly-generative-engine-torchneuron-for-trainium-and-more-october-26-2026/",
+    "source": "AWS Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-26",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "cc15d7d9f467f4cad3c68a291fcd0636ea3af5e8c4436a5953c014a6cf0438db",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/azure-cloud-hsm-hardware-audit-logging-verifiable-audit-trails-for-security-and-compliance/": {
+    "title": "Azure Cloud HSM Hardware Audit Logging: Verifiable audit trails for security and compliance",
+    "url": "https://azure.microsoft.com/en-us/blog/azure-cloud-hsm-hardware-audit-logging-verifiable-audit-trails-for-security-and-compliance/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-29",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "14bcfe5c66d1daba386dc411c09ad997cc63d2095f0d84875086bf3b9144f145",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/": {
+    "title": "Introducing the Microsoft Copilot harness in Foundry Agent Service",
+    "url": "https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-28",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "69c195b35177da18365732bb9d1004fe15e29e4327fea930eaec0fe73d57aa95",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://azure.microsoft.com/en-us/blog/scale-reservoir-uncertainty-analysis-with-agile-reservoir-modeling/": {
+    "title": "Scale reservoir uncertainty analysis with agile reservoir modeling",
+    "url": "https://azure.microsoft.com/en-us/blog/scale-reservoir-uncertainty-analysis-with-agile-reservoir-modeling/",
+    "source": "Microsoft Azure Blog RSS",
+    "source_category": "cloud_provider",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "AI",
+    "published_date": "2026-10-26",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "0ac67d8e1ecca8daabf40de1b0445c9202279f6adddc155d57d49a6642ec271e",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://aws.amazon.com/blogs/aws-cloud-financial-management/understanding-aws-savings-plans-recommendations-management-vs-member-account-views/": {
+    "title": "Understanding AWS Savings Plans Recommendations: Management vs. Member Account Views",
+    "url": "https://aws.amazon.com/blogs/aws-cloud-financial-management/understanding-aws-savings-plans-recommendations-management-vs-member-account-views/",
+    "source": "AWS Cloud Financial Management Blog",
+    "source_category": "cloud_cost",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "FinOps",
+    "published_date": "2026-10-25",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "9a65c123ae4965610489a5c1633122855e5e025d48b09dd89e5f4ab4e3733b08",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.vantage.sh/blog/github-copilot-costs-by-user": {
+    "title": "Vantage Expands the GitHub Integration with Copilot Costs by User",
+    "url": "https://www.vantage.sh/blog/github-copilot-costs-by-user",
+    "source": "Vantage Blog",
+    "source_category": "competitor_product",
+    "source_type": "rss",
+    "web_mode": null,
+    "topic": "ProductObservation",
+    "published_date": "2026-10-28",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "c9c66fbf735a197568435050a19092c878b84083a6cfeaaca87525ac8528960d",
+    "seen_count": 1,
+    "last_freshness_status": "new"
+  },
+  "https://www.cloudzero.com/blog/webinar-recap-fy2027-ai-budgets/": {
+    "title": "Webinar recap: FY2027 AI budgets and how finance leaders plan",
+    "url": "https://www.cloudzero.com/blog/webinar-recap-fy2027-ai-budgets/",
+    "source": "CloudZero Blog",
+    "source_category": "competitor_product",
+    "source_type": "web",
+    "web_mode": "listing",
+    "topic": "ProductObservation",
+    "published_date": "",
+    "first_seen": "2026-11-01",
+    "last_seen": "2026-11-01",
+    "content_hash": "4dac80c8a400c3bfe33929b144bf111979d195fde1e04e70eeda56209fb4b484",
     "seen_count": 1,
     "last_freshness_status": "new"
   }
